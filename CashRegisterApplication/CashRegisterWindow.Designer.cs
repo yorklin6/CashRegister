@@ -187,6 +187,8 @@
             this.orderDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.orderDataGridView.Size = new System.Drawing.Size(204, 133);
             this.orderDataGridView.TabIndex = 5;
+            this.orderDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGridView_CellEndEdit);
+            this.orderDataGridView.SelectionChanged += new System.EventHandler(this.orderDataGridView_SelectionChanged);
             // 
             // orderMsg
             // 

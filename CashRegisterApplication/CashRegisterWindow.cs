@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms;
 namespace CashRegiterApplication
@@ -33,17 +34,15 @@ namespace CashRegiterApplication
 
             index = this.orderDataGridView.Rows.Add();
             this.orderDataGridView.Rows[index].Cells[0].Value = "实收";
-            this.orderDataGridView.Rows[index].Cells[0].ReadOnly = false;
-            this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
-            this.orderDataGridView[0, 0].ReadOnly = true;
+            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "总价";
-            this.orderDataGridView.Rows[index].Cells[0].ReadOnly = true;
-            this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
+            this.orderDataGridView.Rows[index].Cells[0].Value = "应收";
+            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
+            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             index = this.orderDataGridView.Rows.Add();
             this.orderDataGridView.Rows[index].Cells[0].Value = "找零";
-            this.orderDataGridView.Rows[index].Cells[0].ReadOnly = true;
-            this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
+            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
+            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
 
   
 
@@ -63,11 +62,19 @@ namespace CashRegiterApplication
             this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 0].Value = "4891913690152";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 1].Value = "4891913691036";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 2].Value = "4891913690206";
+          
+        }
+
+        static void Log(string message,
+                     [CallerFilePath] string file = null,
+                     [CallerLineNumber] int line = 0,
+                      [CallerMemberName] string  fun= null)
+        {
+            Console.WriteLine("{0}:  func:{1}  line:{2} str:{3}", Path.GetFileName(file), fun,line, message);
         }
 
         private void CashRegisterWindow_Load(object sender, EventArgs e)
         {
-            //当界面启动的时候加载这里
           
          //  _SelectProductList();
         }
@@ -80,6 +87,7 @@ namespace CashRegiterApplication
                 this.productListDataGridView.Rows[0].Cells[0].Value = "1";
             }
             _SelectProductList();
+            Log("ok");
         }
         private void _SelectProductList()
         {
@@ -87,7 +95,6 @@ namespace CashRegiterApplication
             this.payWayDataGridView.CurrentCell = null;
             this.payWayDataGridView.ClearSelection();
             this.orderDataGridView.ClearSelection();
-
             //默认第一行正在编辑中
             this.productListDataGridView.Select();
             this.productListDataGridView.CurrentCell = this.productListDataGridView.Rows[0].Cells[1];
@@ -135,7 +142,7 @@ namespace CashRegiterApplication
             {
                 if (objIsEmpty(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
                 {
-                    break;
+                    continue;
                 }
 
                 if ( !transferMoneyToInt(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value,out money) )
@@ -147,9 +154,9 @@ namespace CashRegiterApplication
                 orderPrice += money;
             }
             string strOrderPrice = _CoverMoneyToString(orderPrice);
-            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
-            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.RECIEVE_FEE_ROW].Value = strOrderPrice;
-            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.CHANGE_FEE_ROW].Value = "0.00";
+            this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
+            this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = strOrderPrice;
+            this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = "0.00";
             return;
         }
 
@@ -215,7 +222,7 @@ namespace CashRegiterApplication
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = normalPrice;
             currentRow.Cells[CELL_INDEX.PRODUCT_AMOUNT].Value = 1;
             currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = normalPrice;
-
+           
             //更新订单价钱
             _SetOrderPrice();
            // _GoNextTab();
@@ -280,10 +287,9 @@ namespace CashRegiterApplication
             //MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
             //跳转到总价的金额编辑
             this.productListDataGridView.CurrentRow.Selected = false;
-            //  this.productListDataGridView.ClearSelection();
             this.payWayDataGridView.ClearSelection();
-            this.orderDataGridView.Select();
-            this.orderDataGridView.CurrentCell = this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.RECIEVE_FEE_ROW];
+        
+            this.orderDataGridView.CurrentCell = this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW];
             this.orderDataGridView.BeginEdit(true);
         }
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -305,6 +311,7 @@ namespace CashRegiterApplication
                 if (objIsEmpty( this.productListDataGridView.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value)
                     && objIsEmpty(this.productListDataGridView.Rows[RowIndex-1].Cells[CELL_INDEX.PRODUCT_CODE].Value))
                 {
+                    _SetOrderPrice();
                     _GoOrderDataGrid();
                 }
             }
@@ -378,7 +385,8 @@ namespace CashRegiterApplication
                                 {
                                     //删除当前行
                                     //this.productListDataGridView.Rows.Remove(this.productListDataGridView.CurrentRow);
-                                    this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.INDEX].Value ="";
+                                    this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
+                                    _SetOrderPrice();
                                     _GoOrderDataGrid();
                                 }
                                 return base.ProcessCmdKey(ref msg, keyData);
@@ -387,9 +395,13 @@ namespace CashRegiterApplication
                         }
                         if (this.orderDataGridView.IsCurrentCellInEditMode)
                         {
-                            MessageBox.Show("生成订单成功");
-
-                            return true;
+                            //this.orderDataGridView.BeginEdit(false);
+                            //this.orderDataGridView.CurrentCell = null;
+                            //if (this.orderDataGridView.CurrentCell.RowIndex == CELL_INDEX.ORDER_FEE_ROW)
+                            //{
+                               
+                            //}
+                            //return true;
                         }
 
                     }
@@ -403,7 +415,48 @@ namespace CashRegiterApplication
         {
           
         }
+        private int currentRow;
+        private bool resetRow = false;
+
+        private void orderDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int orderFee = 0, recieveFee = 0, changeFee = 0;
+            if (!transferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
+            {
+                MessageBox.Show("应收错误:" + this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
+                return;
+            }
+            if (!transferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
+            {
+                MessageBox.Show("实收错误:" + this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value);
+                return;
+            }
+
+            changeFee = recieveFee - orderFee;
+            this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = _CoverMoneyToString(changeFee);
+            if (changeFee < 0)
+            {
+                resetRow = true;
+                currentRow = e.RowIndex;
+                MessageBox.Show("实收价钱小于应收" );
+                return;
+            }
+            MessageBox.Show("生成订单成功");
+        }
+        void orderDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (resetRow)
+            {
+                resetRow = false;
+                this.orderDataGridView.CurrentCell = orderDataGridView.Rows[currentRow].Cells[1];
+            }
+        }
+        void orderDataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            this.orderDataGridView.SelectionChanged += new EventHandler(orderDataGridView_SelectionChanged);
+        }
     }
+
     public static class CELL_INDEX
     {
         public static int INDEX = 0;
@@ -414,7 +467,7 @@ namespace CashRegiterApplication
         public static int PRODUCT_AMOUNT = 5;
         public static int PRODUCT_MONEY = 6;
 
-        public static int ORDER_CELL = 1;
+        public static int ORDER_COLUMN = 1;
         public static int RECIEVE_FEE_ROW = 0;
         public static int ORDER_FEE_ROW = 1;
         public static int CHANGE_FEE_ROW = 2;
