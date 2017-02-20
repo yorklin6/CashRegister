@@ -14,8 +14,12 @@ namespace CashRegiterApplication
     public partial class CashRegisterWindow : Form
     {
         
+        /**
+         * 
+         */
         public CashRegisterWindow()
         {
+            
             InitializeComponent();
 
             this.productListDataGridView.RowsDefaultCellStyle.BackColor = Color.Bisque;
@@ -28,18 +32,20 @@ namespace CashRegiterApplication
             this.orderDataGridView.ColumnHeadersVisible = false;
 
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "总计应收";
-            this.orderDataGridView.Rows[index].Cells[0].ReadOnly = true;
+            this.orderDataGridView.Rows[index].Cells[0].Value = "实收";
+            this.orderDataGridView.Rows[index].Cells[0].ReadOnly = false;
             this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
             this.orderDataGridView[0, 0].ReadOnly = true;
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "实际已收";
+            this.orderDataGridView.Rows[index].Cells[0].Value = "总价";
             this.orderDataGridView.Rows[index].Cells[0].ReadOnly = true;
             this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "应找零头";
+            this.orderDataGridView.Rows[index].Cells[0].Value = "找零";
             this.orderDataGridView.Rows[index].Cells[0].ReadOnly = true;
             this.orderDataGridView.Rows[index].Cells[1].Value = "0.00";
+
+  
 
             //this.productListDataGridView.AllowUserToAddRows = false;
             this.orderDataGridView.AllowUserToAddRows = false;
@@ -53,8 +59,8 @@ namespace CashRegiterApplication
             this.ColumnMoney.ReadOnly = true;
             this.orderMsg.ReadOnly = true;
 
-            //this.productListDataGridView.Rows.Add();
-            //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 0].Value = "4891913690152";
+            this.productListDataGridView.Rows.Add();
+            this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 0].Value = "4891913690152";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 1].Value = "4891913691036";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 2].Value = "4891913690206";
         }
@@ -141,7 +147,9 @@ namespace CashRegiterApplication
                 orderPrice += money;
             }
             string strOrderPrice = _CoverMoneyToString(orderPrice);
-            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.ORDER_ROW].Value = strOrderPrice;
+            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
+            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.RECIEVE_FEE_ROW].Value = strOrderPrice;
+            this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.CHANGE_FEE_ROW].Value = "0.00";
             return;
         }
 
@@ -179,7 +187,7 @@ namespace CashRegiterApplication
             ProductPricingInfoResp productResp = JsonConvert.DeserializeObject<ProductPricingInfoResp>(content);
             if (productResp.errorCode != 0 )
             {
-                //MessageBox.Show("后台返回商品失败 productCode:" + productCode + " ;content:" + content);
+                MessageBox.Show("后台返回商品失败 productCode:" + productCode + " ;content:" + content);
                 this.productListDataGridView.CurrentCell = currentRow.Cells[CELL_INDEX.PRODUCT_CODE];
                 this.productListDataGridView.BeginEdit(true);
                 return ;
@@ -269,13 +277,13 @@ namespace CashRegiterApplication
 
         private void _GoOrderDataGrid()
         {
-            MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
+            //MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
             //跳转到总价的金额编辑
             this.productListDataGridView.CurrentRow.Selected = false;
             //  this.productListDataGridView.ClearSelection();
             this.payWayDataGridView.ClearSelection();
             this.orderDataGridView.Select();
-            this.orderDataGridView.CurrentCell = this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.ORDER_ROW];
+            this.orderDataGridView.CurrentCell = this.orderDataGridView[CELL_INDEX.ORDER_CELL, CELL_INDEX.RECIEVE_FEE_ROW];
             this.orderDataGridView.BeginEdit(true);
         }
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -291,7 +299,7 @@ namespace CashRegiterApplication
         private void productListDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             int RowIndex=this.productListDataGridView.CurrentCell.RowIndex;
-            MessageBox.Show("Begin edit RowIndex:" + RowIndex);
+            //MessageBox.Show("Begin edit RowIndex:" + RowIndex);
             if (RowIndex >= 1)
             {
                 if (objIsEmpty( this.productListDataGridView.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value)
@@ -305,7 +313,7 @@ namespace CashRegiterApplication
 
         private void productListDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            MessageBox.Show("CellEndEdit  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
+            //MessageBox.Show("CellEndEdit  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
             if (e.ColumnIndex == CELL_INDEX.PRODUCT_CODE)
             {
                 //MessageBox.Show("end edit code PRODUCT_CODE RowIndex :" + e.RowIndex + " CellIndex"+e.ColumnIndex   );
@@ -335,12 +343,12 @@ namespace CashRegiterApplication
 
         private void productListDataGridView_Enter(object sender, EventArgs e)
         {
-            MessageBox.Show("Enter:" + e.ToString());
+            //MessageBox.Show("Enter:" + e.ToString());
         }
 
         private void productListDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
-            MessageBox.Show("KeyDown:" + e.ToString());
+            //MessageBox.Show("KeyDown:" + e.ToString());
         }
 
         private void productListDataGridView_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -360,12 +368,12 @@ namespace CashRegiterApplication
             {
                 case System.Windows.Forms.Keys.Enter:
                     {
-                        MessageBox.Show("Keys.Enter: CurrentCell.RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
+                        //MessageBox.Show("Keys.Enter: CurrentCell.RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
                         if (this.productListDataGridView.IsCurrentCellInEditMode)
                         {
                             if (objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
                             {
-                                MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
+                                //MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
                                 if (this.productListDataGridView.CurrentRow.IsNewRow)
                                 {
                                     //删除当前行
@@ -380,6 +388,7 @@ namespace CashRegiterApplication
                         if (this.orderDataGridView.IsCurrentCellInEditMode)
                         {
                             MessageBox.Show("生成订单成功");
+
                             return true;
                         }
 
@@ -406,7 +415,9 @@ namespace CashRegiterApplication
         public static int PRODUCT_MONEY = 6;
 
         public static int ORDER_CELL = 1;
-        public static int ORDER_ROW = 1;
+        public static int RECIEVE_FEE_ROW = 0;
+        public static int ORDER_FEE_ROW = 1;
+        public static int CHANGE_FEE_ROW = 2;
     }
 
 }

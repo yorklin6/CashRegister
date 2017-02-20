@@ -9,7 +9,7 @@ using CashRegiterApplication;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace CashRegisterApplicationNameSapce
+namespace CashRegiterApplication
 {
 
 

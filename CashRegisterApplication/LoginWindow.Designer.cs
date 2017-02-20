@@ -1,4 +1,4 @@
-﻿namespace CashRegisterApplicationNameSapce
+﻿namespace CashRegiterApplication
 {
     partial class loginForm
     {
