@@ -1,0 +1,12 @@
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.exe.config
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csprojResolveAssemblyReference.cache
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.Properties.Resources.resources
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.CashRegisterWindow.resources
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplicationNameSapce.loginForm.resources
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.exe
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.pdb
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.dll
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.xml
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.exe
+F:\vs\c#\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.pdb
