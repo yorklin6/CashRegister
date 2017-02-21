@@ -416,6 +416,10 @@ namespace CashRegiterApplication
 
                     }
                     break;
+                    case System.Windows.Forms.Keys.Tab:
+                    {
+                        break;
+                    }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
