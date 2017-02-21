@@ -418,7 +418,11 @@ namespace CashRegiterApplication
                     break;
                     case System.Windows.Forms.Keys.Tab:
                     {
-                        break;
+
+                        //tabl的操作被禁止
+                        //
+
+                        return true;
                     }
             }
             return base.ProcessCmdKey(ref msg, keyData);
