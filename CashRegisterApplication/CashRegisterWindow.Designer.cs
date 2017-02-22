@@ -117,8 +117,6 @@
             this.productListDataGridView.TabIndex = 1;
             this.productListDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellContentClick);
             this.productListDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellEndEdit);
-            this.productListDataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellEnter);
-            this.productListDataGridView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellValueChanged_1);
             this.productListDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_RowEnter);
             this.productListDataGridView.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.productListDataGridView_RowsAdded);
             this.productListDataGridView.SelectionChanged += new System.EventHandler(this.productListDataGridView_SelectionChanged);

@@ -33,18 +33,16 @@ namespace CashRegiterApplication
             this.orderDataGridView.ColumnHeadersVisible = false;
 
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "实收";
-            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "应收";
-            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
-            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             index = this.orderDataGridView.Rows.Add();
-            this.orderDataGridView.Rows[index].Cells[0].Value = "找零";
-            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
-            this.orderDataGridView.Rows[index].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
+     
+            this.orderDataGridView.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[0].Value = "实收";
 
-  
+            this.orderDataGridView.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[0].Value = "应收";
+            this.orderDataGridView.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
+            this.orderDataGridView.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[0].Value = "找零";
+            this.orderDataGridView.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
+            _InitOrderMsg();
 
             //this.productListDataGridView.AllowUserToAddRows = false;
             this.orderDataGridView.AllowUserToAddRows = false;
@@ -57,13 +55,21 @@ namespace CashRegiterApplication
             this.ColumnRemark.ReadOnly = true;
             this.ColumnMoney.ReadOnly = true;
             this.orderMsg.ReadOnly = true;
-
-            this.productListDataGridView.Rows.Add();
+            System.Windows.Forms.Clipboard.SetText("4891913690152");
+            //this.productListDataGridView.Rows.Add();
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 0].Value = "4891913690152";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 1].Value = "4891913691036";
             //this.productListDataGridView[CELL_INDEX.PRODUCT_CODE, 2].Value = "4891913690206";
             gConstructEnd = true;
         }
+        private void _InitOrderMsg()
+        {
+            this.orderDataGridView.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
+            this.orderDataGridView.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
+            this.orderDataGridView.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
+            
+        }
+
         bool gConstructEnd = false;
         static void Log(string message,
                      [CallerFilePath] string file = null,
@@ -219,7 +225,8 @@ namespace CashRegiterApplication
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
                 return;
             }
-  
+
+            currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index+1;
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value = productInfo.ProductCode;
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = productInfo.ProductName;
@@ -292,22 +299,25 @@ namespace CashRegiterApplication
 
         private void _GoOrderDataGrid()
         {
+            Log("this.productListDataGridView CurrentCell: " + (this.productListDataGridView.CurrentCell == null));
             //MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
             //跳转到总价的金额编辑
             this.productListDataGridView.CurrentRow.Selected = false;
             this.payWayDataGridView.ClearSelection();
-        
+
+            this.orderDataGridView.Select();
             this.orderDataGridView.CurrentCell = this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW];
             this.orderDataGridView.BeginEdit(true);
         }
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            Log("row:" + e.RowIndex + " Column:" + e.ColumnIndex);
         }
 
 
         private void productListDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
+            Log("row:" + e.RowIndex + " Column:" + e.ColumnIndex);
             //int RowIndex=this.productListDataGridView.CurrentCell.RowIndex;
             ////MessageBox.Show("Begin edit RowIndex:" + RowIndex);
             //if (RowIndex >= 1)
@@ -319,11 +329,12 @@ namespace CashRegiterApplication
             //        _GoOrderDataGrid();
             //    }
             //}
-           
+
         }
 
         private void productListDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            Log("begin");
             //MessageBox.Show("CellEndEdit  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
             //MessageBox.Show("CellEndEdit");
             if (!gConstructEnd)
@@ -331,30 +342,61 @@ namespace CashRegiterApplication
                 //未初始化行表的时候，这里是空的
                 return;
             }
+            Log("row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
             if (this.productListDataGridView.CurrentCell.ColumnIndex != e.ColumnIndex || this.productListDataGridView.CurrentCell.RowIndex != e.RowIndex)
             {
+                Log("ColumnIndex != e.ColumnIndex");
                 //非当前行
                 return;
             }
             if (e.ColumnIndex == CELL_INDEX.PRODUCT_CODE)
             {
+                Log(" CELL_INDEX.PRODUCT_CODE");
                 //MessageBox.Show("end edit code PRODUCT_CODE RowIndex :" + e.RowIndex + " CellIndex"+e.ColumnIndex   );
                 GetProductByProductCode(e.RowIndex, e.ColumnIndex);
             }
             else if (e.ColumnIndex == CELL_INDEX.PRODUCT_AMOUNT || e.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE)
             {
+                Log("e.ColumnIndex == CELL_INDEX.PRODUCT_AMOUN ");
                 _ResetMoneyByRow(e.RowIndex,e.ColumnIndex);
             }
         }
-        
+
+        private void productListDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            Log("begin ");
+            if (!gConstructEnd)
+            {
+                Log("gConstructEnd ");
+                //未初始化行表的时候，这里是空的
+                return;
+            }
+            if (gResetRow)
+            {
+                Log("gResetRow:" + gResetRow);
+                gResetRow = false;
+                this.productListDataGridView.CurrentCell = gCurrentCell;
+                return;
+            }
+            _GoCurrentProductCodeIfNeed();
+            if (this.productListDataGridView.CurrentCell != null)
+            {
+                Log("row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
+                return;
+            }
+            Log("end ");
+        }
+
+
         private void productListDataGridView_CellValueChanged_1(object sender, DataGridViewCellEventArgs e)
         {
-            
+            Log("row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
         }
         
 
         private void productListDataGridView_Enter(object sender, EventArgs e)
         {
+            Log("row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
             if (gResetRow)
             {
                 gResetRow = false;
@@ -365,16 +407,19 @@ namespace CashRegiterApplication
 
         private void productListDataGridView_KeyDown(object sender, KeyEventArgs e)
         {
+            Log("row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
             //MessageBox.Show("KeyDown:" + e.ToString());
         }
 
         private void productListDataGridView_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
+            Log("row:" +e.RowIndex );
             this.productListDataGridView.Rows[e.RowIndex].Cells[CELL_INDEX.INDEX].Value = e.RowIndex + 1;
         }
 
         private void productListDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
+            Log("row:" + e.RowIndex );
             this.productListDataGridView.Rows[e.RowIndex].Cells[CELL_INDEX.INDEX].Value = e.RowIndex+1;
         }
 
@@ -388,8 +433,10 @@ namespace CashRegiterApplication
                         //MessageBox.Show("Keys.Enter: CurrentCell.RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
                         if (this.productListDataGridView.IsCurrentCellInEditMode)
                         {
+                            Log(" IsCurrentCellInEditMode ");
                             if (objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
                             {
+                                Log(" CELL_INDEX.PRODUCT_CODE empty ");
                                 //MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
                                 if (this.productListDataGridView.CurrentRow.IsNewRow)
                                 {
@@ -420,8 +467,25 @@ namespace CashRegiterApplication
                     {
 
                         //tabl的操作被禁止
-                        //
-
+                        return true;
+                    }
+                case System.Windows.Forms.Keys.Delete:
+                    {
+                        Log("Keys.Delete");
+                        //删除操作，把当前行给删除
+                        if (this.productListDataGridView.CurrentCell != null )
+                        {
+                            Log("Keys.Delete CurrentCell");
+                            if ( !this.productListDataGridView.CurrentRow.IsNewRow)
+                            {
+                                Log("Keys.Delete !IsNewRow");
+                                if (this.productListDataGridView.CurrentRow.Index >= 0)
+                                {
+                                    this.productListDataGridView.Rows.RemoveAt(this.productListDataGridView.CurrentRow.Index);
+                                }
+                              
+                            }
+                        }
                         return true;
                     }
             }
@@ -434,6 +498,7 @@ namespace CashRegiterApplication
 
         private void orderDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            Log("begin");
             int orderFee = 0, recieveFee = 0, changeFee = 0;
             if (!transferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
@@ -455,44 +520,43 @@ namespace CashRegiterApplication
                 return;
             }
             MessageBox.Show("生成订单成功");
+            _ResetAllData();
+        }
+        private void _ResetAllData()
+        {
+            this.productListDataGridView.Rows.Clear();
+            _InitOrderMsg();
+            this.orderDataGridView.ClearSelection();
+            this.orderDataGridView.CurrentCell = null;
+            this.productListDataGridView.CurrentCell = this.productListDataGridView.Rows[0].Cells[1];
+            this.productListDataGridView.BeginEdit(true);
         }
         private void _GoCurrentProductCodeIfNeed()
         {
             if (this.productListDataGridView.ColumnCount < CELL_INDEX.PRODUCT_MONEY +1)
             {
+                Log("ColumnCount < PRODUCT_MONEY");
                 //初始化阶段
                 return;
             }
-            if (!objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)
+            if (this.productListDataGridView.IsCurrentCellInEditMode
+                &&!objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)
                 &&objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
             {
+                Log("go CurrentCell ");
                 //第一个
                 this.productListDataGridView.CurrentCell = this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE];
             }
         }
-        private void productListDataGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            Log("productListDataGridView_SelectionChanged row:"+ this.productListDataGridView.CurrentCell.RowIndex +" Column:"+ this.productListDataGridView.CurrentCell.ColumnIndex);
-            if (gResetRow)
-            {
-                gResetRow = false;
-                this.productListDataGridView.CurrentCell = gCurrentCell;
-                return;
-            }
-            _GoCurrentProductCodeIfNeed();
-           
-        }
-        private void productListDataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            Log("productListDataGridView_CellEnter row:" + this.productListDataGridView.CurrentCell.RowIndex + " Column:" + this.productListDataGridView.CurrentCell.ColumnIndex);
-            //_GoCurrentProductCodeIfNeed();
-        }
+
 
 
         void orderDataGridView_SelectionChanged(object sender, EventArgs e)
         {
+            Log("begin");
             if (gResetRow)
             {
+                Log("gResetRow");
                 gResetRow = false;
                 this.orderDataGridView.CurrentCell = gCurrentCell;
             }
