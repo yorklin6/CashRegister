@@ -1,0 +1,1 @@
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Release\CashRegisterApplication.exe.config

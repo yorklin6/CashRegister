@@ -10,11 +10,12 @@ namespace CashRegiterApplication
 {
     class ProductPricingInfoResp
     {
-        ProductPricingInfoResp()
-        {
-            data = new ProductPricingData();
-            errorCode = 0;
-        }
+        //ProductPricingInfoResp()
+        //{
+        //    errorCode = 0;
+        //    data = new ProductPricingData();
+        //    msg = "";
+        //}
         public int errorCode { get; set; }
         public string msg { get; set; }
         public ProductPricingData data;

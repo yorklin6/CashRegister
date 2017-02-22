@@ -15,9 +15,6 @@ E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegister
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.pdb
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.exe
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.pdb
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.dll
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.xml
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csprojResolveAssemblyReference.cache
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.CashRegisterWindow.resources
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.Properties.Resources.resources
 E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
@@ -34,3 +31,6 @@ D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\C
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.loginForm.resources
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.Properties.Resources.resources
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.pdb
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.xml
