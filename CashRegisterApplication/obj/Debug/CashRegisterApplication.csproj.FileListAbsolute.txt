@@ -31,6 +31,15 @@ D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\C
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.loginForm.resources
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.Properties.Resources.resources
 D:\Program Files\Git\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.dll
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.pdb
-E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.Net20.xml
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csprojResolveAssemblyReference.cache
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\SQLite.Designer.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\System.Data.SQLite.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\EnvDTE.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\stdole.dll
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.pdb
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\Newtonsoft.Json.xml
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\SQLite.Designer.pdb
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\SQLite.Designer.xml
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\System.Data.SQLite.pdb
+E:\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\System.Data.SQLite.xml

@@ -54,11 +54,17 @@
     <ApplicationIcon>cash_register_24px_1131575_easyicon.net.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json.Net20">
-      <HintPath>C:\Users\yorklin\Downloads\Json35r8\Bin\DotNet20\Newtonsoft.Json.Net20.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\yorklin\Downloads\Json90r1\Bin\Net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLite.Designer">
+      <HintPath>C:\Users\yorklin\Downloads\sqlite-netFx20-binary-bundle-Win32-2005-1.0.104.0\SQLite.Designer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>C:\Users\yorklin\Downloads\sqlite-netFx20-binary-bundle-Win32-2005-1.0.104.0\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
