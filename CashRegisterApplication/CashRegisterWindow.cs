@@ -9,7 +9,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Forms;
-//using System.Data.SQLite;
+using System.Data.SQLite;
 namespace CashRegiterApplication
 {
 
@@ -101,6 +101,7 @@ namespace CashRegiterApplication
             _SelectProductList();
             Log("ok");
         }
+
         private void _SelectProductList()
         {
             this.orderDataGridView.CurrentCell = null;
@@ -496,57 +497,57 @@ namespace CashRegiterApplication
                     }
                 case System.Windows.Forms.Keys.F12:
                     {
-                        //Log("Keys.F12");
-                        //// We use these three SQLite objects:
-                        //SQLiteConnection sqlite_conn;
-                        //SQLiteCommand sqlite_cmd;
-                        //SQLiteDataReader sqlite_datareader;
+                        Log("Keys.F12");
+                        // We use these three SQLite objects:
+                        SQLiteConnection sqlite_conn;
+                        SQLiteCommand sqlite_cmd;
+                        SQLiteDataReader sqlite_datareader;
 
-                        //// create a new database connection:
-                        //sqlite_conn = new SQLiteConnection("Data Source=database.db;Version=3;New=True;Compress=True;");
+                        // create a new database connection:
+                        sqlite_conn = new SQLiteConnection("Data Source=database.db;Version=3;New=True;Compress=True;");
 
-                        //// open the connection:
-                        //sqlite_conn.Open();
+                        // open the connection:
+                        sqlite_conn.Open();
 
-                        //// create a new SQL command:
-                        //sqlite_cmd = sqlite_conn.CreateCommand();
+                        // create a new SQL command:
+                        sqlite_cmd = sqlite_conn.CreateCommand();
 
-                        ////// Let the SQLiteCommand object know our SQL-Query:
-                        ////sqlite_cmd.CommandText = "CREATE TABLE  IF NOT EXISTS test (id integer primary key, text varchar(100));";
+                        //// Let the SQLiteCommand object know our SQL-Query:
+                        //sqlite_cmd.CommandText = "CREATE TABLE  IF NOT EXISTS test (id integer primary key, text varchar(100));";
 
-                        ////// Now lets execute the SQL ;D
-                        ////sqlite_cmd.ExecuteNonQuery();
+                        //// Now lets execute the SQL ;D
+                        //sqlite_cmd.ExecuteNonQuery();
 
-                        ////// Lets insert something into our new table:
-                        ////sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (1, 'Test Text 1');";
+                        //// Lets insert something into our new table:
+                        //sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (1, 'Test Text 1');";
 
-                        ////// And execute this again ;D
-                        ////sqlite_cmd.ExecuteNonQuery();
+                        //// And execute this again ;D
+                        //sqlite_cmd.ExecuteNonQuery();
 
-                        ////// ...and inserting another line:
-                        ////sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (2, 'Test Text 2');";
+                        //// ...and inserting another line:
+                        //sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (2, 'Test Text 2');";
 
-                        ////// And execute this again ;D
-                        ////sqlite_cmd.ExecuteNonQuery();
+                        //// And execute this again ;D
+                        //sqlite_cmd.ExecuteNonQuery();
 
-                        //// But how do we read something out of our table ?
-                        //// First lets build a SQL-Query again:
-                        //sqlite_cmd.CommandText = "SELECT * FROM test";
+                        // But how do we read something out of our table ?
+                        // First lets build a SQL-Query again:
+                        sqlite_cmd.CommandText = "SELECT * FROM test";
 
-                        //// Now the SQLiteCommand object can give us a DataReader-Object:
-                        //sqlite_datareader = sqlite_cmd.ExecuteReader();
+                        // Now the SQLiteCommand object can give us a DataReader-Object:
+                        sqlite_datareader = sqlite_cmd.ExecuteReader();
 
-                        //// The SQLiteDataReader allows us to run through the result lines:
-                        //while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
-                        //{
-                        //    // Print out the content of the text field:
-                        //    //System.Console.WriteLine( sqlite_datareader["text"] );
+                        // The SQLiteDataReader allows us to run through the result lines:
+                        while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+                        {
+                            // Print out the content of the text field:
+                            //System.Console.WriteLine( sqlite_datareader["text"] );
 
-                        //    int myreader = sqlite_datareader.GetInt32(0);
-                        //    MessageBox.Show("int:"+ sqlite_datareader.GetInt32(0) +" string:"+ sqlite_datareader.GetString(1));
-                        //}
-                        //// We are ready, now lets cleanup and close our connection:
-                        //sqlite_conn.Close();
+                            int myreader = sqlite_datareader.GetInt32(0);
+                            MessageBox.Show("int:" + sqlite_datareader.GetInt32(0) + " string:" + sqlite_datareader.GetString(1));
+                        }
+                        // We are ready, now lets cleanup and close our connection:
+                        sqlite_conn.Close();
                         return base.ProcessCmdKey(ref msg, keyData);
                     }
             }
