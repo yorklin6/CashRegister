@@ -72,32 +72,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashRegisterWindow.cs">
+    <Compile Include="window\ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CashRegisterWindow.Designer.cs">
-      <DependentUpon>CashRegisterWindow.cs</DependentUpon>
+    <Compile Include="window\ProductListWindow.Designer.cs">
+      <DependentUpon>ProductListWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="model\HttpWebResponseUtility.cs" />
+    <Compile Include="window\LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HttpWebResponseUtility.cs" />
-    <Compile Include="LoginWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginWindow.Designer.cs">
+    <Compile Include="window\LoginWindow.Designer.cs">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProductPricing.cs" />
+    <Compile Include="model\ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CashRegisterWindow.resx">
-      <DependentUpon>CashRegisterWindow.cs</DependentUpon>
+    <EmbeddedResource Include="window\ProductListWindow.resx">
+      <DependentUpon>ProductListWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginWindow.resx">
+    <EmbeddedResource Include="window\LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

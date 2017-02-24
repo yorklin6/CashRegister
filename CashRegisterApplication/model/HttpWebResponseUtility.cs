@@ -23,6 +23,37 @@ namespace CashRegiterApplication
     public class HttpWebResponseUtility
     {
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+        private static CookieContainer cookies = null;
+        private static int timeOutDefault = 10000;//10秒超时
+        private static string userName;
+        private static string userPassword;
+        public static bool Lgoin()
+        {
+            
+            HttpWebRequest request = WebRequest.Create("http://aladdin.chalubo.com/cashRegister/login.json") as HttpWebRequest;
+            request.Method = "GET";
+            request.UserAgent = DefaultUserAgent;
+            request.Timeout = timeOutDefault;
+
+            request.CookieContainer = new CookieContainer();
+
+            HttpWebResponse respone =  (HttpWebResponse)request.GetResponse() ;
+            return true;
+        }
+
+        public static HttpWebResponse Get(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException("url");
+            }
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.Method = "GET";
+            request.UserAgent = DefaultUserAgent;
+            request.Timeout = timeOutDefault;
+            request.CookieContainer = cookies;
+            return request.GetResponse() as HttpWebResponse;
+        }
         /// <summary>  
         /// 创建GET方式的HTTP请求  
         /// </summary>  
