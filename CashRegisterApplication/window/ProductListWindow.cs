@@ -82,7 +82,7 @@ namespace CashRegiterApplication
         //}
         static void Log(string message)
         {
-            Console.WriteLine("{0}:  func:{1} ",  message, System.Reflection.MethodBase.GetCurrentMethod().Name);
+            Console.WriteLine("{0} ",  message);
         }
 
         private void CashRegisterWindow_Load(object sender, EventArgs e)
@@ -94,7 +94,7 @@ namespace CashRegiterApplication
         private void CashRegisterWindow_Shown(object sender, EventArgs e)
         {
             //当界面显示的时候加载这里
-            if (objIsEmpty(this.productListDataGridView.Rows[0].Cells[0].Value) )
+            if (_IsObjEmpty(this.productListDataGridView.Rows[0].Cells[0].Value) )
             {
                 this.productListDataGridView.Rows[0].Cells[0].Value = "1";
             }
@@ -118,28 +118,28 @@ namespace CashRegiterApplication
       
         private void _ResetMoneyByRow(int rowIndex, int columnIndex)
         {
-            if (objIsEmpty(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            if (_IsObjEmpty(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
             {
                 //价钱为空，就停止
                 return;
             }
             int amout=0, price=0;
 
-            if (objIsEmpty(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value))
+            if (_IsObjEmpty(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value))
             {
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
                 MessageBox.Show("错误条码：" + rowIndex);
                 return;
             }
 
-            if (!transferAmountToInt(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amout))
+            if (!_TransferAmountToInt(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amout))
             {
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
                 MessageBox.Show("错误数量：" + rowIndex);
                 return ;
             }
 
-            if (!transferMoneyToInt(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
+            if (!_TransferMoneyToInt(this.productListDataGridView.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
             {
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
                 MessageBox.Show("错误金额：" + rowIndex);
@@ -159,12 +159,12 @@ namespace CashRegiterApplication
             int orderPrice = 0,money=0;
             for (int index = 0; index < rowCount; ++index)
             {
-                if (objIsEmpty(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+                if (_IsObjEmpty(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
                 {
                     continue;
                 }
 
-                if ( !transferMoneyToInt(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value,out money) )
+                if ( !_TransferMoneyToInt(this.productListDataGridView.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value,out money) )
                 {
                     MessageBox.Show("错误行："+ index);
                     return;
@@ -182,13 +182,13 @@ namespace CashRegiterApplication
         private void GetProductByProductCode( int rowIndex, int columnIndex)
         {
             DataGridViewRow currentRow = this.productListDataGridView.Rows[rowIndex];
-            //if (!objIsEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            //if (!_IsObjEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
             //{
             //    //说明数量被修改了，那么这个商品不再做处理
             //    return;
             //}
            
-            if (objIsEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)&& objIsEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            if (_IsObjEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)&& _IsObjEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
             {
                 //空行
                 //_GoOrderDataGrid();//跳到总价
@@ -203,32 +203,45 @@ namespace CashRegiterApplication
                 return;
             }
 
-            string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
-            CookieCollection cookies = new CookieCollection();//如何从response.Headers["Set-Cookie"];中获取并设置CookieCollection的代码略  
-            HttpWebResponse response = HttpWebResponseUtility.CreateGetHttpResponse(tagUrl, null, null, cookies);
-
-            StreamReader streamReader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.GetEncoding("utf-8"));
-            string content = streamReader.ReadToEnd();
-
-            //将Json字符串转化成对象
-            ProductPricingInfoResp productResp = JsonConvert.DeserializeObject<ProductPricingInfoResp>(content);
-            if (productResp.errorCode != 0 )
+            ProductPricingInfoResp oProductPricingInfoResp=new ProductPricingInfoResp();
+            if (!HttpUtility.GetProductByProductCode(productCode, ref oProductPricingInfoResp))
+            {
+                //网络出现错误，要访问本地
+               
+            }
+            if (oProductPricingInfoResp.errorCode != 0)
             {
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
-                MessageBox.Show("后台返回商品失败 productCode:" + productCode + " ;content:" + content);
-                return ;
+                MessageBox.Show("后台返回商品失败 productCode:" + productCode);
+                return;
             }
+            //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
+            //CookieCollection cookies = new CookieCollection();//如何从response.Headers["Set-Cookie"];中获取并设置CookieCollection的代码略  
+            //HttpWebResponse response = HttpUtility.CreateGetHttpResponse(tagUrl, null, null, cookies);
 
-            ProductPricing productInfo = productResp.data.info;
-            if (objIsEmpty(productInfo.ProductCode)||
-               objIsEmpty(productInfo.NormalPrice) ||
-                objIsEmpty(productInfo.ProductName) 
+            //StreamReader streamReader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.GetEncoding("utf-8"));
+            //string content = streamReader.ReadToEnd();
+
+            ////将Json字符串转化成对象
+            //ProductPricingInfoResp productResp = JsonConvert.DeserializeObject<ProductPricingInfoResp>(content);
+            //if (productResp.errorCode != 0 )
+            //{
+            //    _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
+            //    MessageBox.Show("后台返回商品失败 productCode:" + productCode + " ;content:" + content);
+            //    return ;
+            //}
+
+
+            ProductPricing productInfo = oProductPricingInfoResp.data.info;
+            if (_IsObjEmpty(productInfo.ProductCode)||
+               _IsObjEmpty(productInfo.NormalPrice) ||
+                _IsObjEmpty(productInfo.ProductName) 
                 )
             {
                 MessageBox.Show("productInfo.ProductCode:" + productInfo.ProductCode);
                 MessageBox.Show("productInfo.NormalPrice:" + productInfo.NormalPrice);
                 MessageBox.Show("productInfo.ProductName:" + productInfo.ProductName);
-                MessageBox.Show("后台返回 有问题商品:" + content);
+                MessageBox.Show("后台返回 有问题商品");
                 _SetPointToResetCurrentCell(this.productListDataGridView.Rows[rowIndex].Cells[columnIndex]);
                 return;
             }
@@ -255,7 +268,7 @@ namespace CashRegiterApplication
         //{
         //    //下一行处于编辑状态
         //    DataGridViewRow currentRow = this.productListDataGridView.CurrentRow;
-        //    if (objIsEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
+        //    if (_IsObjEmpty(currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
         //    {
         //       // //跳到总价
         //        return;
@@ -272,7 +285,7 @@ namespace CashRegiterApplication
         }
 
 
-        private bool objIsEmpty(object value)
+        private bool _IsObjEmpty(object value)
         {
             if (value == null || value.ToString() == "" )
             {
@@ -280,10 +293,10 @@ namespace CashRegiterApplication
             }
             return false;
         }
-        private bool transferMoneyToInt(object value, out int number)
+        private bool _TransferMoneyToInt(object value, out int number)
         {
             number = 0;
-            if (objIsEmpty(value))
+            if (_IsObjEmpty(value))
             {
                 return false;
             }
@@ -294,10 +307,10 @@ namespace CashRegiterApplication
             return true;
            
         }
-        private bool transferAmountToInt(object value, out int number)
+        private bool _TransferAmountToInt(object value, out int number)
         {
             number = 0;
-            if (objIsEmpty(value))
+            if (_IsObjEmpty(value))
             {
                 return false;
             }
@@ -329,8 +342,8 @@ namespace CashRegiterApplication
             ////MessageBox.Show("Begin edit RowIndex:" + RowIndex);
             //if (RowIndex >= 1)
             //{
-            //    if (objIsEmpty( this.productListDataGridView.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value)
-            //        && objIsEmpty(this.productListDataGridView.Rows[RowIndex-1].Cells[CELL_INDEX.PRODUCT_CODE].Value))
+            //    if (_IsObjEmpty( this.productListDataGridView.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value)
+            //        && _IsObjEmpty(this.productListDataGridView.Rows[RowIndex-1].Cells[CELL_INDEX.PRODUCT_CODE].Value))
             //    {
             //        _SetOrderPrice();
             //        _GoOrderDataGrid();
@@ -441,7 +454,7 @@ namespace CashRegiterApplication
                         if (this.productListDataGridView.IsCurrentCellInEditMode)
                         {
                             Log(" IsCurrentCellInEditMode ");
-                            if (objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
+                            if (_IsObjEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
                             {
                                 Log(" CELL_INDEX.PRODUCT_CODE empty ");
                                 //MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
@@ -562,12 +575,12 @@ namespace CashRegiterApplication
         {
             Log("begin");
             int orderFee = 0, recieveFee = 0, changeFee = 0;
-            if (!transferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
+            if (!_TransferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
                 MessageBox.Show("应收错误:" + this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
             }
-            if (!transferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
+            if (!_TransferMoneyToInt(this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
             {
                 MessageBox.Show("实收错误:" + this.orderDataGridView[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value);
                 return;
@@ -602,8 +615,8 @@ namespace CashRegiterApplication
                 return;
             }
             if (this.productListDataGridView.IsCurrentCellInEditMode
-                &&!objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)
-                &&objIsEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+                &&!_IsObjEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)
+                &&_IsObjEmpty(this.productListDataGridView.CurrentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value))
             {
                 Log("go CurrentCell ");
                 //第一个

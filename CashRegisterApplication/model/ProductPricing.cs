@@ -8,30 +8,22 @@ using System.Net;
 
 namespace CashRegiterApplication
 {
-    class ProductPricingInfoResp
+    public class  ProductPricingInfoResp
     {
-        //ProductPricingInfoResp()
-        //{
-        //    errorCode = 0;
-        //    data = new ProductPricingData();
-        //    msg = "";
-        //}
         public int errorCode { get; set; }
         public string msg { get; set; }
+
         public ProductPricingData data;
     }
-    class ProductPricingData
+
+    public class ProductPricingData
     {
-        public ProductPricingData()
-        {
-            info = new ProductPricing();
-        }
+   
         public ProductPricing info;
     }
 
-    class ProductPricing
+    public class ProductPricing
     {
-        
         public int AutoId { get; set; }   //待定：跟整个商品设计有关系
         
         public int applyID { get; set; }
@@ -95,7 +87,7 @@ namespace CashRegiterApplication
         
         public String supplierName{ get; set; }
 
-        
-        private int Amount{ get; set; }   
+
+        public int Amount{ get; set; }   
     }
 }

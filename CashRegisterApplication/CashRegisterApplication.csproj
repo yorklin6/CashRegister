@@ -72,13 +72,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="comm\CommUiltl.cs" />
+    <Compile Include="model\UserLogin.cs" />
     <Compile Include="window\ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="window\ProductListWindow.Designer.cs">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="model\HttpWebResponseUtility.cs" />
+    <Compile Include="comm\HttpUtility.cs" />
     <Compile Include="window\LoginWindow.cs">
       <SubType>Form</SubType>
     </Compile>
