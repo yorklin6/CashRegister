@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace CashRegisterApplication.window
 {
-    public partial class payWindow : Form
+    public partial class ZzzzpayWindow : Form
     {
-        public payWindow()
+        public ZzzzpayWindow()
         {
             InitializeComponent();
         }

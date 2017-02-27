@@ -1,6 +1,6 @@
 ﻿namespace CashRegisterApplication.window
 {
-    partial class payWindow
+    partial class ZzzzpayWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(payWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ZzzzpayWindow));
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.payWay = new System.Windows.Forms.DataGridViewTextBoxColumn();

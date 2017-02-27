@@ -60,7 +60,7 @@
             this.payWayDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9});
-            this.payWayDataGridView.Location = new System.Drawing.Point(23, 330);
+            this.payWayDataGridView.Location = new System.Drawing.Point(306, 305);
             this.payWayDataGridView.Name = "payWayDataGridView";
             this.payWayDataGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -179,7 +179,7 @@
             this.orderDataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             this.orderDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.orderDataGridView.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.orderDataGridView.Location = new System.Drawing.Point(314, 330);
+            this.orderDataGridView.Location = new System.Drawing.Point(23, 305);
             this.orderDataGridView.MultiSelect = false;
             this.orderDataGridView.Name = "orderDataGridView";
             this.orderDataGridView.RowHeadersVisible = false;

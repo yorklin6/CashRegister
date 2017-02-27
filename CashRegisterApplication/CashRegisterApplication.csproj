@@ -74,6 +74,12 @@
   <ItemGroup>
     <Compile Include="comm\CommUiltl.cs" />
     <Compile Include="model\UserLogin.cs" />
+    <Compile Include="window\ZzzzpayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\ZzzzpayWindow.Designer.cs">
+      <DependentUpon>ZzzzpayWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,9 @@
     <Compile Include="model\ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="window\ZzzzpayWindow.resx">
+      <DependentUpon>ZzzzpayWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\ProductListWindow.resx">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </EmbeddedResource>
