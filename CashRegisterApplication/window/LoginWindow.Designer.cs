@@ -1,6 +1,6 @@
 ﻿namespace CashRegiterApplication
 {
-    partial class loginForm
+    partial class LoginWindows
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,34 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(loginForm));
-            this.loginButton = new System.Windows.Forms.Button();
-            this.useNameTextBox = new System.Windows.Forms.TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginWindows));
+            this.button_loggin = new System.Windows.Forms.Button();
+            this.textBox_userName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.textBox_password = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // loginButton
+            // button_loggin
             // 
-            this.loginButton.ImageKey = "(无)";
-            this.loginButton.Location = new System.Drawing.Point(280, 191);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(87, 33);
-            this.loginButton.TabIndex = 0;
-            this.loginButton.Text = "登录";
-            this.loginButton.UseVisualStyleBackColor = true;
-            this.loginButton.Click += new System.EventHandler(this.button1_Click);
+            this.button_loggin.ImageKey = "(无)";
+            this.button_loggin.Location = new System.Drawing.Point(280, 191);
+            this.button_loggin.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button_loggin.Name = "button_loggin";
+            this.button_loggin.Size = new System.Drawing.Size(87, 33);
+            this.button_loggin.TabIndex = 0;
+            this.button_loggin.Text = "登录";
+            this.button_loggin.UseVisualStyleBackColor = true;
+            this.button_loggin.Click += new System.EventHandler(this.button1_Click);
             // 
-            // useNameTextBox
+            // textBox_userName
             // 
-            this.useNameTextBox.Location = new System.Drawing.Point(280, 104);
-            this.useNameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.useNameTextBox.Name = "useNameTextBox";
-            this.useNameTextBox.Size = new System.Drawing.Size(126, 23);
-            this.useNameTextBox.TabIndex = 1;
-            this.useNameTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox_userName.Location = new System.Drawing.Point(280, 104);
+            this.textBox_userName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_userName.Name = "textBox_userName";
+            this.textBox_userName.Size = new System.Drawing.Size(126, 23);
+            this.textBox_userName.TabIndex = 1;
+            this.textBox_userName.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -76,25 +76,25 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "密码：";
             // 
-            // passwordTextBox
+            // textBox_password
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(280, 137);
-            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(126, 23);
-            this.passwordTextBox.TabIndex = 4;
+            this.textBox_password.Location = new System.Drawing.Point(280, 137);
+            this.textBox_password.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_password.Name = "textBox_password";
+            this.textBox_password.PasswordChar = '*';
+            this.textBox_password.Size = new System.Drawing.Size(126, 23);
+            this.textBox_password.TabIndex = 4;
             // 
             // loginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 268);
-            this.Controls.Add(this.passwordTextBox);
+            this.Controls.Add(this.textBox_password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.useNameTextBox);
-            this.Controls.Add(this.loginButton);
+            this.Controls.Add(this.textBox_userName);
+            this.Controls.Add(this.button_loggin);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -108,11 +108,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Button loginButton;
-        private System.Windows.Forms.TextBox useNameTextBox;
+        private System.Windows.Forms.Button button_loggin;
+        private System.Windows.Forms.TextBox textBox_userName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox passwordTextBox;
+        private System.Windows.Forms.TextBox textBox_password;
     }
 }
 

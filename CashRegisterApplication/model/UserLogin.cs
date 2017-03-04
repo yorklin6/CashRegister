@@ -4,30 +4,26 @@ using System.Text;
 
 namespace CashRegisterApplication.model
 {
-    class UserLogin
+
+    public class UserLogin
     {
         public int errorCode { get; set; }
-        public string msg { get; set; }
+        public String msg { get; set; }
         public User data;
     }
-    class UserData
-    {
-        public UserData()
-        {
-            info = new User();
-        }
-        public User info;
-    }
+
     public class User
     {
-        private int id { get; set; }
-        private String mobile { get; set; }
-        private String department { get; set; }
-        private String job { get; set; }
-        private String dsc { get; set; }
-        private int status { get; set; }
-        private int loginFailNum { get; set; }
-        private int loginFailTime { get; set; }
-        private String userRight { get; set; }
+        public int id { get; set; }
+        public String userName { get; set; }
+        public String mobile { get; set; }
+        public String department { get; set; }
+        public String job { get; set; }
+        public String dsc { get; set; }
+        public int status { get; set; }
+        public int loginFailNum { get; set; }
+        public int loginFailTime { get; set; }
+        public String userRight { get; set; }
     }
+
 }

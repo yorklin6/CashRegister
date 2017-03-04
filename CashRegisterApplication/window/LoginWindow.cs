@@ -13,23 +13,16 @@ namespace CashRegiterApplication
 {
 
 
-    public partial class loginForm : Form
+    public partial class LoginWindows : Form
     {
-        public class Person
-        {
-            public int ID { get; set; }
-            public string Name { get; set; }
-            public int Age { get; set; }
-            public DateTime BirthDay { get; set; }
-        }
 
-        public CashRegisterWindow cashRegisterWindow;
-        public loginForm()
+        public ProductListWindow gProductListWindow;
+        public LoginWindows()
         {
             InitializeComponent();
-            cashRegisterWindow = new CashRegisterWindow();
-            this.useNameTextBox.Text = "york";
-            this.passwordTextBox.Text = "york";
+            gProductListWindow = new ProductListWindow();
+            this.textBox_userName.Text = "york";
+            this.textBox_password.Text = "york";
         }
          
         private void Form1_Load(object sender, EventArgs e)
@@ -39,10 +32,10 @@ namespace CashRegiterApplication
         private void button1_Click(object sender, EventArgs e)
         {
 
-            if (HttpUtility.Login(this.useNameTextBox.Text, this.passwordTextBox.Text))
+            if (HttpUtility.Login(this.textBox_userName.Text, this.textBox_password.Text))
             {
                 this.Hide();
-                cashRegisterWindow.Show();
+                gProductListWindow.Show();
             }
         }
 

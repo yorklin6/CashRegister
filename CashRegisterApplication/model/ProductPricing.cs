@@ -18,7 +18,6 @@ namespace CashRegiterApplication
 
     public class ProductPricingData
     {
-   
         public ProductPricing info;
     }
 

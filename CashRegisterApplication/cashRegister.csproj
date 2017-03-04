@@ -64,11 +64,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashRegisterWindow.cs">
+    <Compile Include="ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CashRegisterWindow.Designer.cs">
-      <DependentUpon>CashRegisterWindow.cs</DependentUpon>
+    <Compile Include="ProductListWindow.Designer.cs">
+      <DependentUpon>ProductListWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="HttpWebResponseUtility.cs" />
     <Compile Include="LoginWindow.cs">
@@ -80,8 +80,8 @@
     <Compile Include="ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CashRegisterWindow.resx">
-      <DependentUpon>CashRegisterWindow.cs</DependentUpon>
+    <EmbeddedResource Include="ProductListWindow.resx">
+      <DependentUpon>ProductListWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginWindow.resx">
       <DependentUpon>LoginWindow.cs</DependentUpon>

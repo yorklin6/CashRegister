@@ -74,11 +74,22 @@
   <ItemGroup>
     <Compile Include="comm\CommUiltl.cs" />
     <Compile Include="model\UserLogin.cs" />
-    <Compile Include="window\ZzzzpayWindow.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="window\RecieveMoney.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\ZzzzpayWindow.Designer.cs">
-      <DependentUpon>ZzzzpayWindow.cs</DependentUpon>
+    <Compile Include="window\RecieveMoney.Designer.cs">
+      <DependentUpon>RecieveMoney.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\payWayWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\payWayWindow.Designer.cs">
+      <DependentUpon>payWayWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ProductListWindow.cs">
       <SubType>Form</SubType>
@@ -96,8 +107,11 @@
     <Compile Include="model\ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="window\ZzzzpayWindow.resx">
-      <DependentUpon>ZzzzpayWindow.cs</DependentUpon>
+    <EmbeddedResource Include="window\RecieveMoney.resx">
+      <DependentUpon>RecieveMoney.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\payWayWindow.resx">
+      <DependentUpon>payWayWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ProductListWindow.resx">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
@@ -107,14 +121,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -129,10 +138,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="alipay_72px_1186722_easyicon.net.png" />
+    <None Include="alipay.png" />
     <Content Include="Cashier_128px_566886_easyicon.net.ico" />
     <Content Include="cashRegister.csproj" />
     <Content Include="cashRegister.csproj.user" />
     <Content Include="cash_register_24px_1131575_easyicon.net.ico" />
+    <None Include="Wechat_72px_1127960_easyicon.net.png" />
+    <None Include="wechatPay.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

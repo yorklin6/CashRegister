@@ -69,6 +69,10 @@ namespace CashRegiterApplication
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + oLoginer.errorCode);
             return true;
         }
+        private static User GetLoginUser()
+        {
+            return oLoginer.data;
+        }
 
 
 

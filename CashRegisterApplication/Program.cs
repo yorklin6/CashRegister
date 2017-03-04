@@ -1,4 +1,5 @@
-﻿using CashRegiterApplication;
+﻿using CashRegisterApplication.window;
+using CashRegiterApplication;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -15,8 +16,9 @@ namespace CashRegiterApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new loginForm());
-            //Application.Run(new CashRegisterWindow());
+            //Application.Run(new ProductListWindow());
+            //Application.Run(new LoginWindows());
+            Application.Run(new RecieveMoneyWindows());
             //Console.ReadLine();
         }
     }
