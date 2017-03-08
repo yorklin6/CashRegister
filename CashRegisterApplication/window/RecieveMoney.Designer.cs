@@ -106,36 +106,36 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(851, 545);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 60);
+            this.label4.Size = new System.Drawing.Size(95, 60);
             this.label4.TabIndex = 12;
-            this.label4.Text = "提示:\r\nF1键：现金支付\r\nF2键：微信支付\r\nF3键：支付宝支付\r\nF4键：会员支付\r\n";
+            this.label4.Text = "提示:\r\n1键：现金支付\r\n2键：微信支付\r\n3键：支付宝支付\r\n4键：会员支付\r\n";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(283, 386);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 12);
+            this.label5.Size = new System.Drawing.Size(11, 12);
             this.label5.TabIndex = 14;
-            this.label5.Text = "F1";
+            this.label5.Text = "1";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(409, 386);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 12);
+            this.label6.Size = new System.Drawing.Size(11, 12);
             this.label6.TabIndex = 15;
-            this.label6.Text = "F2";
+            this.label6.Text = "2";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(514, 386);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(17, 12);
+            this.label7.Size = new System.Drawing.Size(11, 12);
             this.label7.TabIndex = 17;
-            this.label7.Text = "F3";
+            this.label7.Text = "3";
             // 
             // button4
             // 
@@ -178,9 +178,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(627, 386);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(17, 12);
+            this.label8.Size = new System.Drawing.Size(11, 12);
             this.label8.TabIndex = 19;
-            this.label8.Text = "F4";
+            this.label8.Text = "4";
             // 
             // button1
             // 

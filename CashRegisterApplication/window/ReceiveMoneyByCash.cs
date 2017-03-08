@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashRegisterApplication.comm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,20 @@ namespace CashRegisterApplication.window
         public ReceiveMoneyByCash()
         {
             InitializeComponent();
+        }
+
+        private void ReceiveMoneyByCash_Load(object sender, EventArgs e)
+        {
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.RecieveFee);
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.OrderFee);
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.ChangeFee);
+        }
+
+        private void ReceiveMoneyByCash_Shown(object sender, EventArgs e)
+        {
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.RecieveFee);
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.OrderFee);
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.ChangeFee);
         }
     }
 }

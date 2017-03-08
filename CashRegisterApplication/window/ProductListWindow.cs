@@ -116,7 +116,8 @@ namespace CashRegiterApplication
                 MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
             }
-            gRecieveMoneyWindows.SetFeeByProductListWindows(recieveFee, orderFee);
+            CurrentOrderMsg.Info.RecieveFee= recieveFee;
+            CurrentOrderMsg.Info.OrderFee = orderFee;
             this.Hide();
             gRecieveMoneyWindows.Show();
         }
@@ -127,15 +128,11 @@ namespace CashRegiterApplication
         }
 
 
-        public void Windows_SetFeeByRecieveFeeWindows(int recieveFee)
+        public void Windows_SetFeeByRecieveFeeWindows()
         {
-            int orderFee = 0;
-            if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
-            {
-                MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
-                return;
-            }
-            int changeFee = recieveFee - orderFee;
+            int orderFee = CurrentOrderMsg.Info.OrderFee;
+            int recieveFee = CurrentOrderMsg.Info.RecieveFee;
+            int changeFee = CurrentOrderMsg.Info.ChangeFee;
             if (changeFee < 0)
             {
                 MessageBox.Show("实收价钱小于总价");

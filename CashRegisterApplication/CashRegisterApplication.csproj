@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="comm\CommUiltl.cs" />
-    <Compile Include="comm\OrderMsg.cs" />
+    <Compile Include="model\CurrentOrderMsg.cs" />
     <Compile Include="model\UserLogin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

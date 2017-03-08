@@ -116,6 +116,8 @@
             this.Controls.Add(this.textBox_ReceiveFee);
             this.Name = "ReceiveMoneyByCash";
             this.Text = "收银-现金";
+            this.Load += new System.EventHandler(this.ReceiveMoneyByCash_Load);
+            this.Shown += new System.EventHandler(this.ReceiveMoneyByCash_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

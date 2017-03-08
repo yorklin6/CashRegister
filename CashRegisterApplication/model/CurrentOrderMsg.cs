@@ -6,12 +6,13 @@ namespace CashRegisterApplication.comm
 {
     public class CurrentOrderMsg
     {
-        public static OrderMsg order;
+        public static OrderMsg Info=new OrderMsg();
         public static void Clean()
         {
-            order.RecieveFee = 0;
-            order.OrderFee = 0;
-            order.listPayInfo.Clear();
+            Info.RecieveFee = 0;
+            Info.OrderFee = 0;
+            Info.ChangeFee = 0;
+            Info.listPayInfo.Clear();
         }
     }
     public class OrderMsg
