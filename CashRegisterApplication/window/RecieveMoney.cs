@@ -17,8 +17,10 @@ namespace CashRegisterApplication.window
             InitializeComponent();
             int recieveFee = 900; int orderFee = 800;
             SetFeeByProductListWindows(recieveFee, orderFee);
+            oReceiveMoneyByCash = new ReceiveMoneyByCash();
         }
         public ProductListWindow gProductListWindow ;
+        public ReceiveMoneyByCash oReceiveMoneyByCash;
         public void SetProductListWindow( ProductListWindow oProductListWindow)
         {
             gProductListWindow = oProductListWindow;
@@ -85,6 +87,7 @@ namespace CashRegisterApplication.window
                 this.Hide();
                 gProductListWindow.Show();
             }
+            oReceiveMoneyByCash.Show();
             return;
         }
 

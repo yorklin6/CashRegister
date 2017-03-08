@@ -69,6 +69,7 @@
             this.textBox_ReceiveFee.Location = new System.Drawing.Point(422, 162);
             this.textBox_ReceiveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_ReceiveFee.Name = "textBox_ReceiveFee";
+            this.textBox_ReceiveFee.ReadOnly = true;
             this.textBox_ReceiveFee.Size = new System.Drawing.Size(126, 21);
             this.textBox_ReceiveFee.TabIndex = 5;
             this.textBox_ReceiveFee.Leave += new System.EventHandler(this.textBox_ReceiveFee_Leave);
