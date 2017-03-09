@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using CashRegisterApplication.window;
 using CashRegisterApplication.comm;
+using CashRegisterApplication.model;
 
 namespace CashRegiterApplication
 {
@@ -19,7 +20,7 @@ namespace CashRegiterApplication
     public partial class ProductListWindow : Form
     {
 
-        public RecieveMoneyWindows gRecieveMoneyWindows;
+
         bool gConstructEnd = false;
 
         public ProductListWindow()
@@ -27,13 +28,17 @@ namespace CashRegiterApplication
 
             InitializeComponent();
             InitData();
-            gRecieveMoneyWindows = new RecieveMoneyWindows();
-            gRecieveMoneyWindows.SetProductListWindow(this);
         }
 
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
-            //  _GoProductList();
+            //_GoProductList();
+            CurrentMsg.ProductListWindows = this;
+            CurrentMsg.Order = new OrderMsg() ;//全局订单
+            CurrentMsg.ProductListWindows = this;//全局窗口
+            CurrentMsg.RecieveMoneyWindows = new RecieveMoneyWindows();//收款窗口
+            CurrentMsg.ReceiveMoneyByCash = new ReceiveMoneyByCashWindows();//现金收款窗口
+            CurrentMsg.RecieveMoneyByWeixin = new RecieveMoneyByWeixin();//微信收款窗口
         }
 
         private void ProductListWindow_Shown(object sender, EventArgs e)
@@ -104,43 +109,20 @@ namespace CashRegiterApplication
         private void _Windows_Show_RecieveMoeny()
         {
             CommUiltl.Log("begin");
-            int recieveFee = 0, orderFee = 0;
-            if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
-            {
-                MessageBox.Show("实收错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value);
-                return;
-            }
-
+            int orderFee;
             if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
                 MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
             }
-            CurrentOrderMsg.Info.RecieveFee= recieveFee;
-            CurrentOrderMsg.Info.OrderFee = orderFee;
+            CurrentMsg.Order.OrderFee = orderFee;
             this.Hide();
-            gRecieveMoneyWindows.Show();
+            CurrentMsg.RecieveMoneyWindows.Show();
         }
 
         private void _Windows_Show_PayWayWindows()
         {
 
-        }
-
-
-        public void Windows_SetFeeByRecieveFeeWindows()
-        {
-            int orderFee = CurrentOrderMsg.Info.OrderFee;
-            int recieveFee = CurrentOrderMsg.Info.RecieveFee;
-            int changeFee = CurrentOrderMsg.Info.ChangeFee;
-            if (changeFee < 0)
-            {
-                MessageBox.Show("实收价钱小于总价");
-                return;
-            }
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(recieveFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(changeFee);
-            _Windows_Show_PayWayWindows();
         }
       
         private void _SetCurrentCell()
@@ -226,7 +208,6 @@ namespace CashRegiterApplication
                 orderPrice += money;
             }
             string strOrderPrice = CommUiltl.CoverMoneyFenToString(orderPrice);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
             this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = strOrderPrice;
             this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = "0.00";
             return;
@@ -574,6 +555,7 @@ namespace CashRegiterApplication
 
         private void orderDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+
             CommUiltl.Log("begin");
             int orderFee = 0, recieveFee = 0, changeFee = 0;
             if (! CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))

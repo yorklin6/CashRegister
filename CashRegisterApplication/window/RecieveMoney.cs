@@ -15,22 +15,15 @@ namespace CashRegisterApplication.window
         public RecieveMoneyWindows()
         {
             InitializeComponent();
-            oReceiveMoneyByCash = new ReceiveMoneyByCash();
-            oRecieveMoneyByWeixin = new RecieveMoneyByWeixin();
         }
-        public ProductListWindow gProductListWindow ;
-        public ReceiveMoneyByCash oReceiveMoneyByCash;
-        public RecieveMoneyByWeixin oRecieveMoneyByWeixin;
-        public void SetProductListWindow( ProductListWindow oProductListWindow)
-        {
-            gProductListWindow = oProductListWindow;
-        }
+      
         private void RecieveMoneyWindows_Shown(object sender, EventArgs e)
         {
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.RecieveFee);
-            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.OrderFee);
-            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(CurrentOrderMsg.Info.ChangeFee);
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.RecieveFee);
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee);
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee);
 
+            //如果已经收钱完毕，那么会隐藏这个页面，就弹窗告诉收款成功。
             //this.textBox_ReceiveFee.SelectionStart = 0;
             //this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
         }
@@ -45,7 +38,7 @@ namespace CashRegisterApplication.window
         private void button_Confirm_Click(object sender, EventArgs e)
         {
             CommUiltl.Log("button_Confirm_Click");
-            _SubmitPrice();
+            _CheckFee();
         }
 
        
@@ -53,37 +46,16 @@ namespace CashRegisterApplication.window
         private void textBox_ReceiveFee_Leave(object sender, EventArgs e)
         {
             CommUiltl.Log("textBox_ReceiveFee_Leave");
-            _SubmitPrice();
+            _CheckFee();
  
         }
 
-        private void _SubmitPrice()
+        private void _CheckFee()
         {
-            CommUiltl.Log("_SubmitPrice");
-            //int orderFee = 0, recieveFee = 0, changeFee = 0;
-            //if (!CommUiltl.ConverStrYuanToFen(this.textBox_ReceiveFee.Text, out recieveFee))
-            //{
-            //    MessageBox.Show("实收错误:" + this.textBox_ReceiveFee.Text);
-            //    return;
-            //}
-            //if (!CommUiltl.ConverStrYuanToFen(this.textBox_OrderFee.Text, out orderFee))
-            //{
-            //    MessageBox.Show("总价错误:" + this.textBox_OrderFee.Text);
-            //    return;
-            //}
-            //changeFee = recieveFee - orderFee;
-            //if (changeFee < 0)
-            //{
-            //    MessageBox.Show("错误：收钱额度小于总价");
-            //    return;
-            //}
-
-            if (gProductListWindow != null)
-            {
-                gProductListWindow.Windows_SetFeeByRecieveFeeWindows();
-                this.Hide();
-                gProductListWindow.Show();
-            }
+            CommUiltl.Log("_CheckFee");
+            
+            //如果
+           
          
             return;
         }
@@ -100,34 +72,27 @@ namespace CashRegisterApplication.window
                 case System.Windows.Forms.Keys.NumPad1:
                 case System.Windows.Forms.Keys.Oem1:
                     {
-                        CommUiltl.Log("Keys.Enter");
-                        _SubmitPrice();
-                        oReceiveMoneyByCash.Show();
+                        _CheckFee();
+                        CurrentMsg.ReceiveMoneyByCash.Show();
                         this.Hide();
                         break;
-
                     }
                 case System.Windows.Forms.Keys.D2:
                 case System.Windows.Forms.Keys.NumPad2:
                 case System.Windows.Forms.Keys.Oem2:
                     {
-                        CommUiltl.Log("Keys.Enter");
-                        _SubmitPrice();
-                        oReceiveMoneyByCash.Show();
+                        _CheckFee();
+                        CurrentMsg.RecieveMoneyByWeixin.Show();
+                        this.Hide();
                         break;
-
                     }
-
                 case System.Windows.Forms.Keys.Escape:
                 case System.Windows.Forms.Keys.Delete:
                     {
-                        CommUiltl.Log("Keys.Escape");
                         this.Hide();
-                        gProductListWindow.Show();
+                        CurrentMsg.ProductListWindows.Show();
                         break;
                     }
-
-                
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
