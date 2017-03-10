@@ -1,6 +1,6 @@
 ﻿namespace CashRegisterApplication.window
 {
-    partial class ReceiveMoneyByCash
+    partial class ReceiveMoneyByCashWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -32,9 +32,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_OrderFee = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_ReceiveFee = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox_ChangeFee
@@ -73,6 +73,18 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "总价：";
             // 
+            // button3
+            // 
+            this.button3.BackgroundImage = global::CashRegisterApplication.Properties.Resources.xianjian;
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.ImageKey = "(无)";
+            this.button3.Location = new System.Drawing.Point(313, 199);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(121, 105);
+            this.button3.TabIndex = 17;
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -90,19 +102,7 @@
             this.textBox_ReceiveFee.Size = new System.Drawing.Size(126, 21);
             this.textBox_ReceiveFee.TabIndex = 9;
             // 
-            // button3
-            // 
-            this.button3.BackgroundImage = global::CashRegisterApplication.Properties.Resources.xianjian;
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.ImageKey = "(无)";
-            this.button3.Location = new System.Drawing.Point(313, 199);
-            this.button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(121, 105);
-            this.button3.TabIndex = 17;
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // ReceiveMoneyByCash
+            // ReceiveMoneyByCashWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -114,7 +114,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_ReceiveFee);
-            this.Name = "ReceiveMoneyByCash";
+            this.Name = "ReceiveMoneyByCashWindow";
             this.Text = "收银-现金";
             this.Load += new System.EventHandler(this.ReceiveMoneyByCash_Load);
             this.Shown += new System.EventHandler(this.ReceiveMoneyByCash_Shown);
@@ -129,8 +129,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_OrderFee;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_ReceiveFee;
-        private System.Windows.Forms.Button button3;
     }
 }

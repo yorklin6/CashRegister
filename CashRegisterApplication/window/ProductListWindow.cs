@@ -36,9 +36,9 @@ namespace CashRegiterApplication
             CurrentMsg.ProductListWindows = this;
             CurrentMsg.Order = new OrderMsg() ;//全局订单
             CurrentMsg.ProductListWindows = this;//全局窗口
-            CurrentMsg.RecieveMoneyWindows = new RecieveMoneyWindows();//收款窗口
-            CurrentMsg.ReceiveMoneyByCash = new ReceiveMoneyByCashWindows();//现金收款窗口
-            CurrentMsg.RecieveMoneyByWeixin = new RecieveMoneyByWeixin();//微信收款窗口
+            CurrentMsg.RecieveMoneyWindows = new RecieveMoneyWindow();//收款窗口
+            CurrentMsg.ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
+            CurrentMsg.RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
         }
 
         private void ProductListWindow_Shown(object sender, EventArgs e)
@@ -208,8 +208,8 @@ namespace CashRegiterApplication
                 orderPrice += money;
             }
             string strOrderPrice = CommUiltl.CoverMoneyFenToString(orderPrice);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = strOrderPrice;
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = "0.00";
+
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
             return;
         }
 

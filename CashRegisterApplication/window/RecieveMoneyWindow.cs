@@ -10,19 +10,17 @@ using CashRegiterApplication;
 
 namespace CashRegisterApplication.window
 {
-    public partial class RecieveMoneyWindows : Form
+    public partial class RecieveMoneyWindow : Form
     {
-        public RecieveMoneyWindows()
+        public RecieveMoneyWindow()
         {
             InitializeComponent();
         }
       
         private void RecieveMoneyWindows_Shown(object sender, EventArgs e)
         {
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.RecieveFee);
             this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee);
-            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee);
-
+            this.ActiveControl = this.buttonCash;
             //如果已经收钱完毕，那么会隐藏这个页面，就弹窗告诉收款成功。
             //this.textBox_ReceiveFee.SelectionStart = 0;
             //this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
@@ -30,19 +28,15 @@ namespace CashRegisterApplication.window
 
         private void RecieveMoneyWindows_Load(object sender, EventArgs e)
         {
-         
-        }
 
-       
+        }
 
         private void button_Confirm_Click(object sender, EventArgs e)
         {
             CommUiltl.Log("button_Confirm_Click");
             _CheckFee();
         }
-
        
-
         private void textBox_ReceiveFee_Leave(object sender, EventArgs e)
         {
             CommUiltl.Log("textBox_ReceiveFee_Leave");
@@ -53,10 +47,6 @@ namespace CashRegisterApplication.window
         private void _CheckFee()
         {
             CommUiltl.Log("_CheckFee");
-            
-            //如果
-           
-         
             return;
         }
 
@@ -72,18 +62,14 @@ namespace CashRegisterApplication.window
                 case System.Windows.Forms.Keys.NumPad1:
                 case System.Windows.Forms.Keys.Oem1:
                     {
-                        _CheckFee();
-                        CurrentMsg.ReceiveMoneyByCash.Show();
-                        this.Hide();
+                        buttonCash_Click(null, null);
                         break;
                     }
                 case System.Windows.Forms.Keys.D2:
                 case System.Windows.Forms.Keys.NumPad2:
                 case System.Windows.Forms.Keys.Oem2:
                     {
-                        _CheckFee();
-                        CurrentMsg.RecieveMoneyByWeixin.Show();
-                        this.Hide();
+                        buttonWeixin_Click(null, null);
                         break;
                     }
                 case System.Windows.Forms.Keys.Escape:
@@ -97,9 +83,18 @@ namespace CashRegisterApplication.window
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonCash_Click(object sender, EventArgs e)
         {
+            _CheckFee();
+            CurrentMsg.ReceiveMoneyByCash.Show();
+            this.Hide();
+        }
 
+        private void buttonWeixin_Click(object sender, EventArgs e)
+        {
+            _CheckFee();
+            CurrentMsg.RecieveMoneyByWeixin.Show();
+            this.Hide();
         }
     }
 }

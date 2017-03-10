@@ -127,7 +127,17 @@ namespace CashRegiterApplication
             Console.WriteLine("DEBUG:response.StatusCode : {0}", (int)response.StatusCode);
             StreamReader streamReader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.GetEncoding("utf-8"));
             string content = streamReader.ReadToEnd();
-            returnObj = JsonConvert.DeserializeObject<T>(content);
+         
+            try
+            {
+                returnObj = JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("content error ,and coanot parse:"+e+" conten:"+content);
+                return false;
+            }
+       
             if (gCookies == null)
             {
                 SetCookiet(response.Cookies);

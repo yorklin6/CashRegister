@@ -1,6 +1,6 @@
 ﻿namespace CashRegisterApplication.window
 {
-    partial class RecieveMoneyByWeixin
+    partial class RecieveMoneyByWeixinWindow
     {
         /// <summary>
         /// Required designer variable.

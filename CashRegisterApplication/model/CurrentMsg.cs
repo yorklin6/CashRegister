@@ -8,11 +8,11 @@ namespace CashRegisterApplication.comm
 {
     public class CurrentMsg
     {
-        public static OrderMsg Order;//全局订单
-        public static ProductListWindow ProductListWindows;//全局窗口
-        public static RecieveMoneyWindows RecieveMoneyWindows;//收款窗口
-        public static ReceiveMoneyByCash ReceiveMoneyByCash;//现金收款窗口
-        public static RecieveMoneyByWeixin RecieveMoneyByWeixin;//微信收款窗口
+        public static OrderMsg Order =new OrderMsg();//全局订单
+        public static ProductListWindow ProductListWindows =new ProductListWindow();//全局窗口
+        public static RecieveMoneyWindow RecieveMoneyWindows = new RecieveMoneyWindow();//收款窗口
+        public static ReceiveMoneyByCashWindow ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
+        public static RecieveMoneyByWeixinWindow RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
     }
     
     public class OrderMsg

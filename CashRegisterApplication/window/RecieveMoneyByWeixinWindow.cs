@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace CashRegisterApplication.window
 {
-    public partial class RecieveMoneyByWeixin : Form
+    public partial class RecieveMoneyByWeixinWindow : Form
     {
-        public RecieveMoneyByWeixin()
+        public RecieveMoneyByWeixinWindow()
         {
             InitializeComponent();
         }
