@@ -15,10 +15,7 @@ using System.Windows.Forms;
 using System.Security.Cryptography;
 using CashRegisterApplication.comm;
 /*    
-* 作者：周公(zhoufoxcn)    
-* 日期：2011-05-08    
-* 原文出处：http://blog.csdn.net/zhoufoxcn 或http://zhoufoxcn.blog.51cto.com    
-* 版权说明：本文可以在保留原文出处的情况下使用于非商业用途，周公对此不作任何担保或承诺。    
+
 * */
 namespace CashRegiterApplication
 {
@@ -96,11 +93,7 @@ namespace CashRegiterApplication
         }
 
         /***************************************拉取商品***************************************/
-        /// <summary>
-        /// 当网络异常的时候，会返回错误
-        /// </summary>
-        /// <param name="productCode"></param>
-        /// <returns></returns>
+        //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
         public static bool GetProductByProductCode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
         {
             string funcUrl = ProductCodeFunc + productCode;
