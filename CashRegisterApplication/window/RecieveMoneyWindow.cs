@@ -15,20 +15,59 @@ namespace CashRegisterApplication.window
         public RecieveMoneyWindow()
         {
             InitializeComponent();
+       
         }
       
         private void RecieveMoneyWindows_Shown(object sender, EventArgs e)
         {
-            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee);
+            //注意，正常流程下面，这个窗体只有未收款的时候显示。
+            CommUiltl.Log("RecieveMoneyWindows_Shown");
             this.ActiveControl = this.buttonCash;
-            //如果已经收钱完毕，那么会隐藏这个页面，就弹窗告诉收款成功。
-            //this.textBox_ReceiveFee.SelectionStart = 0;
-            //this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
+            SetFeeForTextBox();
+        }
+
+        public void SetFeeForTextBox()
+        {
+           
+            //显示未收款
+            int leftMoney = CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee;
+            if (leftMoney < 0)
+            {
+                leftMoney = 0;
+            }
+            CommUiltl.Log("leftMoney:"+ leftMoney);
+            this.textBox_LeftFee.Text = CommUiltl.CoverMoneyFenToString(leftMoney);
+            //其他订单信息
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee);
+            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.RecieveFee);
+        }
+
+        public void ShowPaidMsg()
+        {
+            CommUiltl.Log("已支付列表");
+            string strPaidInfo="已支付列表：\n";
+            foreach (var item in CurrentMsg.Order.listPayInfo)
+            {
+                if (item.payType== PayWay.PAY_TYPE_CASH)
+                {
+                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyFenToString(item.fee)+"元\n";
+                }
+                else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
+                {
+                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyFenToString(item.fee) + "元\n";
+                }
+                else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
+                {
+                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyFenToString(item.fee) + "元\n";
+                }
+            }
+            this.labelPaidMsg.Text = strPaidInfo;
+            SetFeeForTextBox();
         }
 
         private void RecieveMoneyWindows_Load(object sender, EventArgs e)
         {
-
+            CommUiltl.Log("RecieveMoneyWindows_Load");
         }
 
         private void button_Confirm_Click(object sender, EventArgs e)
@@ -76,7 +115,8 @@ namespace CashRegisterApplication.window
                 case System.Windows.Forms.Keys.Delete:
                     {
                         this.Hide();
-                        CurrentMsg.ProductListWindows.Show();
+                        CurrentMsg.Window_ProductList.Show();
+                        CurrentMsg.Window_ProductList.CloseOrder();
                         break;
                     }
             }
@@ -86,14 +126,15 @@ namespace CashRegisterApplication.window
         private void buttonCash_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.ReceiveMoneyByCash.Show();
+            CurrentMsg.Window_ReceiveMoneyByCash.Show();
+            CurrentMsg.Window_ReceiveMoneyByCash.SetTextBox();
             this.Hide();
         }
 
         private void buttonWeixin_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.RecieveMoneyByWeixin.Show();
+            CurrentMsg.Window_RecieveMoneyByWeixin.Show();
             this.Hide();
         }
     }

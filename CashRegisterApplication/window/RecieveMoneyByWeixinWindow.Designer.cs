@@ -121,7 +121,7 @@
             this.label4.TabIndex = 16;
             this.label4.Text = "客户条码：";
             // 
-            // RecieveMoneyByWeixin
+            // RecieveMoneyByWeixinWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -135,8 +135,9 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_ReceiveFee);
-            this.Name = "RecieveMoneyByWeixin";
+            this.Name = "RecieveMoneyByWeixinWindow";
             this.Text = "收银-微信扫顾客手机码";
+            this.Load += new System.EventHandler(this.RecieveMoneyByWeixinWindow_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

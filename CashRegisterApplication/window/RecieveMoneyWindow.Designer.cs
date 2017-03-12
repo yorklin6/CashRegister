@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecieveMoneyWindow));
-            this.label2 = new System.Windows.Forms.Label();
+            this.label_OrderFee = new System.Windows.Forms.Label();
             this.textBox_OrderFee = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,22 +40,25 @@
             this.buttonZhifubao = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonWeixin = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.textBox_RecieveFee = new System.Windows.Forms.TextBox();
+            this.label_RecieveFee = new System.Windows.Forms.Label();
+            this.label_LeftFee = new System.Windows.Forms.Label();
+            this.textBox_LeftFee = new System.Windows.Forms.TextBox();
+            this.labelPaidMsg = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label2
+            // label_OrderFee
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(354, 150);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "总价：";
+            this.label_OrderFee.AutoSize = true;
+            this.label_OrderFee.Location = new System.Drawing.Point(364, 159);
+            this.label_OrderFee.Name = "label_OrderFee";
+            this.label_OrderFee.Size = new System.Drawing.Size(41, 12);
+            this.label_OrderFee.TabIndex = 7;
+            this.label_OrderFee.Text = "总价：";
             // 
             // textBox_OrderFee
             // 
-            this.textBox_OrderFee.Location = new System.Drawing.Point(411, 147);
+            this.textBox_OrderFee.Location = new System.Drawing.Point(411, 150);
             this.textBox_OrderFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_OrderFee.Name = "textBox_OrderFee";
             this.textBox_OrderFee.ReadOnly = true;
@@ -65,7 +68,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(851, 545);
+            this.label4.Location = new System.Drawing.Point(828, 459);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(95, 60);
             this.label4.TabIndex = 12;
@@ -157,31 +160,60 @@
             this.buttonWeixin.UseVisualStyleBackColor = true;
             this.buttonWeixin.Click += new System.EventHandler(this.buttonWeixin_Click);
             // 
-            // textBox1
+            // textBox_RecieveFee
             // 
-            this.textBox1.Location = new System.Drawing.Point(411, 105);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(126, 21);
-            this.textBox1.TabIndex = 21;
+            this.textBox_RecieveFee.Location = new System.Drawing.Point(411, 193);
+            this.textBox_RecieveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_RecieveFee.Name = "textBox_RecieveFee";
+            this.textBox_RecieveFee.ReadOnly = true;
+            this.textBox_RecieveFee.Size = new System.Drawing.Size(126, 21);
+            this.textBox_RecieveFee.TabIndex = 21;
             // 
-            // label1
+            // label_RecieveFee
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(354, 108);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "总价：";
+            this.label_RecieveFee.AutoSize = true;
+            this.label_RecieveFee.Location = new System.Drawing.Point(346, 196);
+            this.label_RecieveFee.Name = "label_RecieveFee";
+            this.label_RecieveFee.Size = new System.Drawing.Size(59, 12);
+            this.label_RecieveFee.TabIndex = 22;
+            this.label_RecieveFee.Text = " 已收款：";
+            // 
+            // label_LeftFee
+            // 
+            this.label_LeftFee.AutoSize = true;
+            this.label_LeftFee.Location = new System.Drawing.Point(346, 115);
+            this.label_LeftFee.Name = "label_LeftFee";
+            this.label_LeftFee.Size = new System.Drawing.Size(59, 12);
+            this.label_LeftFee.TabIndex = 23;
+            this.label_LeftFee.Text = " 未收款：";
+            // 
+            // textBox_LeftFee
+            // 
+            this.textBox_LeftFee.Location = new System.Drawing.Point(411, 112);
+            this.textBox_LeftFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_LeftFee.Name = "textBox_LeftFee";
+            this.textBox_LeftFee.ReadOnly = true;
+            this.textBox_LeftFee.Size = new System.Drawing.Size(126, 21);
+            this.textBox_LeftFee.TabIndex = 24;
+            // 
+            // labelPaidMsg
+            // 
+            this.labelPaidMsg.AutoSize = true;
+            this.labelPaidMsg.Location = new System.Drawing.Point(627, 129);
+            this.labelPaidMsg.Name = "labelPaidMsg";
+            this.labelPaidMsg.Size = new System.Drawing.Size(0, 12);
+            this.labelPaidMsg.TabIndex = 25;
             // 
             // RecieveMoneyWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(964, 634);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.labelPaidMsg);
+            this.Controls.Add(this.textBox_LeftFee);
+            this.Controls.Add(this.label_LeftFee);
+            this.Controls.Add(this.label_RecieveFee);
+            this.Controls.Add(this.textBox_RecieveFee);
             this.Controls.Add(this.buttonWeixin);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.buttonMember);
@@ -192,7 +224,7 @@
             this.Controls.Add(this.buttonZhifubao);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox_OrderFee);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label_OrderFee);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RecieveMoneyWindow";
             this.Text = "收款";
@@ -204,7 +236,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label_OrderFee;
         private System.Windows.Forms.TextBox textBox_OrderFee;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonZhifubao;
@@ -215,7 +247,10 @@
         private System.Windows.Forms.Button buttonMember;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonWeixin;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox_RecieveFee;
+        private System.Windows.Forms.Label label_RecieveFee;
+        private System.Windows.Forms.Label label_LeftFee;
+        private System.Windows.Forms.TextBox textBox_LeftFee;
+        private System.Windows.Forms.Label labelPaidMsg;
     }
 }

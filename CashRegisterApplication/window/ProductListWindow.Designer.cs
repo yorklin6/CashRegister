@@ -32,7 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductListWindow));
-            this.dataGridView_payWayD = new System.Windows.Forms.DataGridView();
+            this.dataGridView_payWay = new System.Windows.Forms.DataGridView();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
@@ -47,22 +47,22 @@
             this.dataGridView_order = new System.Windows.Forms.DataGridView();
             this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWayD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView_payWayD
+            // dataGridView_payWay
             // 
-            this.dataGridView_payWayD.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridView_payWayD.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridView_payWayD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_payWayD.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_payWay.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridView_payWay.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9});
-            this.dataGridView_payWayD.Location = new System.Drawing.Point(23, 320);
-            this.dataGridView_payWayD.Name = "dataGridView_payWayD";
-            this.dataGridView_payWayD.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView_payWay.Location = new System.Drawing.Point(23, 320);
+            this.dataGridView_payWay.Name = "dataGridView_payWay";
+            this.dataGridView_payWay.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -70,12 +70,12 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWayD.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView_payWayD.RowHeadersVisible = false;
-            this.dataGridView_payWayD.RowTemplate.Height = 23;
-            this.dataGridView_payWayD.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView_payWayD.Size = new System.Drawing.Size(200, 99);
-            this.dataGridView_payWayD.TabIndex = 2;
+            this.dataGridView_payWay.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView_payWay.RowHeadersVisible = false;
+            this.dataGridView_payWay.RowTemplate.Height = 23;
+            this.dataGridView_payWay.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dataGridView_payWay.Size = new System.Drawing.Size(200, 99);
+            this.dataGridView_payWay.TabIndex = 2;
             // 
             // Column8
             // 
@@ -207,13 +207,13 @@
             this.ClientSize = new System.Drawing.Size(895, 527);
             this.Controls.Add(this.dataGridView_order);
             this.Controls.Add(this.dataGridView_productList);
-            this.Controls.Add(this.dataGridView_payWayD);
+            this.Controls.Add(this.dataGridView_payWay);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProductListWindow";
             this.Text = "收银台";
             this.Load += new System.EventHandler(this.ProductListWindow_Load);
             this.Shown += new System.EventHandler(this.ProductListWindow_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWayD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).EndInit();
             this.ResumeLayout(false);
@@ -221,7 +221,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.DataGridView dataGridView_payWayD;
+        private System.Windows.Forms.DataGridView dataGridView_payWay;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridView dataGridView_productList;

@@ -14,5 +14,10 @@ namespace CashRegisterApplication.window
         {
             InitializeComponent();
         }
+
+        private void RecieveMoneyByWeixinWindow_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

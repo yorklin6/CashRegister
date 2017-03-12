@@ -33,12 +33,13 @@ namespace CashRegiterApplication
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
             //_GoProductList();
-            CurrentMsg.ProductListWindows = this;
-            CurrentMsg.Order = new OrderMsg() ;//全局订单
-            CurrentMsg.ProductListWindows = this;//全局窗口
-            CurrentMsg.RecieveMoneyWindows = new RecieveMoneyWindow();//收款窗口
-            CurrentMsg.ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
-            CurrentMsg.RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
+            CurrentMsg.Window_ProductList = this;//全局窗口
+        }
+
+     
+        public System.Windows.Forms.DataGridView GetDataGridViewProduct()
+        {
+            return this.dataGridView_productList;
         }
 
         private void ProductListWindow_Shown(object sender, EventArgs e)
@@ -76,8 +77,8 @@ namespace CashRegiterApplication
 
             //this.productListDataGridView.AllowUserToAddRows = false;
             this.dataGridView_order.AllowUserToAddRows = false;
-            this.dataGridView_payWayD.AllowUserToAddRows = false;
-            this.dataGridView_payWayD.Rows.Add();
+            this.dataGridView_payWay.AllowUserToAddRows = false;
+     
 
             this.ColumnIndex.ReadOnly = true;
             this.ColumnProductName.ReadOnly = true;
@@ -117,7 +118,75 @@ namespace CashRegiterApplication
             }
             CurrentMsg.Order.OrderFee = orderFee;
             this.Hide();
-            CurrentMsg.RecieveMoneyWindows.Show();
+            CurrentMsg.Window_RecieveMoney.Show();
+        }
+
+        internal void CloseOrder()
+        {
+            _SetPayWayGrid();
+            _SetDataGridViewOrderFee();
+            this.dataGridView_order.CurrentCell = null;
+            this.dataGridView_payWay.CurrentCell = null;
+            this.dataGridView_productList.CurrentCell = null;
+            _ShowPayTipsInProductListAndSaveOrderMsg();
+
+           // System.Windows.Forms.DataGridView  this.dataGridView_order.DataSource;
+            this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
+            this.dataGridView_productList.BeginEdit(true);
+            _ResetAllData();
+        }
+        private void _ShowPayTipsInProductListAndSaveOrderMsg()
+        {
+
+            if (CurrentMsg.Order.ChangeFee == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("付款成功,无需找零");
+            }
+            else if (CurrentMsg.Order.ChangeFee > 0)
+            {
+                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee) + " 元");
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("程序出现找零异常，请联系开发看");
+            }
+            //把下单的商品列表给缓存
+        }
+        private void _SetDataGridViewOrderFee()
+        {
+            CommUiltl.Log("_SetDataGridViewOrderFee");
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee);
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.RecieveFee) ;
+        }
+
+        private void _SetPayWayGrid()
+        {
+         
+            //if (CurrentMsg.Order.listPayInfo.Count > 0)
+            //{
+            //    this.dataGridView_payWay.Visible = true;
+            //}
+
+            foreach (var item in CurrentMsg.Order.listPayInfo)
+            {
+                int i = this.dataGridView_payWay.Rows.Add();
+                if (item.payType == PayWay.PAY_TYPE_CASH)
+                {
+                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                }
+                else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
+                {
+                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                }
+                else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
+                {
+                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                }
+
+            }
         }
 
         private void _Windows_Show_PayWayWindows()
@@ -138,8 +207,8 @@ namespace CashRegiterApplication
         private void _GoProductList()
         {
             this.dataGridView_order.CurrentCell = null;
-            this.dataGridView_payWayD.CurrentCell = null;
-            this.dataGridView_payWayD.ClearSelection();
+            this.dataGridView_payWay.CurrentCell = null;
+            this.dataGridView_payWay.ClearSelection();
             this.dataGridView_order.ClearSelection();
             //默认第一行正在编辑中
             this.dataGridView_productList.Select();
@@ -241,7 +310,8 @@ namespace CashRegiterApplication
             if (!HttpUtility.GetProductByProductCode(productCode, ref oProductPricingInfoResp))
             {
                 //网络出现错误，要访问本地
-
+                MessageBox.Show("网络出现错误" );
+                return;
             }
             if (oProductPricingInfoResp.errorCode != 0)
             {
@@ -302,7 +372,7 @@ namespace CashRegiterApplication
             //MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
             //跳转到总价的金额编辑
             this.dataGridView_productList.CurrentRow.Selected = false;
-            this.dataGridView_payWayD.ClearSelection();
+            this.dataGridView_payWay.ClearSelection();
 
             this.dataGridView_order.Select();
             this.dataGridView_order.CurrentCell = this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW];

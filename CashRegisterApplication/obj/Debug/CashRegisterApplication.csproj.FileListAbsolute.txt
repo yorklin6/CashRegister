@@ -109,13 +109,10 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.exe
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.pdb
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csprojResolveAssemblyReference.cache
-D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByCash.resources
-D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.payWayWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.ProductListWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.LoginWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.Properties.Resources.resources
-D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyByWeixin.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.exe
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.pdb
@@ -130,3 +127,6 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByCashWindow.resources
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyWindow.resources
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyByWeixinWindow.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByCashWindow.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyWindow.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyByWeixinWindow.resources

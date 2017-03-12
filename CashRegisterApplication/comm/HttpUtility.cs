@@ -38,6 +38,8 @@ namespace CashRegiterApplication
         private static readonly string LoginFunc = "login.json?";
         private static readonly string ProductCodeFunc = "getPricingByProductCode.json?productCode=";
         private static UserLogin oLoginer;
+
+        /***************************************登陆***************************************/
         public static bool Login(string user, string password)
         {
             gUserName = user;
@@ -73,9 +75,27 @@ namespace CashRegiterApplication
         {
             return oLoginer.data;
         }
+        /***************************************生成订单***************************************/
+        public static bool GenerateOrder()
+        {
 
+            return true;
+        }
+        /***************************************支付***************************************/
+        public static bool PayOrderByCash(int recieveFee)
+        {
+            //请求后台支付
 
+            //修改环境变量，表示这笔单支付成功
+            PayWay oPayWay=new PayWay();
+            oPayWay.fee = recieveFee;
+            oPayWay.payType = PayWay.PAY_TYPE_CASH;
+            CurrentMsg.Order.addPayWay(oPayWay);
+            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
+            return true;
+        }
 
+        /***************************************拉取商品***************************************/
         /// <summary>
         /// 当网络异常的时候，会返回错误
         /// </summary>
@@ -84,6 +104,7 @@ namespace CashRegiterApplication
         public static bool GetProductByProductCode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
         {
             string funcUrl = ProductCodeFunc + productCode;
+            CommUiltl.Log("funcUrl:"+ funcUrl);
             if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
             {
                 Console.WriteLine("ERR:Get failed");
@@ -148,6 +169,8 @@ namespace CashRegiterApplication
             }
             return true;
         }
+
+
         public static void SetCookiet(CookieCollection oCookieCollection)
         {
             gCookies = new CookieContainer();
