@@ -26,8 +26,8 @@ namespace CashRegisterApplication.window
         private void ReceiveMoneyByCash_Shown(object sender, EventArgs e)
         {
             SetTextBox();
-            
         }
+
         public void SetTextBox()
         {
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee);

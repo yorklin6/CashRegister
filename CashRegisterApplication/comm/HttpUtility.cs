@@ -34,6 +34,8 @@ namespace CashRegiterApplication
         private static string gPassword;
         private static readonly string LoginFunc = "login.json?";
         private static readonly string ProductCodeFunc = "getPricingByProductCode.json?productCode=";
+        private static readonly string GenerateOrderFunc = "generateOrder.json?";
+        private static readonly string updateOrderFunc = "updateOrder.json?";
         private static UserLogin oLoginer;
 
         /***************************************登陆***************************************/
@@ -68,6 +70,9 @@ namespace CashRegiterApplication
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + oLoginer.errorCode);
             return true;
         }
+
+ 
+
         private static User GetLoginUser()
         {
             return oLoginer.data;
@@ -75,7 +80,38 @@ namespace CashRegiterApplication
         /***************************************生成订单***************************************/
         public static bool GenerateOrder()
         {
+            string funcUrl = GenerateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderCode + "&orderFee=" + CurrentMsg.Order.OrderFee;
+            CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
+            if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
+            {
+                Console.WriteLine("ERR:Get GenerateOrder failed");
+                MessageBox.Show("生成订单异常:请检查网络");
+                return false;
+            }
+            if (oCashregisterOrderResp.errorCode != 0 )
+            {
+                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:"+ oCashregisterOrderResp);
+                MessageBox.Show("生成订单异常:oCashregisterOrderResp["+ oCashregisterOrderResp+"]");
+            }
+            return true;
+        }
+        //更新订单
+        internal static bool UpdateOrder()
+        {
+            string funcUrl = updateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderCode + "&orderFee=" + CurrentMsg.Order.OrderFee;
+            CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
+            if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
+            {
+                Console.WriteLine("ERR:Get GenerateOrder failed");
+                MessageBox.Show("更新订单异常:请检查网络");
+                return false;
+            }
 
+            if (oCashregisterOrderResp.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oCashregisterOrderResp);
+                MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp + "]");
+            }
             return true;
         }
         /***************************************支付***************************************/

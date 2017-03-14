@@ -94,6 +94,7 @@ namespace CashRegiterApplication
  
         private void _InitOrderMsg()
         {
+            CurrentMsg.Order.Clean();//清空order信息
             this.dataGridView_order.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
@@ -106,15 +107,56 @@ namespace CashRegiterApplication
         private void _Windows_Show_RecieveMoeny()
         {
             CommUiltl.Log("begin");
-            int orderFee;
+            int orderFee=0;
             if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
                 MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
             }
-            CurrentMsg.Order.OrderFee = orderFee;
+            //跳到收钱窗口
+            string strProductList="";
+            _GenerateProductList( ref strProductList);
+            if ( !CurrentMsg.GenerateOrder(strProductList, orderFee))
+            {
+                MessageBox.Show("生成订单错误");
+                return;
+            }
             this.Hide();
             CurrentMsg.Window_RecieveMoney.Show();
+            CurrentMsg.Window_RecieveMoney.SetFeeForTextBox();
+        }
+        private bool  _GenerateProductList(ref string strProductList)
+        {
+            int rowCount = this.dataGridView_productList.RowCount;
+            int  money = 0, amount =0 ;
+
+            for (int index = 0; index < rowCount; ++index)
+            {
+                if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value) )
+                {
+                    continue;
+                }
+
+                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                {
+                    MessageBox.Show("错误行：" + index);
+                    return false;
+                }
+                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                {
+                    MessageBox.Show("错误行：" + index);
+                    return false;
+                }
+                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amount))
+                {
+                    MessageBox.Show("错误行：" + index);
+                    return false;
+                }
+                strProductList += this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value + ":";
+                strProductList += amount + ":";
+                strProductList += money + "|";
+            }
+            return true;
         }
 
         internal void CloseOrder()
@@ -414,7 +456,8 @@ namespace CashRegiterApplication
         private void _GotoNextProductCode(int RowIndex)
         {
             CommUiltl.Log("_GotoNextProductCode RowIndex:"+ RowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
-            if (RowIndex == this.dataGridView_productList.RowCount -2)
+            CommUiltl.Log("_GotoNextProductCode PRODUCT_CODE:" + this.dataGridView_productList.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value);
+            if (RowIndex == this.dataGridView_productList.RowCount -2 && this.dataGridView_productList.IsCurrentCellInEditMode )
             {
                 gMoveToNextProductCodeFlag = true;
                 gCurrentCell = this.dataGridView_productList.Rows[RowIndex + 1].Cells[CELL_INDEX.PRODUCT_CODE];
@@ -624,6 +667,7 @@ namespace CashRegiterApplication
             this.dataGridView_order.CurrentCell = null;
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
             this.dataGridView_productList.BeginEdit(true);
+          
         }
 
         private void _GoCurrentProductCodeIfNeed()
