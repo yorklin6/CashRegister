@@ -22,13 +22,12 @@ namespace CashRegisterApplication.comm
             if (Order.RecieveFee < Order.OrderFee)
             {
                 CommUiltl.Log("Window_RecieveMoney Show");
-                Window_RecieveMoney.Show();
                 Window_RecieveMoney.ShowPaidMsg();
                 return;
             }
             //Order.RecieveFee >= Order.OrderFee
-            Window_ProductList.Show();
-            Window_ProductList.CloseOrder();
+      
+            Window_ProductList.CloseOrderByControlWindow();
         }
 
 
@@ -42,6 +41,7 @@ namespace CashRegisterApplication.comm
                 Order.OrderFee = orderFee;
                 return HttpUtility.GenerateOrder();
             }
+
             if ( 0 != Order.ProductList.CompareTo(strProductList)  )
             {
                 CommUiltl.Log(" strProductList is modify ["+ Order.ProductList +"] -> ["+ strProductList+"]");
@@ -75,7 +75,11 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("RecieveFee before:"+ RecieveFee);
             RecieveFee += oPayWay.fee;
             CommUiltl.Log("RecieveFee after:" + RecieveFee);
-            ChangeFee = RecieveFee - OrderFee;
+            if (RecieveFee > OrderFee)
+            {
+                ChangeFee = RecieveFee - OrderFee;
+            }
+          
             listPayInfo.Add(oPayWay);
         }
         public  void generateOrderCode()

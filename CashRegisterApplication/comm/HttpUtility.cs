@@ -93,6 +93,7 @@ namespace CashRegiterApplication
                 Console.WriteLine("ERR:Get failed oCashregisterOrderResp:"+ oCashregisterOrderResp);
                 MessageBox.Show("生成订单异常:oCashregisterOrderResp["+ oCashregisterOrderResp+"]");
             }
+            MessageBox.Show("生成订单成功:p[" + oCashregisterOrderResp + "]");
             return true;
         }
         //更新订单
@@ -112,6 +113,7 @@ namespace CashRegiterApplication
                 Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oCashregisterOrderResp);
                 MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp + "]");
             }
+            MessageBox.Show("更新订单成功:p[" + oCashregisterOrderResp + "]");
             return true;
         }
         /***************************************支付***************************************/

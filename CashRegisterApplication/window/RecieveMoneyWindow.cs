@@ -23,12 +23,12 @@ namespace CashRegisterApplication.window
             //注意，正常流程下面，这个窗体只有未收款的时候显示。
             CommUiltl.Log("RecieveMoneyWindows_Shown");
             this.ActiveControl = this.buttonCash;
-            SetFeeForTextBox();
+            ShowByProductListWindow();
         }
 
-        public void SetFeeForTextBox()
+        public void ShowByProductListWindow()
         {
-           
+            this.Show();
             //显示未收款
             int leftMoney = CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee;
             if (leftMoney < 0)
@@ -45,6 +45,7 @@ namespace CashRegisterApplication.window
         public void ShowPaidMsg()
         {
             CommUiltl.Log("已支付列表");
+            this.Show();
             string strPaidInfo="已支付列表：\n";
             foreach (var item in CurrentMsg.Order.listPayInfo)
             {
@@ -62,7 +63,7 @@ namespace CashRegisterApplication.window
                 }
             }
             this.labelPaidMsg.Text = strPaidInfo;
-            SetFeeForTextBox();
+            ShowByProductListWindow();
         }
 
         private void RecieveMoneyWindows_Load(object sender, EventArgs e)
@@ -115,8 +116,7 @@ namespace CashRegisterApplication.window
                 case System.Windows.Forms.Keys.Delete:
                     {
                         this.Hide();
-                        CurrentMsg.Window_ProductList.Show();
-                        CurrentMsg.Window_ProductList.CloseOrder();
+                        CurrentMsg.Window_ProductList.EscapeShowByRecieveWindows();
                         break;
                     }
             }
@@ -126,8 +126,7 @@ namespace CashRegisterApplication.window
         private void buttonCash_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.Window_ReceiveMoneyByCash.Show();
-            CurrentMsg.Window_ReceiveMoneyByCash.SetTextBox();
+            CurrentMsg.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
             this.Hide();
         }
 

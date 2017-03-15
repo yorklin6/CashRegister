@@ -104,8 +104,9 @@ namespace CashRegiterApplication
         /*
        * 弹出框，展示实收多少钱
        */
-        private void _Windows_Show_RecieveMoeny()
+        private void _Windows_ShowRecieveMoeny()
         {
+            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
             CommUiltl.Log("begin");
             int orderFee=0;
             if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
@@ -122,8 +123,8 @@ namespace CashRegiterApplication
                 return;
             }
             this.Hide();
-            CurrentMsg.Window_RecieveMoney.Show();
-            CurrentMsg.Window_RecieveMoney.SetFeeForTextBox();
+            CurrentMsg.Window_RecieveMoney.ShowByProductListWindow();
+
         }
         private bool  _GenerateProductList(ref string strProductList)
         {
@@ -159,8 +160,15 @@ namespace CashRegiterApplication
             return true;
         }
 
-        internal void CloseOrder()
+        internal void EscapeShowByRecieveWindows()
         {
+            this.Show();
+            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+            _SetDataGridViewOrderFee();
+        }
+        internal void CloseOrderByControlWindow()
+        {
+            this.Show();
             _SetPayWayGrid();
             _SetDataGridViewOrderFee();
             this.dataGridView_order.CurrentCell = null;
@@ -173,14 +181,15 @@ namespace CashRegiterApplication
             this.dataGridView_productList.BeginEdit(true);
             _ResetAllData();
         }
+
         private void _ShowPayTipsInProductListAndSaveOrderMsg()
         {
 
-            if (CurrentMsg.Order.ChangeFee == 0)
+            if (CurrentMsg.Order.RecieveFee >= CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee == 0)
             {
                 System.Windows.Forms.MessageBox.Show("付款成功,无需找零");
             }
-            else if (CurrentMsg.Order.ChangeFee > 0)
+            else if (CurrentMsg.Order.RecieveFee > CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee > 0)
             {
                 System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee) + " 元");
             }
@@ -221,11 +230,8 @@ namespace CashRegiterApplication
             }
         }
 
-        private void _Windows_Show_PayWayWindows()
-        {
 
-        }
-      
+
         private void _SetCurrentCell()
         {
             _GoProductList();
@@ -534,10 +540,11 @@ namespace CashRegiterApplication
                                 {
                                     //删除当前行
                                     //this.productListDataGridView.Rows.Remove(this.productListDataGridView.CurrentRow);
-                                    this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
+                                  
                                     _SetOrderPrice();
                                     //_GoOrderDataGrid();
-                                    _Windows_Show_RecieveMoeny();
+                                    _Windows_ShowRecieveMoeny();
+                                    
                                 }
                                 return base.ProcessCmdKey(ref msg, keyData);
                             }
