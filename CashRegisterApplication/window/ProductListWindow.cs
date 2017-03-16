@@ -184,7 +184,6 @@ namespace CashRegiterApplication
 
         private void _ShowPayTipsInProductListAndSaveOrderMsg()
         {
-
             if (CurrentMsg.Order.RecieveFee >= CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee == 0)
             {
                 System.Windows.Forms.MessageBox.Show("付款成功,无需找零");

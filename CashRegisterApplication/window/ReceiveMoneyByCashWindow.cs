@@ -136,7 +136,7 @@ namespace CashRegisterApplication.window
                 return;
             }
             int change = recieveFee + CurrentMsg.Order.RecieveFee - CurrentMsg.Order.OrderFee;
-            string showTips = showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
+            string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
             if (change < 0)
             {
                 int leftFee = 0 - change;

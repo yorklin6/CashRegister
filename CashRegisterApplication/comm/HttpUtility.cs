@@ -36,6 +36,7 @@ namespace CashRegiterApplication
         private static readonly string ProductCodeFunc = "getPricingByProductCode.json?productCode=";
         private static readonly string GenerateOrderFunc = "generateOrder.json?";
         private static readonly string updateOrderFunc = "updateOrder.json?";
+        private static readonly string userPayFunc = "userPay.json?";
         private static UserLogin oLoginer;
 
         /***************************************登陆***************************************/
@@ -80,26 +81,28 @@ namespace CashRegiterApplication
         /***************************************生成订单***************************************/
         public static bool GenerateOrder()
         {
-            string funcUrl = GenerateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderCode + "&orderFee=" + CurrentMsg.Order.OrderFee;
+            string funcUrl = GenerateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderNumber + "&orderFee=" + CurrentMsg.Order.OrderFee;
             CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
             if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
+                CommUiltl.Log("ERR:Get GenerateOrder failed]");
                 MessageBox.Show("生成订单异常:请检查网络");
                 return false;
             }
             if (oCashregisterOrderResp.errorCode != 0 )
             {
-                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:"+ oCashregisterOrderResp);
+                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp:[" + oCashregisterOrderResp.ToString() + "]");
                 MessageBox.Show("生成订单异常:oCashregisterOrderResp["+ oCashregisterOrderResp+"]");
+                return false;
             }
-            MessageBox.Show("生成订单成功:p[" + oCashregisterOrderResp + "]");
+            CommUiltl.Log("生成订单成功:[" + oCashregisterOrderResp.ToString() + "]");
             return true;
         }
         //更新订单
         internal static bool UpdateOrder()
         {
-            string funcUrl = updateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderCode + "&orderFee=" + CurrentMsg.Order.OrderFee;
+            string funcUrl = updateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderNumber + "&orderFee=" + CurrentMsg.Order.OrderFee;
             CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
             if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
             {
@@ -112,15 +115,32 @@ namespace CashRegiterApplication
             {
                 Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oCashregisterOrderResp);
                 MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp + "]");
+                return false;
             }
-            MessageBox.Show("更新订单成功:p[" + oCashregisterOrderResp + "]");
+            CommUiltl.Log("更新订单成功:[" + oCashregisterOrderResp + "]");
+            //MessageBox.Show("更新订单成功:p[" + oCashregisterOrderResp + "]");
             return true;
         }
         /***************************************支付***************************************/
         public static bool PayOrderByCash(int recieveFee)
         {
-            //请求后台支付
+            string funcUrl = userPayFunc + "orderNumber=" + CurrentMsg.Order.OrderNumber + "&payCode=1&payFee=" + recieveFee+ "&payType=1";//payType=1现金支付
+            PayOrderResp oPayOrderResp = new PayOrderResp();
+            if (!Get<PayOrderResp>(funcUrl, ref oPayOrderResp))
+            {
+                Console.WriteLine("ERR:Get GenerateOrder failed");
+                MessageBox.Show("支付异常：请检查网络");
+                return false;
+            }
 
+            if (oPayOrderResp.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oPayOrderResp);
+                MessageBox.Show("支付异常:oCashregisterOrderResp[" + oPayOrderResp + "]");
+                return false;
+            }
+
+            MessageBox.Show("支付成功:[" + oPayOrderResp + "]");
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay=new PayWay();
             oPayWay.fee = recieveFee;

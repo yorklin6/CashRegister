@@ -33,10 +33,10 @@ namespace CashRegisterApplication.comm
 
         internal static bool GenerateOrder(string strProductList, int orderFee)
         {
-            if (Order.OrderCode == "")
+            if (Order.OrderNumber == "")
             {
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
-                Order.generateOrderCode();
+                Order.generateOrderNumber();
                 Order.ProductList = strProductList;
                 Order.OrderFee = orderFee;
                 return HttpUtility.GenerateOrder();
@@ -59,7 +59,7 @@ namespace CashRegisterApplication.comm
         public  int RecieveFee { get; set; }//已经收款
         public  int OrderFee { get; set; }//订单价钱
         public  int ChangeFee { get; set; }//找零
-        public  string OrderCode { get; set; }//订单号
+        public  string OrderNumber { get; set; }//订单号
         public  string ProductList { get; set; }//找零
         public  List<PayWay> listPayInfo=new List<PayWay>();
 
@@ -68,7 +68,7 @@ namespace CashRegisterApplication.comm
             RecieveFee = 0;
             OrderFee = 0;
             ChangeFee = 0;
-            OrderCode = "";
+            OrderNumber = "";
         }
         public  void addPayWay(PayWay oPayWay)
         {
@@ -82,16 +82,18 @@ namespace CashRegisterApplication.comm
           
             listPayInfo.Add(oPayWay);
         }
-        public  void generateOrderCode()
+
+        public  void generateOrderNumber()
         {
-            OrderCode= "cashier-" + DateTime.Now.ToString("h:mm:ss:tt");
+            OrderNumber= "cashier-" + DateTime.Now.ToString("h:mm:ss:tt");
         }
+
         public  void Clean()
         {
             RecieveFee = 0;
             OrderFee = 0;
             ChangeFee = 0;
-            OrderCode = "";
+            OrderNumber = "";
             ProductList = "";
             listPayInfo.Clear();
         }
