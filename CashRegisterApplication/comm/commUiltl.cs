@@ -50,7 +50,7 @@ namespace CashRegisterApplication.comm
             return false;
         }
 
-        public static bool ConverStrYuanToFen(object value, out int number)
+        public static bool ConverStrYuanToUnion(object value, out int number)
         {
             number = 0;
             if (CommUiltl.IsObjEmpty(value))
@@ -60,7 +60,7 @@ namespace CashRegisterApplication.comm
             decimal decimalNumber = 0;
             bool isNumber = decimal.TryParse(value.ToString(), out decimalNumber);
             if (!isNumber) return false;
-            number = Convert.ToInt32(decimalNumber * 100);
+            number = Convert.ToInt32(decimalNumber * 10000);
             return true;
 
         }
@@ -76,10 +76,10 @@ namespace CashRegisterApplication.comm
         }
 
 
-        public static string CoverMoneyFenToString(int money)
+        public static string CoverMoneyUnionToStrYuan(int money)
         {
             //保留小数点后两位
-            return Convert.ToDecimal((double)money / 100).ToString("0.00");
+            return Convert.ToDecimal((double)money / 10000).ToString("0.00");
         }
 
         public static void Log(string message,

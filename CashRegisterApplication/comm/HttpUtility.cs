@@ -140,7 +140,7 @@ namespace CashRegiterApplication
                 return false;
             }
 
-            MessageBox.Show("支付成功:[" + oPayOrderResp + "]");
+            MessageBox.Show("支付"+CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) +"元现金成功");
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay=new PayWay();
             oPayWay.fee = recieveFee;

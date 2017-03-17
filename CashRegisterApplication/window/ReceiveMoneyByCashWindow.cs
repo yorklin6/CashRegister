@@ -31,9 +31,9 @@ namespace CashRegisterApplication.window
         public void ShowByReceiveMoneyWindow()
         {
             this.Show();
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee);
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
-            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(0);
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
             _SelectRecieve();
         }
 
@@ -92,7 +92,7 @@ namespace CashRegisterApplication.window
            
             //金额发生变化就改变下找零多少
             int recieveFee = 0;
-            if (!CommUiltl.ConverStrYuanToFen(this.textBox_ReceiveFee.Text, out recieveFee))
+            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
                 MessageBox.Show("总价错误:" + this.textBox_ReceiveFee.Text);
                 return;
@@ -100,7 +100,7 @@ namespace CashRegisterApplication.window
             int change = recieveFee - CurrentMsg.Order.OrderFee;
             if (change >0 )
             {
-                this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyFenToString(change);
+                this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
             }
 
         }
@@ -130,7 +130,7 @@ namespace CashRegisterApplication.window
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
             int recieveFee = 0;
-            if (!CommUiltl.ConverStrYuanToFen(this.textBox_ReceiveFee.Text, out recieveFee))
+            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
@@ -141,11 +141,11 @@ namespace CashRegisterApplication.window
             {
                 int leftFee = 0 - change;
                 showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                 + "\n还剩：" + CommUiltl.CoverMoneyFenToString(leftFee) + " 元未收";
+                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
             }else if (change >0 )
             {
                 showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                + "\n应找零：" + CommUiltl.CoverMoneyFenToString(change) + " 元";
+                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
             }
 
             var confirmPayApartResult = MessageBox.Show(showTips,

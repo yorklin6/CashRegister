@@ -70,6 +70,7 @@ namespace CashRegisterApplication.comm
             ChangeFee = 0;
             OrderNumber = "";
         }
+
         public  void addPayWay(PayWay oPayWay)
         {
             CommUiltl.Log("RecieveFee before:"+ RecieveFee);
@@ -99,6 +100,7 @@ namespace CashRegisterApplication.comm
         }
 
     }
+
     public class PayWay
     {
         public const int PAY_TYPE_CASH = 1;

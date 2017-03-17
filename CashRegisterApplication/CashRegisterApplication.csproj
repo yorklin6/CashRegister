@@ -74,7 +74,8 @@
   <ItemGroup>
     <Compile Include="comm\CommUiltl.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
-    <Compile Include="model\CurrentMsg.cs" />
+    <Compile Include="comm\CurrentMsg.cs" />
+    <Compile Include="model\PayOrder.cs" />
     <Compile Include="model\UserLogin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -109,7 +109,7 @@ namespace CashRegiterApplication
             this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
             CommUiltl.Log("begin");
             int orderFee=0;
-            if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
+            if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
                 MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
@@ -138,17 +138,17 @@ namespace CashRegiterApplication
                     continue;
                 }
 
-                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
                 {
                     MessageBox.Show("错误行：" + index);
                     return false;
                 }
-                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
                 {
                     MessageBox.Show("错误行：" + index);
                     return false;
                 }
-                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amount))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amount))
                 {
                     MessageBox.Show("错误行：" + index);
                     return false;
@@ -190,7 +190,7 @@ namespace CashRegiterApplication
             }
             else if (CurrentMsg.Order.RecieveFee > CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee > 0)
             {
-                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee) + " 元");
+                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.ChangeFee) + " 元");
             }
             else
             {
@@ -201,8 +201,8 @@ namespace CashRegiterApplication
         private void _SetDataGridViewOrderFee()
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.ChangeFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(CurrentMsg.Order.RecieveFee) ;
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.ChangeFee);
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.RecieveFee) ;
         }
 
         private void _SetPayWayGrid()
@@ -213,17 +213,17 @@ namespace CashRegiterApplication
                 if (item.payType == PayWay.PAY_TYPE_CASH)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyFenToString(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
                 }
 
             }
@@ -274,7 +274,7 @@ namespace CashRegiterApplication
                 return false;
             }
 
-            if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
+            if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
             {
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
                 MessageBox.Show("错误金额：" + rowIndex);
@@ -282,7 +282,7 @@ namespace CashRegiterApplication
             }
 
             int orderPrice = amout * price;
-            string strOrderPrice = CommUiltl.CoverMoneyFenToString(orderPrice);
+            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
             this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = strOrderPrice;
             _SetOrderPrice();
             return true;
@@ -300,7 +300,7 @@ namespace CashRegiterApplication
                     continue;
                 }
 
-                if (!CommUiltl.ConverStrYuanToFen(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
                 {
                     MessageBox.Show("错误行：" + index);
                     return;
@@ -308,7 +308,7 @@ namespace CashRegiterApplication
 
                 orderPrice += money;
             }
-            string strOrderPrice = CommUiltl.CoverMoneyFenToString(orderPrice);
+            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
 
             this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
             return;
@@ -367,7 +367,7 @@ namespace CashRegiterApplication
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = productInfo.ProductName;
             currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = productInfo.ProductSpecification;
-            string normalPrice = CommUiltl.CoverMoneyFenToString(productInfo.NormalPrice);
+            string normalPrice = CommUiltl.CoverMoneyUnionToStrYuan(productInfo.NormalPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = normalPrice;
             currentRow.Cells[CELL_INDEX.PRODUCT_AMOUNT].Value = 1;
             currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = normalPrice;
@@ -643,19 +643,19 @@ namespace CashRegiterApplication
 
             CommUiltl.Log("begin");
             int orderFee = 0, recieveFee = 0, changeFee = 0;
-            if (! CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
+            if (! CommUiltl.ConverStrYuanToUnion(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
             {
                 MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
                 return;
             }
-            if (! CommUiltl.ConverStrYuanToFen(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
+            if (! CommUiltl.ConverStrYuanToUnion(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
             {
                 MessageBox.Show("实收错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value);
                 return;
             }
 
             changeFee = recieveFee - orderFee;
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyFenToString(changeFee);
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(changeFee);
             if (changeFee < 0)
             {
                 _SetPointToResetCurrentCell(dataGridView_order.Rows[e.RowIndex].Cells[e.ColumnIndex]);
