@@ -34,6 +34,7 @@ namespace CashRegiterApplication
         {
             //_GoProductList();
             CurrentMsg.Window_ProductList = this;//全局窗口
+            Dao.ConnecSql();
         }
 
      
@@ -115,24 +116,26 @@ namespace CashRegiterApplication
                 return;
             }
             //跳到收钱窗口
-            string strProductList="";
-            _GenerateProductList( ref strProductList);
+            string strProductList=""; 
+            _GenerateProductListForOrder( ref strProductList);
+           
             if ( !CurrentMsg.GenerateOrder(strProductList, orderFee))
             {
-                MessageBox.Show("生成订单错误");
                 return;
             }
-            this.Hide();
             CurrentMsg.Window_RecieveMoney.ShowByProductListWindow();
+            this.Hide();
 
         }
-        private bool  _GenerateProductList(ref string strProductList)
+        private bool  _GenerateProductListForOrder(ref string strProductList)
         {
             int rowCount = this.dataGridView_productList.RowCount;
-            int  money = 0, amount =0 ;
+            int  money = 0, amount =0 , productid = 0 ;
 
+            CurrentMsg.ProductPricing.Clear();
             for (int index = 0; index < rowCount; ++index)
             {
+                ProductPricing oProductPricing = new ProductPricing();
                 if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value) )
                 {
                     continue;
@@ -140,22 +143,32 @@ namespace CashRegiterApplication
 
                 if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
                 {
-                    MessageBox.Show("错误行：" + index);
+                    MessageBox.Show("错误行 PRODUCT_MONEY：" + index);
                     return false;
                 }
-                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+
+                if (!CommUiltl.CoverStrToInt(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amount))
                 {
-                    MessageBox.Show("错误行：" + index);
+                    MessageBox.Show("错误行 PRODUCT_AMOUNT：" + index);
                     return false;
                 }
-                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_AMOUNT].Value, out amount))
-                {
-                    MessageBox.Show("错误行：" + index);
-                    return false;
-                }
+             
                 strProductList += this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value + ":";
                 strProductList += amount + ":";
                 strProductList += money + "|";
+
+               
+                if (!CommUiltl.CoverStrToInt(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_ID].Value, out productid))
+                {
+                    MessageBox.Show("错误行：" + index);
+                    return false;
+                }
+
+                oProductPricing.ProductCode = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString();
+                oProductPricing.ProductId= productid;
+                oProductPricing.SelllPrice = money;
+                oProductPricing.Amount = amount;
+                CurrentMsg.ProductPricing.Add(oProductPricing);
             }
             return true;
         }
@@ -309,7 +322,6 @@ namespace CashRegiterApplication
                 orderPrice += money;
             }
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
-
             this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
             return;
         }
@@ -367,11 +379,13 @@ namespace CashRegiterApplication
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = productInfo.ProductName;
             currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = productInfo.ProductSpecification;
+            
             string normalPrice = CommUiltl.CoverMoneyUnionToStrYuan(productInfo.NormalPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = normalPrice;
             currentRow.Cells[CELL_INDEX.PRODUCT_AMOUNT].Value = 1;
             currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = normalPrice;
 
+            currentRow.Cells[CELL_INDEX.PRODUCT_ID].Value = productInfo.ProductId;
             //更新订单价钱
             _SetOrderPrice();
 
@@ -569,65 +583,16 @@ namespace CashRegiterApplication
                                 if (this.dataGridView_productList.CurrentRow.Index >= 0)
                                 {
                                     this.dataGridView_productList.Rows.RemoveAt(this.dataGridView_productList.CurrentRow.Index);
+                                    _SetOrderPrice();
                                 }
-                              
+
                             }
                         }
                         return true;
                     }
                 case System.Windows.Forms.Keys.F12:
                     {
-                        CommUiltl.Log("Keys.F12");
-                        // We use these three SQLite objects:
-                        SQLiteConnection sqlite_conn;
-                        SQLiteCommand sqlite_cmd;
-                        SQLiteDataReader sqlite_datareader;
-
-                        // create a new database connection:
-                        sqlite_conn = new SQLiteConnection("Data Source=database.db;Version=3;New=True;Compress=True;");
-
-                        // open the connection:
-                        sqlite_conn.Open();
-
-                        // create a new SQL command:
-                        sqlite_cmd = sqlite_conn.CreateCommand();
-
-                        //// Let the SQLiteCommand object know our SQL-Query:
-                        //sqlite_cmd.CommandText = "CREATE TABLE  IF NOT EXISTS test (id integer primary key, text varchar(100));";
-
-                        //// Now lets execute the SQL ;D
-                        //sqlite_cmd.ExecuteNonQuery();
-
-                        //// Lets insert something into our new table:
-                        //sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (1, 'Test Text 1');";
-
-                        //// And execute this again ;D
-                        //sqlite_cmd.ExecuteNonQuery();
-
-                        //// ...and inserting another line:
-                        //sqlite_cmd.CommandText = "INSERT INTO test (id, text) VALUES (2, 'Test Text 2');";
-
-                        //// And execute this again ;D
-                        //sqlite_cmd.ExecuteNonQuery();
-
-                        // But how do we read something out of our table ?
-                        // First lets build a SQL-Query again:
-                        sqlite_cmd.CommandText = "SELECT * FROM test";
-
-                        // Now the SQLiteCommand object can give us a DataReader-Object:
-                        sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-                        // The SQLiteDataReader allows us to run through the result lines:
-                        while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
-                        {
-                            // Print out the content of the text field:
-                            //System.Console.WriteLine( sqlite_datareader["text"] );
-
-                            int myreader = sqlite_datareader.GetInt32(0);
-                            MessageBox.Show("int:" + sqlite_datareader.GetInt32(0) + " string:" + sqlite_datareader.GetString(1));
-                        }
-                        // We are ready, now lets cleanup and close our connection:
-                        sqlite_conn.Close();
+      
                         return base.ProcessCmdKey(ref msg, keyData);
                     }
             }
@@ -730,6 +695,7 @@ namespace CashRegiterApplication
         public static int PRODUCT_NORMAL_PRICE = 4;
         public static int PRODUCT_AMOUNT = 5;
         public static int PRODUCT_MONEY = 6;
+        public static int PRODUCT_ID = 7;
 
         public static int ORDER_COLUMN = 1;
         public static int RECIEVE_FEE_ROW = 0;

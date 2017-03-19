@@ -161,10 +161,11 @@ namespace CashRegisterApplication.window
             }
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-            if (!HttpUtility.PayOrderByCash(recieveFee))
+            if (! CurrentMsg.PayOrderByCash(recieveFee))
             {
-                MessageBox.Show("支付失败");
+                return;
             }
+           
             this.Hide();
             CurrentMsg.ControlWindowsAfterPay();
             return;

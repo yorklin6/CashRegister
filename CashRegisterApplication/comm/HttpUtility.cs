@@ -87,16 +87,16 @@ namespace CashRegiterApplication
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 CommUiltl.Log("ERR:Get GenerateOrder failed]");
-                MessageBox.Show("生成订单异常:请检查网络");
+                MessageBox.Show("http生成订单异常:请检查网络");
                 return false;
             }
             if (oCashregisterOrderResp.errorCode != 0 )
             {
-                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp:[" + oCashregisterOrderResp.ToString() + "]");
-                MessageBox.Show("生成订单异常:oCashregisterOrderResp["+ oCashregisterOrderResp+"]");
+                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + oCashregisterOrderResp.errorCode + "] msg:" + oCashregisterOrderResp.msg);
+                MessageBox.Show("http生成订单异常:oCashregisterOrderResp errorCode:[" + oCashregisterOrderResp.errorCode + "] msg:" + oCashregisterOrderResp.msg);
                 return false;
             }
-            CommUiltl.Log("生成订单成功:[" + oCashregisterOrderResp.ToString() + "]");
+            CommUiltl.Log("http生成订单成功:[" + oCashregisterOrderResp.ToString() + "]");
             return true;
         }
         //更新订单
@@ -106,15 +106,15 @@ namespace CashRegiterApplication
             CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
             if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
             {
-                Console.WriteLine("ERR:Get GenerateOrder failed");
-                MessageBox.Show("更新订单异常:请检查网络");
+                Console.WriteLine("ERR:http Get GenerateOrder failed");
+                MessageBox.Show("http更新订单异常:请检查网络");
                 return false;
             }
 
             if (oCashregisterOrderResp.errorCode != 0)
             {
                 Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oCashregisterOrderResp);
-                MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp + "]");
+                MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp.errorCode+" msg:"+ oCashregisterOrderResp.msg + "]");
                 return false;
             }
             CommUiltl.Log("更新订单成功:[" + oCashregisterOrderResp + "]");
@@ -124,7 +124,7 @@ namespace CashRegiterApplication
         /***************************************支付***************************************/
         public static bool PayOrderByCash(int recieveFee)
         {
-            string funcUrl = userPayFunc + "orderNumber=" + CurrentMsg.Order.OrderNumber + "&payCode=1&payFee=" + recieveFee+ "&payType=1";//payType=1现金支付
+            string funcUrl = userPayFunc + "orderNumber=" + CurrentMsg.Order.OrderNumber + "&payCode=payCode&payFee=" + recieveFee+ "&payType="+CurrentMsg.PAY_TYPE_CASH;//payType=1现金支付
             PayOrderResp oPayOrderResp = new PayOrderResp();
             if (!Get<PayOrderResp>(funcUrl, ref oPayOrderResp))
             {
@@ -140,13 +140,7 @@ namespace CashRegiterApplication
                 return false;
             }
 
-            MessageBox.Show("支付"+CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) +"元现金成功");
-            //修改环境变量，表示这笔单支付成功
-            PayWay oPayWay=new PayWay();
-            oPayWay.fee = recieveFee;
-            oPayWay.payType = PayWay.PAY_TYPE_CASH;
-            CurrentMsg.Order.addPayWay(oPayWay);
-            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
+           
             return true;
         }
 

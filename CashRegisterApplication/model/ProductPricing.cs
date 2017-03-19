@@ -87,6 +87,9 @@ namespace CashRegiterApplication
         public String supplierName{ get; set; }
 
 
-        public int Amount{ get; set; }   
+        public int Amount{ get; set; }
+
+
+        public int SelllPrice { get; set; }   //售卖价钱
     }
 }

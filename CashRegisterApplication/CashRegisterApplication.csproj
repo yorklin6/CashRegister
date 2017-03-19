@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="comm\CommUiltl.cs" />
+    <Compile Include="comm\Dao.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
     <Compile Include="comm\CurrentMsg.cs" />
     <Compile Include="model\PayOrder.cs" />
