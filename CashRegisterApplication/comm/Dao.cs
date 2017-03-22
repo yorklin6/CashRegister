@@ -34,12 +34,13 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //插入订单
            string strSql = "insert into t2_cash_register_order  ";
-            strSql += " (CashRegisterOrderNumber,OrderFee,ReceiveFee,ChangeFee,CreateTime,PayState) VALUES (";
+            strSql += " (CashRegisterOrderNumber,OrderFee,ReceiveFee,ChangeFee,CreateTime,CloudState,PayState) VALUES (";
             strSql += "'"+ CurrentMsg.Order.OrderNumber+"',";
             strSql += "" + CurrentMsg.Order.OrderFee + ",";
             strSql += "" + CurrentMsg.Order.RecieveFee + ",";
             strSql += "" + CurrentMsg.Order.ChangeFee + ",";
             strSql += "datetime('now'),";
+            strSql += "" + CurrentMsg.CLOUD_SATE_ORDER_GENERATE_INIT + ",";
             strSql += "" + CurrentMsg.Order.PayState + " ";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -64,13 +65,14 @@ namespace CashRegisterApplication.comm
             foreach (var item in CurrentMsg.ProductPricing)
             {
                 strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,PayState,SellAmount,SelllPrice) VALUES (";
+                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,PayState,SellAmount,CloudState,SelllPrice) VALUES (";
                 strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
                 strSql += " " + item.ProductId + ",";
                 strSql += "'" + item.ProductCode + "',";
                 strSql += "'" + item.ProductName + "',";
                 strSql += "" + CurrentMsg.PAY_STATE_INIT + ",";
                 strSql += "" + item.Amount + ",";
+                strSql += "" + CurrentMsg.CLOUD_SATE_ORDER_GENERATE_INIT + ",";
                 strSql += "" + item.SelllPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
@@ -95,12 +97,63 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("本地下单成功");
             return true;
         }
+        public static bool UpdateOrderCloudStae(int state)
+        {
+            ConnecSql();
+            CommUiltl.Log("Dao GenerateOrderCloudSuccess");
+            int iRow = 0;
+            //插入订单
+            string strSql = "update t2_cash_register_order set   CloudState=" + state + " where  CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
 
-       
-      
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新本地数据库云操作失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新本地数据库云操作失败");
+                return false;
+            }
+            //插入订单商品数据
+            foreach (var item in CurrentMsg.ProductPricing)
+            {
+                strSql = "update t2_cash_register_order_product set   CloudState=" + state + " where  CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' and DeleteFlag =0 ";
+                sqlite_cmd = sqlite_conn.CreateCommand();
+                try
+                {
+                    sqlite_cmd.CommandText = strSql;
+                    iRow = sqlite_cmd.ExecuteNonQuery();
+                }
+
+                catch (SQLiteException ex)
+                {
+                    MessageBox.Show("更新商品本地数据库云操作库失败:" + ex.ToString());
+                    return false;
+                }
+
+                if (0 == iRow)
+                {
+                    MessageBox.Show("更新商品本地数据库云操作库失败");
+                    return false;
+                }
+            }
+            CommUiltl.Log("更新商品本地数据库云操作库失败成功");
+            return true;
+        }
+        
+
+
         public static bool updateOrder()
         {
-              ConnecSql();
+            
             CommUiltl.Log("Dao GenerateOrder");
             int iRow = 0;
             //更新订单
@@ -171,6 +224,80 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("本地更新订单成功");
             return true;
         }
+        public static bool UpdateOrderCloudSuccess()
+        {
+
+            CommUiltl.Log("Dao UpdateOrderCloudSuccess");
+            int iRow = 0;
+            //更新订单
+            string strSql = "update  t2_cash_register_order set ";
+            strSql += "OrderFee=" + CurrentMsg.Order.OrderFee + " ";
+            strSql += "where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新订单本地数据库失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新本地数据库失败，影响行数不为0");
+                return false;
+            }
+            // //把这个单下面的商品都置为删除
+            strSql = "update  t2_cash_register_order_product set DeleteFlag =1 where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "'";
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新本地数据库失败:" + ex.ToString());
+                return false;
+            }
+            //再插入商品
+            foreach (var item in CurrentMsg.ProductPricing)
+            {
+                strSql = "INSERT INTO t2_cash_register_order_product ";
+                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,SellAmount,SelllPrice) VALUES (";
+                strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
+                strSql += " " + item.ProductId + ",";
+                strSql += "'" + item.ProductCode + "',";
+                strSql += "'" + item.ProductName + "',";
+                strSql += "" + item.Amount + ",";
+                strSql += "" + item.SelllPrice + " ";
+                strSql += ")";
+                sqlite_cmd = sqlite_conn.CreateCommand();
+                try
+                {
+                    sqlite_cmd.CommandText = strSql;
+                    iRow = sqlite_cmd.ExecuteNonQuery();
+                }
+
+                catch (SQLiteException ex)
+                {
+                    MessageBox.Show("插入订单商品本地数据库失败:" + ex.ToString());
+                    return false;
+                }
+
+                if (0 == iRow)
+                {
+                    MessageBox.Show("插入商品本地订单本地数据库失败");
+                    return false;
+                }
+            }
+            CommUiltl.Log("本地更新订单成功");
+            return true;
+        }
+        
         internal static bool CloseOrderWhenPayAllFee()
         {
              string strSql = "update  t2_cash_register_order set ";
@@ -202,17 +329,18 @@ namespace CashRegisterApplication.comm
         internal static bool PayOrderByCash(int recieveFee)
         {
             CommUiltl.Log("Dao GenerateOrder");
-            CurrentMsg.Order.generatePayOrderNumber();
+           
             int iRow = 0;
             //插入订单
             string strSql = "insert into t2_cash_register_pay  ";
-            strSql += " (CashRegisterOrderNumber,CashRegisterPayOrderNumber,payFee,PayType,PayState,CreateTime,PayCode) VALUES (";
+            strSql += " (CashRegisterOrderNumber,CashRegisterPayOrderNumber,payFee,PayType,PayState,CreateTime,CloudState,PayCode) VALUES (";
             strSql += "'" + CurrentMsg.Order.OrderNumber + "',";
             strSql += "'" + CurrentMsg.Order.PayOrderNumber + "',";
             strSql += "" + recieveFee + ",";
             strSql += "" + CurrentMsg.PAY_TYPE_CASH + ",";
             strSql += "" + CurrentMsg.PAY_STATE_SUCCESS + ",";
             strSql += "datetime('now'),";
+            strSql += "" + CurrentMsg.CLOUD_SATE_PAY_GENERATE_INIT + ",";
             strSql += "'PayCode'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -235,6 +363,33 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             CommUiltl.Log("PayOrderByCash ok success");
+            return true;
+        }
+        //UpdatePayCloudStae
+        internal static bool UpdatePayCloudStae(int state)
+        {
+            CommUiltl.Log("Dao UpdatePayCloudStae");
+            int iRow = 0;
+            //插入订单
+            string strSql = "update t2_cash_register_pay set   CloudState=" + state + " where  CashRegisterPayOrderNumber='" + CurrentMsg.Order.PayOrderNumber + "' ";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新支付本地数据库云状态失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新支付本地数据库云状态");
+                return false;
+            }
+            CommUiltl.Log("更新支付本地数据库云状态 UpdatePayCloudStae ok success");
             return true;
         }
 

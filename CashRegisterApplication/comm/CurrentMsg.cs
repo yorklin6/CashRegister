@@ -18,10 +18,25 @@ namespace CashRegisterApplication.comm
         public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
         public static List<ProductPricing> ProductPricing = new List<ProductPricing>();//商品列表
 
-        public  const int PAY_STATE_INIT=0;
-        public const int PAY_STATE_SUCCESS = 1;
+        public const int PAY_STATE_INIT=0;
+        public const  int PAY_STATE_SUCCESS = 1;
 
         public const int PAY_TYPE_CASH = 1;
+
+        public const int CLOUD_SATE_ORDER_GENERATE_INIT = 0;
+        public const int CLOUD_SATE_ORDER_GENERATE_SUCCESS = 1;
+        public const int CLOUD_SATE_ORDER_GENERATE_FAILED = 2;
+
+        public const int CLOUD_SATE_ORDER_UPDATE_SUCCESS = 3;
+        public const int CLOUD_SATE_ORDER_UPDATE_FAILED = 4;
+
+        public const int CLOUD_SATE_PAY_GENERATE_INIT = 0;
+        public const int CLOUD_SATE_PAY_GENERATE_SUCCESS = 1;
+        public const int CLOUD_SATE_PAY_GENERATE_FAILED = 2;
+
+        public const int CLOUD_SATE_PAY_UPDATE_SUCCESS = 3;
+        public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
+
         public static void ControlWindowsAfterPay()
         {
             CommUiltl.Log("ControlWindowsAfterPay" );
@@ -56,9 +71,14 @@ namespace CashRegisterApplication.comm
                 }
                 if (!HttpUtility.GenerateOrder())
                 {
-                    return false;
+                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_GENERATE_FAILED);
+                    //return false;
                 }
-          
+                else
+                {
+                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_GENERATE_SUCCESS);
+                }
+               
                 return true;
             }
 
@@ -66,36 +86,47 @@ namespace CashRegisterApplication.comm
             {
                 CommUiltl.Log(" strProductList is modify [" + Order.ProductList + "] -> [" + strProductList + "]");
                 Order.ProductList = strProductList;
+
                 if (!Dao.updateOrder())
                 {
                     return false;
                 }
                 if (!HttpUtility.UpdateOrder())
                 {
-                    return false;
+                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_SUCCESS);
+                    //return false;
                 }
-                Order.ProductList = strProductList;
+                else
+                {
+                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
+                }
+              
+
                 return true;
             }
             CommUiltl.Log(" not modify strProductList:"+ strProductList);
             return true;
-
         }
 
         internal static bool PayOrderByCash(int recieveFee)
         {
 
+            CurrentMsg.Order.generatePayOrderNumber();
             if (!Dao.PayOrderByCash(recieveFee))
             {
                 return false;
             }
-
-
             if (!HttpUtility.PayOrderByCash(recieveFee))
             {
-              
-                return false;
+                Dao.UpdatePayCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
+                //return false;
             }
+            else
+            {
+                Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
+            }
+
+            Dao.UpdatePayCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay = new PayWay();
             oPayWay.fee = recieveFee;
