@@ -65,15 +65,15 @@ namespace CashRegisterApplication.comm
             foreach (var item in CurrentMsg.ProductPricing)
             {
                 strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,PayState,SellAmount,CloudState,SelllPrice) VALUES (";
+                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,PayState,SellRetailDetailCount,CloudState,ActualPrice) VALUES (";
                 strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.ProductId + ",";
-                strSql += "'" + item.ProductCode + "',";
-                strSql += "'" + item.ProductName + "',";
+                strSql += " " + item.GoodsId + ",";
+                strSql += "'" + item.Barcode + "',";
+                strSql += "'" + item.GoodsName + "',";
                 strSql += "" + CurrentMsg.PAY_STATE_INIT + ",";
-                strSql += "" + item.Amount + ",";
+                strSql += "" + item.RetailDetailCount + ",";
                 strSql += "" + CurrentMsg.CLOUD_SATE_ORDER_GENERATE_INIT + ",";
-                strSql += "" + item.SelllPrice + " ";
+                strSql += "" + item.ActualPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
                 try
@@ -194,13 +194,13 @@ namespace CashRegisterApplication.comm
             foreach (var item in CurrentMsg.ProductPricing)
             {
                 strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,SellAmount,SelllPrice) VALUES (";
+                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,SellRetailDetailCount,ActualPrice) VALUES (";
                 strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.ProductId + ",";
-                strSql += "'" + item.ProductCode + "',";
-                strSql += "'" + item.ProductName + "',";
-                strSql += "" + item.Amount + ",";
-                strSql += "" + item.SelllPrice + " ";
+                strSql += " " + item.GoodsId + ",";
+                strSql += "'" + item.Barcode + "',";
+                strSql += "'" + item.Barcode + "',";
+                strSql += "" + item.RetailDetailCount + ",";
+                strSql += "" + item.ActualPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
                 try
@@ -267,13 +267,13 @@ namespace CashRegisterApplication.comm
             foreach (var item in CurrentMsg.ProductPricing)
             {
                 strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,ProductId,ProductCode,ProductName,SellAmount,SelllPrice) VALUES (";
+                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,SellRetailDetailCount,ActualPrice) VALUES (";
                 strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.ProductId + ",";
-                strSql += "'" + item.ProductCode + "',";
-                strSql += "'" + item.ProductName + "',";
-                strSql += "" + item.Amount + ",";
-                strSql += "" + item.SelllPrice + " ";
+                strSql += " " + item.GoodsId + ",";
+                strSql += "'" + item.Barcode + "',";
+                strSql += "'" + item.GoodsName + "',";
+                strSql += "" + item.RetailDetailCount + ",";
+                strSql += "" + item.ActualPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
                 try
@@ -326,7 +326,7 @@ namespace CashRegisterApplication.comm
         }
 
         /*********************支付单*********************/
-        internal static bool PayOrderByCash(int recieveFee)
+        internal static bool PayOrderByCash(long recieveFee)
         {
             CommUiltl.Log("Dao GenerateOrder");
            

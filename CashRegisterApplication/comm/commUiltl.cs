@@ -50,7 +50,7 @@ namespace CashRegisterApplication.comm
             return false;
         }
 
-        public static bool ConverStrYuanToUnion(object value, out int number)
+        public static bool ConverStrYuanToUnion(object value, out long number)
         {
             number = 0;
             if (CommUiltl.IsObjEmpty(value))
@@ -65,18 +65,18 @@ namespace CashRegisterApplication.comm
 
         }
 
-        public static bool CoverStrToInt(object value, out int number)
+        public static bool CoverStrToInt(object value, out long number)
         {
             number = 0;
             if (CommUiltl.IsObjEmpty(value))
             {
                 return false;
             }
-            return int.TryParse(value.ToString(), out number);
+            return long.TryParse(value.ToString(), out number);
         }
 
 
-        public static string CoverMoneyUnionToStrYuan(int money)
+        public static string CoverMoneyUnionToStrYuan(long money)
         {
             //保留小数点后两位
             return Convert.ToDecimal((double)money / 10000).ToString("0.00");

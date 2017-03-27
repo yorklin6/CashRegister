@@ -55,7 +55,7 @@ namespace CashRegisterApplication.comm
         }
 
 
-        internal static bool GenerateOrder(string strProductList, int orderFee)
+        internal static bool GenerateOrder(string strProductList, long orderFee)
         {
            
             Order.OrderFee = orderFee;
@@ -108,7 +108,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-        internal static bool PayOrderByCash(int recieveFee)
+        internal static bool PayOrderByCash(long recieveFee)
         {
 
             CurrentMsg.Order.generatePayOrderNumber();
@@ -142,9 +142,9 @@ namespace CashRegisterApplication.comm
     
     public class CashregisterOrderMsg
     {
-        public  int RecieveFee { get; set; }//已经收款
-        public  int OrderFee { get; set; }//订单价钱
-        public  int ChangeFee { get; set; }//
+        public  long RecieveFee { get; set; }//已经收款
+        public  long OrderFee { get; set; }//订单价钱
+        public  long ChangeFee { get; set; }//
         public  int  PayState { get; set; }//
         public  string OrderNumber { get; set; }//订单号
         public  string PayOrderNumber { get; set; }//支付单号
@@ -207,7 +207,7 @@ namespace CashRegisterApplication.comm
         public const string PAY_TYPE_ZHIFUBAO_DESC = "支付宝支付";
 
         public int payType { get; set; }
-        public int fee { get; set; }
+        public long fee { get; set; }
         public PayWay()
         {
             payType = 0;

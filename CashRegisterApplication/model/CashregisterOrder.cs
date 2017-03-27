@@ -13,12 +13,14 @@ namespace CashRegisterApplication.model
 
     public class CashRegisterModelOrderInfo
     {
-        public int CashRegisterOrderID { get; set; }
-        public String CashRegisterOrderNumber { get; set; }
-        public int OrderFee { get; set; }
-        public int ChangeFee { get; set; }
-        public int ReceiveFee { get; set; }
-        public int PayType { get; set; }
-        public int PayState { get; set; }
+        public long RetailBaseId { get; set; }
+        public String RetailBaseSerialNumber { get; set; }
+        public long PayState { get; set; }
+        public long StoreId { get; set; }
+        public long WhouseId { get; set; }
+        public long CashierId { get; set; }
+        public long PosId { get; set; }
+        public long RetailTotalFee { get; set; }
+        public long ReceiveFee { get; set; }
     }
 }

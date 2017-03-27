@@ -30,7 +30,7 @@ namespace CashRegisterApplication.window
         {
             this.Show();
             //显示未收款
-            int leftMoney = CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee;
+            long leftMoney = CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee;
             if (leftMoney < 0)
             {
                 leftMoney = 0;

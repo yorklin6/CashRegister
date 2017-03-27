@@ -122,7 +122,7 @@ namespace CashRegiterApplication
             return true;
         }
         /***************************************支付***************************************/
-        public static bool PayOrderByCash(int recieveFee)
+        public static bool PayOrderByCash(long recieveFee)
         {
             string funcUrl = userPayFunc + "orderNumber=" + CurrentMsg.Order.OrderNumber + "&payCode=payCode&payFee=" + recieveFee+ "&payType="+CurrentMsg.PAY_TYPE_CASH;//payType=1现金支付
             PayOrderResp oPayOrderResp = new PayOrderResp();
@@ -146,7 +146,7 @@ namespace CashRegiterApplication
 
         /***************************************拉取商品***************************************/
         //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
-        public static bool GetProductByProductCode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
         {
             string funcUrl = ProductCodeFunc + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);

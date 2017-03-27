@@ -89,15 +89,15 @@ namespace CashRegisterApplication.window
             {
                 return;
             }
-           
+
             //金额发生变化就改变下找零多少
-            int recieveFee = 0;
+            long recieveFee = 0;
             if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
                 MessageBox.Show("总价错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            int change = recieveFee - CurrentMsg.Order.OrderFee;
+            long change = recieveFee - CurrentMsg.Order.OrderFee;
             if (change >0 )
             {
                 this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
@@ -129,17 +129,17 @@ namespace CashRegisterApplication.window
 
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
-            int recieveFee = 0;
+            long recieveFee = 0;
             if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            int change = recieveFee + CurrentMsg.Order.RecieveFee - CurrentMsg.Order.OrderFee;
+            long change = recieveFee + CurrentMsg.Order.RecieveFee - CurrentMsg.Order.OrderFee;
             string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
             if (change < 0)
             {
-                int leftFee = 0 - change;
+                long leftFee = 0 - change;
                 showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
                  + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
             }else if (change >0 )

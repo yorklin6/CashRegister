@@ -41,8 +41,8 @@
             this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnProductSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnRetailSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNormalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -94,8 +94,8 @@
             this.dataGridView_productList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIndex,
             this.ColumnProductCode,
-            this.ColumnProductName,
-            this.ColumnProductSpecification,
+            this.ColumnGoodsName,
+            this.ColumnRetailSpecification,
             this.ColumnNormalPrice,
             this.ColumnAmount,
             this.ColumnMoney,
@@ -172,15 +172,15 @@
             this.ColumnProductCode.HeaderText = "条码";
             this.ColumnProductCode.Name = "ColumnProductCode";
             // 
-            // ColumnProductName
+            // ColumnGoodsName
             // 
-            this.ColumnProductName.HeaderText = "名称";
-            this.ColumnProductName.Name = "ColumnProductName";
+            this.ColumnGoodsName.HeaderText = "名称";
+            this.ColumnGoodsName.Name = "ColumnGoodsName";
             // 
-            // ColumnProductSpecification
+            // ColumnRetailSpecification
             // 
-            this.ColumnProductSpecification.HeaderText = "规格";
-            this.ColumnProductSpecification.Name = "ColumnProductSpecification";
+            this.ColumnRetailSpecification.HeaderText = "规格";
+            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
             // 
             // ColumnNormalPrice
             // 
@@ -238,8 +238,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn orderMoney;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIndex;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProductCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProductName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProductSpecification;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnGoodsName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRetailSpecification;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNormalPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMoney;
