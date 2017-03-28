@@ -25,7 +25,7 @@ namespace CashRegiterApplication
     public class HttpUtility
     {
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
-        private static readonly string CashRegistHost = "http://aladdin.chalubo.com/cashRegister/";
+        private static readonly string CashRegistHost = "http://aladdin.chalubo.com/retail/";
         private static CookieContainer gCookies = null;//全局登录态cookie
         private static readonly string DefaultUser = "york";
         private static readonly string DefaultPassword = "york";
@@ -33,7 +33,7 @@ namespace CashRegiterApplication
         private static string gUserName;
         private static string gPassword;
         private static readonly string LoginFunc = "login.json?";
-        private static readonly string ProductCodeFunc = "getPricingByProductCode.json?productCode=";
+        private static readonly string ProductCodeFunc = "getPricingByBarcode.json?barCode=";
         private static readonly string GenerateOrderFunc = "generateOrder.json?";
         private static readonly string updateOrderFunc = "updateOrder.json?";
         private static readonly string userPayFunc = "userPay.json?";
