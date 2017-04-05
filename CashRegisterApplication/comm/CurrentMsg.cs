@@ -1,5 +1,7 @@
-﻿using CashRegisterApplication.window;
+﻿using CashRegisterApplication.model;
+using CashRegisterApplication.window;
 using CashRegiterApplication;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,27 +10,44 @@ using System.Windows.Forms;
 namespace CashRegisterApplication.comm
 {
     
-    public class CurrentMsg
+    public static class CurrentMsg
     {
-        public static CashregisterOrderMsg Order =new CashregisterOrderMsg();//当前订单
-        public static List<CashregisterOrderMsg> OrderList = new List<CashregisterOrderMsg>();//全局订单
-        public static ProductListWindow Window_ProductList =new ProductListWindow();//全局窗口
-        public static RecieveMoneyWindow Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
-        public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
-        public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
-        public static List<ProductPricing> ProductPricing = new List<ProductPricing>();//商品列表
+        public static bool initFlag=false;
+        public static ProductListWindow Window_ProductList;//全局窗口
+        public static RecieveMoneyWindow Window_RecieveMoney;//收款窗口
+        public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
+        public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin ;//微信收款窗口
 
+        public static StockOutDTO oStockOutDTO ;//商品列表
+        public static List<PayWay> listPayInfo ;
+        public static StockOutDTORespone oStockOutDToRespond;
+        public static HttpBaseRespone oHttpRespone;
+
+        public static PayWay oPayWay = new PayWay();//商品列表
+        
         public const int PAY_STATE_INIT=0;
         public const  int PAY_STATE_SUCCESS = 1;
-
         public const int PAY_TYPE_CASH = 1;
 
-        public const int CLOUD_SATE_ORDER_GENERATE_INIT = 0;
-        public const int CLOUD_SATE_ORDER_GENERATE_SUCCESS = 1;
-        public const int CLOUD_SATE_ORDER_GENERATE_FAILED = 2;
+     
 
-        public const int CLOUD_SATE_ORDER_UPDATE_SUCCESS = 3;
-        public const int CLOUD_SATE_ORDER_UPDATE_FAILED = 4;
+        public const int STOCK_BASE_STATUS_INIT = 0;
+        public const int STOCK_BASE_STATUS_NORMAL = 1;
+        public const int STOCK_BASE_STATUS_OUT = 2;
+
+
+
+        public const int CLOUD_SATE_PAY_SUCESS = 0;
+        public const int CLOUD_SATE_PAY_FAILD = 0;
+        //public const int CLOUD_SATE_ORDER_GENERATE_INIT = 0;
+        //public const int CLOUD_SATE_ORDER_GENERATE_SUCCESS = 1;//云端生成订单成功
+        //public const int CLOUD_SATE_ORDER_GENERATE_FAILED = 2;
+
+        //public const int CLOUD_SATE_ORDER_UPDATE_SUCCESS = 3;//云端更新订单成功
+        //public const int CLOUD_SATE_ORDER_UPDATE_FAILED = 4;
+
+        //public const int CLOUD_SATE_ORDER_CLOSE_SUCCESS = 5;//云端关闭订单成功
+        //public const int CLOUD_SATE_ORDER_CLOSE_FAILED = 6;
 
         public const int CLOUD_SATE_PAY_GENERATE_INIT = 0;
         public const int CLOUD_SATE_PAY_GENERATE_SUCCESS = 1;
@@ -37,101 +56,162 @@ namespace CashRegisterApplication.comm
         public const int CLOUD_SATE_PAY_UPDATE_SUCCESS = 3;
         public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
 
+        public static void Init()
+        {
+            if (initFlag)
+            {
+                return;
+            }
+
+            //Window_ProductList = new ProductListWindow();//全局窗口
+            Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
+            Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
+            Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
+
+            oStockOutDTO = new StockOutDTO();//商品列表
+            listPayInfo = new List<PayWay>();
+            oStockOutDToRespond = new StockOutDTORespone();
+            oHttpRespone = new HttpBaseRespone();
+            initFlag = true;
+        }
+
+
+
+        public static void Clean()
+        {
+            listPayInfo.Clear();
+            oStockOutDTO.Base.Reset();
+            oStockOutDTO.details.Clear();
+            oStockOutDToRespond = new StockOutDTORespone();
+        }
+
+
         public static void ControlWindowsAfterPay()
         {
             CommUiltl.Log("ControlWindowsAfterPay" );
-            if (Order.RecieveFee < Order.OrderFee)
+            if (CurrentMsg.oStockOutDTO.Base.RecieveFee < CurrentMsg.oStockOutDTO.Base.orderAmount)
             {
                 CommUiltl.Log("Window_RecieveMoney Show");
                 Window_RecieveMoney.ShowPaidMsg();
                 return;
             }
-            //Order.RecieveFee >= Order.OrderFee 说明已经收钱完毕
-            if (!Dao.CloseOrderWhenPayAllFee())
+            //Order.RecieveFee >= Order.orderAmount 说明已经收钱完毕
+            if (!CloseOrderWhenPayAllFee())
             {
                 return ;
             }
             Window_ProductList.CloseOrderByControlWindow();
         }
 
+        internal static bool CloseOrderWhenPayAllFee()
+        {
+            CurrentMsg.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
+
+            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO.Base, ref CurrentMsg.oHttpRespone);
+            
+            if (!Dao.UpdateOrderCloudState(CurrentMsg.oStockOutDTO))
+            {
+                return false;
+            }
+            return true;
+        }
 
         internal static bool GenerateOrder(string strProductList, long orderFee)
         {
            
-            Order.OrderFee = orderFee;
-            if (Order.OrderNumber == "")
+            CurrentMsg.oStockOutDTO.Base.orderAmount = orderFee;
+            if (CurrentMsg.oStockOutDTO.Base.status == CurrentMsg.STOCK_BASE_STATUS_INIT)
             {
-                Order.ProductList = strProductList;
+                CurrentMsg.oStockOutDTO.Base.ProductList = strProductList;
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
-                Order.generateOrderNumber();
+                CurrentMsg.oStockOutDTO.Base.generateSeariseNumber();
+
+                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO.Base, ref CurrentMsg.oHttpRespone);
+
+                if(CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
+                {
+                    CurrentMsg.oStockOutDTO.Base.stockOutId = CurrentMsg.oStockOutDToRespond.data.Base.stockOutId;
+                    _SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CurrentMsg.oStockOutDTO );
+
+                }else
+                {
+                    CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
+                    //关单业务错误，继续走，让异步去重试
+                    //if (0 != CurrentMsg.oStockOutDToRespond.errorCode)
+                    //{
+                    //    CurrentMsg.oStockOutDTO.Base.cloudAddFlag = CLOUD_SATE_BUSSINESS_FAILD;
+                    //    return false;
+                    //}
+                }
                 //插入本地数据库表
-                if (!Dao.GenerateOrder())
+                if (!Dao.GenerateOrder(CurrentMsg.oStockOutDTO))
                 {
                     return false;
                 }
-                if (!HttpUtility.GenerateOrder())
-                {
-                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_GENERATE_FAILED);
-                    //return false;
-                }
-                else
-                {
-                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_GENERATE_SUCCESS);
-                }
-               
                 return true;
             }
 
-            if ( 0 != Order.ProductList.CompareTo(strProductList)  )
+            if (strProductList != null && 0 != CurrentMsg.oStockOutDTO.Base.ProductList.CompareTo(strProductList))
             {
-                CommUiltl.Log(" strProductList is modify [" + Order.ProductList + "] -> [" + strProductList + "]");
-                Order.ProductList = strProductList;
+                CommUiltl.Log(" strProductList is modify [" + CurrentMsg.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
+                CurrentMsg.oStockOutDTO.Base.ProductList = strProductList;
+                CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond;
 
-                if (!Dao.updateOrder())
+                if (CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                {
+                    
+                }else
+                {
+                    CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
+                }
+
+                if (!Dao.updateRetailStock(CurrentMsg.oStockOutDTO))
                 {
                     return false;
                 }
-                if (!HttpUtility.UpdateOrder())
-                {
-                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_SUCCESS);
-                    //return false;
-                }
-                else
-                {
-                    Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
-                }
-              
 
                 return true;
             }
             CommUiltl.Log(" not modify strProductList:"+ strProductList);
             return true;
         }
-
-        internal static bool PayOrderByCash(long recieveFee)
+        internal static void _SetStockDetailByHttpRespone(StockOutDTO http,ref StockOutDTO Db)
         {
-
-            CurrentMsg.Order.generatePayOrderNumber();
-            if (!Dao.PayOrderByCash(recieveFee))
+            if (oStockOutDToRespond.data.details.Count != CurrentMsg.oStockOutDTO.details.Count)
             {
-                return false;
-            }
-            if (!HttpUtility.PayOrderByCash(recieveFee))
-            {
-                Dao.UpdatePayCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
-                //return false;
+                //说明是有问题的
+                CommUiltl.Log("oRespond.data.details.Count[" + oStockOutDToRespond.data.details.Count + "] != CurrentMsg.oStockOutDTO.details.Count [" + CurrentMsg.oStockOutDTO.details.Count + "]");
+                MessageBox.Show("下单异常，请联系后台同学检查下单返回[" + oStockOutDToRespond.data.details.Count + "] != CurrentMsg.oStockOutDTO.details.Count [" + CurrentMsg.oStockOutDTO.details.Count + "]");
             }
             else
             {
-                Dao.UpdateOrderCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
+                for (int i = 0; i < oStockOutDToRespond.data.details.Count; ++i)
+                {
+                    CurrentMsg.oStockOutDTO.details[i].id = oStockOutDToRespond.data.details[i].id;
+                }
+            }
+        }
+        internal static bool PayOrderByCash(long recieveFee)
+        {
+            CurrentMsg.oPayWay.payType = PAY_TYPE_CASH;
+            CurrentMsg.oPayWay.payFee = recieveFee;
+            CurrentMsg.oPayWay.generatePayOrderNumber();
+            CurrentMsg.oPayWay.serialNumber = CurrentMsg.oStockOutDTO.Base.serialNumber;
+            CurrentMsg.oPayWay.payStatus=  CurrentMsg.PAY_STATE_SUCCESS;
+            CurrentMsg.oPayWay.cloudState = CurrentMsg.CLOUD_SATE_PAY_SUCESS ;
+          
+            if (!HttpUtility.PayOrdr(CurrentMsg.oPayWay))
+            {
+                CurrentMsg.oPayWay.cloudState = CLOUD_SATE_PAY_FAILD;
             }
 
-            Dao.UpdatePayCloudStae(CLOUD_SATE_ORDER_UPDATE_FAILED);
+            if (!Dao.GeneratePay(CurrentMsg.oPayWay))
+            {
+                return false;
+            }
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay = new PayWay();
-            oPayWay.fee = recieveFee;
-            oPayWay.payType = PayWay.PAY_TYPE_CASH;
-            CurrentMsg.Order.addPayWay(oPayWay);
+            CurrentMsg.oStockOutDTO.addPayWay(CurrentMsg.oPayWay);
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
@@ -139,79 +219,5 @@ namespace CashRegisterApplication.comm
         }
 
     }
-    
-    public class CashregisterOrderMsg
-    {
-        public  long RecieveFee { get; set; }//已经收款
-        public  long OrderFee { get; set; }//订单价钱
-        public  long ChangeFee { get; set; }//
-        public  int  PayState { get; set; }//
-        public  string OrderNumber { get; set; }//订单号
-        public  string PayOrderNumber { get; set; }//支付单号
-        public  string ProductList { get; set; }//找零
-        public  List<PayWay> listPayInfo=new List<PayWay>();
-
-        public CashregisterOrderMsg()
-        {
-            RecieveFee = 0;
-            OrderFee = 0;
-            ChangeFee = 0;
-            OrderNumber = "";
-            PayState = CurrentMsg.PAY_STATE_INIT;
-        }
-
-        public  void addPayWay(PayWay oPayWay)
-        {
-            CommUiltl.Log("RecieveFee before:"+ RecieveFee);
-            RecieveFee += oPayWay.fee;
-            CommUiltl.Log("RecieveFee after:" + RecieveFee);
-            if (RecieveFee > OrderFee)
-            {
-                ChangeFee = RecieveFee - OrderFee;
-            }
-          
-            listPayInfo.Add(oPayWay);
-        }
-
-        public  void generateOrderNumber()
-        {
-            OrderNumber= "sell-" + DateTime.Now.ToString("yyMMdd-HHmmss");
-        }
-
-        public void generatePayOrderNumber()
-        {
-            PayOrderNumber = "pay-" + DateTime.Now.ToString("yyMMdd-HHmmss");
-        }
-
-        public  void Clean()
-        {
-            RecieveFee = 0;
-            OrderFee = 0;
-            ChangeFee = 0;
-            OrderNumber = "";
-            ProductList = "";
-            listPayInfo.Clear();
-        }
-
-    }
-
-    public class PayWay
-    {
-        public const int PAY_TYPE_CASH = 1;
-        public const string PAY_TYPE_CASH_DESC = "现金";
-
-        public  const int PAY_TYPE_WEIXIN = 2;
-        public const string PAY_TYPE_WEIXIN_DESC = "微信支付";
-
-        public  const int PAY_TYPE_ZHIFUBAO = 3;
-        public const string PAY_TYPE_ZHIFUBAO_DESC = "支付宝支付";
-
-        public int payType { get; set; }
-        public long fee { get; set; }
-        public PayWay()
-        {
-            payType = 0;
-            fee = 0;
-        }
-    }
+  
 }

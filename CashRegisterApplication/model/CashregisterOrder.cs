@@ -1,26 +1,169 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CashRegisterApplication.comm;
 
 namespace CashRegisterApplication.model
 {
-    public class CashregisterOrderResp
+    public class StockOutDTORespone
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public CashRegisterModelOrderInfo data;
+        public StockOutDTO data;
     }
 
-    public class CashRegisterModelOrderInfo
+
+    public class StockOutDTO
     {
-        public long RetailBaseId { get; set; }
-        public String RetailBaseSerialNumber { get; set; }
-        public long PayState { get; set; }
-        public long StoreId { get; set; }
-        public long WhouseId { get; set; }
-        public long CashierId { get; set; }
-        public long PosId { get; set; }
-        public long RetailTotalFee { get; set; }
-        public long ReceiveFee { get; set; }
+        public StockOutBase Base;
+        public List<StockOutDetail> details;
+
+        public StockOutDTO()
+        {
+            Base = new StockOutBase();
+            details = new List<StockOutDetail>();
+        }
+
+        internal void addPayWay(PayWay oPayWay)
+        {
+            CommUiltl.Log("RecieveFee before:" + Base.RecieveFee);
+            Base.RecieveFee += oPayWay.payFee;
+            CommUiltl.Log("RecieveFee after:" + Base.RecieveFee);
+            if (Base.RecieveFee > Base.orderAmount)
+            {
+                Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
+            }
+
+         
+        }
     }
+
+    public class PayWay
+    {
+        public const int PAY_TYPE_CASH = 1;
+        public const string PAY_TYPE_CASH_DESC = "现金";
+
+        public const int PAY_TYPE_WEIXIN = 2;
+        public const string PAY_TYPE_WEIXIN_DESC = "微信支付";
+
+        public const int PAY_TYPE_ZHIFUBAO = 3;
+        public const string PAY_TYPE_ZHIFUBAO_DESC = "支付宝支付";
+
+        public int payType { get; set; }
+        public long payFee { get; set; }
+        public string PayOrderNumber { get; internal set; }
+        public String serialNumber { get; set; }
+        public int payStatus { get; set; }
+        public int cloudState { get; set; }
+        public PayWay()
+        {
+            payType = 0;
+            payFee = 0;
+            payStatus = 0;
+            cloudState = 0;
+            PayOrderNumber = "";
+            serialNumber = "";
+        }
+
+
+        internal void generatePayOrderNumber()
+        {
+            PayOrderNumber = "pay-" + DateTime.Now.ToString("yyMMdd-HHmmss");
+        }
+    }
+
+    public class StockOutBase
+    {
+        public long stockOutId { get; set; }
+        public String serialNumber { get; set; }
+        public Byte type { get; set; }
+        public long storeId { get; set; }
+        public long whouseId { get; set; }
+        public long relatedOrder { get; set; }
+        public long clientId { get; set; }
+        public long posId { get; set; }
+        public long cashierId { get; set; }
+        public long orderAmount { get; set; }
+        public String creator { get; set; }
+        public long createTime { get; set; }
+        public long updateTime { get; set; }
+        public long stockOutTime { get; set; }
+        public Byte status { get; set; }
+        public String remark { get; set; }
+
+
+        public long RecieveFee { get; set; }
+        public String ProductList { get; set; }
+        public long ChangeFee { get; set; }
+
+
+        public String cloudReqJson { get; set; }
+        public int cloudAddFlag { get; set; }
+        public int cloudCloseFlag { get; set; }
+        public int cloudDeleteFlag { get; set; }
+        public int cloudUpdateFlag { get; set; }
+        public String cloudRespJson { get; set; }
+
+        public void generateSeariseNumber()
+        {
+            CurrentMsg.oStockOutDTO.Base.serialNumber = "retail-" + DateTime.Now.ToString("yyMMdd-HHmmss");
+        }
+
+
+        internal void Reset()
+        {
+
+            CurrentMsg.oStockOutDTO.Base.serialNumber = "";
+
+            CurrentMsg.oStockOutDTO.Base.stockOutId = 0;
+            CurrentMsg.oStockOutDTO.Base.RecieveFee = 0;
+            CurrentMsg.oStockOutDTO.Base.orderAmount = 0;
+            CurrentMsg.oStockOutDTO.Base.ChangeFee = 0;
+
+            CurrentMsg.oStockOutDTO.Base.type = 1;
+            CurrentMsg.oStockOutDTO.Base.storeId = 1;
+            CurrentMsg.oStockOutDTO.Base.whouseId = 1;
+            CurrentMsg.oStockOutDTO.Base.relatedOrder = 0;
+            CurrentMsg.oStockOutDTO.Base.posId = 1;
+            CurrentMsg.oStockOutDTO.Base.clientId = 1;
+            CurrentMsg.oStockOutDTO.Base.cashierId = 1;
+            CurrentMsg.oStockOutDTO.Base.orderAmount = 0;
+            CurrentMsg.oStockOutDTO.Base.creator = "sys";
+            CurrentMsg.oStockOutDTO.Base.status = CurrentMsg.STOCK_BASE_STATUS_INIT;
+            CurrentMsg.oStockOutDTO.Base.remark = "";
+
+            CurrentMsg.oStockOutDTO.Base.cloudAddFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudReqJson = "";
+            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+        }
+
+    }
+    public class StockOutDetail
+    {
+ 
+        public long id { get; set; }
+        public long stockOutId { get; set; }
+        public long goodsId { get; set; }
+        public String goodsName { get; set; }
+        public String barcode { get; set; }
+        public String specification { get; set; }
+        public String unit { get; set; }
+        public long produceTime { get; set; }
+        public long expireTime { get; set; }
+        public long orderCount { get; set; }
+        public long actualCount { get; set; }
+        public long actualDifference { get; set; }
+        public long unitPrice { get; set; }
+        public long subtotal { get; set; }
+        public String remark { get; set; }
+
+        public   int status { get; set; }
+        internal int cloudState;
+
+    }
+
+
+
 }

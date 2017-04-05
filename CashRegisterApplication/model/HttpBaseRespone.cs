@@ -4,11 +4,9 @@ using System.Text;
 
 namespace CashRegisterApplication.model
 {
-    public class PayOrderResp
+    public class HttpBaseRespone
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public StockOutDTO data;
     }
-  
 }

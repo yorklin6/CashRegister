@@ -25,19 +25,30 @@ namespace CashRegiterApplication
 
         public ProductListWindow()
         {
-
+            CurrentMsg.Init();
             InitializeComponent();
             InitData();
         }
 
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
-            //_GoProductList();
+            SetTimerTask();
             CurrentMsg.Window_ProductList = this;//全局窗口
             Dao.ConnecSql();
         }
+        private void SetTimerTask()
+        {
+            Timer MyTimer = new Timer();
+            MyTimer.Interval = (1 * 60 * 1000); // 1 mins
+            MyTimer.Tick += new EventHandler(MyTimer_Tick);
+            MyTimer.Start();
+        }
+        private void MyTimer_Tick(object sender, EventArgs e)
+        {
+            CommUiltl.Log("MyTimer_Tick begin");
+            CommUiltl.Log("MyTimer_Tick end");
+        }
 
-     
         public System.Windows.Forms.DataGridView GetDataGridViewProduct()
         {
             return this.dataGridView_productList;
@@ -87,7 +98,7 @@ namespace CashRegiterApplication
             this.ColumnRemark.ReadOnly = true;
             this.ColumnMoney.ReadOnly = true;
             this.orderMsg.ReadOnly = true;
-            System.Windows.Forms.Clipboard.SetText("4891913690152");
+            System.Windows.Forms.Clipboard.SetText("9556247516480");
             gConstructEnd = true;
         }
       
@@ -95,7 +106,8 @@ namespace CashRegiterApplication
  
         private void _InitOrderMsg()
         {
-            CurrentMsg.Order.Clean();//清空order信息
+            // CurrentMsg.oStockOutDTO.Base.Clean();//清空order信息
+            CurrentMsg.oStockOutDTO.Base.Reset();
             this.dataGridView_order.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
@@ -130,18 +142,18 @@ namespace CashRegiterApplication
         private bool  _GenerateProductListForOrder(ref string strProductList)
         {
             long rowCount = this.dataGridView_productList.RowCount;
-            long  money = 0, RetailDetailCount =0 , GoodsId = 0 ;
+            long  subtotal = 0, RetailDetailCount =0 ,price =0 ;
 
-            CurrentMsg.ProductPricing.Clear();
+            CurrentMsg.oStockOutDTO.details.Clear();
             for (int index = 0; index < rowCount; ++index)
             {
-                ProductPricing oProductPricing = new ProductPricing();
+                StockOutDetail oStockOutDetail = new StockOutDetail();
                 if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value) )
                 {
                     continue;
                 }
 
-                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out subtotal))
                 {
                     MessageBox.Show("错误行 PRODUCT_MONEY：" + index);
                     return false;
@@ -152,23 +164,35 @@ namespace CashRegiterApplication
                     MessageBox.Show("错误行 PRODUCT_RetailDetailCount：" + index);
                     return false;
                 }
-             
-                strProductList += this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value + ":";
-                strProductList += RetailDetailCount + ":";
-                strProductList += money + "|";
 
-               
-                if (!CommUiltl.CoverStrToInt(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_ID].Value, out GoodsId))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
                 {
-                    MessageBox.Show("错误行：" + index);
+                    MessageBox.Show("错误行 PRODUCT_NORMAL_PRICE：" + index);
                     return false;
                 }
 
-                oProductPricing.Barcode = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString();
-                oProductPricing.GoodsId= GoodsId;
-                oProductPricing.ActualPrice = money;
-                oProductPricing.RetailDetailCount = RetailDetailCount;
-                CurrentMsg.ProductPricing.Add(oProductPricing);
+                strProductList += this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value + ":";
+                strProductList += RetailDetailCount + ":";
+                strProductList += subtotal + "|";
+
+                String strJson = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_JSON].Value.ToString();
+                ProductPricing oProductPricing = JsonConvert.DeserializeObject<ProductPricing>(strJson);
+
+                oStockOutDetail.goodsId = oProductPricing.goodsId;
+                oStockOutDetail.actualCount = RetailDetailCount;
+                oStockOutDetail.goodsName = oProductPricing.goodsName;
+                oStockOutDetail.unit = oProductPricing.baseUnit;
+                oStockOutDetail.specification = oProductPricing.specification;
+                oStockOutDetail.stockOutId = 0;
+                oStockOutDetail.status = CurrentMsg.PAY_STATE_INIT;
+                oStockOutDetail.cloudState = CurrentMsg.CLOUD_SATE_HTTP_SUCESS;
+
+                oStockOutDetail.barcode = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString();
+                oStockOutDetail.unitPrice = price;
+                oStockOutDetail.subtotal = subtotal;
+
+                CurrentMsg.oStockOutDTO.details.Add(oStockOutDetail);
+
             }
             return true;
         }
@@ -197,13 +221,13 @@ namespace CashRegiterApplication
 
         private void _ShowPayTipsInProductListAndSaveOrderMsg()
         {
-            if (CurrentMsg.Order.RecieveFee >= CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee == 0)
+            if (CurrentMsg.oStockOutDTO.Base.RecieveFee >= CurrentMsg.oStockOutDTO.Base.orderAmount && CurrentMsg.oStockOutDTO.Base.ChangeFee == 0)
             {
                 System.Windows.Forms.MessageBox.Show("付款成功,无需找零");
             }
-            else if (CurrentMsg.Order.RecieveFee > CurrentMsg.Order.OrderFee && CurrentMsg.Order.ChangeFee > 0)
+            else if (CurrentMsg.oStockOutDTO.Base.RecieveFee > CurrentMsg.oStockOutDTO.Base.orderAmount && CurrentMsg.oStockOutDTO.Base.ChangeFee > 0)
             {
-                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.ChangeFee) + " 元");
+                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.ChangeFee) + " 元");
             }
             else
             {
@@ -214,29 +238,29 @@ namespace CashRegiterApplication
         private void _SetDataGridViewOrderFee()
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.ChangeFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.RecieveFee) ;
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.ChangeFee);
+            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.RecieveFee) ;
         }
 
         private void _SetPayWayGrid()
         {
-            foreach (var item in CurrentMsg.Order.listPayInfo)
+            foreach (var item in CurrentMsg.listPayInfo)
             {
                 int i = this.dataGridView_payWay.Rows.Add();
                 if (item.payType == PayWay.PAY_TYPE_CASH)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.fee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
                 }
 
             }
@@ -286,7 +310,7 @@ namespace CashRegiterApplication
                 MessageBox.Show("错误数量：" + rowIndex);
                 return false;
             }
-
+          
             if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
             {
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
@@ -305,7 +329,7 @@ namespace CashRegiterApplication
         private void _SetOrderPrice()
         {
             long rowCount = this.dataGridView_productList.RowCount;
-            long orderPrice = 0, money = 0;
+            long orderPrice = 0, subtotal = 0;
             for (int index = 0; index < rowCount; ++index)
             {
                 if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
@@ -313,13 +337,13 @@ namespace CashRegiterApplication
                     continue;
                 }
 
-                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out money))
+                if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_MONEY].Value, out subtotal))
                 {
                     MessageBox.Show("错误行：" + index);
                     return;
                 }
 
-                orderPrice += money;
+                orderPrice += subtotal;
             }
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
             this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
@@ -337,55 +361,57 @@ namespace CashRegiterApplication
                 return;
             }
 
-            string Barcode = currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString().Trim();
-            if (Barcode == "")
+            string barcode = currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString().Trim();
+            if (barcode == "")
             {
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
                 MessageBox.Show("当前行有问题 rowIndex:" + rowIndex + " columnIndex" + columnIndex);
                 return;
             }
 
-            ProductPricingInfoResp oProductPricingInfoResp = new ProductPricingInfoResp();
-            if (!HttpUtility.GetProductByBarcode(Barcode, ref oProductPricingInfoResp))
+            ProductPricingInfoResp oStockOutDetailInfoResp = new ProductPricingInfoResp();
+            if (!HttpUtility.GetProductByBarcode(barcode, ref oStockOutDetailInfoResp))
             {
                 //网络出现错误，要访问本地
                 MessageBox.Show("网络出现错误" );
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
                 return;
             }
-            if (oProductPricingInfoResp.errorCode != 0)
+            if (oStockOutDetailInfoResp.errorCode != 0 || oStockOutDetailInfoResp.data.list.Count == 0)
             {
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
-                MessageBox.Show("后台返回商品失败 Barcode:" + Barcode);
+                MessageBox.Show("后台返回商品失败 barcode:" + barcode);
                 return;
             }
         
-            ProductPricing productInfo = oProductPricingInfoResp.data.info;
-            if (CommUiltl.IsObjEmpty(productInfo.Barcode) ||
-               CommUiltl.IsObjEmpty(productInfo.RetailPrice) ||
-                CommUiltl.IsObjEmpty(productInfo.GoodsName)
+            ProductPricing productInfo = oStockOutDetailInfoResp.data.list[0];
+            if (CommUiltl.IsObjEmpty(productInfo.barcode) ||
+               CommUiltl.IsObjEmpty(productInfo.retailPrice) ||
+                CommUiltl.IsObjEmpty(productInfo.goodsName)
                 )
             {
-                MessageBox.Show("productInfo.Barcode:" + productInfo.Barcode);
-                MessageBox.Show("productInfo.RetailPrice:" + productInfo.RetailPrice);
-                MessageBox.Show("productInfo.GoodsName:" + productInfo.GoodsName);
+                MessageBox.Show("productInfo.barcode:" + productInfo.barcode);
+                MessageBox.Show("productInfo.retailPrice:" + productInfo.retailPrice);
+                MessageBox.Show("productInfo.GoodsName:" + productInfo.goodsName);
                 MessageBox.Show("后台返回 有问题商品");
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
                 return;
             }
 
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
-            currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value = productInfo.Barcode;
+            currentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value = productInfo.barcode;
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
-            currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = productInfo.GoodsName;
-            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = productInfo.RetailSpecification;
+            currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = productInfo.goodsName;
+            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = productInfo.baseUnit+"/" + productInfo.bigUnit+"/"+productInfo.specification;
             
-            string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(productInfo.RetailPrice);
+            string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(productInfo.retailPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
             currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = 1;
             currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = RetailPrice;
 
-            currentRow.Cells[CELL_INDEX.PRODUCT_ID].Value = productInfo.GoodsId;
+            currentRow.Cells[CELL_INDEX.PRODUCT_REMARK].Value = productInfo.remark;
+            currentRow.Cells[CELL_INDEX.PRODUCT_JSON].Value = JsonConvert.SerializeObject(productInfo);
+            //ProductID
             //更新订单价钱
             _SetOrderPrice();
 
@@ -695,7 +721,9 @@ namespace CashRegiterApplication
         public static int PRODUCT_NORMAL_PRICE = 4;
         public static int PRODUCT_RetailDetailCount = 5;
         public static int PRODUCT_MONEY = 6;
-        public static int PRODUCT_ID = 7;
+        public static int PRODUCT_REMARK = 7;
+        public static int PRODUCT_JSON = 8;
+
 
         public static int ORDER_COLUMN = 1;
         public static int RECIEVE_FEE_ROW = 0;

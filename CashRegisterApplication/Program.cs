@@ -1,4 +1,5 @@
 ﻿using CashRegisterApplication.comm;
+using CashRegisterApplication.model;
 using CashRegisterApplication.window;
 using CashRegiterApplication;
 using System;
@@ -15,6 +16,8 @@ namespace CashRegiterApplication
         [STAThread]
         static void Main()
         {
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
            Application.Run(new ProductListWindow());

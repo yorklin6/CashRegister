@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using CashRegisterApplication.comm;
 using CashRegiterApplication;
+using CashRegisterApplication.model;
 
 namespace CashRegisterApplication.window
 {
@@ -30,7 +31,7 @@ namespace CashRegisterApplication.window
         {
             this.Show();
             //显示未收款
-            long leftMoney = CurrentMsg.Order.OrderFee - CurrentMsg.Order.RecieveFee;
+            long leftMoney = CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee;
             if (leftMoney < 0)
             {
                 leftMoney = 0;
@@ -38,8 +39,8 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("leftMoney:"+ leftMoney);
             this.textBox_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
             //其他订单信息
-            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.OrderFee);
-            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.Order.RecieveFee);
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount);
+            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.RecieveFee);
         }
 
         public void ShowPaidMsg()
@@ -47,19 +48,19 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("已支付列表");
             this.Show();
             string strPaidInfo="已支付列表：\n";
-            foreach (var item in CurrentMsg.Order.listPayInfo)
+            foreach (var item in CurrentMsg.listPayInfo)
             {
                 if (item.payType== PayWay.PAY_TYPE_CASH)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyUnionToStrYuan(item.fee)+"元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee)+"元\n";
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.fee) + "元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee) + "元\n";
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.fee) + "元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee) + "元\n";
                 }
             }
             this.labelPaidMsg.Text = strPaidInfo;

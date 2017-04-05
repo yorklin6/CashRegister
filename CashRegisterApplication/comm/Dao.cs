@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashRegisterApplication.model;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Text;
@@ -27,23 +28,41 @@ namespace CashRegisterApplication.comm
             initDbFalg = true;
         }
         /*********************下单单*********************/
-        public static bool GenerateOrder()
+        public static bool GenerateOrder(StockOutDTO oStockOutDTO)
         {
             ConnecSql();
             CommUiltl.Log("Dao GenerateOrder");
             int iRow = 0;
             //插入订单
-           string strSql = "insert into t2_cash_register_order  ";
-            strSql += " (CashRegisterOrderNumber,OrderFee,ReceiveFee,ChangeFee,CreateTime,CloudState,PayState) VALUES (";
-            strSql += "'"+ CurrentMsg.Order.OrderNumber+"',";
-            strSql += "" + CurrentMsg.Order.OrderFee + ",";
-            strSql += "" + CurrentMsg.Order.RecieveFee + ",";
-            strSql += "" + CurrentMsg.Order.ChangeFee + ",";
+           string strSql = "insert into tb_stock_out_base  ";
+            strSql += " (stock_out_id,serial_number,type,store_id,whouse_id,";
+            strSql += "related_order,client_id,pos_id,cashier_id,order_amount,";
+            strSql += "recieve_fee,change_fee,create_time,";
+            strSql += "cloud_req_json,cloud_add_flag,cloud_update_flag,cloud_close_flag,cloud_delete_flag,";
+            strSql += "remark,status) VALUES (";
+            strSql += "'" + oStockOutDTO.Base.stockOutId + "',";
+            strSql += "'"+ oStockOutDTO.Base.serialNumber+"',";
+            strSql += "'" + oStockOutDTO.Base.type + "',";
+            strSql += "" + oStockOutDTO.Base.storeId + ",";
+            strSql += "" + oStockOutDTO.Base.whouseId + ",";
+            strSql += "" + oStockOutDTO.Base.relatedOrder + ",";
+            strSql += "'" + oStockOutDTO.Base.clientId + "',";
+            strSql += "'" + oStockOutDTO.Base.posId + "',";
+            strSql += "'" + oStockOutDTO.Base.cashierId + "',";
+            strSql += "" + oStockOutDTO.Base.orderAmount + ",";
+            strSql += "" + oStockOutDTO.Base.RecieveFee + ",";
+            strSql += "" + oStockOutDTO.Base.ChangeFee + ",";
             strSql += "datetime('now'),";
-            strSql += "" + CurrentMsg.CLOUD_SATE_ORDER_GENERATE_INIT + ",";
-            strSql += "" + CurrentMsg.Order.PayState + " ";
+            strSql += "'" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += "" + oStockOutDTO.Base.cloudAddFlag + ",";
+            strSql += "" + oStockOutDTO.Base.cloudUpdateFlag + ",";
+            strSql += "" + oStockOutDTO.Base.cloudCloseFlag + ",";
+            strSql += "" + oStockOutDTO.Base.cloudDeleteFlag + ",";
+            strSql += "'" + oStockOutDTO.Base.remark + "',";
+            strSql += "" + oStockOutDTO.Base.status + " ";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
+
             try
             {
                 CommUiltl.Log("sql: "+strSql);
@@ -62,20 +81,25 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //插入订单商品数据
-            foreach (var item in CurrentMsg.ProductPricing)
+            foreach (var item in oStockOutDTO.details)
             {
-                strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,PayState,SellRetailDetailCount,CloudState,ActualPrice) VALUES (";
-                strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.GoodsId + ",";
-                strSql += "'" + item.Barcode + "',";
-                strSql += "'" + item.GoodsName + "',";
-                strSql += "" + CurrentMsg.PAY_STATE_INIT + ",";
-                strSql += "" + item.RetailDetailCount + ",";
-                strSql += "" + CurrentMsg.CLOUD_SATE_ORDER_GENERATE_INIT + ",";
-                strSql += "" + item.ActualPrice + " ";
+                strSql = "INSERT INTO tb_stock_out_detail ";
+                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,cloud_state,specification,unit,order_count,unit_price) VALUES (";
+                strSql += " " + item .id + ",";
+                strSql += " " + item.stockOutId + ",";
+                strSql += " '" + oStockOutDTO.Base.serialNumber + "',";
+                strSql += " " + item.goodsId + ",";
+                strSql += " '" + item.goodsName + "',";
+                strSql += "'" + item.barcode + "',";
+                strSql += "" + item.actualCount + ",";
+                strSql += "" + item.cloudState + ",";
+                strSql += "'" + item.specification + "',";
+                strSql += "'" + item.unit + "',";
+                strSql += "" + item.orderCount + ",";
+                strSql += "" + item.unitPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
+
                 try
                 {
                     sqlite_cmd.CommandText = strSql;
@@ -97,13 +121,33 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("本地下单成功");
             return true;
         }
-        public static bool UpdateOrderCloudStae(int state)
+        
+        internal static bool UpdateOrderCloudState(StockOutDTO oStockOutDTO)
         {
             ConnecSql();
-            CommUiltl.Log("Dao GenerateOrderCloudSuccess");
+            CommUiltl.Log("Dao updateRetailStock");
             int iRow = 0;
             //插入订单
-            string strSql = "update t2_cash_register_order set   CloudState=" + state + " where  CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            string strSql = "update tb_stock_out_base set   ";
+            //strSql += " stock_out_id='" + oStockOutDTO.Base.stockOutId + "',";
+            //strSql += " type='" + oStockOutDTO.Base.type + "',";
+            //strSql += " store_id=" + oStockOutDTO.Base.storeId + ",";
+            //strSql += " whouse_id=" + oStockOutDTO.Base.whouseId + ",";
+            //strSql += " related_order=" + oStockOutDTO.Base.relatedOrder + ",";
+            //strSql += " client_id='" + oStockOutDTO.Base.clientId + "',";
+            //strSql += " pos_id='" + oStockOutDTO.Base.posId + "',";
+            //strSql += " cashier_id='" + oStockOutDTO.Base.cashierId + "',";
+            //strSql += " order_amount=" + oStockOutDTO.Base.orderAmount + ",";
+            //strSql += " recieve_fee=" + oStockOutDTO.Base.RecieveFee + ",";
+            //strSql += " change_fee=" + oStockOutDTO.Base.ChangeFee + ",";
+            strSql += " cloud_req_json='" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
+            strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
+            strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
+            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + "";
+            //strSql += " remark='" + oStockOutDTO.Base.remark + "',";
+            //strSql += " status=" + oStockOutDTO.Base.status + " ";
+            strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -114,52 +158,47 @@ namespace CashRegisterApplication.comm
 
             catch (SQLiteException ex)
             {
-                MessageBox.Show("更新本地数据库云操作失败:" + ex.ToString());
+                MessageBox.Show("更新本地数据库操作失败:" + ex.ToString());
                 return false;
             }
             if (0 == iRow)
             {
-                MessageBox.Show("更新本地数据库云操作失败");
+                MessageBox.Show("更新本地数据库操作失败");
                 return false;
             }
-            //插入订单商品数据
-            foreach (var item in CurrentMsg.ProductPricing)
-            {
-                strSql = "update t2_cash_register_order_product set   CloudState=" + state + " where  CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' and DeleteFlag =0 ";
-                sqlite_cmd = sqlite_conn.CreateCommand();
-                try
-                {
-                    sqlite_cmd.CommandText = strSql;
-                    iRow = sqlite_cmd.ExecuteNonQuery();
-                }
 
-                catch (SQLiteException ex)
-                {
-                    MessageBox.Show("更新商品本地数据库云操作库失败:" + ex.ToString());
-                    return false;
-                }
-
-                if (0 == iRow)
-                {
-                    MessageBox.Show("更新商品本地数据库云操作库失败");
-                    return false;
-                }
-            }
-            CommUiltl.Log("更新商品本地数据库云操作库失败成功");
+            CommUiltl.Log("更新商品本地数据库成功");
             return true;
         }
-        
 
+       
 
-        public static bool updateOrder()
+        public static bool updateRetailStock(StockOutDTO oStockOutDTO)
         {
             
             CommUiltl.Log("Dao GenerateOrder");
             int iRow = 0;
             //更新订单
-            string strSql = "update  t2_cash_register_order set ";
-            strSql += "OrderFee=" + CurrentMsg.Order.OrderFee + " ";
-            strSql += "where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            string strSql = "update tb_stock_out_base set   ";
+            strSql += " stock_out_id='" + oStockOutDTO.Base.stockOutId + "',";
+            strSql += " type='" + oStockOutDTO.Base.type + "',";
+            strSql += " store_id=" + oStockOutDTO.Base.storeId + ",";
+            strSql += " whouse_id=" + oStockOutDTO.Base.whouseId + ",";
+            strSql += " related_order=" + oStockOutDTO.Base.relatedOrder + ",";
+            strSql += " client_id='" + oStockOutDTO.Base.clientId + "',";
+            strSql += " pos_id='" + oStockOutDTO.Base.posId + "',";
+            strSql += " cashier_id='" + oStockOutDTO.Base.cashierId + "',";
+            strSql += " order_amount=" + oStockOutDTO.Base.orderAmount + ",";
+            strSql += " recieve_fee=" + oStockOutDTO.Base.RecieveFee + ",";
+            strSql += " change_fee=" + oStockOutDTO.Base.ChangeFee + ",";
+            strSql += " remark='" + oStockOutDTO.Base.remark + "',";
+            strSql += " cloud_req_json='" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
+            strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
+            strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
+            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + "";
+            strSql += " status=" + oStockOutDTO.Base.status + " ";
+            strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -178,7 +217,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             // //把这个单下面的商品都置为删除
-            strSql = "update  t2_cash_register_order_product set DeleteFlag =1 where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "'";
+            strSql = "update  tb_stock_out_detail set delete_flag =1 where serial_number='" + oStockOutDTO.Base.serialNumber + "'";
             try
             {
                 CommUiltl.Log("sql: " + strSql);
@@ -191,16 +230,21 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //再插入商品
-            foreach (var item in CurrentMsg.ProductPricing)
+            foreach (var item in oStockOutDTO.details)
             {
-                strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,SellRetailDetailCount,ActualPrice) VALUES (";
-                strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.GoodsId + ",";
-                strSql += "'" + item.Barcode + "',";
-                strSql += "'" + item.Barcode + "',";
-                strSql += "" + item.RetailDetailCount + ",";
-                strSql += "" + item.ActualPrice + " ";
+                strSql = "INSERT INTO tb_stock_out_detail ";
+                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,specification,unit,order_count,unit_price) VALUES (";
+                strSql += " " + item.id + ",";
+                strSql += " " + item.stockOutId + ",";
+                strSql += " '" + oStockOutDTO.Base.serialNumber + "',";
+                strSql += " " + item.goodsId + ",";
+                strSql += " '" + item.goodsName + "',";
+                strSql += "'" + item.barcode + "',";
+                strSql += "" + item.actualCount + ",";
+                strSql += "'" + item.specification + "',";
+                strSql += "'" + item.unit + "',";
+                strSql += "" + item.orderCount + ",";
+                strSql += "" + item.unitPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
                 try
@@ -230,9 +274,9 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("Dao UpdateOrderCloudSuccess");
             int iRow = 0;
             //更新订单
-            string strSql = "update  t2_cash_register_order set ";
-            strSql += "OrderFee=" + CurrentMsg.Order.OrderFee + " ";
-            strSql += "where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            string strSql = "update  tb_stock_out_base set ";
+            strSql += "orderAmount=" + CurrentMsg.oStockOutDTO.Base.orderAmount + " ";
+            strSql += "where serialNumber='" + CurrentMsg.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -251,7 +295,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             // //把这个单下面的商品都置为删除
-            strSql = "update  t2_cash_register_order_product set DeleteFlag =1 where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "'";
+            strSql = "update  tb_stock_out_detail set delete_flag =1 where serialNumber='" + CurrentMsg.oStockOutDTO.Base.serialNumber + "'";
             try
             {
                 CommUiltl.Log("sql: " + strSql);
@@ -264,16 +308,16 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //再插入商品
-            foreach (var item in CurrentMsg.ProductPricing)
+            foreach (var item in CurrentMsg.oStockOutDTO.details)
             {
-                strSql = "INSERT INTO t2_cash_register_order_product ";
-                strSql += " (CashRegisterOrderNumber,GoodsId,Barcode,GoodsName,SellRetailDetailCount,ActualPrice) VALUES (";
-                strSql += " '" + CurrentMsg.Order.OrderNumber + "',";
-                strSql += " " + item.GoodsId + ",";
-                strSql += "'" + item.Barcode + "',";
-                strSql += "'" + item.GoodsName + "',";
-                strSql += "" + item.RetailDetailCount + ",";
-                strSql += "" + item.ActualPrice + " ";
+                strSql = "INSERT INTO tb_stock_out_detail ";
+                strSql += " (serial_number,goodsId,barcode,goodsName,actualCount,unitPrice) VALUES (";
+                strSql += " '" + CurrentMsg.oStockOutDTO.Base.serialNumber + "',";
+                strSql += " " + item.goodsId + ",";
+                strSql += "'" + item.barcode + "',";
+                strSql += "'" + item.goodsName + "',";
+                strSql += "" + item.actualCount + ",";
+                strSql += "" + item.unitPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
                 try
@@ -300,9 +344,9 @@ namespace CashRegisterApplication.comm
         
         internal static bool CloseOrderWhenPayAllFee()
         {
-             string strSql = "update  t2_cash_register_order set ";
+             string strSql = "update  tb_stock_out_base set ";
             strSql += "PayState=" + CurrentMsg.PAY_STATE_SUCCESS + " ";
-            strSql += "where CashRegisterOrderNumber='" + CurrentMsg.Order.OrderNumber + "' ";
+            strSql += "where serialNumber='" + CurrentMsg.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;
             try
@@ -326,21 +370,21 @@ namespace CashRegisterApplication.comm
         }
 
         /*********************支付单*********************/
-        internal static bool PayOrderByCash(long recieveFee)
+        internal static bool GeneratePay(PayWay oPayWay)
         {
             CommUiltl.Log("Dao GenerateOrder");
            
             int iRow = 0;
             //插入订单
             string strSql = "insert into t2_cash_register_pay  ";
-            strSql += " (CashRegisterOrderNumber,CashRegisterPayOrderNumber,payFee,PayType,PayState,CreateTime,CloudState,PayCode) VALUES (";
-            strSql += "'" + CurrentMsg.Order.OrderNumber + "',";
-            strSql += "'" + CurrentMsg.Order.PayOrderNumber + "',";
-            strSql += "" + recieveFee + ",";
-            strSql += "" + CurrentMsg.PAY_TYPE_CASH + ",";
-            strSql += "" + CurrentMsg.PAY_STATE_SUCCESS + ",";
+            strSql += " (serial_number,CashRegisterPayOrderNumber,payFee,PayType,status,create_time,CloudState,PayCode) VALUES (";
+            strSql += "'" + oPayWay.serialNumber + "',";
+            strSql += "'" + oPayWay.PayOrderNumber + "',";
+            strSql += "" + oPayWay.payFee + ",";
+            strSql += "" + oPayWay.payType+ ",";
+            strSql += "" + oPayWay.payStatus + ",";
             strSql += "datetime('now'),";
-            strSql += "" + CurrentMsg.CLOUD_SATE_PAY_GENERATE_INIT + ",";
+            strSql += "" + oPayWay.cloudState + ",";
             strSql += "'PayCode'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -366,12 +410,12 @@ namespace CashRegisterApplication.comm
             return true;
         }
         //UpdatePayCloudStae
-        internal static bool UpdatePayCloudStae(int state)
+        internal static bool UpdatePayCloudStae(PayWay oPayWay)
         {
             CommUiltl.Log("Dao UpdatePayCloudStae");
             int iRow = 0;
             //插入订单
-            string strSql = "update t2_cash_register_pay set   CloudState=" + state + " where  CashRegisterPayOrderNumber='" + CurrentMsg.Order.PayOrderNumber + "' ";
+            string strSql = "update t2_cash_register_pay set   CloudState=" + oPayWay.cloudState + " where  CashRegisterPayOrderNumber='" + oPayWay.PayOrderNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -397,7 +441,7 @@ namespace CashRegisterApplication.comm
         {
             ConnecSql();
             //CurrentMsg
-            // CurrentMsg.ProductPricing;
+            // CurrentMsg.oStockOutDTO.details;
             CommUiltl.Log("Dao Daemone");
 
             // create a new SQL command:

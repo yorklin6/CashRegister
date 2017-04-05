@@ -25,19 +25,24 @@ namespace CashRegiterApplication
     public class HttpUtility
     {
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
-        private static readonly string CashRegistHost = "http://aladdin.chalubo.com/retail/";
+        private static readonly string CashRegistHost = "http://120.24.210.161:8686/jweb_sugu/";
         private static CookieContainer gCookies = null;//全局登录态cookie
         private static readonly string DefaultUser = "york";
         private static readonly string DefaultPassword = "york";
-        private static int timeOutDefault = 10000;//10秒超时
+        private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
         private static readonly string LoginFunc = "login.json?";
-        private static readonly string ProductCodeFunc = "getPricingByBarcode.json?barCode=";
-        private static readonly string GenerateOrderFunc = "generateOrder.json?";
+        private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
+        private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string updateOrderFunc = "updateOrder.json?";
         private static readonly string userPayFunc = "userPay.json?";
         private static UserLogin oLoginer;
+
+        public const int CLOUD_SATE_HTTP_SUCESS = 0;
+        public const int CLOUD_SATE_HTTP_FAILD = 1;
+        public const int CLOUD_SATE_BUSSINESS_FAILD = 2;
+        public static string lastErrorMsg;
 
         /***************************************登陆***************************************/
         public static bool Login(string user, string password)
@@ -72,88 +77,218 @@ namespace CashRegiterApplication
             return true;
         }
 
- 
+
 
         private static User GetLoginUser()
-        {
+                                                                                                                                                                                                                                {
             return oLoginer.data;
         }
+        // MessageBox.Show();
         /***************************************生成订单***************************************/
-        public static bool GenerateOrder()
+        public static   int GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
         {
-            string funcUrl = GenerateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderNumber + "&orderFee=" + CurrentMsg.Order.OrderFee;
-            CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
-            if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i=0;i<3; ++i)
+            {
+                iResult=_GenerateOrder(oReq, ref oRespond);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        public static int _GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        {
+            string funcUrl = GenerateOrderFunc ;
+            String json = JsonConvert.SerializeObject(oReq);
+
+            if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
+            {
+                CommUiltl.Log("ERR:Get GenerateOrder failed");
+                lastErrorMsg = "异常:请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+            if (oRespond.errorCode != 0)
+            {
+                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] m");
+                lastErrorMsg = "http生成订单异常:oCashregisterOrderResp errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] ";
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+
+            CommUiltl.Log("http生成订单成功:[" + JsonConvert.SerializeObject(oRespond)  + "]");
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
+
+        //关闭订单
+        internal static int CloseOrderWhenPayAllFee(StockOutBase oReq, ref HttpBaseRespone oRespond)
+        {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _CloseOrderWhenPayAllFee(oReq, ref oRespond);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static int _CloseOrderWhenPayAllFee(StockOutBase oReq, ref HttpBaseRespone oRespond)
+        {
+            string funcUrl = GenerateOrderFunc;
+            String json = JsonConvert.SerializeObject(oReq);
+
+            if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 CommUiltl.Log("ERR:Get GenerateOrder failed]");
-                MessageBox.Show("http生成订单异常:请检查网络");
-                return false;
+                lastErrorMsg = "http生成订单异常:请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
             }
-            if (oCashregisterOrderResp.errorCode != 0 )
+            if (oRespond.errorCode != 0)
             {
-                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + oCashregisterOrderResp.errorCode + "] msg:" + oCashregisterOrderResp.msg);
-                MessageBox.Show("http生成订单异常:oCashregisterOrderResp errorCode:[" + oCashregisterOrderResp.errorCode + "] msg:" + oCashregisterOrderResp.msg);
-                return false;
+                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] m");
+                lastErrorMsg = "http:生成订单异常 errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] ";
+                return CLOUD_SATE_BUSSINESS_FAILD;
             }
-            CommUiltl.Log("http生成订单成功:[" + oCashregisterOrderResp.ToString() + "]");
-            return true;
+            CommUiltl.Log("http关闭订单成功:[" + JsonConvert.SerializeObject(oRespond) + "]");
+            return CLOUD_SATE_HTTP_SUCESS;
         }
         //更新订单
-        internal static bool UpdateOrder()
+        public static int updateRetailStock(StockOutDTO oReq, ref StockOutDTORespone oRespond)
         {
-            string funcUrl = updateOrderFunc + "productList=" + CurrentMsg.Order.ProductList + "&orderNumber=" + CurrentMsg.Order.OrderNumber + "&orderFee=" + CurrentMsg.Order.OrderFee;
-            CashregisterOrderResp oCashregisterOrderResp = new CashregisterOrderResp();
-            if (!Get<CashregisterOrderResp>(funcUrl, ref oCashregisterOrderResp))
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _CloseOrderWhenPayAllFee(oReq, ref oRespond);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static int _UpdateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        {
+            string funcUrl = updateOrderFunc;
+            String json = JsonConvert.SerializeObject(oReq);
+
+            if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:http Get GenerateOrder failed");
-                MessageBox.Show("http更新订单异常:请检查网络");
-                return false;
+                lastErrorMsg = "http更新订单异常:请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
             }
 
-            if (oCashregisterOrderResp.errorCode != 0)
+            if (oRespond.errorCode != 0)
             {
-                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oCashregisterOrderResp);
-                MessageBox.Show("更新订单异常:oCashregisterOrderResp[" + oCashregisterOrderResp.errorCode+" msg:"+ oCashregisterOrderResp.msg + "]");
-                return false;
+                Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oRespond);
+                lastErrorMsg = "更新订单异常:oCashregisterOrderResp[" + oRespond.errorCode + " msg:" + oRespond.msg + "]";
+                return CLOUD_SATE_BUSSINESS_FAILD;
             }
-            CommUiltl.Log("更新订单成功:[" + oCashregisterOrderResp + "]");
+            CommUiltl.Log("更新订单成功:[" + oRespond + "]");
             //MessageBox.Show("更新订单成功:p[" + oCashregisterOrderResp + "]");
-            return true;
+            return CLOUD_SATE_HTTP_SUCESS;
         }
         /***************************************支付***************************************/
-        public static bool PayOrderByCash(long recieveFee)
+        public static bool PayOrdr(PayWay oPayWay)
         {
-            string funcUrl = userPayFunc + "orderNumber=" + CurrentMsg.Order.OrderNumber + "&payCode=payCode&payFee=" + recieveFee+ "&payType="+CurrentMsg.PAY_TYPE_CASH;//payType=1现金支付
+            for (int i = 0; i < 3; ++i)
+            {
+                if (_PayOrder(oPayWay))
+                {
+                    return true;
+                }
+            }
+            MessageBox.Show(lastErrorMsg);
+            lastErrorMsg = "";
+            return false;
+        }
+        public static int _PayOrder(PayWay oPayWay)
+        {
+            string funcUrl = userPayFunc + "orderNumber=" + oPayWay.PayOrderNumber + "&payCode=payCode&payFee=" + oPayWay.payFee+ "&payType="+ oPayWay.payType;
             PayOrderResp oPayOrderResp = new PayOrderResp();
             if (!Get<PayOrderResp>(funcUrl, ref oPayOrderResp))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
-                MessageBox.Show("支付异常：请检查网络");
-                return false;
+                lastErrorMsg = "支付异常：请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
             }
 
             if (oPayOrderResp.errorCode != 0)
             {
                 Console.WriteLine("ERR:Get failed oCashregisterOrderResp:" + oPayOrderResp);
-                MessageBox.Show("支付异常:oCashregisterOrderResp[" + oPayOrderResp + "]");
-                return false;
+                lastErrorMsg = "支付异常:oCashregisterOrderResp[" + oPayOrderResp + "]";
+                return CLOUD_SATE_BUSSINESS_FAILD;
             }
-
-           
-            return true;
+            return CLOUD_SATE_HTTP_SUCESS;
         }
 
         /***************************************拉取商品***************************************/
         //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
-        public static bool GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oProductPricingInfoResp)
+        {
+            for (int i = 0; i < 3; ++i)
+            {
+                if (_GetProductByBarcode(productCode,ref oProductPricingInfoResp))
+                {
+                    return true;
+                }
+            }
+            MessageBox.Show(lastErrorMsg);
+            lastErrorMsg = "";
+            return false;
+        }
+        public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
         {
             string funcUrl = ProductCodeFunc + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);
             if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
             {
                 Console.WriteLine("ERR:Get failed");
-                MessageBox.Show("登录异常:请检查网络");
+                lastErrorMsg = "异常:请检查网络";
+                return false;
+            }
+            return true;
+        }
+        public static bool Post<T>(string funcUrl,string json, ref T returnObj)
+        {
+            HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
+            request.Method = "POST";
+            request.UserAgent = DefaultUserAgent;
+            request.Timeout = timeOutDefault;
+            request.CookieContainer = gCookies;
+            request.ContentType = "application/json";
+            if (gCookies == null)
+            {
+                request.CookieContainer = new CookieContainer();
+            }
+            try
+            {
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine("网络异常");
+                HandelWEbException(e);
+                return false;
+            }
+
+        
+
+            if (!HttpResp<T>(request, ref returnObj))
+            {
+                Console.WriteLine("ERR:HttpResp failed");
                 return false;
             }
             return true;
@@ -161,6 +296,7 @@ namespace CashRegiterApplication
         public static bool Get<T>(string funcUrl, ref T returnObj)
         {
             HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
             request.Method = "GET";
             request.UserAgent = DefaultUserAgent;
             request.Timeout = timeOutDefault;
@@ -197,6 +333,7 @@ namespace CashRegiterApplication
             try
             {
                 returnObj = JsonConvert.DeserializeObject<T>(content);
+                Console.WriteLine("DEBUG:response.content:"+ content);
             }
             catch (Exception e)
             {
