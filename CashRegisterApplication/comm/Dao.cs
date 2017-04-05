@@ -1,4 +1,5 @@
 ﻿using CashRegisterApplication.model;
+using CashRegiterApplication;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -11,6 +12,9 @@ namespace CashRegisterApplication.comm
     {
         // We use these three SQLite objects:
         public static SQLiteConnection sqlite_conn;
+
+
+
         public static SQLiteCommand sqlite_cmd;
         public static SQLiteDataReader sqlite_datareader;
         public static bool initDbFalg=false;
@@ -341,7 +345,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("本地更新订单成功");
             return true;
         }
-        
+        //关单
         internal static bool CloseOrderWhenPayAllFee()
         {
              string strSql = "update  tb_stock_out_base set ";
@@ -368,7 +372,56 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("CloseOrderWhenPayAllFee ok success");
             return true;
         }
+        //取出云同步失败的订单
+        internal static bool GetCloudStateFailedStockOutList(StockOutBase Base,ref List<StockOutDTO> oJsonList)
+        {
+            string strSql = "";
+            strSql += "select stock_out_id,serial_number,cloud_req_json from tb_stock_out_base ";
+            strSql += "where 1=1 ";
+            if (Base.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                strSql += " and cloud_add_flag="+ Base.cloudAddFlag;
+            }
+            else if (Base.cloudUpdateFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                strSql += " and cloud_update_flag=" + Base.cloudUpdateFlag;
+            }
+            else if (Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                strSql += " and cloud_close_flag=" + Base.cloudCloseFlag;
+            }
+            else if (Base.cloudDeleteFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                strSql += " and cloud_delete_flag=" + Base.cloudDeleteFlag;
+            }else
+            {
+                strSql += " and 1=0 ";
+            }
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                //MessageBox.Show("支付插入本地数据库失败:" + ex.ToString());
+                CommUiltl.Log("查询本地数据库失败:" + ex.ToString());
+                return false;
+            }
 
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                StockOutDTO oStockOutDTO = new StockOutDTO();
+                oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
+
+                MessageBox.Show("int:" + sqlite_datareader.GetInt32(0) + " string:" + sqlite_datareader.GetString(1));
+            }
+           
+            return true;
+        }
         /*********************支付单*********************/
         internal static bool GeneratePay(PayWay oPayWay)
         {

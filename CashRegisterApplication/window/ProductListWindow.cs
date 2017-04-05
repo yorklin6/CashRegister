@@ -47,6 +47,7 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("MyTimer_Tick begin");
             CommUiltl.Log("MyTimer_Tick end");
+            
         }
 
         public System.Windows.Forms.DataGridView GetDataGridViewProduct()
@@ -185,7 +186,7 @@ namespace CashRegiterApplication
                 oStockOutDetail.specification = oProductPricing.specification;
                 oStockOutDetail.stockOutId = 0;
                 oStockOutDetail.status = CurrentMsg.PAY_STATE_INIT;
-                oStockOutDetail.cloudState = CurrentMsg.CLOUD_SATE_HTTP_SUCESS;
+                //oStockOutDetail.cloudState = Http.CLOUD_SATE_HTTP_SUCESS;
 
                 oStockOutDetail.barcode = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.PRODUCT_CODE].Value.ToString();
                 oStockOutDetail.unitPrice = price;
