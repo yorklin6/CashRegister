@@ -199,11 +199,8 @@ namespace CashRegisterApplication.comm
             CurrentMsg.oPayWay.serialNumber = CurrentMsg.oStockOutDTO.Base.serialNumber;
             CurrentMsg.oPayWay.payStatus=  CurrentMsg.PAY_STATE_SUCCESS;
             CurrentMsg.oPayWay.cloudState = CurrentMsg.CLOUD_SATE_PAY_SUCESS ;
-          
-            if (!HttpUtility.PayOrdr(CurrentMsg.oPayWay))
-            {
-                CurrentMsg.oPayWay.cloudState = CLOUD_SATE_PAY_FAILD;
-            }
+
+            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(CurrentMsg.oPayWay);
 
             if (!Dao.GeneratePay(CurrentMsg.oPayWay))
             {

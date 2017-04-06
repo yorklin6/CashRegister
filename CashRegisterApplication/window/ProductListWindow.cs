@@ -40,14 +40,15 @@ namespace CashRegiterApplication
         {
             Timer MyTimer = new Timer();
             MyTimer.Interval = (1 * 60 * 1000); // 1 mins
+            MyTimer.Interval = (1 * 1000); // 1 mins
             MyTimer.Tick += new EventHandler(MyTimer_Tick);
             MyTimer.Start();
         }
         private void MyTimer_Tick(object sender, EventArgs e)
         {
             CommUiltl.Log("MyTimer_Tick begin");
+            MyTimerTask.AddStaockOut();
             CommUiltl.Log("MyTimer_Tick end");
-            
         }
 
         public System.Windows.Forms.DataGridView GetDataGridViewProduct()

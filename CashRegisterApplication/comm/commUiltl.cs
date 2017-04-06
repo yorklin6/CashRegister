@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -89,6 +90,14 @@ namespace CashRegisterApplication.comm
         {
 
             Console.WriteLine("{0} {1}msg:{2}",  fun, line, message);
+        }
+        public static void LogObj(string message,object obj,
+             [CallerFilePath] string file = null,
+             [CallerLineNumber] int line = 0,
+              [CallerMemberName] string fun = null)
+        {
+
+            Console.WriteLine("{0} {1} {2}:[{3}]", fun, line, message, JsonConvert.SerializeObject(obj));
         }
         public static long GetTimeStamp()
         {

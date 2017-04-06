@@ -161,7 +161,7 @@ namespace CashRegisterApplication.model
         public String remark { get; set; }
 
         public   int status { get; set; }
-        internal int cloudState;
+        internal int cloudState { get; set; }
 
     }
 
