@@ -416,8 +416,7 @@ namespace CashRegisterApplication.comm
             {
                 StockOutDTO oStockOutDTO = new StockOutDTO();
                 oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
-
-                MessageBox.Show("int:" + sqlite_datareader.GetInt32(0) + " string:" + sqlite_datareader.GetString(1));
+                CommUiltl.Log("cloud_req_json:" + sqlite_datareader["cloud_req_json"].ToString());
             }
            
             return true;

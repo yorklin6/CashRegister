@@ -11,7 +11,14 @@ namespace CashRegisterApplication.comm
     {
         public static void AddStaockOut()
         {
-            Dao.GetCloudStateFailedStockOutList();
+            StockOutBase Base = new StockOutBase();
+            List<StockOutDTO> oJsonList = new List<StockOutDTO>();
+
+            Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            if (!Dao.GetCloudStateFailedStockOutList(Base, ref oJsonList))
+            {
+               
+            }
         }
     }
 }

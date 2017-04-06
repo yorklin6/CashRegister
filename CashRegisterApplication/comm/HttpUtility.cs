@@ -164,7 +164,7 @@ namespace CashRegiterApplication
             lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
-                iResult = _CloseOrderWhenPayAllFee(oReq, ref oRespond);
+                iResult = _UpdateOrder(oReq, ref oRespond);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
                 {
                     return iResult;
@@ -195,18 +195,19 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         /***************************************支付***************************************/
-        public static bool PayOrdr(PayWay oPayWay)
+        public static int PayOrdr(PayWay oPayWay)
         {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
-                if (_PayOrder(oPayWay))
+                iResult = _PayOrder(oPayWay);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
                 {
-                    return true;
+                    return iResult;
                 }
             }
-            MessageBox.Show(lastErrorMsg);
-            lastErrorMsg = "";
-            return false;
+            return iResult;
         }
         public static int _PayOrder(PayWay oPayWay)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CashRegisterApplication.comm;
+using CashRegiterApplication;
 
 namespace CashRegisterApplication.model
 {
@@ -132,11 +133,11 @@ namespace CashRegisterApplication.model
             CurrentMsg.oStockOutDTO.Base.status = CurrentMsg.STOCK_BASE_STATUS_INIT;
             CurrentMsg.oStockOutDTO.Base.remark = "";
 
-            CurrentMsg.oStockOutDTO.Base.cloudAddFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CurrentMsg.oStockOutDTO.Base.cloudReqJson = "";
-            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = CurrentMsg.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
         }
 
     }

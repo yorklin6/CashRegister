@@ -155,7 +155,7 @@ namespace CashRegisterApplication.comm
             {
                 CommUiltl.Log(" strProductList is modify [" + CurrentMsg.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
                 CurrentMsg.oStockOutDTO.Base.ProductList = strProductList;
-                CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond;
+                CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
 
                 if (CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
