@@ -126,7 +126,7 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
                 CurrentMsg.oStockOutDTO.Base.generateSeariseNumber();
 
-                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO.Base, ref CurrentMsg.oHttpRespone);
+                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
 
                 if(CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
                 {
@@ -136,12 +136,6 @@ namespace CashRegisterApplication.comm
                 }else
                 {
                     CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
-                    //关单业务错误，继续走，让异步去重试
-                    //if (0 != CurrentMsg.oStockOutDToRespond.errorCode)
-                    //{
-                    //    CurrentMsg.oStockOutDTO.Base.cloudAddFlag = CLOUD_SATE_BUSSINESS_FAILD;
-                    //    return false;
-                    //}
                 }
                 //插入本地数据库表
                 if (!Dao.GenerateOrder(CurrentMsg.oStockOutDTO))
