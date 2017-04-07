@@ -107,7 +107,7 @@ namespace CashRegisterApplication.comm
         {
             CurrentMsg.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
 
-            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO.Base, ref CurrentMsg.oHttpRespone);
+            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO, ref CurrentMsg.oHttpRespone);
             
             if (!Dao.UpdateOrderCloudState(CurrentMsg.oStockOutDTO))
             {
@@ -131,7 +131,7 @@ namespace CashRegisterApplication.comm
                 if(CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
                 {
                     CurrentMsg.oStockOutDTO.Base.stockOutId = CurrentMsg.oStockOutDToRespond.data.Base.stockOutId;
-                    _SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CurrentMsg.oStockOutDTO );
+                    SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CurrentMsg.oStockOutDTO );
 
                 }else
                 {
@@ -169,7 +169,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log(" not modify strProductList:"+ strProductList);
             return true;
         }
-        internal static void _SetStockDetailByHttpRespone(StockOutDTO http,ref StockOutDTO Db)
+        internal static void SetStockDetailByHttpRespone(StockOutDTO http,ref StockOutDTO Db)
         {
             if (oStockOutDToRespond.data.details.Count != CurrentMsg.oStockOutDTO.details.Count)
             {

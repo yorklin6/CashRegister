@@ -373,26 +373,26 @@ namespace CashRegisterApplication.comm
             return true;
         }
         //取出云同步失败的订单
-        internal static bool GetCloudStateFailedStockOutList(StockOutBase Base,ref List<StockOutDTO> oJsonList)
+        internal static bool GetCloudStateFailedStockOutList(StockOutDTO oState,ref List<StockOutDTO> oJsonList)
         {
             string strSql = "";
             strSql += "select stock_out_id,serial_number,cloud_req_json from tb_stock_out_base ";
             strSql += "where 1=1 ";
-            if (Base.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            if (oState.Base.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_add_flag="+ Base.cloudAddFlag;
+                strSql += " and cloud_add_flag="+ oState.Base.cloudAddFlag;
             }
-            else if (Base.cloudUpdateFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.Base.cloudUpdateFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_update_flag=" + Base.cloudUpdateFlag;
+                strSql += " and cloud_update_flag=" + oState.Base.cloudUpdateFlag;
             }
-            else if (Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_close_flag=" + Base.cloudCloseFlag;
+                strSql += " and cloud_close_flag=" + oState.Base.cloudCloseFlag;
             }
-            else if (Base.cloudDeleteFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.Base.cloudDeleteFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_delete_flag=" + Base.cloudDeleteFlag;
+                strSql += " and cloud_delete_flag=" + oState.Base.cloudDeleteFlag;
             }else
             {
                 strSql += " and 1=0 ";

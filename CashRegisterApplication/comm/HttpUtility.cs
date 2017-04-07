@@ -122,7 +122,7 @@ namespace CashRegiterApplication
         }
 
         //关闭订单
-        internal static int CloseOrderWhenPayAllFee(StockOutBase oReq, ref HttpBaseRespone oRespond)
+        internal static int CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -136,10 +136,10 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _CloseOrderWhenPayAllFee(StockOutBase oReq, ref HttpBaseRespone oRespond)
+        internal static int _CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             string funcUrl = GenerateOrderFunc;
-            String json = JsonConvert.SerializeObject(oReq);
+            String json = JsonConvert.SerializeObject(oReq.Base);
 
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
