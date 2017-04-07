@@ -35,7 +35,7 @@ namespace CashRegiterApplication
         private static readonly string LoginFunc = "login.json?";
         private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
         private static readonly string GenerateOrderFunc = "stockOut?";
-        private static readonly string updateOrderFunc = "updateOrder.json?";
+        private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "userPay.json?";
         private static UserLogin oLoginer;
 
@@ -174,9 +174,8 @@ namespace CashRegiterApplication
         }
         internal static int _UpdateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
         {
-            string funcUrl = updateOrderFunc;
-            String json = JsonConvert.SerializeObject(oReq);
-
+            string funcUrl = updateOrderFunc+ oReq.Base.stockOutId;
+            String json = JsonConvert.SerializeObject(oReq.Base);
             if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:http Get GenerateOrder failed");
