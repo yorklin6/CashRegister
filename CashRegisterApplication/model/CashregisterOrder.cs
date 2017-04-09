@@ -12,17 +12,28 @@ namespace CashRegisterApplication.model
         public string msg { get; set; }
         public StockOutDTO data;
     }
-
+    public class LocalSaveStock
+    {
+        public  List<StockOutDTO> listStock;
+        public  int index { get; set; }
+        public LocalSaveStock()
+        {
+            index = 0;
+            listStock = new List<StockOutDTO>();
+        }
+    }
 
     public class StockOutDTO
     {
         public StockOutBase Base;
         public List<StockOutDetail> details;
-
+        public List<PayWay> payList;
+        
         public StockOutDTO()
         {
             Base = new StockOutBase();
             details = new List<StockOutDetail>();
+            payList = new List<PayWay>();
         }
 
         internal void addPayWay(PayWay oPayWay)
@@ -34,8 +45,7 @@ namespace CashRegisterApplication.model
             {
                 Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
             }
-
-         
+            payList.Add(oPayWay);
         }
     }
 
@@ -105,6 +115,9 @@ namespace CashRegisterApplication.model
         public int cloudUpdateFlag { get; set; }
         public String cloudRespJson { get; set; }
 
+        public int dbGenerateFlag { get; set; }
+        public int localSaveFlag { get; set; }
+
         public void generateSeariseNumber()
         {
             CurrentMsg.oStockOutDTO.Base.serialNumber = "retail-" + DateTime.Now.ToString("yyMMdd-HHmmss");
@@ -115,7 +128,6 @@ namespace CashRegisterApplication.model
         {
 
             CurrentMsg.oStockOutDTO.Base.serialNumber = "";
-
             CurrentMsg.oStockOutDTO.Base.stockOutId = 0;
             CurrentMsg.oStockOutDTO.Base.RecieveFee = 0;
             CurrentMsg.oStockOutDTO.Base.orderAmount = 0;
@@ -138,12 +150,16 @@ namespace CashRegisterApplication.model
             CurrentMsg.oStockOutDTO.Base.cloudReqJson = "";
             CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+
+            CurrentMsg.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
+            CurrentMsg.oStockOutDTO.Base.dbGenerateFlag = CurrentMsg.STOCK_BASE_DB_GENERATE_INIT;
+
         }
 
     }
     public class StockOutDetail
     {
- 
+
         public long id { get; set; }
         public long stockOutId { get; set; }
         public long goodsId { get; set; }
@@ -160,8 +176,13 @@ namespace CashRegisterApplication.model
         public long subtotal { get; set; }
         public String remark { get; set; }
 
+
         public   int status { get; set; }
         internal int cloudState { get; set; }
+
+        public string goodsReqJson { get; set; }
+        public string goodsShowSpecification { get; set; }
+
 
     }
 

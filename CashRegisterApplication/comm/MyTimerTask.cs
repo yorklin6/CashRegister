@@ -22,7 +22,7 @@ namespace CashRegisterApplication.comm
             foreach (var oStock in oStockList)
             {
                 StockOutDTORespone oResp =new StockOutDTORespone();
-                oStock.Base.cloudAddFlag = HttpUtility.GenerateOrder(oStock, ref oResp);
+               oStock.Base.cloudAddFlag = HttpUtility.GenerateOrder(oStock, ref oResp);
 
                 if (oStock.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {

@@ -48,7 +48,7 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("已支付列表");
             this.Show();
             string strPaidInfo="已支付列表：\n";
-            foreach (var item in CurrentMsg.listPayInfo)
+            foreach (var item in CurrentMsg.oStockOutDTO.payList)
             {
                 if (item.payType== PayWay.PAY_TYPE_CASH)
                 {

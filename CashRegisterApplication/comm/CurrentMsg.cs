@@ -18,10 +18,12 @@ namespace CashRegisterApplication.comm
         public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
         public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin ;//微信收款窗口
 
-        public static StockOutDTO oStockOutDTO ;//商品列表
-        public static List<PayWay> listPayInfo ;
+        public static StockOutDTO oStockOutDTO ;//当前单据信息
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
+
+        public static LocalSaveStock oLocalSaveStock;//挂单信息
+ 
 
         public static PayWay oPayWay = new PayWay();//商品列表
         
@@ -39,6 +41,11 @@ namespace CashRegisterApplication.comm
 
         public const int CLOUD_SATE_PAY_SUCESS = 0;
         public const int CLOUD_SATE_PAY_FAILD = 0;
+
+
+
+        public const int STOCK_BASE_DB_GENERATE_INIT = 0;
+        public const int STOCK_BASE_DB_GENERATE_DONE= 1;//已经存在DB
         //public const int CLOUD_SATE_ORDER_GENERATE_INIT = 0;
         //public const int CLOUD_SATE_ORDER_GENERATE_SUCCESS = 1;//云端生成订单成功
         //public const int CLOUD_SATE_ORDER_GENERATE_FAILED = 2;
@@ -69,19 +76,47 @@ namespace CashRegisterApplication.comm
             Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
 
             oStockOutDTO = new StockOutDTO();//商品列表
-            listPayInfo = new List<PayWay>();
             oStockOutDToRespond = new StockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
             initFlag = true;
+            
+            oLocalSaveStock = new LocalSaveStock();
+
+            Dao.ConnecSql();
+            _GetSaveStock();
+        }
+        public static void _GetSaveStock()
+        {
+            //查出挂单的单据
+            StockOutDTO oState =new StockOutDTO();
+            oState.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
+            List<StockOutDTO> oJsonList = new List<StockOutDTO>();
+            Dao.GetCloudStateFailedStockOutList(oState, ref oJsonList);
+            CommUiltl.Log("GetCloudStateFailedStockOutList：" + oJsonList.Count);
+            if (0 == oJsonList.Count)
+            {
+                return;
+            }
+            foreach (var item in oJsonList)
+            {
+                try
+                {
+                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.cloudReqJson);
+                    oLocalSaveStock.listStock.Add(oTmp);
+                }
+                catch (Exception e)
+                {
+                    CommUiltl.Log("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.cloudReqJson);
+                    continue;
+                }
+            }
         }
 
 
 
         public static void Clean()
         {
-            listPayInfo.Clear();
-            oStockOutDTO.Base.Reset();
-            oStockOutDTO.details.Clear();
+            oStockOutDTO = new StockOutDTO();//商品列表
             oStockOutDToRespond = new StockOutDTORespone();
         }
 
@@ -102,13 +137,12 @@ namespace CashRegisterApplication.comm
             }
             Window_ProductList.CloseOrderByControlWindow();
         }
-
+        //***********************************关闭订单***************************
         internal static bool CloseOrderWhenPayAllFee()
         {
             CurrentMsg.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
-
+            SetSaveFlag();//挂单->关单
             CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CurrentMsg.oStockOutDTO, ref CurrentMsg.oHttpRespone);
-            
             if (!Dao.UpdateOrderCloudState(CurrentMsg.oStockOutDTO))
             {
                 return false;
@@ -116,27 +150,43 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-        internal static bool GenerateOrder(string strProductList, long orderFee)
+        internal static void SetSaveFlag()
         {
-           
-            CurrentMsg.oStockOutDTO.Base.orderAmount = orderFee;
-            if (CurrentMsg.oStockOutDTO.Base.status == CurrentMsg.STOCK_BASE_STATUS_INIT)
+            if (CurrentMsg.oStockOutDTO.Base.localSaveFlag == Dao.STOCK_BASE_SAVE_FLAG_SAVING)
+            {
+                CurrentMsg.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_CLOSE;
+            }
+        }
+        //***********************************生成订单***************************
+        internal static bool IsCurrentOrderInit()
+        {
+            return CurrentMsg.oStockOutDTO.Base.dbGenerateFlag == CurrentMsg.STOCK_BASE_DB_GENERATE_INIT;
+        }
+
+
+        internal static bool GenerateOrder(string strProductList)
+        {
+            if (CurrentMsg.oStockOutDTO.details.Count == 0)
+            {
+                CommUiltl.Log("CurrentMsg.oStockOutDTO.details.Count == 0]");
+                return true;
+            }
+            if (IsCurrentOrderInit())
             {
                 CurrentMsg.oStockOutDTO.Base.ProductList = strProductList;
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
                 CurrentMsg.oStockOutDTO.Base.generateSeariseNumber();
 
-                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
+                // CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
+                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
-                if(CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
+                if (CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
                 {
                     CurrentMsg.oStockOutDTO.Base.stockOutId = CurrentMsg.oStockOutDToRespond.data.Base.stockOutId;
                     SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CurrentMsg.oStockOutDTO );
-
-                }else
-                {
-                    CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
                 }
+                CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
+                CurrentMsg.oStockOutDTO.Base.dbGenerateFlag = CurrentMsg.STOCK_BASE_DB_GENERATE_DONE;//新增
                 //插入本地数据库表
                 if (!Dao.GenerateOrder(CurrentMsg.oStockOutDTO))
                 {
@@ -169,6 +219,46 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log(" not modify strProductList:"+ strProductList);
             return true;
         }
+
+        //************************挂单***********************
+        internal static bool SaveStock(string strProductList)
+        {
+            //生成订单，状态为挂单
+            CurrentMsg.oStockOutDTO.Base.ProductList = strProductList;
+            CurrentMsg.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
+            if (!CurrentMsg.GenerateOrder(strProductList))
+            {
+                return false;
+            }
+            addStockToLocal(CurrentMsg.oStockOutDTO);
+            return true;
+        }
+        internal static void addStockToLocal(StockOutDTO oStockOutDTO)
+        {
+            CommUiltl.Log("addStockToLocal CurrentMsg.oSaveSotckOut.listStock.Count:" + CurrentMsg.oLocalSaveStock.listStock.Count);
+            for (int i=0;i< CurrentMsg.oLocalSaveStock.listStock.Count;++i)
+            {
+                if (oStockOutDTO.Base.serialNumber == CurrentMsg.oLocalSaveStock.listStock[i].Base.serialNumber)
+                {
+                    CommUiltl.Log("addStockToLocal found" );
+                    CurrentMsg.oLocalSaveStock.listStock[i] = oStockOutDTO;//如果是已经存在挂单中的订单，那么就替换下
+                    return;
+                }
+            }
+            CurrentMsg.oLocalSaveStock.listStock.Add(oStockOutDTO);
+        }
+        public static int CurrentStockIndex = -1;
+        internal static void GetSaveOrderToCurrentMsg()
+        {
+            if (CurrentMsg.oLocalSaveStock.listStock.Count == 0)
+            {
+                return;
+            }
+            ++CurrentStockIndex;
+            CurrentStockIndex = CurrentStockIndex % CurrentMsg.oLocalSaveStock.listStock.Count;
+            CurrentMsg.oStockOutDTO = CurrentMsg.oLocalSaveStock.listStock[CurrentStockIndex];
+        }
+
         internal static void SetStockDetailByHttpRespone(StockOutDTO http,ref StockOutDTO Db)
         {
             if (oStockOutDToRespond.data.details.Count != CurrentMsg.oStockOutDTO.details.Count)
@@ -208,6 +298,7 @@ namespace CashRegisterApplication.comm
             return true;
 
         }
+
 
     }
   
