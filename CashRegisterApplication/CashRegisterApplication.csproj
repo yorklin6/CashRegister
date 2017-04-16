@@ -78,6 +78,7 @@
     <Compile Include="model\HttpBaseRespone.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
     <Compile Include="comm\CurrentMsg.cs" />
+    <Compile Include="model\Member.cs" />
     <Compile Include="model\PayOrder.cs" />
     <Compile Include="model\UserLogin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -85,23 +86,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="window\ReceiveMoneyByCashWindow.cs">
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByMember.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\ReceiveMoneyByCashWindow.Designer.cs">
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByMember.Designer.cs">
+      <DependentUpon>ReceiveMoneyByMember.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByCashWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByCashWindow.Designer.cs">
       <DependentUpon>ReceiveMoneyByCashWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\RecieveMoneyWindow.cs">
+    <Compile Include="window\ReceveMoney\RecieveMoneyWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\RecieveMoneyWindow.Designer.cs">
+    <Compile Include="window\ReceveMoney\RecieveMoneyWindow.Designer.cs">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="window\PayWayWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="window\PayWayWindow.Designer.cs">
-      <DependentUpon>PayWayWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ProductListWindow.cs">
       <SubType>Form</SubType>
@@ -119,20 +120,20 @@
     <Compile Include="model\ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="window\RecieveMoneyByWeixinWindow.cs">
+    <Compile Include="window\ReceveMoney\RecieveMoneyByWeixinWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\RecieveMoneyByWeixinWindow.Designer.cs">
+    <Compile Include="window\ReceveMoney\RecieveMoneyByWeixinWindow.Designer.cs">
       <DependentUpon>RecieveMoneyByWeixinWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="window\ReceiveMoneyByCashWindow.resx">
+    <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByMember.resx">
+      <DependentUpon>ReceiveMoneyByMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByCashWindow.resx">
       <DependentUpon>ReceiveMoneyByCashWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\RecieveMoneyWindow.resx">
+    <EmbeddedResource Include="window\ReceveMoney\RecieveMoneyWindow.resx">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="window\PayWayWindow.resx">
-      <DependentUpon>PayWayWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ProductListWindow.resx">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
@@ -145,7 +146,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\RecieveMoneyByWeixinWindow.resx">
+    <EmbeddedResource Include="window\ReceveMoney\RecieveMoneyByWeixinWindow.resx">
       <DependentUpon>RecieveMoneyByWeixinWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -177,6 +178,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="window\member\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

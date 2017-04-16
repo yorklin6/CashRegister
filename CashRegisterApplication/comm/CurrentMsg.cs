@@ -1,5 +1,6 @@
 ﻿using CashRegisterApplication.model;
 using CashRegisterApplication.window;
+using CashRegisterApplication.window.member;
 using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
@@ -17,15 +18,19 @@ namespace CashRegisterApplication.comm
         public static RecieveMoneyWindow Window_RecieveMoney;//收款窗口
         public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
         public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin ;//微信收款窗口
+        public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//微信收款窗口
 
         public static StockOutDTO oStockOutDTO ;//当前单据信息
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
 
         public static LocalSaveStock oLocalSaveStock;//挂单信息
- 
 
-        public static PayWay oPayWay = new PayWay();//商品列表
+        public static Member oMember ;//用户账户
+
+        public static PayWay oPayWay ;//商品列表
+
+
         
         public const int PAY_STATE_INIT=0;
         public const  int PAY_STATE_SUCCESS = 1;
@@ -74,10 +79,15 @@ namespace CashRegisterApplication.comm
             Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
             Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
             Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
+            Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
 
             oStockOutDTO = new StockOutDTO();//商品列表
             oStockOutDToRespond = new StockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
+            oMember = new Member();
+            oPayWay = new PayWay();
+
+
             initFlag = true;
             
             oLocalSaveStock = new LocalSaveStock();
@@ -85,6 +95,8 @@ namespace CashRegisterApplication.comm
             Dao.ConnecSql();
             _GetSaveStock();
         }
+
+
         public static void _GetSaveStock()
         {
             //查出挂单的单据
@@ -162,7 +174,7 @@ namespace CashRegisterApplication.comm
         {
             return CurrentMsg.oStockOutDTO.Base.dbGenerateFlag == CurrentMsg.STOCK_BASE_DB_GENERATE_INIT;
         }
-
+                                                                                                                                        
 
         internal static bool GenerateOrder(string strProductList)
         {
@@ -296,10 +308,48 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
+        }
+        internal static bool PayOrderByMember(long recieveFee)
+        {
+            CurrentMsg.oPayWay.payType = PAY_TYPE_CASH;
+            CurrentMsg.oPayWay.payFee = recieveFee;
+            CurrentMsg.oPayWay.generatePayOrderNumber();
+            CurrentMsg.oPayWay.serialNumber = CurrentMsg.oStockOutDTO.Base.serialNumber;
+            CurrentMsg.oPayWay.payStatus = CurrentMsg.PAY_STATE_SUCCESS;
+            CurrentMsg.oPayWay.cloudState = CurrentMsg.CLOUD_SATE_PAY_SUCESS;
 
+            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(CurrentMsg.oPayWay);
+
+            if (!Dao.GeneratePay(CurrentMsg.oPayWay))
+            {
+                return false;
+            }
+            //修改环境变量，表示这笔单支付成功
+            PayWay oPayWay = new PayWay();
+            CurrentMsg.oStockOutDTO.addPayWay(CurrentMsg.oPayWay);
+            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
+            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
+            return true;
+        }
+        //************************会员信息***********************
+        internal static bool GetMemberByMemberAccount(string strMemberAccount)
+        {
+            MemberHttpRespone oMember = new MemberHttpRespone();
+            int iMemberRet=HttpUtility.GetMemberByMemberAccount(strMemberAccount,ref oMember);
+            if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                CurrentMsg.oMember = oMember.data.list[0];
+                return true;
+            }
+            if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_FAILD)
+            {
+                MessageBox.Show(HttpUtility.lastErrorMsg);
+                return false;
+            }
+            MessageBox.Show("业务错误："+HttpUtility.lastErrorMsg);
+            return false;
         }
 
-
     }
-  
+
 }

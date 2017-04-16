@@ -34,6 +34,7 @@ namespace CashRegiterApplication
         private static string gPassword;
         private static readonly string LoginFunc = "login.json?";
         private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
+        private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "userPay.json?";
@@ -232,6 +233,7 @@ namespace CashRegiterApplication
         //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
         public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oProductPricingInfoResp)
         {
+            lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
                 if (_GetProductByBarcode(productCode,ref oProductPricingInfoResp))
@@ -240,7 +242,7 @@ namespace CashRegiterApplication
                 }
             }
             MessageBox.Show(lastErrorMsg);
-            lastErrorMsg = "";
+      
             return false;
         }
         public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
@@ -255,6 +257,46 @@ namespace CashRegiterApplication
             }
             return true;
         }
+        /***************************************会员信息***************************************/
+        internal static int GetMemberByMemberAccount(string strMemberAccount,ref MemberHttpRespone oMember)
+        {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _GetMemberByMemberAccount(strMemberAccount,ref oMember);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        public static int _GetMemberByMemberAccount(string strMemberAccount, ref MemberHttpRespone oMemberHttpRespone)
+        {
+            string funcUrl = QueryMemberInfoFunc + strMemberAccount;
+            CommUiltl.Log("funcUrl:" + funcUrl);
+            if (!Get<MemberHttpRespone>(funcUrl, ref oMemberHttpRespone))
+            {
+                CommUiltl.Log("ERR:_GetMemberByMemberAccount Get FAILDED 网络异常：请检查网络 ");
+                lastErrorMsg = "网络异常：请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+
+            if (oMemberHttpRespone.errorCode != 0)
+            {
+                CommUiltl.LogObj("ERR:Get failed oCashregisterOrderResp:" , oMemberHttpRespone);
+                lastErrorMsg = "支付异常:oMemberHttpRespone[" + CommUiltl.Jason(oMemberHttpRespone) + "]";
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+            if (oMemberHttpRespone.data.list.Count != 1)
+            {
+                CommUiltl.LogObj("oMemberHttpRespone.data.list.Count != 1 oMemberHttpRespone:", oMemberHttpRespone);
+                return CLOUD_SATE_HTTP_SUCESS;
+            }
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
+        /***************************************狄成信息***************************************/
         public static bool Post<T>(string funcUrl,string json, ref T returnObj)
         {
             HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
@@ -308,7 +350,6 @@ namespace CashRegiterApplication
 
             if (!HttpResp<T>(request, ref returnObj))
             {
-                Console.WriteLine("ERR:HttpResp failed");
                 return false;
             }
             return true;
@@ -351,7 +392,6 @@ namespace CashRegiterApplication
             }
             return true;
         }
-
 
         public static void SetCookiet(CookieCollection oCookieCollection)
         {

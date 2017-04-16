@@ -4,25 +4,55 @@ using System.Text;
 
 namespace CashRegisterApplication.model
 {
-    class Member
+    public class MemberHttpRespone
     {
-        public long memberId{ get; set; }
-        public String name{ get; set; }
-        public int gender{ get; set; }
+        public int errorCode { get; set; }
+        public string msg { get; set; }
+        public MemberData data;
+    }
+    public class MemberData
+    {
+        public List<Member> list;
+    }
+    public class Member
+    {
+        public String memberAccount{ get; set; }
+
+        public Byte memberType{ get; set; }
+
         public String phone{ get; set; }
 
+        public String name{ get; set; }
+
+        public Byte gender{ get; set; }
+
         public String birthday{ get; set; }
+
         public String address{ get; set; }
+
         public long consumePoint{ get; set; }
+
+
         public long exchangePoint{ get; set; }
+
+
         public long memberBalance{ get; set; }
-        public String memberAccount{ get; set; }//会员卡号
+
         public String password{ get; set; }
-        public long invalidTime{ get; set; }
+
+        public String salt{ get; set; }
+
+        public String invalidTime { get; set; }
+
         public long storeId{ get; set; }
-        public int status{ get; set; }
-        public int isDeleted{ get; set; }
-        public long createTime{ get; set; }
-        public long updateTime{ get; set; }
+
+        public String storeName{ get; set; }
+
+        public Byte status{ get; set; }
+        public Byte isDeleted{ get; set; }
+        public String createTime { get; set; }
+        public String updateTime { get; set; }
+
+
     }
 }

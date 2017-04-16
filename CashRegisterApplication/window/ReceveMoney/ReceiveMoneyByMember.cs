@@ -1,29 +1,34 @@
 ﻿using CashRegisterApplication.comm;
-using CashRegiterApplication;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace CashRegisterApplication.window
+namespace CashRegisterApplication.window.member
 {
-    public partial class ReceiveMoneyByCashWindow : Form
+    public partial class ReceiveMoneyByMember : Form
     {
-        public ReceiveMoneyByCashWindow()
+        public ReceiveMoneyByMember()
         {
             InitializeComponent();
-           
         }
 
-        private void ReceiveMoneyByCash_Load(object sender, EventArgs e)
+
+        private void button1_Click(object sender, EventArgs e)
         {
-         
+
         }
-        private void ReceiveMoneyByCash_Shown(object sender, EventArgs e)
+
+        private void MemberBuy_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void ReceiveMoneyByMember_Shown(object sender, EventArgs e)
         {
             ShowByReceiveMoneyWindow();
         }
@@ -39,8 +44,10 @@ namespace CashRegisterApplication.window
 
         private void _SelectRecieve()
         {
-            this.textBox_ReceiveFee.SelectionStart = 0;
-            this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
+            this.textBox_memberAccount.Focus();
+            this.textBox_memberAccount.Text = "123456";
+            this.textBox_memberAccount.SelectionStart = 0;
+            this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
         }
 
         private void ReceiveMoneyByCashWindow_Enter(object sender, EventArgs e)
@@ -55,7 +62,7 @@ namespace CashRegisterApplication.window
             {
                 case System.Windows.Forms.Keys.Enter:
                     {
-                        buttonConfirm_Click(null, null);
+                        enterEvent();
                         break;
                     }
                 case System.Windows.Forms.Keys.Escape:
@@ -69,7 +76,39 @@ namespace CashRegisterApplication.window
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-    
+        //回车事件
+        private void enterEvent()
+        {
+            if (this.textBox_memberAccount.Text == "")
+            {
+                this.textBox_memberAccount.Focus();
+                this.textBox_memberAccount.SelectionStart = 0;
+                return;
+            }
+            if ( CurrentMsg.oMember.memberAccount != this.textBox_memberAccount.Text)
+            {
+                //查会员信息
+                if (!CurrentMsg.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
+                {
+                    this.textBox_memberAccount.Focus();
+                    this.textBox_memberAccount.SelectionStart = 0;
+                    this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
+                    return;
+                }
+                this.textBox_name.Text = CurrentMsg.oMember.name;
+                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
+                this.textBox_phone.Text = CurrentMsg.oMember.phone;
+                this.textBox_ReceiveFee.Focus();
+                return;
+            }
+            if (this.textBox_ReceiveFee.Focused)
+            {
+                //付款
+                buttonConfirm_Click(null, null);
+            }
+         
+         
+        }
 
         private void textBox_ReceiveFee_TextChanged(object sender, EventArgs e)
         {
@@ -85,11 +124,11 @@ namespace CashRegisterApplication.window
                     this.textBox_ReceiveFee.SelectionStart = this.textBox_ReceiveFee.Text.Length;
                 }
             }
-           if( CommUiltl.IsObjEmpty(this.textBox_ReceiveFee.Text))
+
+            if (CommUiltl.IsObjEmpty(this.textBox_ReceiveFee.Text))
             {
                 return;
             }
-
             //金额发生变化就改变下找零多少
             long recieveFee = 0;
             if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
@@ -98,13 +137,62 @@ namespace CashRegisterApplication.window
                 return;
             }
             long change = recieveFee - CurrentMsg.oStockOutDTO.Base.orderAmount;
-            if (change >0 )
+            if (change > 0)
             {
                 this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
             }
 
         }
+        private void buttonConfirm_Click(object sender, EventArgs e)
+        {
+            long recieveFee = 0;
+            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
+            {
+                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
+                return;
+            }
+            if (recieveFee > CurrentMsg.oMember.memberBalance)
+            {
+                MessageBox.Show("余额不足" );
+                return;
+            }
 
+            long change = recieveFee + CurrentMsg.oStockOutDTO.Base.RecieveFee - CurrentMsg.oStockOutDTO.Base.orderAmount;
+            string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
+            if (change < 0)
+            {
+                long leftFee = 0 - change;
+                showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
+                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
+            }
+            else if (change > 0)
+            {
+                showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元"
+                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
+            }
+
+            var confirmPayApartResult = MessageBox.Show(showTips,
+                                  "现金确认",
+                                  MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                //确认支付
+                CommUiltl.Log("DialogResult.No recieveFee:" + recieveFee);
+                _SelectRecieve();
+                return;
+            }
+            //下单支付
+            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
+
+            if (!CurrentMsg.PayOrderByMember(recieveFee))
+            {
+                return;
+            }
+            CurrentMsg.ControlWindowsAfterPay();
+            this.Hide();
+            return;
+        }
         private void textBox_ReceiveFee_KeyPress(object sender, KeyPressEventArgs e)
         {
             CommUiltl.Log("Keys:" + e.KeyChar);
@@ -127,49 +215,50 @@ namespace CashRegisterApplication.window
         }
 
 
-        private void buttonConfirm_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            long recieveFee = 0;
-            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
-            {
-                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
-                return;
-            }
-            long change = recieveFee + CurrentMsg.oStockOutDTO.Base.RecieveFee - CurrentMsg.oStockOutDTO.Base.orderAmount;
-            string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
-            if (change < 0)
-            {
-                long leftFee = 0 - change;
-                showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
-            }else if (change >0 )
-            {
-                showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
-            }
 
-            var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "现金确认",
-                                  MessageBoxButtons.YesNo);
+        }
 
-            if (confirmPayApartResult != DialogResult.Yes)
-            {
-                //确认支付
-                CommUiltl.Log("DialogResult.No recieveFee:" + recieveFee);
-                _SelectRecieve();
-                return;
-            }
-            //下单支付
-            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-          
-            if (! CurrentMsg.PayOrderByCash(recieveFee))
-            {
-                return;
-            }
-           
-            this.Hide();
-            CurrentMsg.ControlWindowsAfterPay();
-            return;
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_OrderFee_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_ChangeFee_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
         }
 
 

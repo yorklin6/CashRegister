@@ -113,6 +113,14 @@ namespace CashRegisterApplication.window
                         buttonWeixin_Click(null, null);
                         break;
                     }
+                case System.Windows.Forms.Keys.D4:
+                case System.Windows.Forms.Keys.NumPad4:
+                case System.Windows.Forms.Keys.Oem4:
+                    {
+                        buttonMember_Click(null, null);
+                        break;
+                    }
+                    
                 case System.Windows.Forms.Keys.Escape:
                 case System.Windows.Forms.Keys.Delete:
                     {
@@ -135,6 +143,13 @@ namespace CashRegisterApplication.window
         {
             _CheckFee();
             CurrentMsg.Window_RecieveMoneyByWeixin.Show();
+            this.Hide();
+        }
+
+        private void buttonMember_Click(object sender, EventArgs e)
+        {
+            _CheckFee();
+            CurrentMsg.Window_ReceiveMoneyByMember.Show();
             this.Hide();
         }
     }

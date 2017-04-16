@@ -112,6 +112,7 @@
             this.buttonMember.Size = new System.Drawing.Size(88, 88);
             this.buttonMember.TabIndex = 18;
             this.buttonMember.UseVisualStyleBackColor = true;
+            this.buttonMember.Click += new System.EventHandler(this.buttonMember_Click);
             // 
             // buttonCash
             // 

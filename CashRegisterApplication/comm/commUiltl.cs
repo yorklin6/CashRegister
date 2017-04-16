@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using CashRegisterApplication.model;
 
 namespace CashRegisterApplication.comm
 {
@@ -91,18 +92,22 @@ namespace CashRegisterApplication.comm
 
             Console.WriteLine("{0} {1}msg:{2}",  fun, line, message);
         }
-        public static void LogObj(string message,object obj,
+        public static void  LogObj(string message,object obj,
              [CallerFilePath] string file = null,
              [CallerLineNumber] int line = 0,
               [CallerMemberName] string fun = null)
         {
-
             Console.WriteLine("{0} {1} {2}:[{3}]", fun, line, message, JsonConvert.SerializeObject(obj));
         }
         public static long GetTimeStamp()
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts.TotalSeconds * 1000);
+        }
+
+        internal static string Jason(object obj)
+        {
+           return JsonConvert.SerializeObject(obj);
         }
     }
    
