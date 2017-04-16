@@ -30,16 +30,40 @@ namespace CashRegisterApplication.window.member
 
         private void ReceiveMoneyByMember_Shown(object sender, EventArgs e)
         {
-            ShowByReceiveMoneyWindow();
+            ShowByReceiveMoneyWindows();
         }
 
-        public void ShowByReceiveMoneyWindow()
+        public void ShowByReceiveMoneyWindows()
         {
             this.Show();
+            if (CurrentMsg.oMember.memberAccount == null || CurrentMsg.oMember.memberAccount =="")
+            {
+                //输入会员信息
+                CurrentMsg.ShowMemberInfoWindowByRecieveMoeneyByMember();
+         
+                return;
+            }
+           
+            this.textBox_ReceiveFee.Focus();
+
+            //_SelectRecieve();
+        }
+
+        internal void ShowWithMemberInfo()
+        {
+            this.textBox_memberAccount.Text = CurrentMsg.oMember.memberAccount;
+            this.textBox_name.Text = CurrentMsg.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
+            this.textBox_phone.Text = CurrentMsg.oMember.phone;
+
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
-            _SelectRecieve();
+
+            this.textBox_ReceiveFee.Focus();
+            this.textBox_ReceiveFee.SelectionStart = 0;
+            this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
+            this.Show();
         }
 
         private void _SelectRecieve()
@@ -79,36 +103,15 @@ namespace CashRegisterApplication.window.member
         //回车事件
         private void enterEvent()
         {
-            if (this.textBox_memberAccount.Text == "")
-            {
-                this.textBox_memberAccount.Focus();
-                this.textBox_memberAccount.SelectionStart = 0;
-                return;
-            }
-            if ( CurrentMsg.oMember.memberAccount != this.textBox_memberAccount.Text)
-            {
-                //查会员信息
-                if (!CurrentMsg.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
-                {
-                    this.textBox_memberAccount.Focus();
-                    this.textBox_memberAccount.SelectionStart = 0;
-                    this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
-                    return;
-                }
-                this.textBox_name.Text = CurrentMsg.oMember.name;
-                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
-                this.textBox_phone.Text = CurrentMsg.oMember.phone;
-                this.textBox_ReceiveFee.Focus();
-                return;
-            }
+
             if (this.textBox_ReceiveFee.Focused)
             {
                 //付款
                 buttonConfirm_Click(null, null);
             }
-         
-         
         }
+
+
 
         private void textBox_ReceiveFee_TextChanged(object sender, EventArgs e)
         {

@@ -86,6 +86,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="window\Member\MemberInfoWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Member\MemberInfoWindows.Designer.cs">
+      <DependentUpon>MemberInfoWindows.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\Member\RechargeMoneyForMember.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
+      <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\ReceveMoney\ReceiveMoneyByMember.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +138,9 @@
     <Compile Include="window\ReceveMoney\RecieveMoneyByWeixinWindow.Designer.cs">
       <DependentUpon>RecieveMoneyByWeixinWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="window\Member\MemberInfoWindows.resx">
+      <DependentUpon>MemberInfoWindows.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByMember.resx">
       <DependentUpon>ReceiveMoneyByMember.cs</DependentUpon>
     </EmbeddedResource>
@@ -179,9 +194,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="window\member\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

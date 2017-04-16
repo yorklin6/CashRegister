@@ -1,6 +1,7 @@
 ﻿using CashRegisterApplication.model;
 using CashRegisterApplication.window;
 using CashRegisterApplication.window.member;
+using CashRegisterApplication.window.Member;
 using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
@@ -18,13 +19,19 @@ namespace CashRegisterApplication.comm
         public static RecieveMoneyWindow Window_RecieveMoney;//收款窗口
         public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
         public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin ;//微信收款窗口
-        public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//微信收款窗口
+        public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//会员收款窗口
+        public static RechargeMoneyForMember Window_RechargeMoneyForMember;//充值会员窗口
+        public static MemberInfoWindows Window_MemberInfoWindows;//输入会员弹窗
+
+
 
         public static StockOutDTO oStockOutDTO ;//当前单据信息
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
 
         public static LocalSaveStock oLocalSaveStock;//挂单信息
+
+
 
         public static Member oMember ;//用户账户
 
@@ -66,6 +73,51 @@ namespace CashRegisterApplication.comm
         public const int CLOUD_SATE_PAY_GENERATE_FAILED = 2;
 
         public const int CLOUD_SATE_PAY_UPDATE_SUCCESS = 3;
+
+        public static int MEMBER_RECIEVE_MONEY_WINDOWS = 0;//收款页面
+        public static int MEMBER_RECHAREGE_WINDOWS = 1;//支付页面
+    
+        public static int flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
+
+        //****************************会员收款和充值
+        internal static void ShowMemberInfoWindowByRecieveMoeneyByMember()
+        {
+            flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
+            CurrentMsg.Window_MemberInfoWindows.ShowWhithMember();
+        }
+        internal static void ShowMemberInfoWindowByRecargeMoeneyByMember()
+        {
+            flagCallShowMember = MEMBER_RECHAREGE_WINDOWS;
+            CurrentMsg.Window_RechargeMoneyForMember.ShowWhithMember();
+        }
+        internal static void ShowWindowWhenGetMemberSuccess()
+        {
+            if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
+            {
+                CurrentMsg.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
+                return;
+            }
+            if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
+            {
+                CurrentMsg.Window_RechargeMoneyForMember.ShowWithMemberInfo();
+                return;
+            }
+        }
+
+        internal static void ShowWindowWhenMemberInfoCancel()
+        {
+            //取消界面
+            if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
+            {
+                CurrentMsg.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
+                return;
+            }
+            if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
+            {
+                CurrentMsg.Window_RechargeMoneyForMember.ShowWithMemberInfo();
+                return;
+            }
+        }
         public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
 
         public static void Init()
@@ -80,6 +132,9 @@ namespace CashRegisterApplication.comm
             Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
             Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
+            Window_RechargeMoneyForMember = new RechargeMoneyForMember();
+
+            Window_MemberInfoWindows = new MemberInfoWindows();
 
             oStockOutDTO = new StockOutDTO();//商品列表
             oStockOutDToRespond = new StockOutDTORespone();

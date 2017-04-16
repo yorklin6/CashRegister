@@ -34,7 +34,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_memberAccount = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.textBox_memberBalance = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -42,9 +41,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBox_SupportFee = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.buttonConfirm = new System.Windows.Forms.Button();
             this.textBox_ChangeFee = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.buttonConfirm = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_phone
@@ -102,18 +102,10 @@
             this.textBox_memberAccount.Location = new System.Drawing.Point(297, 54);
             this.textBox_memberAccount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_memberAccount.Name = "textBox_memberAccount";
+            this.textBox_memberAccount.ReadOnly = true;
             this.textBox_memberAccount.Size = new System.Drawing.Size(126, 21);
             this.textBox_memberAccount.TabIndex = 23;
             this.textBox_memberAccount.TextChanged += new System.EventHandler(this.textBox_ReceiveFee_TextChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 327);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(197, 48);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "操作说明:\r\n1.输入卡号按回车即可得到会员信息\r\n2.按F1键进入会员充值页面\r\n2.按HOME键直接会员购买\r\n";
             // 
             // textBox_memberBalance
             // 
@@ -182,19 +174,6 @@
             this.label8.TabIndex = 38;
             this.label8.Text = "应收：";
             // 
-            // buttonConfirm
-            // 
-            this.buttonConfirm.BackgroundImage = global::CashRegisterApplication.Properties.Resources.credit_card_180_93559322034px_1207324_easyicon_net;
-            this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(297, 270);
-            this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(121, 105);
-            this.buttonConfirm.TabIndex = 40;
-            this.buttonConfirm.UseVisualStyleBackColor = true;
-            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
-            // 
             // textBox_ChangeFee
             // 
             this.textBox_ChangeFee.Location = new System.Drawing.Point(297, 202);
@@ -213,11 +192,34 @@
             this.label9.TabIndex = 42;
             this.label9.Text = "找零：";
             // 
+            // buttonConfirm
+            // 
+            this.buttonConfirm.BackgroundImage = global::CashRegisterApplication.Properties.Resources.credit_card_180_93559322034px_1207324_easyicon_net;
+            this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonConfirm.ImageKey = "(无)";
+            this.buttonConfirm.Location = new System.Drawing.Point(297, 292);
+            this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.buttonConfirm.Name = "buttonConfirm";
+            this.buttonConfirm.Size = new System.Drawing.Size(121, 105);
+            this.buttonConfirm.TabIndex = 40;
+            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(339, 410);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 12);
+            this.label5.TabIndex = 43;
+            this.label5.Text = "ENTER";
+            // 
             // ReceiveMoneyByMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(767, 441);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox_ChangeFee);
             this.Controls.Add(this.buttonConfirm);
@@ -228,7 +230,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_memberBalance);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox_phone);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_name);
@@ -251,7 +252,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_memberAccount;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox_memberBalance;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
@@ -262,5 +262,6 @@
         private System.Windows.Forms.Button buttonConfirm;
         private System.Windows.Forms.TextBox textBox_ChangeFee;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label5;
     }
 }

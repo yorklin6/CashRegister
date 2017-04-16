@@ -149,7 +149,7 @@ namespace CashRegisterApplication.window
         private void buttonMember_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.Window_ReceiveMoneyByMember.Show();
+            CurrentMsg.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
             this.Hide();
         }
     }
