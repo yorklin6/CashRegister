@@ -113,14 +113,14 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(472, 57);
+            this.label5.Location = new System.Drawing.Point(465, 72);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(173, 36);
             this.label5.TabIndex = 43;
             this.label5.Text = "操作说明:\r\n1.输入卡号按回车就能查到会员\r\n2.输入ESC取消";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
-            // memberRechargeWindows
+            // MemberInfoWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -134,7 +134,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_memberAccount);
-            this.Name = "memberRechargeWindows";
+            this.Name = "MemberInfoWindows";
             this.Text = "会员信息";
             this.Load += new System.EventHandler(this.memberRechargeWindows_Load);
             this.Shown += new System.EventHandler(this.memberRechargeWindows_Shown);

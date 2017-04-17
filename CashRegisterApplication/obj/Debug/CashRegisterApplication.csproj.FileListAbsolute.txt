@@ -131,3 +131,4 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyByWeixinWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.ReceiveMoneyByMember.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.MemberInfoWindows.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Member.RechargeMoneyForMember.resources

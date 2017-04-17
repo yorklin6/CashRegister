@@ -39,14 +39,11 @@ namespace CashRegisterApplication.window.member
             if (CurrentMsg.oMember.memberAccount == null || CurrentMsg.oMember.memberAccount =="")
             {
                 //输入会员信息
-                CurrentMsg.ShowMemberInfoWindowByRecieveMoeneyByMember();
-         
+                CurrentMsg.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
                 return;
             }
            
             this.textBox_ReceiveFee.Focus();
-
-            //_SelectRecieve();
         }
 
         internal void ShowWithMemberInfo()
@@ -103,7 +100,6 @@ namespace CashRegisterApplication.window.member
         //回车事件
         private void enterEvent()
         {
-
             if (this.textBox_ReceiveFee.Focused)
             {
                 //付款

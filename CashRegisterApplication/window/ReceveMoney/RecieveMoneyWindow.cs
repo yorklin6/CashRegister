@@ -122,10 +122,9 @@ namespace CashRegisterApplication.window
                     }
                     
                 case System.Windows.Forms.Keys.Escape:
-                case System.Windows.Forms.Keys.Delete:
                     {
-                        this.Hide();
                         CurrentMsg.Window_ProductList.EscapeShowByRecieveWindows();
+                        this.Hide();
                         break;
                     }
             }

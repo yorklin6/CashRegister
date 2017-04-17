@@ -80,16 +80,19 @@ namespace CashRegisterApplication.comm
         public static int flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
 
         //****************************会员收款和充值
-        internal static void ShowMemberInfoWindowByRecieveMoeneyByMember()
+        //显示会员收款
+        internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
         {
             flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
             CurrentMsg.Window_MemberInfoWindows.ShowWhithMember();
         }
-        internal static void ShowMemberInfoWindowByRecargeMoeneyByMember()
+        internal static void Show_MemberInfoWindow_By_RechargeMoeneyByMember()
         {
             flagCallShowMember = MEMBER_RECHAREGE_WINDOWS;
-            CurrentMsg.Window_RechargeMoneyForMember.ShowWhithMember();
+            CurrentMsg.Window_MemberInfoWindows.ShowWhithMember();
         }
+
+        //当获取会员信息成功后进行显示页面
         internal static void ShowWindowWhenGetMemberSuccess()
         {
             if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
@@ -103,21 +106,27 @@ namespace CashRegisterApplication.comm
                 return;
             }
         }
-
+        //当会员取消界面
         internal static void ShowWindowWhenMemberInfoCancel()
         {
-            //取消界面
+           
             if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
             {
-                CurrentMsg.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
+                CurrentMsg.Window_RecieveMoney.Show();
                 return;
             }
             if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
             {
-                CurrentMsg.Window_RechargeMoneyForMember.ShowWithMemberInfo();
+                CurrentMsg.Window_ProductList.Show();
                 return;
             }
         }
+
+        internal static void ShowWindows_RechargeMoneyForMember()
+        {
+            Window_RechargeMoneyForMember.ShowByProductListWindow();
+        }
+
         public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
 
         public static void Init()
@@ -230,7 +239,6 @@ namespace CashRegisterApplication.comm
             return CurrentMsg.oStockOutDTO.Base.dbGenerateFlag == CurrentMsg.STOCK_BASE_DB_GENERATE_INIT;
         }
                                                                                                                                         
-
         internal static bool GenerateOrder(string strProductList)
         {
             if (CurrentMsg.oStockOutDTO.details.Count == 0)

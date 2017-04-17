@@ -108,23 +108,23 @@ namespace CashRegiterApplication
             this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
             this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
         }
-
+        private void _GeneraterOrder()
+        {
+            //跳到收钱窗口
+            string strProductList = "";
+            _GenerateProductListForOrder(ref strProductList);
+            if (!CurrentMsg.GenerateOrder(strProductList))
+            {
+                return;
+            }
+        }
         /*
        * 弹出框，展示实收多少钱
        */
         private void _Windows_ShowRecieveMoeny()
         {
-            if (this.dataGridView_productList.IsCurrentCellInEditMode )
-            {
-                this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
-            }
-            //跳到收钱窗口
-            string strProductList=""; 
-            _GenerateProductListForOrder( ref strProductList);
-            if ( !CurrentMsg.GenerateOrder(strProductList ))
-            {
-                return;
-            }
+            _SetOrderPrice();
+            _GeneraterOrder();
             CurrentMsg.Window_RecieveMoney.ShowByProductListWindow();
             this.Hide();
         }
@@ -577,10 +577,10 @@ namespace CashRegiterApplication
                                 if (this.dataGridView_productList.CurrentRow.IsNewRow)
                                 {
                                     //删除当前行
-                                    //this.productListDataGridView.Rows.Remove(this.productListDataGridView.CurrentRow);
-                                  
-                                    _SetOrderPrice();
-                                    //_GoOrderDataGrid();
+                                    if (this.dataGridView_productList.IsCurrentCellInEditMode)
+                                    {
+                                        this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
+                                    }
                                     _Windows_ShowRecieveMoeny();
                                     
                                 }
@@ -590,7 +590,18 @@ namespace CashRegiterApplication
                         }
                     }
                     break;
-                    case System.Windows.Forms.Keys.Tab:
+                case System.Windows.Forms.Keys.Home:
+                    {
+                        _Windows_ShowRecieveMoeny();
+                        return true;
+                    }
+                case System.Windows.Forms.Keys.F9:
+                    {
+                        CurrentMsg.ShowWindows_RechargeMoneyForMember();
+                        this.Hide();
+                        return true;
+                    }
+                case System.Windows.Forms.Keys.Tab:
                     {
                         //tabl的操作被禁止
                         return true;
@@ -634,6 +645,7 @@ namespace CashRegiterApplication
                         RecoverStock();
                         return base.ProcessCmdKey(ref msg, keyData);
                     }
+
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
