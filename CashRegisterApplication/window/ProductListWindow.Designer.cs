@@ -36,9 +36,6 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
-            this.dataGridView_order = new System.Windows.Forms.DataGridView();
-            this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,6 +45,10 @@
             this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_order = new System.Windows.Forms.DataGridView();
+            this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).BeginInit();
@@ -124,44 +125,6 @@
             this.dataGridView_productList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.productListDataGridView_RowsAdded);
             this.dataGridView_productList.SelectionChanged += new System.EventHandler(this.productListDataGridView_SelectionChanged);
             // 
-            // dataGridView_order
-            // 
-            this.dataGridView_order.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGridView_order.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_order.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.orderMsg,
-            this.orderMoney});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_order.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView_order.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dataGridView_order.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dataGridView_order.Location = new System.Drawing.Point(260, 320);
-            this.dataGridView_order.MultiSelect = false;
-            this.dataGridView_order.Name = "dataGridView_order";
-            this.dataGridView_order.RowHeadersVisible = false;
-            this.dataGridView_order.RowTemplate.Height = 23;
-            this.dataGridView_order.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView_order.Size = new System.Drawing.Size(204, 133);
-            this.dataGridView_order.TabIndex = 5;
-            this.dataGridView_order.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGridView_CellEndEdit);
-            this.dataGridView_order.SelectionChanged += new System.EventHandler(this.orderDataGridView_SelectionChanged);
-            // 
-            // orderMsg
-            // 
-            this.orderMsg.HeaderText = "Column1";
-            this.orderMsg.Name = "orderMsg";
-            // 
-            // orderMoney
-            // 
-            this.orderMoney.HeaderText = "Column2";
-            this.orderMoney.Name = "orderMoney";
-            // 
             // ColumnIndex
             // 
             this.ColumnIndex.HeaderText = "序号";
@@ -208,11 +171,59 @@
             this.ProductID.Name = "ProductID";
             this.ProductID.Visible = false;
             // 
+            // dataGridView_order
+            // 
+            this.dataGridView_order.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView_order.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_order.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.orderMsg,
+            this.orderMoney});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_order.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView_order.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridView_order.GridColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.dataGridView_order.Location = new System.Drawing.Point(260, 320);
+            this.dataGridView_order.MultiSelect = false;
+            this.dataGridView_order.Name = "dataGridView_order";
+            this.dataGridView_order.RowHeadersVisible = false;
+            this.dataGridView_order.RowTemplate.Height = 23;
+            this.dataGridView_order.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView_order.Size = new System.Drawing.Size(204, 133);
+            this.dataGridView_order.TabIndex = 5;
+            this.dataGridView_order.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.orderDataGridView_CellEndEdit);
+            this.dataGridView_order.SelectionChanged += new System.EventHandler(this.orderDataGridView_SelectionChanged);
+            // 
+            // orderMsg
+            // 
+            this.orderMsg.HeaderText = "Column1";
+            this.orderMsg.Name = "orderMsg";
+            // 
+            // orderMoney
+            // 
+            this.orderMoney.HeaderText = "Column2";
+            this.orderMoney.Name = "orderMoney";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(619, 320);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 72);
+            this.label7.TabIndex = 38;
+            this.label7.Text = "快捷键\r\nHOME:选择支付方式\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复";
+            // 
             // ProductListWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(895, 527);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.dataGridView_order);
             this.Controls.Add(this.dataGridView_productList);
             this.Controls.Add(this.dataGridView_payWay);
@@ -225,6 +236,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -245,5 +257,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMoney;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRemark;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
+        private System.Windows.Forms.Label label7;
     }
 }

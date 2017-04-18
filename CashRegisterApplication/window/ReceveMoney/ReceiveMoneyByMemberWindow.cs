@@ -153,6 +153,8 @@ namespace CashRegisterApplication.window.member
             if (recieveFee > CurrentMsg.oMember.memberBalance)
             {
                 MessageBox.Show("余额不足" );
+                //跳转到充值页面
+                //hide()
                 return;
             }
 

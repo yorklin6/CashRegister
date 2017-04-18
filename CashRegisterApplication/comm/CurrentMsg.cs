@@ -74,11 +74,14 @@ namespace CashRegisterApplication.comm
 
         public const int CLOUD_SATE_PAY_UPDATE_SUCCESS = 3;
 
-        public static int MEMBER_RECIEVE_MONEY_WINDOWS = 0;//收款页面
+
+        public static int PRODUCTlIST_WINDOW = 0;//商品列表页
         public static int MEMBER_RECHAREGE_WINDOWS = 1;//支付页面
-    
+        public static int MEMBER_RECIEVE_MONEY_WINDOWS = 2;//会员收款页面
+
         public static int flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
 
+        public static int flagCallShowRecharge = PRODUCTlIST_WINDOW;
         //****************************会员收款和充值
         //显示会员收款
         internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
@@ -106,6 +109,27 @@ namespace CashRegisterApplication.comm
                 return;
             }
         }
+        //***************************充值相关
+
+        internal static void ShowWindows_RechargeMoneyForMember()
+        {
+            flagCallShowRecharge = PRODUCTlIST_WINDOW;
+            Window_RechargeMoneyForMember.ShowByProductListWindow();
+        }
+
+        //充值后返回
+        internal static void ControlWindowsAfterRecharge()
+        {
+            if (flagCallShowRecharge == PRODUCTlIST_WINDOW)
+            {
+                CurrentMsg.Window_ProductList.Show();
+            }
+            if (flagCallShowRecharge == MEMBER_RECIEVE_MONEY_WINDOWS)
+            {
+                CurrentMsg.Window_ProductList.Show();
+            }
+        }
+
         //当会员取消界面
         internal static void ShowWindowWhenMemberInfoCancel()
         {
@@ -120,11 +144,6 @@ namespace CashRegisterApplication.comm
                 CurrentMsg.Window_ProductList.Show();
                 return;
             }
-        }
-
-        internal static void ShowWindows_RechargeMoneyForMember()
-        {
-            Window_RechargeMoneyForMember.ShowByProductListWindow();
         }
 
         public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
@@ -394,6 +413,18 @@ namespace CashRegisterApplication.comm
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
         }
+        //充值
+        internal static bool RechargeMoneyByMember(long recieveFee)
+        {
+            //充值金
+            //请求后台充值
+            //记账
+            //重新拉会员信息
+            CurrentMsg.GetMemberByMemberAccount(CurrentMsg.oMember.memberAccount);
+            
+            return true;
+        }
+        
         //************************会员信息***********************
         internal static bool GetMemberByMemberAccount(string strMemberAccount)
         {

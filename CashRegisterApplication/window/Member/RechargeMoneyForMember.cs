@@ -23,7 +23,7 @@ namespace CashRegisterApplication.window.Member
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
             this.textBox_phone.Text = CurrentMsg.oMember.phone;
 
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee);
+            this.textBox_ReceiveFee.Text = "100";//默认100元
 
             this.textBox_ReceiveFee.Focus();
             this.textBox_ReceiveFee.SelectionStart = 0;
@@ -82,8 +82,49 @@ namespace CashRegisterApplication.window.Member
         }
          protected void buttonConfirm_Click(object sender, EventArgs e)
         {
-            //回车事件
+            long recieveFee = 0;
+            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
+            {
+                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
+                return;
+            }
+            string showTips = "确认充值：" + this.textBox_ReceiveFee.Text + " 元";
 
+            var confirmPayApartResult = MessageBox.Show(showTips,
+                                  "充值确认",
+                                  MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                //确认支付
+                CommUiltl.Log("DialogResult.No recieveFee:" + recieveFee);
+                _SelectRecieve();
+                return;
+            }
+            //下单支付
+            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
+            string strBeforeRecharge = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
+            if (!CurrentMsg.RechargeMoneyByMember(recieveFee))
+            {
+                 _SelectRecieve();
+                return;
+            }
+
+
+            MessageBox.Show("充值成功!\n\n充值前:"+ strBeforeRecharge 
+                +"\n充值:"+ this.textBox_ReceiveFee.Text
+                + "\n充值后:"+ CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance)),"充值结果");
+           CurrentMsg.ControlWindowsAfterRecharge();
+            this.Hide();
+           
+          
         }
+        private void _SelectRecieve()
+        {
+            this.textBox_ReceiveFee.Focus();
+            this.textBox_ReceiveFee.SelectionStart = 0;
+            this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
+        }
+
     }
 }
