@@ -58,15 +58,7 @@ namespace CashRegisterApplication.comm
 
         public const int STOCK_BASE_DB_GENERATE_INIT = 0;
         public const int STOCK_BASE_DB_GENERATE_DONE= 1;//已经存在DB
-        //public const int CLOUD_SATE_ORDER_GENERATE_INIT = 0;
-        //public const int CLOUD_SATE_ORDER_GENERATE_SUCCESS = 1;//云端生成订单成功
-        //public const int CLOUD_SATE_ORDER_GENERATE_FAILED = 2;
 
-        //public const int CLOUD_SATE_ORDER_UPDATE_SUCCESS = 3;//云端更新订单成功
-        //public const int CLOUD_SATE_ORDER_UPDATE_FAILED = 4;
-
-        //public const int CLOUD_SATE_ORDER_CLOSE_SUCCESS = 5;//云端关闭订单成功
-        //public const int CLOUD_SATE_ORDER_CLOSE_FAILED = 6;
 
         public const int CLOUD_SATE_PAY_GENERATE_INIT = 0;
         public const int CLOUD_SATE_PAY_GENERATE_SUCCESS = 1;
@@ -78,6 +70,7 @@ namespace CashRegisterApplication.comm
         public static int PRODUCTlIST_WINDOW = 0;//商品列表页
         public static int MEMBER_RECHAREGE_WINDOWS = 1;//支付页面
         public static int MEMBER_RECIEVE_MONEY_WINDOWS = 2;//会员收款页面
+
 
         public static int flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
 
@@ -106,6 +99,35 @@ namespace CashRegisterApplication.comm
             if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
             {
                 CurrentMsg.Window_RechargeMoneyForMember.ShowWithMemberInfo();
+                return;
+            }
+        }
+        //更新会员价
+        internal static void UpdateStockOrderByMemberInfo()
+        {
+            //StockOutDTO
+            _CaculateMemberPrice();
+            
+            return;
+        }
+        internal static void _CaculateMemberPrice()
+        {
+            long totalPrice = 0;
+            for (var i=0;i< CurrentMsg.oStockOutDTO.details.Count;++i)
+            {
+                //设置会员价
+                if (CurrentMsg.oStockOutDTO.details[i].unitPrice == CurrentMsg.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
+                {
+                    CurrentMsg.oStockOutDTO.details[i].unitPrice = CurrentMsg.oStockOutDTO.details[i].cloudProductPricing.memberPrice;
+                }
+                totalPrice += CurrentMsg.oStockOutDTO.details[i].unitPrice;
+            }
+            //
+            CurrentMsg.oStockOutDTO.Base.orderAmount = totalPrice;
+            CurrentMsg.Window_ProductList.SetProductListWindowByStockOut(CurrentMsg.oStockOutDTO);
+            //更新数据库里面订单信息
+            if(!Dao.updateRetailStock(CurrentMsg.oStockOutDTO))
+            {
                 return;
             }
         }
@@ -196,12 +218,12 @@ namespace CashRegisterApplication.comm
             {
                 try
                 {
-                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.cloudReqJson);
+                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.baseDataJson);
                     oLocalSaveStock.listStock.Add(oTmp);
                 }
                 catch (Exception e)
                 {
-                    CommUiltl.Log("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.cloudReqJson);
+                    CommUiltl.Log("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.baseDataJson);
                     continue;
                 }
             }
@@ -279,7 +301,7 @@ namespace CashRegisterApplication.comm
                     CurrentMsg.oStockOutDTO.Base.stockOutId = CurrentMsg.oStockOutDToRespond.data.Base.stockOutId;
                     SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CurrentMsg.oStockOutDTO );
                 }
-                CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
+                CurrentMsg.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
                 CurrentMsg.oStockOutDTO.Base.dbGenerateFlag = CurrentMsg.STOCK_BASE_DB_GENERATE_DONE;//新增
                 //插入本地数据库表
                 if (!Dao.GenerateOrder(CurrentMsg.oStockOutDTO))
@@ -300,7 +322,7 @@ namespace CashRegisterApplication.comm
                     
                 }else
                 {
-                    CurrentMsg.oStockOutDTO.Base.cloudReqJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
+                    CurrentMsg.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CurrentMsg.oStockOutDTO);
                 }
 
                 if (!Dao.updateRetailStock(CurrentMsg.oStockOutDTO))

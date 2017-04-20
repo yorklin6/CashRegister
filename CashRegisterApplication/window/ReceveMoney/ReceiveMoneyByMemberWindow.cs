@@ -42,7 +42,9 @@ namespace CashRegisterApplication.window.member
                 CurrentMsg.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
                 return;
             }
-           
+
+            ShowWithMemberInfo();
+
             this.textBox_ReceiveFee.Focus();
         }
 
@@ -52,7 +54,12 @@ namespace CashRegisterApplication.window.member
             this.textBox_name.Text = CurrentMsg.oMember.name;
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
             this.textBox_phone.Text = CurrentMsg.oMember.phone;
+            _SelectRecieve();
+            this.Show();
+        }
 
+        private void _SelectRecieve()
+        {
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
@@ -60,15 +67,6 @@ namespace CashRegisterApplication.window.member
             this.textBox_ReceiveFee.Focus();
             this.textBox_ReceiveFee.SelectionStart = 0;
             this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
-            this.Show();
-        }
-
-        private void _SelectRecieve()
-        {
-            this.textBox_memberAccount.Focus();
-            this.textBox_memberAccount.Text = "123456";
-            this.textBox_memberAccount.SelectionStart = 0;
-            this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
         }
 
         private void ReceiveMoneyByCashWindow_Enter(object sender, EventArgs e)

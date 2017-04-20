@@ -46,7 +46,7 @@ namespace CashRegisterApplication.comm
             strSql += " (stock_out_id,serial_number,type,store_id,whouse_id,";
             strSql += "related_order,client_id,pos_id,cashier_id,order_amount,";
             strSql += "recieve_fee,change_fee,create_time,";
-            strSql += "cloud_req_json,cloud_add_flag,cloud_update_flag,cloud_close_flag,cloud_delete_flag,";
+            strSql += "base_data_json,cloud_add_flag,cloud_update_flag,cloud_close_flag,cloud_delete_flag,";
             strSql += "local_save_flag,";
             strSql += "remark,status) VALUES (";
             strSql += "'" + oStockOutDTO.Base.stockOutId + "',";
@@ -62,7 +62,7 @@ namespace CashRegisterApplication.comm
             strSql += "" + oStockOutDTO.Base.RecieveFee + ",";
             strSql += "" + oStockOutDTO.Base.ChangeFee + ",";
             strSql += "datetime('now'),";
-            strSql += "'" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += "'" + oStockOutDTO.Base.baseDataJson + "',";
             strSql += "" + oStockOutDTO.Base.cloudAddFlag + ",";
             strSql += "" + oStockOutDTO.Base.cloudUpdateFlag + ",";
             strSql += "" + oStockOutDTO.Base.cloudCloseFlag + ",";
@@ -95,7 +95,7 @@ namespace CashRegisterApplication.comm
             foreach (var item in oStockOutDTO.details)
             {
                 strSql = "INSERT INTO tb_stock_out_detail ";
-                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,cloud_state,specification,unit,order_count,goods_req_json,unit_price) VALUES (";
+                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,cloud_state,specification,unit,order_count,detail_data_json,unit_price) VALUES (";
                 strSql += " " + item .id + ",";
                 strSql += " " + item.stockOutId + ",";
                 strSql += " '" + oStockOutDTO.Base.serialNumber + "',";
@@ -107,7 +107,7 @@ namespace CashRegisterApplication.comm
                 strSql += "'" + item.specification + "',";
                 strSql += "'" + item.unit + "',";
                 strSql += "" + item.orderCount + ",";
-                strSql += "'" + item.goodsReqJson + "',";
+                strSql += "'" + item.detailDataJson + "',";
                 strSql += "" + item.unitPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();
@@ -143,7 +143,7 @@ namespace CashRegisterApplication.comm
             string strSql = "update tb_stock_out_base set   ";
 
 
-            strSql += " cloud_req_json='" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += " base_data_json='" + oStockOutDTO.Base.baseDataJson + "',";
             strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
             strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
             strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
@@ -194,7 +194,7 @@ namespace CashRegisterApplication.comm
             strSql += " recieve_fee=" + oStockOutDTO.Base.RecieveFee + ",";
             strSql += " change_fee=" + oStockOutDTO.Base.ChangeFee + ",";
             strSql += " remark='" + oStockOutDTO.Base.remark + "',";
-            strSql += " cloud_req_json='" + oStockOutDTO.Base.cloudReqJson + "',";
+            strSql += " base_data_json='" + oStockOutDTO.Base.baseDataJson + "',";
             strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
             strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
             strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
@@ -333,7 +333,7 @@ namespace CashRegisterApplication.comm
         internal static bool GetCloudStateFailedStockOutList(StockOutDTO oState,ref List<StockOutDTO> oJsonList)
         {
             string strSql = "";
-            strSql += "select stock_out_id,serial_number,cloud_req_json from tb_stock_out_base ";
+            strSql += "select stock_out_id,serial_number,base_data_json from tb_stock_out_base ";
             strSql += "where 1=1 ";
             if (oState.Base.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
@@ -379,7 +379,7 @@ namespace CashRegisterApplication.comm
                 StockOutDTO oStockOutDTO = new StockOutDTO();
                 oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
                 oStockOutDTO.Base.serialNumber = sqlite_datareader.GetString(1);
-                oStockOutDTO.Base.cloudReqJson = sqlite_datareader.GetString(2);
+                oStockOutDTO.Base.baseDataJson = sqlite_datareader.GetString(2);
                 oJsonList.Add(oStockOutDTO);
             }
             return true;

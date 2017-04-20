@@ -156,12 +156,12 @@ namespace CashRegisterApplication.comm
             {
                 try
                 {
-                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.cloudReqJson);
+                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.baseDataJson);
                     oStockList.Add(oTmp);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.cloudReqJson);
+                    Console.WriteLine("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.baseDataJson);
                     continue;
                 }
             }

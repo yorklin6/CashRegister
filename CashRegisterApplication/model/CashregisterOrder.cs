@@ -108,7 +108,7 @@ namespace CashRegisterApplication.model
         public long ChangeFee { get; set; }
 
 
-        public String cloudReqJson { get; set; }
+        public String baseDataJson { get; set; }
         public int cloudAddFlag { get; set; }
         public int cloudCloseFlag { get; set; }
         public int cloudDeleteFlag { get; set; }
@@ -147,7 +147,7 @@ namespace CashRegisterApplication.model
 
             CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.cloudReqJson = "";
+            CurrentMsg.oStockOutDTO.Base.baseDataJson = "";
             CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
@@ -180,8 +180,9 @@ namespace CashRegisterApplication.model
         public   int status { get; set; }
         internal int cloudState { get; set; }
 
-        public string goodsReqJson { get; set; }
+        public string detailDataJson { get; set; }
         public string goodsShowSpecification { get; set; }
+        public ProductPricing cloudProductPricing;
 
 
     }

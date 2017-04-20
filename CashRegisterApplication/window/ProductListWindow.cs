@@ -410,7 +410,8 @@ namespace CashRegiterApplication
             detail.remark = productInfo.remark;
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
-            detail.goodsReqJson = JsonConvert.SerializeObject(productInfo);
+            detail.cloudProductPricing = productInfo;
+            detail.detailDataJson = JsonConvert.SerializeObject(productInfo);
 
         }
 
@@ -718,7 +719,8 @@ namespace CashRegiterApplication
         {
             return CurrentMsg.oStockOutDTO.details.Count ==0 ;
         }
-        private void SetProductListWindowByStockOut(StockOutDTO oStockOutDTO)
+
+        public void SetProductListWindowByStockOut(StockOutDTO oStockOutDTO)
         {
             //列出商品
             int rowIndex;
