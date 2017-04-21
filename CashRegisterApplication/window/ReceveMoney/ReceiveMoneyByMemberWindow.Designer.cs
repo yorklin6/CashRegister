@@ -38,7 +38,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox_ReceiveFee = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lable_goodsStringWithoutMemberPrice = new System.Windows.Forms.Label();
             this.textBox_SupportFee = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox_ChangeFee = new System.Windows.Forms.TextBox();
@@ -147,14 +147,14 @@
             this.textBox_ReceiveFee.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox_ReceiveFee.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_ReceiveFee_KeyPress);
             // 
-            // label7
+            // lable_goodsStringWithoutMemberPrice
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(492, 57);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(263, 12);
-            this.label7.TabIndex = 37;
-            this.label7.Text = "因为收银员进行价格修改，未参加会员价的商品:\r\n";
+            this.lable_goodsStringWithoutMemberPrice.AutoSize = true;
+            this.lable_goodsStringWithoutMemberPrice.Location = new System.Drawing.Point(429, 54);
+            this.lable_goodsStringWithoutMemberPrice.Name = "lable_goodsStringWithoutMemberPrice";
+            this.lable_goodsStringWithoutMemberPrice.Size = new System.Drawing.Size(263, 12);
+            this.lable_goodsStringWithoutMemberPrice.TabIndex = 37;
+            this.lable_goodsStringWithoutMemberPrice.Text = "因为收银员进行价格修改，未参加会员价的商品:\r\n";
             // 
             // textBox_SupportFee
             // 
@@ -225,7 +225,7 @@
             this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.textBox_SupportFee);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.lable_goodsStringWithoutMemberPrice);
             this.Controls.Add(this.textBox_ReceiveFee);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_memberBalance);
@@ -256,7 +256,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox_ReceiveFee;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lable_goodsStringWithoutMemberPrice;
         private System.Windows.Forms.TextBox textBox_SupportFee;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonConfirm;

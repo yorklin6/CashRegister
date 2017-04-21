@@ -88,6 +88,7 @@ namespace CashRegisterApplication.comm
             CurrentMsg.Window_MemberInfoWindows.ShowWhithMember();
         }
 
+
         //当获取会员信息成功后进行显示页面
         internal static void ShowWindowWhenGetMemberSuccess()
         {
@@ -107,7 +108,7 @@ namespace CashRegisterApplication.comm
         {
             //StockOutDTO
             _CaculateMemberPrice();
-            
+            CurrentMsg.GetGoodsStringWithoutMemberPrice();
             return;
         }
         internal static void _CaculateMemberPrice()
@@ -130,6 +131,25 @@ namespace CashRegisterApplication.comm
             {
                 return;
             }
+        }
+        internal static void GetGoodsStringWithoutMemberPrice()
+        {
+            string strTmp = "";
+            for (var i = 0; i < CurrentMsg.oStockOutDTO.details.Count; ++i)
+            {
+                //设置会员价
+                if (CurrentMsg.oStockOutDTO.details[i].unitPrice != CurrentMsg.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
+                {
+                    //strTmp +="id:"+CurrentMsg.oStockOutDTO.details[i].goodsId+" ";
+                    strTmp += CurrentMsg.oStockOutDTO.details[i].goodsName;
+                    strTmp += " 会员价:" + CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.details[i].cloudProductPricing.memberPrice);
+                    strTmp += " 现价:" + CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.details[i].unitPrice);
+                    strTmp += "\n";
+                }
+               
+            }
+            CurrentMsg.oMember.goodsStringWithoutMemberPrice = strTmp;
+
         }
         //***************************充值相关
 

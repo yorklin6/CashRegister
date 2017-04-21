@@ -55,6 +55,7 @@ namespace CashRegisterApplication.window.member
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
             this.textBox_phone.Text = CurrentMsg.oMember.phone;
             _SelectRecieve();
+            _ShowGoodsMemberInfo();
             this.Show();
         }
 
@@ -68,7 +69,16 @@ namespace CashRegisterApplication.window.member
             this.textBox_ReceiveFee.SelectionStart = 0;
             this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
         }
-
+        private void _ShowGoodsMemberInfo()
+        {
+            string str = "\n";
+            if (CurrentMsg.oMember.goodsStringWithoutMemberPrice != "")
+            {
+                str += "未参加会员价的商品:\n";
+                str += CurrentMsg.oMember.goodsStringWithoutMemberPrice;
+            }
+            this.lable_goodsStringWithoutMemberPrice.Text = str;
+        }
         private void ReceiveMoneyByCashWindow_Enter(object sender, EventArgs e)
         {
             CommUiltl.Log("ReceiveMoneyByCashWindow_Enter");

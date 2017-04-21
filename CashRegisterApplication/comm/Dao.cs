@@ -198,7 +198,7 @@ namespace CashRegisterApplication.comm
             strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
             strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
             strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
-            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + "";
+            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + ",";
             strSql += " status=" + oStockOutDTO.Base.status + " ";
             strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();

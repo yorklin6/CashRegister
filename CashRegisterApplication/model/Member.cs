@@ -52,7 +52,7 @@ namespace CashRegisterApplication.model
         public Byte isDeleted{ get; set; }
         public String createTime { get; set; }
         public String updateTime { get; set; }
-
+        public String goodsStringWithoutMemberPrice { get; set; }
 
     }
 }

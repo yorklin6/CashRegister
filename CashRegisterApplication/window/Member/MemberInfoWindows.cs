@@ -75,6 +75,9 @@ namespace CashRegisterApplication.window.member
                     this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
                     return;
                 }
+                //成功后，需要更新订单信息，按照会员价来计算订单总价
+                CurrentMsg.UpdateStockOrderByMemberInfo();
+   
                 //查成功
                 this.textBox_name.Text = CurrentMsg.oMember.name;
                 this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
