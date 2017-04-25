@@ -36,19 +36,19 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
+            this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnRetailSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnNormalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_order = new System.Windows.Forms.DataGridView();
             this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label7 = new System.Windows.Forms.Label();
-            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnNormalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnRetailSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).BeginInit();
@@ -91,6 +91,7 @@
             // 
             // dataGridView_productList
             // 
+            this.dataGridView_productList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView_productList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_productList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIndex,
@@ -112,12 +113,12 @@
             this.dataGridView_productList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_productList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView_productList.GridColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.dataGridView_productList.Location = new System.Drawing.Point(23, 12);
+            this.dataGridView_productList.Location = new System.Drawing.Point(-1, 12);
             this.dataGridView_productList.MultiSelect = false;
             this.dataGridView_productList.Name = "dataGridView_productList";
             this.dataGridView_productList.RowHeadersVisible = false;
             this.dataGridView_productList.RowTemplate.Height = 23;
-            this.dataGridView_productList.Size = new System.Drawing.Size(908, 297);
+            this.dataGridView_productList.Size = new System.Drawing.Size(1215, 297);
             this.dataGridView_productList.TabIndex = 1;
             this.dataGridView_productList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellContentClick);
             this.dataGridView_productList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellEndEdit);
@@ -125,9 +126,61 @@
             this.dataGridView_productList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.productListDataGridView_RowsAdded);
             this.dataGridView_productList.SelectionChanged += new System.EventHandler(this.productListDataGridView_SelectionChanged);
             // 
+            // ColumnIndex
+            // 
+            this.ColumnIndex.HeaderText = "序号";
+            this.ColumnIndex.Name = "ColumnIndex";
+            // 
+            // ColumnProductCode
+            // 
+            this.ColumnProductCode.HeaderText = "条码";
+            this.ColumnProductCode.Name = "ColumnProductCode";
+            // 
+            // ColumnGoodsName
+            // 
+            this.ColumnGoodsName.FillWeight = 200F;
+            this.ColumnGoodsName.HeaderText = "名称";
+            this.ColumnGoodsName.Name = "ColumnGoodsName";
+            // 
+            // ColumnRetailSpecification
+            // 
+            this.ColumnRetailSpecification.HeaderText = "规格";
+            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
+            // 
+            // ColumnNormalPrice
+            // 
+            this.ColumnNormalPrice.HeaderText = "单价";
+            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
+            // 
+            // ColumnAmount
+            // 
+            this.ColumnAmount.HeaderText = "数量";
+            this.ColumnAmount.Name = "ColumnAmount";
+            // 
+            // ColumnMoney
+            // 
+            this.ColumnMoney.HeaderText = "金额";
+            this.ColumnMoney.Name = "ColumnMoney";
+            // 
+            // ColumnRemark
+            // 
+            this.ColumnRemark.HeaderText = "备注";
+            this.ColumnRemark.Name = "ColumnRemark";
+            // 
+            // ProductID
+            // 
+            this.ProductID.HeaderText = "商品ID";
+            this.ProductID.Name = "ProductID";
+            this.ProductID.Visible = false;
+            // 
             // dataGridView_order
             // 
+            this.dataGridView_order.AllowUserToAddRows = false;
+            this.dataGridView_order.AllowUserToDeleteRows = false;
+            this.dataGridView_order.AllowUserToResizeColumns = false;
+            this.dataGridView_order.AllowUserToResizeRows = false;
             this.dataGridView_order.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dataGridView_order.CausesValidation = false;
             this.dataGridView_order.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_order.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.orderMsg,
@@ -140,11 +193,12 @@
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_order.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView_order.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridView_order.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dataGridView_order.GridColor = System.Drawing.SystemColors.ControlDarkDark;
             this.dataGridView_order.Location = new System.Drawing.Point(260, 320);
             this.dataGridView_order.MultiSelect = false;
             this.dataGridView_order.Name = "dataGridView_order";
+            this.dataGridView_order.ReadOnly = true;
             this.dataGridView_order.RowHeadersVisible = false;
             this.dataGridView_order.RowTemplate.Height = 23;
             this.dataGridView_order.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
@@ -157,68 +211,22 @@
             // 
             this.orderMsg.HeaderText = "Column1";
             this.orderMsg.Name = "orderMsg";
+            this.orderMsg.ReadOnly = true;
             // 
             // orderMoney
             // 
             this.orderMoney.HeaderText = "Column2";
             this.orderMoney.Name = "orderMoney";
+            this.orderMoney.ReadOnly = true;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(619, 320);
+            this.label7.Location = new System.Drawing.Point(792, 320);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(107, 72);
             this.label7.TabIndex = 38;
             this.label7.Text = "快捷键\r\nHOME:选择支付方式\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复";
-            // 
-            // ProductID
-            // 
-            this.ProductID.HeaderText = "商品ID";
-            this.ProductID.Name = "ProductID";
-            this.ProductID.Visible = false;
-            // 
-            // ColumnRemark
-            // 
-            this.ColumnRemark.HeaderText = "备注";
-            this.ColumnRemark.Name = "ColumnRemark";
-            // 
-            // ColumnMoney
-            // 
-            this.ColumnMoney.HeaderText = "金额";
-            this.ColumnMoney.Name = "ColumnMoney";
-            // 
-            // ColumnAmount
-            // 
-            this.ColumnAmount.HeaderText = "数量";
-            this.ColumnAmount.Name = "ColumnAmount";
-            // 
-            // ColumnNormalPrice
-            // 
-            this.ColumnNormalPrice.HeaderText = "单价";
-            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
-            // 
-            // ColumnRetailSpecification
-            // 
-            this.ColumnRetailSpecification.HeaderText = "规格";
-            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
-            // 
-            // ColumnGoodsName
-            // 
-            this.ColumnGoodsName.FillWeight = 200F;
-            this.ColumnGoodsName.HeaderText = "名称";
-            this.ColumnGoodsName.Name = "ColumnGoodsName";
-            this.ColumnGoodsName.Width = 200;
-            // 
-            // ColumnProductCode
-            // 
-            this.ColumnProductCode.HeaderText = "条码";
-            this.ColumnProductCode.Name = "ColumnProductCode";
-            // 
-            // ColumnIndex
-            // 
-            this.ColumnIndex.HeaderText = "序号";
-            this.ColumnIndex.Name = "ColumnIndex";
             // 
             // ProductListWindow
             // 
