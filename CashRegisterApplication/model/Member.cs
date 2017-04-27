@@ -16,6 +16,8 @@ namespace CashRegisterApplication.model
     }
     public class Member
     {
+        public long memberId { get; set; }
+
         public String memberAccount{ get; set; }
 
         public Byte memberType{ get; set; }
@@ -48,11 +50,18 @@ namespace CashRegisterApplication.model
 
         public String storeName{ get; set; }
 
+
+
+
+
         public Byte status{ get; set; }
         public Byte isDeleted{ get; set; }
         public String createTime { get; set; }
         public String updateTime { get; set; }
         public String goodsStringWithoutMemberPrice { get; set; }
+
+        public int cloudState { get; set; }
+        public String reqJson { get; set; }
 
     }
 }

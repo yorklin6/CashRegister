@@ -226,17 +226,17 @@ namespace CashRegiterApplication
                 if (item.payType == PayWay.PAY_TYPE_CASH)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
             }
         }
@@ -746,17 +746,17 @@ namespace CashRegiterApplication
                 if (item.payType == PayWay.PAY_TYPE_CASH)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
                     this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payFee);
+                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
             }
         }

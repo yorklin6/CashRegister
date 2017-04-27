@@ -39,13 +39,29 @@ namespace CashRegisterApplication.model
         internal void addPayWay(PayWay oPayWay)
         {
             CommUiltl.Log("RecieveFee before:" + Base.RecieveFee);
-            Base.RecieveFee += oPayWay.payFee;
+            Base.RecieveFee += oPayWay.payAmount;
             CommUiltl.Log("RecieveFee after:" + Base.RecieveFee);
             if (Base.RecieveFee > Base.orderAmount)
             {
                 Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
             }
             payList.Add(oPayWay);
+        }
+    }
+
+
+    public class PayWayHttpRequet
+    {
+        public long memberId { get; set; }
+
+        public int tradeTime { get; set; }
+
+        public List<PayWay> list;
+        public PayWayHttpRequet()
+        {
+            memberId = 0;
+            tradeTime = 0;
+            list = new List<PayWay>();
         }
     }
 
@@ -60,20 +76,29 @@ namespace CashRegisterApplication.model
         public const int PAY_TYPE_ZHIFUBAO = 3;
         public const string PAY_TYPE_ZHIFUBAO_DESC = "支付宝支付";
 
+       
         public int payType { get; set; }
-        public long payFee { get; set; }
+        public long payAmount { get; set; }
         public string PayOrderNumber { get; internal set; }
         public String serialNumber { get; set; }
-        public int payStatus { get; set; }
         public int cloudState { get; set; }
+
+        public int id { get; set; }
+        public int posId { get; set; }
+        public int payStatus { get; set; }
+        public long relatedOrder { get; set; }
+        public long storeId { get; set; }
+        public int isDeleted { get; set; }
         public PayWay()
         {
+            id = 0;
             payType = 0;
-            payFee = 0;
+            payAmount = 0;
             payStatus = 0;
             cloudState = 0;
             PayOrderNumber = "";
             serialNumber = "";
+            posId = CurrentMsg.POST_ID;
         }
 
 

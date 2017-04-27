@@ -37,9 +37,9 @@ namespace CashRegisterApplication.comm
 
         public static PayWay oPayWay ;//商品列表
 
+        public const int POST_ID = 12345;
 
-        
-        public const int PAY_STATE_INIT=0;
+        public const int PAY_STATE_INIT = 0;
         public const  int PAY_STATE_SUCCESS = 1;
         public const int PAY_TYPE_CASH = 1;
 
@@ -384,6 +384,9 @@ namespace CashRegisterApplication.comm
             CurrentMsg.oLocalSaveStock.listStock.Add(oStockOutDTO);
         }
         public static int CurrentStockIndex = -1;
+
+
+
         internal static void GetSaveOrderToCurrentMsg()
         {
             if (CurrentMsg.oLocalSaveStock.listStock.Count == 0)
@@ -414,14 +417,15 @@ namespace CashRegisterApplication.comm
         internal static bool PayOrderByCash(long recieveFee)
         {
             CurrentMsg.oPayWay.payType = PAY_TYPE_CASH;
-            CurrentMsg.oPayWay.payFee = recieveFee;
+            CurrentMsg.oPayWay.payAmount = recieveFee;
             CurrentMsg.oPayWay.generatePayOrderNumber();
             CurrentMsg.oPayWay.serialNumber = CurrentMsg.oStockOutDTO.Base.serialNumber;
             CurrentMsg.oPayWay.payStatus=  CurrentMsg.PAY_STATE_SUCCESS;
             CurrentMsg.oPayWay.cloudState = CurrentMsg.CLOUD_SATE_PAY_SUCESS ;
-
-            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(CurrentMsg.oPayWay);
-
+            PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
+            oPayWayHttpRequet.memberId = CurrentMsg.oMember.memberId;
+            oPayWayHttpRequet.list.Add(CurrentMsg.oPayWay);
+            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
             if (!Dao.GeneratePay(CurrentMsg.oPayWay))
             {
                 return false;
@@ -436,14 +440,15 @@ namespace CashRegisterApplication.comm
         internal static bool PayOrderByMember(long recieveFee)
         {
             CurrentMsg.oPayWay.payType = PAY_TYPE_CASH;
-            CurrentMsg.oPayWay.payFee = recieveFee;
+            CurrentMsg.oPayWay.payAmount = recieveFee;
             CurrentMsg.oPayWay.generatePayOrderNumber();
             CurrentMsg.oPayWay.serialNumber = CurrentMsg.oStockOutDTO.Base.serialNumber;
             CurrentMsg.oPayWay.payStatus = CurrentMsg.PAY_STATE_SUCCESS;
             CurrentMsg.oPayWay.cloudState = CurrentMsg.CLOUD_SATE_PAY_SUCESS;
-
-            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(CurrentMsg.oPayWay);
-
+            PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
+            oPayWayHttpRequet.memberId = CurrentMsg.oMember.memberId;
+            oPayWayHttpRequet.list.Add(CurrentMsg.oPayWay);
+            CurrentMsg.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
             if (!Dao.GeneratePay(CurrentMsg.oPayWay))
             {
                 return false;
@@ -459,11 +464,26 @@ namespace CashRegisterApplication.comm
         internal static bool RechargeMoneyByMember(long recieveFee)
         {
             //充值金
+            Member oRechargeMember = new Member();
+            oRechargeMember.memberId= CurrentMsg.oMember.memberId;
+            oRechargeMember.memberBalance = recieveFee;
+            oRechargeMember.name = CurrentMsg.oMember.name;
+            oRechargeMember.memberAccount=CurrentMsg.oMember.memberAccount;
+            oRechargeMember.reqJson = JsonConvert.SerializeObject(oRechargeMember);
             //请求后台充值
-            //记账
+            oRechargeMember.cloudState = HttpUtility.memberRecharge(oRechargeMember);
+
+            long beforeMberBalance = CurrentMsg.oMember.memberBalance;
             //重新拉会员信息
             CurrentMsg.GetMemberByMemberAccount(CurrentMsg.oMember.memberAccount);
-            
+            long afterMemberAccount = CurrentMsg.oMember.memberBalance;
+            //记录流水
+            Dao.memberRecharge(oRechargeMember, beforeMberBalance, afterMemberAccount, recieveFee);
+
+            if (oRechargeMember.cloudState != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                return false;
+            }
             return true;
         }
         

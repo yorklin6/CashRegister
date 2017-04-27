@@ -37,7 +37,8 @@ namespace CashRegiterApplication
         private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string updateOrderFunc = "stockOut/retail/";
-        private static readonly string userPayFunc = "userPay.json?";
+        private static readonly string userPayFunc = "/retail/checkout?";
+        private static readonly string rechargeMember = "/member/balance/";
         private static UserLogin oLoginer;
 
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
@@ -195,7 +196,7 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         /***************************************支付***************************************/
-        public static int PayOrdr(PayWay oPayWay)
+        public static int PayOrdr(PayWayHttpRequet oPayWay)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -209,11 +210,12 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        public static int _PayOrder(PayWay oPayWay)
+        public static int _PayOrder(PayWayHttpRequet oPayWay)
         {
-            string funcUrl = userPayFunc + "orderNumber=" + oPayWay.PayOrderNumber + "&payCode=payCode&payFee=" + oPayWay.payFee+ "&payType="+ oPayWay.payType;
+            string funcUrl = userPayFunc ;
             PayOrderResp oPayOrderResp = new PayOrderResp();
-            if (!Get<PayOrderResp>(funcUrl, ref oPayOrderResp))
+            String json = JsonConvert.SerializeObject(oPayWay);
+            if (!Post<PayOrderResp>(funcUrl, json,ref oPayOrderResp))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "支付异常：请检查网络";
@@ -296,7 +298,29 @@ namespace CashRegiterApplication
             }
             return CLOUD_SATE_HTTP_SUCESS;
         }
-        /***************************************狄成信息***************************************/
+        //会员充值
+        internal static int memberRecharge(Member oReq)
+        {
+            string funcUrl = rechargeMember+ oReq.memberId.ToString();
+            HttpBaseRespone oResp = new HttpBaseRespone();
+            String json = JsonConvert.SerializeObject(oReq);
+            if (!Put<HttpBaseRespone>(funcUrl, json, ref oResp))
+            {
+                Console.WriteLine("ERR:Get GenerateOrder failed");
+                lastErrorMsg = "支付异常：请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+
+            if (oResp.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oResp:" + oResp);
+                lastErrorMsg = "充值异常:oResp[" + oResp + "]";
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
+
+        /***************************************Post信息***************************************/
         public static bool Post<T>(string funcUrl,string json, ref T returnObj)
         {
             HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
@@ -327,6 +351,45 @@ namespace CashRegiterApplication
             }
 
         
+
+            if (!HttpResp<T>(request, ref returnObj))
+            {
+                Console.WriteLine("ERR:HttpResp failed");
+                return false;
+            }
+            return true;
+        }
+        /***************************************PUT信息***************************************/
+        public static bool Put<T>(string funcUrl, string json, ref T returnObj)
+        {
+            HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
+            request.Method = "PUT";
+            request.UserAgent = DefaultUserAgent;
+            request.Timeout = timeOutDefault;
+            request.CookieContainer = gCookies;
+            request.ContentType = "application/json";
+            if (gCookies == null)
+            {
+                request.CookieContainer = new CookieContainer();
+            }
+            try
+            {
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine("网络异常");
+                HandelWEbException(e);
+                return false;
+            }
+
+
 
             if (!HttpResp<T>(request, ref returnObj))
             {
@@ -465,6 +528,7 @@ namespace CashRegiterApplication
             }
             return request.GetResponse() as HttpWebResponse;
         }
+
         /// <summary>  
         /// 创建POST方式的HTTP请求  
         /// </summary>  

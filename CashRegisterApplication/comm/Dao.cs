@@ -392,11 +392,17 @@ namespace CashRegisterApplication.comm
            
             int iRow = 0;
             //插入订单
-            string strSql = "insert into t2_cash_register_pay  ";
-            strSql += " (serial_number,CashRegisterPayOrderNumber,payFee,PayType,status,create_time,CloudState,PayCode) VALUES (";
+            string strSql = "insert into tb_checkout  ";
+            strSql += " (id,pos_id,store_id,is_deleted,related_order,serial_number,CashRegisterPayOrderNumber,pay_amount,pay_type,payStatus,create_time,CloudState,PayCode) VALUES (";
+            strSql += "" + oPayWay.id + ",";
+            strSql += "" + oPayWay.posId + ",";
+            strSql += "" + oPayWay.storeId + ",";
+            strSql += "" + oPayWay.isDeleted + ",";
+            
+            strSql += "'" + oPayWay.relatedOrder + "',";
             strSql += "'" + oPayWay.serialNumber + "',";
             strSql += "'" + oPayWay.PayOrderNumber + "',";
-            strSql += "" + oPayWay.payFee + ",";
+            strSql += "" + oPayWay.payAmount + ",";
             strSql += "" + oPayWay.payType+ ",";
             strSql += "" + oPayWay.payStatus + ",";
             strSql += "datetime('now'),";
@@ -431,7 +437,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("Dao UpdatePayCloudStae");
             int iRow = 0;
             //插入订单
-            string strSql = "update t2_cash_register_pay set   CloudState=" + oPayWay.cloudState + " where  CashRegisterPayOrderNumber='" + oPayWay.PayOrderNumber + "' ";
+            string strSql = "update tb_checkout set CloudState=" + oPayWay.cloudState + " where  CashRegisterPayOrderNumber='" + oPayWay.PayOrderNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -452,6 +458,46 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("更新支付本地数据库云状态 UpdatePayCloudStae ok success");
             return true;
         }
+        //会员充值流水
+        internal static bool memberRecharge(Member oRechargeMember, long beforeMberBalance, long afterMemberAccount, long recieveFee)
+        {
+            CommUiltl.Log("Dao memberRecharge");
+            int iRow = 0;
+            //插入订单
+            string strSql = "insert into tb_member_recharge  ";
+            strSql += " (member_id,name,member_account,berfore_balance,after_balance,create_time,cloud_state,req_json) VALUES (";
+            strSql += "" + oRechargeMember.memberId + ",";
+            strSql += "'" + oRechargeMember.name + "',";
+            strSql += "" + oRechargeMember.memberAccount + ",";
+            strSql += "" + beforeMberBalance + ",";
+            strSql += "" + afterMemberAccount + ",";
+            strSql += "datetime('now'),";
+            strSql += "" + oRechargeMember.cloudState + ",";
+            strSql += "'" + oRechargeMember.reqJson + "'";
+            strSql += ")";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("支付插入本地数据库失败:" + ex.ToString());
+                return false;
+            }
+
+            if (0 == iRow)
+            {
+                MessageBox.Show("支付插入本地数据库失败");
+                return false;
+            }
+            CommUiltl.Log("PayOrderByCash ok success");
+            return true;
+        }
+
 
         public bool Daemone()
         {
@@ -501,5 +547,8 @@ namespace CashRegisterApplication.comm
             sqlite_conn.Close();
             return true;
         }
+
+
+ 
     }
 }

@@ -52,15 +52,15 @@ namespace CashRegisterApplication.window
             {
                 if (item.payType== PayWay.PAY_TYPE_CASH)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee)+"元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount)+"元\n";
                 }
                 else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee) + "元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
                 }
                 else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
                 {
-                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payFee) + "元\n";
+                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
                 }
             }
             this.labelPaidMsg.Text = strPaidInfo;
