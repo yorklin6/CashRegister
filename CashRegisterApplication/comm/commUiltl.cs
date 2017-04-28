@@ -109,6 +109,13 @@ namespace CashRegisterApplication.comm
         {
            return JsonConvert.SerializeObject(obj);
         }
+
+        internal static string GetRandomNumber()
+        {
+            Random rnd = new Random();
+            int card = rnd.Next(999);
+            return card.ToString();
+        }
     }
    
 }

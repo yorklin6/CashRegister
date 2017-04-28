@@ -42,7 +42,8 @@ namespace CashRegisterApplication.window.member
                 CurrentMsg.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
                 return;
             }
-
+            //成功后，需要更新订单信息，按照会员价来计算订单总价
+            CurrentMsg.UpdateStockOrderByMemberInfo();
             ShowWithMemberInfo();
 
             this.textBox_ReceiveFee.Focus();

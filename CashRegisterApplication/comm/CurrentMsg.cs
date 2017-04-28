@@ -313,7 +313,7 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
                 CurrentMsg.oStockOutDTO.Base.generateSeariseNumber();
 
-                // CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
+                CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CurrentMsg.oStockOutDTO, ref CurrentMsg.oStockOutDToRespond);
                 CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
                 if (CurrentMsg.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
@@ -330,7 +330,7 @@ namespace CashRegisterApplication.comm
                 }
                 return true;
             }
-
+            //更新订单
             if (strProductList != null && 0 != CurrentMsg.oStockOutDTO.Base.ProductList.CompareTo(strProductList))
             {
                 CommUiltl.Log(" strProductList is modify [" + CurrentMsg.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");

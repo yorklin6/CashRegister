@@ -101,10 +101,9 @@ namespace CashRegisterApplication.model
             posId = CurrentMsg.POST_ID;
         }
 
-
         internal void generatePayOrderNumber()
         {
-            PayOrderNumber = "pay-" + DateTime.Now.ToString("yyMMdd-HHmmss");
+            PayOrderNumber = "JZ-" + DateTime.Now.ToString("yyMMddHHmmssSSS-") + CommUiltl.GetRandomNumber();
         }
     }
 
@@ -145,7 +144,7 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CurrentMsg.oStockOutDTO.Base.serialNumber = "retail-" + DateTime.Now.ToString("yyMMdd-HHmmss");
+            CurrentMsg.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
         }
 
 

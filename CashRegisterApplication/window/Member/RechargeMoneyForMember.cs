@@ -46,6 +46,7 @@ namespace CashRegisterApplication.window.Member
         {
             ShowRechargeMoneyWindow();
         }
+
         public void ShowRechargeMoneyWindow()
         {
             this.Show();
@@ -54,6 +55,8 @@ namespace CashRegisterApplication.window.Member
                 CurrentMsg.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
                 return;
             }
+            //成功后，需要更新订单信息，按照会员价来计算订单总价
+            CurrentMsg.UpdateStockOrderByMemberInfo();
             this.textBox_ReceiveFee.Focus();
         }
 
