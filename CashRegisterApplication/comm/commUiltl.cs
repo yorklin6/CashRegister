@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using CashRegisterApplication.model;
+using System.Diagnostics;
+using System.IO;
 
 namespace CashRegisterApplication.comm
 {
@@ -31,6 +33,64 @@ namespace CashRegisterApplication.comm
         [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
         public class CallerMemberNameAttribute : Attribute
         {
+        }
+
+        internal static string GetMacInfo()
+        {
+            string macAddress = "";
+            Process p = null;
+            StreamReader reader = null;
+            try
+            {
+                ProcessStartInfo start = new ProcessStartInfo("cmd.exe");
+
+                start.FileName = "ipconfig";
+                start.Arguments = "/all";
+
+                start.CreateNoWindow = true;
+
+                start.RedirectStandardOutput = true;
+
+                start.RedirectStandardInput = true;
+
+                start.UseShellExecute = false;
+
+                p = Process.Start(start);
+
+                reader = p.StandardOutput;
+
+                string line = reader.ReadLine();
+
+                while (!reader.EndOfStream)
+                {
+                    if (line.ToLower().IndexOf("physical address") > 0 || line.ToLower().IndexOf("物理地址") > 0)
+                    {
+                        int index = line.IndexOf(":");
+                        index += 2;
+                        macAddress = line.Substring(index);
+                        macAddress = macAddress.Replace('-', ':');
+                        break;
+                    }
+                    line = reader.ReadLine();
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                if (p != null)
+                {
+                    p.WaitForExit();
+                    p.Close();
+                }
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+            return macAddress;
         }
 
         [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
@@ -67,7 +127,7 @@ namespace CashRegisterApplication.comm
 
         }
 
-        public static bool CoverStrToInt(object value, out long number)
+        public static bool CoverStrToLong(object value, out long number)
         {
             number = 0;
             if (CommUiltl.IsObjEmpty(value))
@@ -76,7 +136,16 @@ namespace CashRegisterApplication.comm
             }
             return long.TryParse(value.ToString(), out number);
         }
-
+        public static bool CoverStrToInt(object value, out int number)
+        {
+            number = 0;
+            if (CommUiltl.IsObjEmpty(value))
+            {
+                return false;
+            }
+            return int.TryParse(value.ToString(), out number);
+        }
+        
 
         public static string CoverMoneyUnionToStrYuan(long money)
         {

@@ -31,7 +31,7 @@ namespace CashRegisterApplication.comm
                     if (oResp.data.details.Count != oStock.details.Count)
                     {
                         //说明是有问题的
-                        CommUiltl.Log("oRespond.data.details.Count[" + oResp.data.details.Count + "] != CurrentMsg.oStockOutDTO.details.Count [" + oStock.details.Count + "]");
+                        CommUiltl.Log("oRespond.data.details.Count[" + oResp.data.details.Count + "] != Main.oStockOutDTO.details.Count [" + oStock.details.Count + "]");
                         continue;
                     }
 

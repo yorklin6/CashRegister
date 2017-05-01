@@ -34,6 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox_password = new System.Windows.Forms.TextBox();
+            this.comboBox_StoreShop = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button_loggin
@@ -85,11 +87,30 @@
             this.textBox_password.Size = new System.Drawing.Size(126, 23);
             this.textBox_password.TabIndex = 4;
             // 
-            // loginForm
+            // comboBox_StoreShop
+            // 
+            this.comboBox_StoreShop.FormattingEnabled = true;
+            this.comboBox_StoreShop.Location = new System.Drawing.Point(280, 67);
+            this.comboBox_StoreShop.Name = "comboBox_StoreShop";
+            this.comboBox_StoreShop.Size = new System.Drawing.Size(126, 25);
+            this.comboBox_StoreShop.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(229, 70);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 17);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "门店：";
+            // 
+            // LoginWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 268);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.comboBox_StoreShop);
             this.Controls.Add(this.textBox_password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -98,7 +119,7 @@
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "loginForm";
+            this.Name = "LoginWindows";
             this.Text = "收银机登录";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
@@ -113,6 +134,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_password;
+        private System.Windows.Forms.ComboBox comboBox_StoreShop;
+        private System.Windows.Forms.Label label3;
     }
 }
 

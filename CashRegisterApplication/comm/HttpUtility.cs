@@ -25,20 +25,23 @@ namespace CashRegiterApplication
     public class HttpUtility
     {
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
-        private static readonly string CashRegistHost = "http://120.24.210.161:8686/jweb_sugu/";
+        private static readonly string CashRegistHost = "https://120.24.210.161:8686/jweb_sugu/";
         private static CookieContainer gCookies = null;//全局登录态cookie
         private static readonly string DefaultUser = "york";
         private static readonly string DefaultPassword = "york";
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
-        private static readonly string LoginFunc = "login.json?";
+        private static readonly string LoginFunc = "/user/login?";
         private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
         private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "/retail/checkout?";
         private static readonly string rechargeMember = "/member/balance/";
+        private static readonly string storeFunc = "/store/?";
+
+          
         private static UserLogin oLoginer;
 
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
@@ -54,10 +57,18 @@ namespace CashRegiterApplication
             gCookies = null;
             oLoginer = new UserLogin();
 
-            string loginUrl = LoginFunc + "username=" + gUserName + "&password=" + CommUiltl.HEX_MD5(gPassword);
+            string loginUrl = LoginFunc;
+            // "account=" + gUserName + "&password=" + CommUiltl.HEX_MD5(gPassword);
+            UserLoginMsg oUserLoginMsg = new UserLoginMsg();
+            oUserLoginMsg.account = gUserName;
+            oUserLoginMsg.password = CommUiltl.HEX_MD5(gPassword);
+            oUserLoginMsg.rememberMe = true;
+
+            string loginJson = JsonConvert.SerializeObject(oUserLoginMsg);
+            loginJson= "rememberMe=true&account="+ gUserName+"&password="+ CommUiltl.HEX_MD5(gPassword);
             Console.WriteLine("Debug loginUrl:" + loginUrl);
-            //if ( !Get<UserLogin>("login.json?username=york&password=c3b29ce20ce560efdc6f6714612a1156", ref oLoginer))
-            if (!Get<UserLogin>(loginUrl, ref oLoginer))
+            Console.WriteLine("Debug loginJson:" + loginJson);
+            if (!PostUrlencoded<UserLogin>(loginUrl, loginJson, ref oLoginer))
             {
                 Console.WriteLine("ERR:Get failed");
                 MessageBox.Show("登录异常:请检查网络");
@@ -122,6 +133,8 @@ namespace CashRegiterApplication
             CommUiltl.Log("http生成订单成功:[" + JsonConvert.SerializeObject(oRespond)  + "]");
             return CLOUD_SATE_HTTP_SUCESS;
         }
+
+
 
         //关闭订单
         internal static int CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
@@ -319,12 +332,85 @@ namespace CashRegiterApplication
             }
             return CLOUD_SATE_HTTP_SUCESS;
         }
+        //门店信息
+        internal static bool GetStoreMsg(ref List<StoreWhouse>  list)
+        {
+            string funcUrl = storeFunc + "page=1&pageSize=100&type=1";
+            StoreWhouseRespone oResp = new StoreWhouseRespone();
+            if (!Get<StoreWhouseRespone>(funcUrl, ref oResp))
+            {
+                Console.WriteLine("ERR:Get GetStoreMsg failed");
+                lastErrorMsg = "门店信息异常：请检查网络";
+                return false;
+            }
 
+            if (oResp.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oResp:" + JsonConvert.SerializeObject( oResp));
+                lastErrorMsg = "门店信息异常:oResp[" + JsonConvert.SerializeObject(oResp) + "]";
+                return false;
+            }
+            list = oResp.data.list;
+            CommUiltl.Log("list .size ="+ list.Count);
+            return true;
+        }
+
+        /***************************************Post信息***************************************/
+        public static bool PostUrlencoded<T>(string funcUrl, string json, ref T returnObj)
+        {
+            //https
+            string url = CashRegistHost + funcUrl;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.ProtocolVersion = HttpVersion.Version10;
+
+            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + url);
+            request.Method = "POST";
+            request.UserAgent = DefaultUserAgent;
+            request.Timeout = timeOutDefault;
+            request.CookieContainer = gCookies;
+            request.ContentType = "application/x-www-form-urlencoded";
+            if (gCookies == null)
+            {
+                request.CookieContainer = new CookieContainer();
+            }
+            try
+            {
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+            }
+            catch (WebException e)
+            {
+                Console.WriteLine("网络异常");
+                HandelWEbException(e);
+                return false;
+            }
+
+
+
+            if (!HttpResp<T>(request, ref returnObj))
+            {
+                Console.WriteLine("ERR:HttpResp failed");
+                return false;
+            }
+            return true;
+        }
         /***************************************Post信息***************************************/
         public static bool Post<T>(string funcUrl,string json, ref T returnObj)
         {
-            HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
-            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
+            //https
+            string url = CashRegistHost + funcUrl;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.ProtocolVersion = HttpVersion.Version10;
+
+            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + url);
             request.Method = "POST";
             request.UserAgent = DefaultUserAgent;
             request.Timeout = timeOutDefault;
@@ -362,8 +448,14 @@ namespace CashRegiterApplication
         /***************************************PUT信息***************************************/
         public static bool Put<T>(string funcUrl, string json, ref T returnObj)
         {
-            HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
-            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
+            string url = CashRegistHost + funcUrl;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.ProtocolVersion = HttpVersion.Version10;
+
+            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + url);
+
             request.Method = "PUT";
             request.UserAgent = DefaultUserAgent;
             request.Timeout = timeOutDefault;
@@ -400,8 +492,13 @@ namespace CashRegiterApplication
         }
         public static bool Get<T>(string funcUrl, ref T returnObj)
         {
-            HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
-            CommUiltl.Log("url:" + CashRegistHost + funcUrl);
+            string url = CashRegistHost + funcUrl;
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+            HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+            request.ProtocolVersion = HttpVersion.Version10;
+
+            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            CommUiltl.Log("url:" + url);
             request.Method = "GET";
             request.UserAgent = DefaultUserAgent;
             request.Timeout = timeOutDefault;

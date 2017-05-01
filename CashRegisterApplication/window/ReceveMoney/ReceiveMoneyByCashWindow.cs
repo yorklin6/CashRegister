@@ -31,7 +31,7 @@ namespace CashRegisterApplication.window
         public void ShowByReceiveMoneyWindow()
         {
             this.Show();
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee);
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.Base.orderAmount - MsgContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
             _SelectRecieve();
@@ -62,7 +62,7 @@ namespace CashRegisterApplication.window
                 case System.Windows.Forms.Keys.Delete:
                     {
                         this.Hide();
-                        CurrentMsg.Window_RecieveMoney.Show();
+                        MsgContral.Window_RecieveMoney.Show();
                         break;
                     }
             }
@@ -97,7 +97,7 @@ namespace CashRegisterApplication.window
                 MessageBox.Show("总价错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            long change = recieveFee - CurrentMsg.oStockOutDTO.Base.orderAmount;
+            long change = recieveFee - MsgContral.oStockOutDTO.Base.orderAmount;
             if (change >0 )
             {
                 this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
@@ -135,7 +135,7 @@ namespace CashRegisterApplication.window
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            long change = recieveFee + CurrentMsg.oStockOutDTO.Base.RecieveFee - CurrentMsg.oStockOutDTO.Base.orderAmount;
+            long change = recieveFee + MsgContral.oStockOutDTO.Base.RecieveFee - MsgContral.oStockOutDTO.Base.orderAmount;
             string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
             if (change < 0)
             {
@@ -162,11 +162,11 @@ namespace CashRegisterApplication.window
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
           
-            if (! CurrentMsg.PayOrderByCash(recieveFee))
+            if (! MsgContral.PayOrderByCash(recieveFee))
             {
                 return;
             }
-            CurrentMsg.ControlWindowsAfterPay();
+            MsgContral.ControlWindowsAfterPay();
             this.Hide();
             return;
         }

@@ -18,10 +18,10 @@ namespace CashRegisterApplication.window.Member
 
         internal void ShowWithMemberInfo()
         {
-            this.textBox_memberAccount.Text = CurrentMsg.oMember.memberAccount;
-            this.textBox_name.Text = CurrentMsg.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
-            this.textBox_phone.Text = CurrentMsg.oMember.phone;
+            this.textBox_memberAccount.Text = MsgContral.oMember.memberAccount;
+            this.textBox_name.Text = MsgContral.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance));
+            this.textBox_phone.Text = MsgContral.oMember.phone;
 
             this.textBox_ReceiveFee.Text = "100";//默认100元
 
@@ -50,13 +50,12 @@ namespace CashRegisterApplication.window.Member
         public void ShowRechargeMoneyWindow()
         {
             this.Show();
-            if (CurrentMsg.oMember.memberAccount == null || CurrentMsg.oMember.memberAccount == "")
+            if (MsgContral.oMember.memberAccount == null || MsgContral.oMember.memberAccount == "")
             {
-                CurrentMsg.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
+                MsgContral.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
                 return;
             }
-            //成功后，需要更新订单信息，按照会员价来计算订单总价
-            CurrentMsg.UpdateStockOrderByMemberInfo();
+
             this.textBox_ReceiveFee.Focus();
         }
 
@@ -73,7 +72,7 @@ namespace CashRegisterApplication.window.Member
                 case System.Windows.Forms.Keys.Escape:
                     {
                         this.Hide();
-                        CurrentMsg.Window_ProductList.Show();
+                        MsgContral.Window_ProductList.Show();
                         break;
                     }
             }
@@ -106,8 +105,8 @@ namespace CashRegisterApplication.window.Member
             }
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-            string strBeforeRecharge = CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance));
-            if (!CurrentMsg.RechargeMoneyByMember(recieveFee))
+            string strBeforeRecharge = CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance));
+            if (!MsgContral.RechargeMoneyByMember(recieveFee))
             {
                  _SelectRecieve();
                 return;
@@ -116,8 +115,8 @@ namespace CashRegisterApplication.window.Member
 
             MessageBox.Show("充值成功!\n\n充值前:"+ strBeforeRecharge 
                 +"\n充值:"+ this.textBox_ReceiveFee.Text
-                + "\n充值后:"+ CommUiltl.CoverMoneyUnionToStrYuan((CurrentMsg.oMember.memberBalance)),"充值结果");
-           CurrentMsg.ControlWindowsAfterRecharge();
+                + "\n充值后:"+ CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance)),"充值结果");
+           MsgContral.ControlWindowsAfterRecharge();
             this.Hide();
            
           

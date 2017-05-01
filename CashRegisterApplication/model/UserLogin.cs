@@ -11,6 +11,18 @@ namespace CashRegisterApplication.model
         public String msg { get; set; }
         public User data;
     }
+    public class UserMsg
+    {
+        public String userName { get; set; }
+        public String mobile { get; set; }
+    }
+    public class UserLoginMsg
+    {
+        public string account { get; set; }
+        public string password { get; set; }
+        public bool rememberMe { get; set; }
+
+    }
 
     public class User
     {

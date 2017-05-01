@@ -31,7 +31,7 @@ namespace CashRegisterApplication.window
         {
             this.Show();
             //显示未收款
-            long leftMoney = CurrentMsg.oStockOutDTO.Base.orderAmount - CurrentMsg.oStockOutDTO.Base.RecieveFee;
+            long leftMoney = MsgContral.oStockOutDTO.Base.orderAmount - MsgContral.oStockOutDTO.Base.RecieveFee;
             if (leftMoney < 0)
             {
                 leftMoney = 0;
@@ -39,8 +39,8 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("leftMoney:"+ leftMoney);
             this.textBox_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
             //其他订单信息
-            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.orderAmount);
-            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CurrentMsg.oStockOutDTO.Base.RecieveFee);
+            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.Base.orderAmount);
+            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.Base.RecieveFee);
         }
 
         public void ShowPaidMsg()
@@ -48,7 +48,7 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("已支付列表");
             this.Show();
             string strPaidInfo="已支付列表：\n";
-            foreach (var item in CurrentMsg.oStockOutDTO.payList)
+            foreach (var item in MsgContral.oStockOutDTO.payList)
             {
                 if (item.payType== PayWay.PAY_TYPE_CASH)
                 {
@@ -123,7 +123,7 @@ namespace CashRegisterApplication.window
                     
                 case System.Windows.Forms.Keys.Escape:
                     {
-                        CurrentMsg.Window_ProductList.EscapeShowByRecieveWindows();
+                        MsgContral.Window_ProductList.EscapeShowByRecieveWindows();
                         this.Hide();
                         break;
                     }
@@ -134,21 +134,21 @@ namespace CashRegisterApplication.window
         private void buttonCash_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
+            MsgContral.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
             this.Hide();
         }
 
         private void buttonWeixin_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.Window_RecieveMoneyByWeixin.Show();
+            MsgContral.Window_RecieveMoneyByWeixin.Show();
             this.Hide();
         }
 
         private void buttonMember_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CurrentMsg.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
+            MsgContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
             this.Hide();
         }
     }

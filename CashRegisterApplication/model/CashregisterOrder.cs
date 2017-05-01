@@ -98,7 +98,7 @@ namespace CashRegisterApplication.model
             cloudState = 0;
             PayOrderNumber = "";
             serialNumber = "";
-            posId = CurrentMsg.POST_ID;
+            posId = MsgContral.POST_ID;
         }
 
         internal void generatePayOrderNumber()
@@ -144,39 +144,39 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CurrentMsg.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
+            MsgContral.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
         }
 
 
         internal void Reset()
         {
 
-            CurrentMsg.oStockOutDTO.Base.serialNumber = "";
-            CurrentMsg.oStockOutDTO.Base.stockOutId = 0;
-            CurrentMsg.oStockOutDTO.Base.RecieveFee = 0;
-            CurrentMsg.oStockOutDTO.Base.orderAmount = 0;
-            CurrentMsg.oStockOutDTO.Base.ChangeFee = 0;
+            MsgContral.oStockOutDTO.Base.serialNumber = "";
+            MsgContral.oStockOutDTO.Base.stockOutId = 0;
+            MsgContral.oStockOutDTO.Base.RecieveFee = 0;
+            MsgContral.oStockOutDTO.Base.orderAmount = 0;
+            MsgContral.oStockOutDTO.Base.ChangeFee = 0;
 
-            CurrentMsg.oStockOutDTO.Base.type = 1;
-            CurrentMsg.oStockOutDTO.Base.storeId = 1;
-            CurrentMsg.oStockOutDTO.Base.whouseId = 1;
-            CurrentMsg.oStockOutDTO.Base.relatedOrder = 0;
-            CurrentMsg.oStockOutDTO.Base.posId = 1;
-            CurrentMsg.oStockOutDTO.Base.clientId = 1;
-            CurrentMsg.oStockOutDTO.Base.cashierId = 1;
-            CurrentMsg.oStockOutDTO.Base.orderAmount = 0;
-            CurrentMsg.oStockOutDTO.Base.creator = "sys";
-            CurrentMsg.oStockOutDTO.Base.status = CurrentMsg.STOCK_BASE_STATUS_INIT;
-            CurrentMsg.oStockOutDTO.Base.remark = "";
+            MsgContral.oStockOutDTO.Base.type = 1;
+            MsgContral.oStockOutDTO.Base.storeId = 1;
+            MsgContral.oStockOutDTO.Base.whouseId = 1;
+            MsgContral.oStockOutDTO.Base.relatedOrder = 0;
+            MsgContral.oStockOutDTO.Base.posId = 1;
+            MsgContral.oStockOutDTO.Base.clientId = 1;
+            MsgContral.oStockOutDTO.Base.cashierId = 1;
+            MsgContral.oStockOutDTO.Base.orderAmount = 0;
+            MsgContral.oStockOutDTO.Base.creator = "sys";
+            MsgContral.oStockOutDTO.Base.status = MsgContral.STOCK_BASE_STATUS_INIT;
+            MsgContral.oStockOutDTO.Base.remark = "";
 
-            CurrentMsg.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.baseDataJson = "";
-            CurrentMsg.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CurrentMsg.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            MsgContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            MsgContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            MsgContral.oStockOutDTO.Base.baseDataJson = "";
+            MsgContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            MsgContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
-            CurrentMsg.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
-            CurrentMsg.oStockOutDTO.Base.dbGenerateFlag = CurrentMsg.STOCK_BASE_DB_GENERATE_INIT;
+            MsgContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
+            MsgContral.oStockOutDTO.Base.dbGenerateFlag = MsgContral.STOCK_BASE_DB_GENERATE_INIT;
 
         }
 
