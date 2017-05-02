@@ -378,7 +378,7 @@ namespace CashRegiterApplication
             //设置行里面商品信息
             _SetRowsByStockOutDetail(currentRow,detail);
             MsgContral.oStockOutDTO.details.Add(detail);
-            CommUiltl.Log("GetProductInfoByBarcode add Main.oStockOutDTO.details.Count:" + MsgContral.oStockOutDTO.details.Count);
+            CommUiltl.Log(" add Main.oStockOutDTO.details.Count:" + MsgContral.oStockOutDTO.details.Count);
             //更新订单价钱
             _SetOrderPrice();
             //将光标移动到数量里面
@@ -578,6 +578,7 @@ namespace CashRegiterApplication
                             CommUiltl.Log(" IsCurrentCellInEditMode ");
                             if (CommUiltl.IsObjEmpty(this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
                             {
+                                //條碼地方回車
                                 CommUiltl.Log(" CELL_INDEX.PRODUCT_CODE empty ");
                                 //MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
                                 if (this.dataGridView_productList.CurrentRow.IsNewRow)
@@ -592,7 +593,10 @@ namespace CashRegiterApplication
                                 }
                                 return base.ProcessCmdKey(ref msg, keyData);
                             }
-
+                           //可能是價錢或者啥地方回車。那么就跳轉到最后一行
+                            
+                          
+                         
                         }
                     }
                     break;
