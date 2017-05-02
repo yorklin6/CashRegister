@@ -404,10 +404,15 @@ namespace CashRegiterApplication
 
         private void _ProductTostockDetail(ProductPricing productInfo, ref StockOutDetail detail)
         {
+            
             detail.barcode= productInfo.barcode;
             detail.goodsName = productInfo.goodsName;
             detail.unitPrice = (productInfo.retailPrice);
             detail.remark = productInfo.remark;
+            detail.specification = productInfo.specification;
+            detail.categoryId = productInfo.categoryId;
+            detail.unit = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
+   
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
             detail.cloudProductPricing = productInfo;

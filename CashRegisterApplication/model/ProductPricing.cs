@@ -54,12 +54,12 @@ namespace CashRegiterApplication
         public int unitConversion { get; set; }
         public String specification { get; set; }
         public String barcode { get; set; }
-        public String brand;
-        public String produceAddress;
-        public long supplierId;
-        public String supplierName;
-        public long validity;
-        public long categoryId;
+        public String brand { get; set; }
+        public String produceAddress { get; set; }
+        public long supplierId { get; set; }
+        public String supplierName { get; set; }
+        public long validity { get; set; }
+        public long categoryId { get; set; }
         public String categoryName { get; set; } //商品类别名称(在通过Id获取商品信息时查询设置)
         public long retailPrice { get; set; }
         public long memberPrice { get; set; }

@@ -204,6 +204,11 @@ namespace CashRegisterApplication.model
         public   int status { get; set; }
         internal int cloudState { get; set; }
 
+        public long categoryId;
+
+        public long spaceId;
+
+
         public string detailDataJson { get; set; }
         public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
