@@ -382,7 +382,7 @@ namespace CashRegiterApplication
             //更新订单价钱
             _SetOrderPrice();
             //将光标移动到数量里面
-            _SetCurrentPointToRetailDetailCount(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount]);
+            _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
         }
 
         private void _SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
@@ -420,13 +420,7 @@ namespace CashRegiterApplication
 
         }
 
-        bool gMoveToRetailDetailCountFlag = false;//用来控制，是否要移动光标到商品数量
-        private void _SetCurrentPointToRetailDetailCount(DataGridViewCell currentCell)
-        {
-            CommUiltl.Log("_SetCurrentPointToRetailDetailCount row:" + currentCell.RowIndex + " Column" + currentCell.ColumnIndex);
-            gMoveToRetailDetailCountFlag = true;
-            gCurrentCell = currentCell;
-        }
+
 
         private void _GoOrderDataGrid()
         {
@@ -486,26 +480,50 @@ namespace CashRegiterApplication
                 CommUiltl.Log(" CELL_INDEX.PRODUCT_CODE");
                 //MessageBox.Show("end edit code PRODUCT_CODE RowIndex :" + e.RowIndex + " CellIndex"+e.ColumnIndex   );
                 GetProductInfoByBarcode(e.RowIndex, e.ColumnIndex);
+                return;
             }
-            else if (e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount || e.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE)
+            if (e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount)
             {
-                CommUiltl.Log("e.ColumnIndex == CELL_INDEX.PRODUCT_AMOUN ");
-                if (_ResetMoneyByRow(e.RowIndex, e.ColumnIndex))//重新计算下价钱
-                {
-                    //下一行光标有必要移动到商品条码框
-                    _GotoNextBarcode(e.RowIndex);
-                }
+                //将光标移动到价钱
+                CommUiltl.Log(" e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount and  _ResetMoneyByRow and _SetCurrentPointToRetailDetailCount  ");
+                _ResetMoneyByRow(e.RowIndex , e.ColumnIndex);
+                _SetCurrentPointToRetailDetailCount(e.RowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
+                return;
+            }
+            if (e.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE && !this.dataGridView_productList.CurrentRow.IsNewRow)
+            {
+                CommUiltl.Log("e.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE _ResetMoneyByRow and  _GotoNextBarcode");
+                //将光标移动到下一行条码
+                _ResetMoneyByRow(e.RowIndex, e.ColumnIndex);
+                _GotoNextBarcode(e.RowIndex);
+                return;
+            }
+
+        }
+        bool gMoveToRetailDetailCountFlag = false;//用来控制，是否要移动光标到商品数量
+        private void _SetCurrentPointToRetailDetailCount(int rowIndex, int columnIndex)
+        {
+            CommUiltl.Log("_GotoNextBarcode RowIndex:" + rowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
+            if (rowIndex == this.dataGridView_productList.RowCount - 2)
+            {
+                CommUiltl.Log("_SetCurrentPointToRetailDetailCount row:" + rowIndex + " Column" + columnIndex);
+                gMoveToRetailDetailCountFlag = true;
+                gCurrentCell = this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex];
+                return;
             }
         }
+
         bool gMoveToNextBarcodeFlag = false;
-        private void _GotoNextBarcode(int RowIndex)
+        private void _GotoNextBarcode(int rowIndex)
         {
-            CommUiltl.Log("_GotoNextBarcode RowIndex:"+ RowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
-            CommUiltl.Log("_GotoNextBarcode PRODUCT_CODE:" + this.dataGridView_productList.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value);
-            if (RowIndex == this.dataGridView_productList.RowCount -2 && this.dataGridView_productList.IsCurrentCellInEditMode )
+            CommUiltl.Log("_GotoNextBarcode RowIndex:"+ rowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
+            CommUiltl.Log("_GotoNextBarcode PRODUCT_CODE:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value);
+            if (rowIndex == this.dataGridView_productList.RowCount -2 )
             {
+                CommUiltl.Log("RowIndex == this.dataGridView_productList.RowCount -2");
                 gMoveToNextBarcodeFlag = true;
-                gCurrentCell = this.dataGridView_productList.Rows[RowIndex + 1].Cells[CELL_INDEX.PRODUCT_CODE];
+                gCurrentCell = this.dataGridView_productList.Rows[rowIndex + 1].Cells[CELL_INDEX.PRODUCT_CODE];
+                return ;
             }
 
         }
@@ -513,7 +531,7 @@ namespace CashRegiterApplication
         private void productListDataGridView_SelectionChanged(object sender, EventArgs e)
         {
             CommUiltl.Log("begin ");
-            if (this.dataGridView_productList.CurrentCell != null)
+            if (this.dataGridView_productList.CurrentCell == null)
             {
                 CommUiltl.Log("productListDataGridView_SelectionChanged row:" + this.dataGridView_productList.CurrentCell.RowIndex + " Column:" + this.dataGridView_productList.CurrentCell.ColumnIndex);
                 return;
@@ -534,6 +552,7 @@ namespace CashRegiterApplication
                 CommUiltl.Log("gResetRow:" + gResetRow);
                 gResetRow = false;
                 this.dataGridView_productList.CurrentCell = gCurrentCell;
+                this.dataGridView_productList.CurrentCell.Selected = true;
                 return;
             }
             if (gMoveToRetailDetailCountFlag)
@@ -541,12 +560,14 @@ namespace CashRegiterApplication
                 CommUiltl.Log("gMoveToRetailDetailCountFlag:" + gMoveToRetailDetailCountFlag);
                 gMoveToRetailDetailCountFlag = false;
                 this.dataGridView_productList.CurrentCell = gCurrentCell;
+                this.dataGridView_productList.CurrentCell.Selected = true;
             }
             if (gMoveToNextBarcodeFlag)
             {
                 CommUiltl.Log("gMoveToNextBarcodeFlag:" + gMoveToNextBarcodeFlag);
                 gMoveToNextBarcodeFlag = false;
                 this.dataGridView_productList.CurrentCell = gCurrentCell;
+                this.dataGridView_productList.CurrentCell.Selected = true;
             }
             _GoCurrentBarcodeIfNeed();
 
@@ -576,27 +597,16 @@ namespace CashRegiterApplication
                         if (this.dataGridView_productList.IsCurrentCellInEditMode)
                         {
                             CommUiltl.Log(" IsCurrentCellInEditMode ");
-                            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value))
+                            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_CODE].Value)&& this.dataGridView_productList.CurrentRow.IsNewRow)
                             {
-                                //條碼地方回車
+                                //唤起收银界面
                                 CommUiltl.Log(" CELL_INDEX.PRODUCT_CODE empty ");
-                                //MessageBox.Show("Keys.Enter Value empty  RowIndex:" + this.productListDataGridView.CurrentCell.RowIndex);
-                                if (this.dataGridView_productList.CurrentRow.IsNewRow)
-                                {
-                                    //删除当前行
-                                    if (this.dataGridView_productList.IsCurrentCellInEditMode)
-                                    {
-                                        this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
-                                    }
-                                    _Windows_ShowRecieveMoeny();
-                                    
-                                }
-                                return base.ProcessCmdKey(ref msg, keyData);
+                                this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
+                                _Windows_ShowRecieveMoeny();
+                                return true;
+                                //  return base.ProcessCmdKey(ref msg, keyData);
                             }
-                           //可能是價錢或者啥地方回車。那么就跳轉到最后一行
-                            
-                          
-                         
+                            return base.ProcessCmdKey(ref msg, keyData);
                         }
                     }
                     break;
@@ -877,8 +887,9 @@ namespace CashRegiterApplication
         public static int PRODUCT_CODE = 1;
         public static int PRODUCT_NAME = 2;
         public static int PRODUCT_SPECIFICATION = 3;
-        public static int PRODUCT_NORMAL_PRICE = 4;
-        public static int PRODUCT_RetailDetailCount = 5;
+        public static int PRODUCT_RetailDetailCount = 4;
+        public static int PRODUCT_NORMAL_PRICE = 5;
+
         public static int PRODUCT_MONEY = 6;
         public static int PRODUCT_REMARK = 7;
         public static int PRODUCT_JSON = 8;
