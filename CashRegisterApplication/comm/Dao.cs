@@ -135,6 +135,7 @@ namespace CashRegisterApplication.comm
         }
 
 
+
         internal static bool UpdateOrderCloudState(StockOutDTO oStockOutDTO)
         {
             ConnecSql();
@@ -279,9 +280,9 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //更新订单
             string strSql = "update  tb_stock_out_base set ";
-            strSql += "order_amount=" + MsgContral.oStockOutDTO.Base.orderAmount + ", ";
-            strSql += "local_save_flag=" + MsgContral.oStockOutDTO.Base.localSaveFlag + " ";
-            strSql += "where serialNumber='" + MsgContral.oStockOutDTO.Base.serialNumber + "' ";
+            strSql += "order_amount=" + CenterContral.oStockOutDTO.Base.orderAmount + ", ";
+            strSql += "local_save_flag=" + CenterContral.oStockOutDTO.Base.localSaveFlag + " ";
+            strSql += "where serialNumber='" + CenterContral.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -307,8 +308,8 @@ namespace CashRegisterApplication.comm
         internal static bool CloseOrderWhenPayAllFee()
         {
              string strSql = "update  tb_stock_out_base set ";
-            strSql += "PayState=" + MsgContral.PAY_STATE_SUCCESS + " ";
-            strSql += "where serialNumber='" + MsgContral.oStockOutDTO.Base.serialNumber + "' ";
+            strSql += "PayState=" + CenterContral.PAY_STATE_SUCCESS + " ";
+            strSql += "where serialNumber='" + CenterContral.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;
             try
@@ -401,8 +402,8 @@ namespace CashRegisterApplication.comm
             strSql += "" + oPayWay.isDeleted + ",";
             
             strSql += "'" + oPayWay.relatedOrder + "',";
+            strSql += "'" + oPayWay.stockOutSerialNumber + "',";
             strSql += "'" + oPayWay.serialNumber + "',";
-            strSql += "'" + oPayWay.PayOrderNumber + "',";
             strSql += "" + oPayWay.payAmount + ",";
             strSql += "" + oPayWay.payType+ ",";
             strSql += "" + oPayWay.payStatus + ",";
@@ -438,7 +439,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("Dao UpdatePayCloudStae");
             int iRow = 0;
             //插入订单
-            string strSql = "update tb_checkout set CloudState=" + oPayWay.cloudState + " where  CashRegisterPayOrderNumber='" + oPayWay.PayOrderNumber + "' ";
+            string strSql = "update tb_checkout set CloudState=" + oPayWay.cloudState + " where  CashRegisterPayOrderNumber='" + oPayWay.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -498,12 +499,64 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("PayOrderByCash ok success");
             return true;
         }
+        internal static bool GetPayType(ref string json)
+        {
+            string strSql = "";
+            strSql += "select pay_type_list from tb_local_msg ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("支付类型:" + ex.ToString());
+                return false;
+            }
+
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                json = sqlite_datareader.GetString(0);
+            }
+            return true;
+        }
+        internal static bool SetPayType(ref string json)
+        {
+            int iRow = 0;
+            //插入订单
+            string strSql = "update tb_local_msg set pay_type_list='" + json + "'";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新本地数据库失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新支付本地数据库影响行数=0失败");
+                return false;
+            }
+            CommUiltl.Log("SetPayType ok success");
+            return true;
+        }
+
         /************************门店信息****************************/
         //取出默认门店
         internal static bool GetStoreWhouseDefault(ref string json)
         {
             string strSql = "";
-            strSql += "select default_data_json from tb_local_stock_whouse ";
+            strSql += "select store_whouse_default from tb_local_msg ";
             strSql += "limit 1 ";
           
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -526,42 +579,14 @@ namespace CashRegisterApplication.comm
             }
             return true;
         }
-        //取出默认门店
-        internal static bool InsertStoreWhouseDefault (string strStoreWhouseDefult)
-        {
-            string strSql = "insert into tb_local_stock_whouse  ";
-            strSql += " (default_data_json) VALUES (";
-            strSql += "'" + strStoreWhouseDefult + "'";
-            strSql += ")";
-            sqlite_cmd = sqlite_conn.CreateCommand();
-            int iRow = 0;
-            try
-            {
-                CommUiltl.Log("sql: " + strSql);
-                sqlite_cmd.CommandText = strSql;
-                iRow = sqlite_cmd.ExecuteNonQuery();
-            }
-            catch (SQLiteException ex)
-            {
-                MessageBox.Show("插入本地数据库失败:" + ex.ToString());
-                return false;
-            }
-
-            if (0 == iRow)
-            {
-                MessageBox.Show("插入本地数据库失败");
-                return false;
-            }
-            CommUiltl.Log("InsertStoreWhouseDefault ok success");
-            return true;
-        }
-        //
         
+
+
         internal static bool UpdateStoreWhouseDefault(string strStoreWhouseDefult)
         {
             int iRow = 0;
             //插入订单
-            string strSql = "update tb_local_stock_whouse set default_data_json='" + strStoreWhouseDefult + "'";
+            string strSql = "update tb_local_msg set store_whouse_default='" + strStoreWhouseDefult + "'";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -582,6 +607,64 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("UpdateStoreWhouseDefault ok success");
             return true;
         }
+
+        //取出默认数据
+        internal static bool GetLocalMsgDefaultCount(out int iCount)
+        {
+            iCount = 0;
+            string strSql = "";
+            strSql += "select count(*) from tb_local_msg ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+            while (sqlite_datareader.Read()) 
+            {
+                iCount = sqlite_datareader.GetInt32(0);
+            }
+            return true;
+        }
+        //初始化默认数据
+        internal static bool InsertLocalMsgDefault()
+        {
+            string strSql = "insert into tb_local_msg  ";
+            strSql += " (store_whouse_default,pay_type_list) VALUES (";
+            strSql += "'',";
+            strSql += "''";
+            strSql += ")";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            int iRow = 0;
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("插入本地数据库失败:" + ex.ToString());
+                return false;
+            }
+
+            if (0 == iRow)
+            {
+                MessageBox.Show("插入本地数据库失败");
+                return false;
+            }
+            CommUiltl.Log("InsertLocalMsgDefault ok success");
+            return true;
+        }
+
         public bool Daemone()
         {
             ConnecSql();
@@ -632,6 +715,5 @@ namespace CashRegisterApplication.comm
         }
 
 
- 
     }
 }

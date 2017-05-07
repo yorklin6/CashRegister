@@ -77,9 +77,10 @@
     <Compile Include="comm\MyTimerTask.cs" />
     <Compile Include="model\HttpBaseRespone.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
-    <Compile Include="comm\MainContral.cs" />
+    <Compile Include="comm\CenterContral.cs" />
     <Compile Include="model\Member.cs" />
     <Compile Include="model\PayOrder.cs" />
+    <Compile Include="model\PayType.cs" />
     <Compile Include="model\StoreWhouse.cs" />
     <Compile Include="model\UserLogin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

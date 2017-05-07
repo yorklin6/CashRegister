@@ -27,13 +27,13 @@ namespace CashRegisterApplication.model
     {
         public StockOutBase Base;
         public List<StockOutDetail> details;
-        public List<PayWay> payList;
+        public List<PayWay> checkouts;
         
         public StockOutDTO()
         {
             Base = new StockOutBase();
             details = new List<StockOutDetail>();
-            payList = new List<PayWay>();
+            checkouts = new List<PayWay>();
         }
 
         internal void addPayWay(PayWay oPayWay)
@@ -45,7 +45,7 @@ namespace CashRegisterApplication.model
             {
                 Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
             }
-            payList.Add(oPayWay);
+            checkouts.Add(oPayWay);
         }
     }
 
@@ -79,10 +79,11 @@ namespace CashRegisterApplication.model
        
         public int payType { get; set; }
         public long payAmount { get; set; }
-        public string PayOrderNumber { get; internal set; }
-        public String serialNumber { get; set; }
-        public int cloudState { get; set; }
 
+        public String stockOutSerialNumber { get; set; }
+
+        public string serialNumber { get; internal set; }
+        public int cloudState { get; set; }
         public int id { get; set; }
         public int posId { get; set; }
         public int payStatus { get; set; }
@@ -96,14 +97,14 @@ namespace CashRegisterApplication.model
             payAmount = 0;
             payStatus = 0;
             cloudState = 0;
-            PayOrderNumber = "";
             serialNumber = "";
-            posId = MsgContral.POST_ID;
+            stockOutSerialNumber = "";
+            posId = CenterContral.POST_ID;
         }
 
         internal void generatePayOrderNumber()
         {
-            PayOrderNumber = "JZ-" + DateTime.Now.ToString("yyMMddHHmmssSSS-") + CommUiltl.GetRandomNumber();
+            serialNumber = "JZ-" + DateTime.Now.ToString("yyMMddHHmmssSSS-") + CommUiltl.GetRandomNumber();
         }
     }
 
@@ -144,39 +145,39 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            MsgContral.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
+            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
         }
 
 
         internal void Reset()
         {
 
-            MsgContral.oStockOutDTO.Base.serialNumber = "";
-            MsgContral.oStockOutDTO.Base.stockOutId = 0;
-            MsgContral.oStockOutDTO.Base.RecieveFee = 0;
-            MsgContral.oStockOutDTO.Base.orderAmount = 0;
-            MsgContral.oStockOutDTO.Base.ChangeFee = 0;
+            CenterContral.oStockOutDTO.Base.serialNumber = "";
+            CenterContral.oStockOutDTO.Base.stockOutId = 0;
+            CenterContral.oStockOutDTO.Base.RecieveFee = 0;
+            CenterContral.oStockOutDTO.Base.orderAmount = 0;
+            CenterContral.oStockOutDTO.Base.ChangeFee = 0;
 
-            MsgContral.oStockOutDTO.Base.type = 1;
-            MsgContral.oStockOutDTO.Base.storeId = 1;
-            MsgContral.oStockOutDTO.Base.whouseId = 1;
-            MsgContral.oStockOutDTO.Base.relatedOrder = 0;
-            MsgContral.oStockOutDTO.Base.posId = 1;
-            MsgContral.oStockOutDTO.Base.clientId = 1;
-            MsgContral.oStockOutDTO.Base.cashierId = 1;
-            MsgContral.oStockOutDTO.Base.orderAmount = 0;
-            MsgContral.oStockOutDTO.Base.creator = "sys";
-            MsgContral.oStockOutDTO.Base.status = MsgContral.STOCK_BASE_STATUS_INIT;
-            MsgContral.oStockOutDTO.Base.remark = "";
+            CenterContral.oStockOutDTO.Base.type = 1;
+            CenterContral.oStockOutDTO.Base.storeId = 1;
+            CenterContral.oStockOutDTO.Base.whouseId = 1;
+            CenterContral.oStockOutDTO.Base.relatedOrder = 0;
+            CenterContral.oStockOutDTO.Base.posId = 1;
+            CenterContral.oStockOutDTO.Base.clientId = 1;
+            CenterContral.oStockOutDTO.Base.cashierId = 1;
+            CenterContral.oStockOutDTO.Base.orderAmount = 0;
+            CenterContral.oStockOutDTO.Base.creator = "sys";
+            CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
+            CenterContral.oStockOutDTO.Base.remark = "";
 
-            MsgContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            MsgContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            MsgContral.oStockOutDTO.Base.baseDataJson = "";
-            MsgContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            MsgContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CenterContral.oStockOutDTO.Base.baseDataJson = "";
+            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CenterContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
-            MsgContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
-            MsgContral.oStockOutDTO.Base.dbGenerateFlag = MsgContral.STOCK_BASE_DB_GENERATE_INIT;
+            CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
+            CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
 
         }
 

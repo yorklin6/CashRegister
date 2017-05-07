@@ -36,14 +36,14 @@ namespace CashRegisterApplication.window.member
         public void ShowByReceiveMoneyWindows()
         {
             this.Show();
-            if (MsgContral.oMember.memberAccount == null || MsgContral.oMember.memberAccount =="")
+            if (CenterContral.oMember.memberAccount == null || CenterContral.oMember.memberAccount =="")
             {
                 //输入会员信息
-                MsgContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
+                CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
                 return;
             }
             //成功后，需要更新订单信息，按照会员价来计算订单总价
-            MsgContral.UpdateStockOrderByMemberInfo();
+            CenterContral.UpdateStockOrderByMemberInfo();
             ShowWithMemberInfo();
 
             this.textBox_ReceiveFee.Focus();
@@ -51,10 +51,10 @@ namespace CashRegisterApplication.window.member
 
         internal void ShowWithMemberInfo()
         {
-            this.textBox_memberAccount.Text = MsgContral.oMember.memberAccount;
-            this.textBox_name.Text = MsgContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance));
-            this.textBox_phone.Text = MsgContral.oMember.phone;
+            this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+            this.textBox_phone.Text = CenterContral.oMember.phone;
             _SelectRecieve();
             _ShowGoodsMemberInfo();
             this.Show();
@@ -62,7 +62,7 @@ namespace CashRegisterApplication.window.member
 
         private void _SelectRecieve()
         {
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.Base.orderAmount - MsgContral.oStockOutDTO.Base.RecieveFee);
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
 
@@ -73,10 +73,10 @@ namespace CashRegisterApplication.window.member
         private void _ShowGoodsMemberInfo()
         {
             string str = "\n";
-            if (MsgContral.oMember.goodsStringWithoutMemberPrice != "")
+            if (CenterContral.oMember.goodsStringWithoutMemberPrice != "")
             {
                 str += "未参加会员价的商品:\n";
-                str += MsgContral.oMember.goodsStringWithoutMemberPrice;
+                str += CenterContral.oMember.goodsStringWithoutMemberPrice;
             }
             this.lable_goodsStringWithoutMemberPrice.Text = str;
         }
@@ -99,7 +99,7 @@ namespace CashRegisterApplication.window.member
                 case System.Windows.Forms.Keys.Delete:
                     {
                         this.Hide();
-                        MsgContral.Window_RecieveMoney.Show();
+                        CenterContral.Window_RecieveMoney.Show();
                         break;
                     }
             }
@@ -144,7 +144,7 @@ namespace CashRegisterApplication.window.member
                 MessageBox.Show("总价错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            long change = recieveFee - MsgContral.oStockOutDTO.Base.orderAmount;
+            long change = recieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
             if (change > 0)
             {
                 this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
@@ -159,7 +159,7 @@ namespace CashRegisterApplication.window.member
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            if (recieveFee > MsgContral.oMember.memberBalance)
+            if (recieveFee > CenterContral.oMember.memberBalance)
             {
                 MessageBox.Show("余额不足" );
                 //跳转到充值页面
@@ -167,7 +167,7 @@ namespace CashRegisterApplication.window.member
                 return;
             }
 
-            long change = recieveFee + MsgContral.oStockOutDTO.Base.RecieveFee - MsgContral.oStockOutDTO.Base.orderAmount;
+            long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
             string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
             if (change < 0)
             {
@@ -195,11 +195,11 @@ namespace CashRegisterApplication.window.member
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
 
-            if (!MsgContral.PayOrderByMember(recieveFee))
+            if (!CenterContral.PayOrderByMember(recieveFee))
             {
                 return;
             }
-            MsgContral.ControlWindowsAfterPay();
+            CenterContral.ControlWindowsAfterPay();
             this.Hide();
             return;
         }

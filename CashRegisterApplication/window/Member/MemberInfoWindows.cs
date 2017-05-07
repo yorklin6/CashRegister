@@ -33,7 +33,7 @@ namespace CashRegisterApplication.window.member
                     }
                 case System.Windows.Forms.Keys.Escape:
                     {
-                        MsgContral.ShowWindowWhenMemberInfoCancel();
+                        CenterContral.ShowWindowWhenMemberInfoCancel();
                         this.Hide();
                         break;
                     }
@@ -44,10 +44,10 @@ namespace CashRegisterApplication.window.member
         internal void ShowWhithMember()
         {
             
-            this.textBox_memberAccount.Text= MsgContral.oMember.memberAccount;
-            this.textBox_name.Text = MsgContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance));
-            this.textBox_phone.Text = MsgContral.oMember.phone;
+            this.textBox_memberAccount.Text= CenterContral.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+            this.textBox_phone.Text = CenterContral.oMember.phone;
             this.textBox_memberAccount.Focus();
 
             this.textBox_memberAccount.Text = "123456";
@@ -66,10 +66,10 @@ namespace CashRegisterApplication.window.member
                 this.textBox_memberAccount.SelectionStart = 0;
                 return;
             }
-            if (MsgContral.oMember.memberAccount != this.textBox_memberAccount.Text)
+            if (CenterContral.oMember.memberAccount != this.textBox_memberAccount.Text)
             {
                 //查会员信息
-                if (!MsgContral.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
+                if (!CenterContral.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
                 {
                     this.textBox_memberAccount.Focus();
                     this.textBox_memberAccount.SelectionStart = 0;
@@ -80,12 +80,12 @@ namespace CashRegisterApplication.window.member
               
    
                 //查成功
-                this.textBox_name.Text = MsgContral.oMember.name;
-                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((MsgContral.oMember.memberBalance));
-                this.textBox_phone.Text = MsgContral.oMember.phone;
+                this.textBox_name.Text = CenterContral.oMember.name;
+                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+                this.textBox_phone.Text = CenterContral.oMember.phone;
             }
             //查成功或者没有修改会员账号
-            MsgContral.ShowWindowWhenGetMemberSuccess();
+            CenterContral.ShowWindowWhenGetMemberSuccess();
             this.Hide();
             return;
 

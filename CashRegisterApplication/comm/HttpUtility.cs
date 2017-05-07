@@ -40,8 +40,8 @@ namespace CashRegiterApplication
         private static readonly string userPayFunc = "/retail/checkout?";
         private static readonly string rechargeMember = "/member/balance/";
         private static readonly string storeFunc = "/store/?";
+        private static readonly string payTypeFunc = "/payType?";
 
-          
         private static UserLogin oLoginer;
 
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
@@ -154,7 +154,7 @@ namespace CashRegiterApplication
         internal static int _CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             string funcUrl = GenerateOrderFunc;
-            String json = JsonConvert.SerializeObject(oReq.Base);
+            String json = JsonConvert.SerializeObject(oReq);
 
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
@@ -354,7 +354,28 @@ namespace CashRegiterApplication
             CommUiltl.Log("list .size ="+ list.Count);
             return true;
         }
+        /***************************************付款方式查询***************************************/
+        internal static bool GetPayType(ref PayTypeData oPayTypeList)
+        {
+            string funcUrl = payTypeFunc + "page=1&pageSize=100";
+            PayTypeHttpRespone oResp = new PayTypeHttpRespone();
+            if (!Get<PayTypeHttpRespone>(funcUrl, ref oResp))
+            {
+                Console.WriteLine("ERR:Get GetStoreMsg failed");
+                lastErrorMsg = "门店信息异常：请检查网络";
+                return false;
+            }
 
+            if (oResp.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oResp:" + JsonConvert.SerializeObject(oResp));
+                lastErrorMsg = "付款方式查询:oResp[" + JsonConvert.SerializeObject(oResp) + "]";
+                return false;
+            }
+            oPayTypeList = oResp.data;
+            CommUiltl.Log("list .size =" + oPayTypeList.list.Count);
+            return true;
+        }
         /***************************************Post信息***************************************/
         public static bool PostUrlencoded<T>(string funcUrl, string json, ref T returnObj)
         {

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace CashRegisterApplication.comm
 {
     
-    public static class MsgContral
+    public static class CenterContral
     {
         
         public static bool initFlag=false;
@@ -37,7 +37,7 @@ namespace CashRegisterApplication.comm
 
         public static LocalSaveStock oLocalSaveStock;//挂单信息
 
-
+        public static PayTypeData oPayTypeList;
 
         public static Member oMember ;//用户账户
 
@@ -118,10 +118,15 @@ namespace CashRegisterApplication.comm
             initFlag = true;
 
             oLocalSaveStock = new LocalSaveStock();
-
+            oPayTypeList = new PayTypeData();
             Dao.ConnecSql();
-            _GetSaveStock();
+            _GenerateDefalutMsg();//设置默认数据
+            _GetPayTypeList();//支付类型
+            _GetSaveStock();//挂单数据
+            //拉出门店信息
+            CenterContral.GetStoreMsg();
         }
+
 
 
         public static void _GetSaveStock()
@@ -154,18 +159,14 @@ namespace CashRegisterApplication.comm
         /******************门店信息******************/
         internal static void GetStoreMsg()
         {
-            if (HttpUtility.GetStoreMsg(ref MsgContral.oListStoreWhouse))
+            HttpUtility.GetStoreMsg(ref CenterContral.oListStoreWhouse);
+            string strLoacalJson = "";
+            if (Dao.GetStoreWhouseDefault(ref strLoacalJson))
             {
-
-            }
-            string strLoacalJson="";
-            if (Dao.GetStoreWhouseDefault(ref strLoacalJson ))
-            {
-                if (strLoacalJson != "" )
+                if (strLoacalJson != "")
                 {
-                    
                     store_house_selete_flag = STORE_HOUSE_SELETED;
-                    MsgContral.oStoreWhouse = JsonConvert.DeserializeObject<StoreWhouse>(strLoacalJson);
+                    CenterContral.oStoreWhouse = JsonConvert.DeserializeObject<StoreWhouse>(strLoacalJson);
                 }
             }
             return ;
@@ -187,14 +188,9 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //登陆成功后，更新默认门店信息
-            string strStoreWhouseDefult= JsonConvert.SerializeObject(MsgContral.oStoreWhouse);
+            string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
 
-            if (store_house_selete_flag == STORE_HOUSE_SELETED)
-            {
-                Dao.UpdateStoreWhouseDefault(strStoreWhouseDefult);
-                return true;
-            }
-            Dao.InsertStoreWhouseDefault(strStoreWhouseDefult);
+            Dao.UpdateStoreWhouseDefault(strStoreWhouseDefult);
             return true;
         }
 
@@ -203,12 +199,12 @@ namespace CashRegisterApplication.comm
         internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
         {
             flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
-            MsgContral.Window_MemberInfoWindows.ShowWhithMember();
+            CenterContral.Window_MemberInfoWindows.ShowWhithMember();
         }
         internal static void Show_MemberInfoWindow_By_RechargeMoeneyByMember()
         {
             flagCallShowMember = MEMBER_RECHAREGE_WINDOWS;
-            MsgContral.Window_MemberInfoWindows.ShowWhithMember();
+            CenterContral.Window_MemberInfoWindows.ShowWhithMember();
         }
 
 
@@ -217,12 +213,12 @@ namespace CashRegisterApplication.comm
         {
             if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
             {
-                MsgContral.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
+                CenterContral.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
                 return;
             }
             if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
             {
-                MsgContral.Window_RechargeMoneyForMember.ShowWithMemberInfo();
+                CenterContral.Window_RechargeMoneyForMember.ShowWithMemberInfo();
                 return;
             }
         }
@@ -231,26 +227,26 @@ namespace CashRegisterApplication.comm
         {
             //StockOutDTO
             _CaculateMemberPrice();
-            MsgContral.GetGoodsStringWithoutMemberPrice();
+            CenterContral.GetGoodsStringWithoutMemberPrice();
             return;
         }
         internal static void _CaculateMemberPrice()
         {
             long totalPrice = 0;
-            for (var i=0;i< MsgContral.oStockOutDTO.details.Count;++i)
+            for (var i=0;i< CenterContral.oStockOutDTO.details.Count;++i)
             {
                 //设置会员价
-                if (MsgContral.oStockOutDTO.details[i].unitPrice == MsgContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
+                if (CenterContral.oStockOutDTO.details[i].unitPrice == CenterContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
                 {
-                    MsgContral.oStockOutDTO.details[i].unitPrice = MsgContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice;
+                    CenterContral.oStockOutDTO.details[i].unitPrice = CenterContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice;
                 }
-                totalPrice += MsgContral.oStockOutDTO.details[i].unitPrice;
+                totalPrice += CenterContral.oStockOutDTO.details[i].unitPrice;
             }
             //
-            MsgContral.oStockOutDTO.Base.orderAmount = totalPrice;
-            MsgContral.Window_ProductList.SetProductListWindowByStockOut(MsgContral.oStockOutDTO);
+            CenterContral.oStockOutDTO.Base.orderAmount = totalPrice;
+            CenterContral.Window_ProductList.SetProductListWindowByStockOut(CenterContral.oStockOutDTO);
             //更新数据库里面订单信息
-            if(!Dao.updateRetailStock(MsgContral.oStockOutDTO))
+            if(!Dao.updateRetailStock(CenterContral.oStockOutDTO))
             {
                 return;
             }
@@ -258,20 +254,20 @@ namespace CashRegisterApplication.comm
         internal static void GetGoodsStringWithoutMemberPrice()
         {
             string strTmp = "";
-            for (var i = 0; i < MsgContral.oStockOutDTO.details.Count; ++i)
+            for (var i = 0; i < CenterContral.oStockOutDTO.details.Count; ++i)
             {
                 //设置会员价
-                if (MsgContral.oStockOutDTO.details[i].unitPrice != MsgContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
+                if (CenterContral.oStockOutDTO.details[i].unitPrice != CenterContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
                 {
                     //strTmp +="id:"+Main.oStockOutDTO.details[i].goodsId+" ";
-                    strTmp += MsgContral.oStockOutDTO.details[i].goodsName;
-                    strTmp += " 会员价:" + CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice);
-                    strTmp += " 现价:" + CommUiltl.CoverMoneyUnionToStrYuan(MsgContral.oStockOutDTO.details[i].unitPrice);
+                    strTmp += CenterContral.oStockOutDTO.details[i].goodsName;
+                    strTmp += " 会员价:" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice);
+                    strTmp += " 现价:" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.details[i].unitPrice);
                     strTmp += "\n";
                 }
                
             }
-            MsgContral.oMember.goodsStringWithoutMemberPrice = strTmp;
+            CenterContral.oMember.goodsStringWithoutMemberPrice = strTmp;
 
         }
         //***************************充值相关
@@ -287,11 +283,11 @@ namespace CashRegisterApplication.comm
         {
             if (flagCallShowRecharge == PRODUCTlIST_WINDOW)
             {
-                MsgContral.Window_ProductList.Show();
+                CenterContral.Window_ProductList.Show();
             }
             if (flagCallShowRecharge == MEMBER_RECIEVE_MONEY_WINDOWS)
             {
-                MsgContral.Window_ProductList.Show();
+                CenterContral.Window_ProductList.Show();
             }
         }
 
@@ -301,12 +297,12 @@ namespace CashRegisterApplication.comm
            
             if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
             {
-                MsgContral.Window_RecieveMoney.Show();
+                CenterContral.Window_RecieveMoney.Show();
                 return;
             }
             if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
             {
-                MsgContral.Window_ProductList.Show();
+                CenterContral.Window_ProductList.Show();
                 return;
             }
         }
@@ -324,7 +320,7 @@ namespace CashRegisterApplication.comm
         public static void ControlWindowsAfterPay()
         {
             CommUiltl.Log("ControlWindowsAfterPay" );
-            if (MsgContral.oStockOutDTO.Base.RecieveFee < MsgContral.oStockOutDTO.Base.orderAmount)
+            if (CenterContral.oStockOutDTO.Base.RecieveFee < CenterContral.oStockOutDTO.Base.orderAmount)
             {
                 CommUiltl.Log("Window_RecieveMoney Show");
                 Window_RecieveMoney.ShowPaidMsg();
@@ -340,10 +336,10 @@ namespace CashRegisterApplication.comm
         //***********************************关闭订单***************************
         internal static bool CloseOrderWhenPayAllFee()
         {
-            MsgContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
+            CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
-            MsgContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(MsgContral.oStockOutDTO, ref MsgContral.oHttpRespone);
-            if (!Dao.UpdateOrderCloudState(MsgContral.oStockOutDTO))
+            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
+            if (!Dao.UpdateOrderCloudState(CenterContral.oStockOutDTO))
             {
                 return false;
             }
@@ -352,63 +348,63 @@ namespace CashRegisterApplication.comm
 
         internal static void SetSaveFlag()
         {
-            if (MsgContral.oStockOutDTO.Base.localSaveFlag == Dao.STOCK_BASE_SAVE_FLAG_SAVING)
+            if (CenterContral.oStockOutDTO.Base.localSaveFlag == Dao.STOCK_BASE_SAVE_FLAG_SAVING)
             {
-                MsgContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_CLOSE;
+                CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_CLOSE;
             }
         }
         //***********************************生成订单***************************
         internal static bool IsCurrentOrderInit()
         {
-            return MsgContral.oStockOutDTO.Base.dbGenerateFlag == MsgContral.STOCK_BASE_DB_GENERATE_INIT;
+            return CenterContral.oStockOutDTO.Base.dbGenerateFlag == CenterContral.STOCK_BASE_DB_GENERATE_INIT;
         }
                                                                                                                                         
         internal static bool GenerateOrder(string strProductList)
         {
-            if (MsgContral.oStockOutDTO.details.Count == 0)
+            if (CenterContral.oStockOutDTO.details.Count == 0)
             {
                 CommUiltl.Log("Main.oStockOutDTO.details.Count == 0]");
                 return true;
             }
             if (IsCurrentOrderInit())
             {
-                MsgContral.oStockOutDTO.Base.ProductList = strProductList;
+                CenterContral.oStockOutDTO.Base.ProductList = strProductList;
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
-                MsgContral.oStockOutDTO.Base.generateSeariseNumber();
+                CenterContral.oStockOutDTO.Base.generateSeariseNumber();
 
-                MsgContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(MsgContral.oStockOutDTO, ref MsgContral.oStockOutDToRespond);
-                MsgContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+               // CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
+                CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_SUCESS;
 
-                if (MsgContral.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
-                {
-                    MsgContral.oStockOutDTO.Base.stockOutId = MsgContral.oStockOutDToRespond.data.Base.stockOutId;
-                    SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref MsgContral.oStockOutDTO );
-                }
-                MsgContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(MsgContral.oStockOutDTO);
-                MsgContral.oStockOutDTO.Base.dbGenerateFlag = MsgContral.STOCK_BASE_DB_GENERATE_DONE;//新增
+                //if (CenterContral.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS )
+                //{
+                //    CenterContral.oStockOutDTO.Base.stockOutId = CenterContral.oStockOutDToRespond.data.Base.stockOutId;
+                //    SetStockDetailByHttpRespone(oStockOutDToRespond.data,ref CenterContral.oStockOutDTO );
+                //}
+                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
+                CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_DONE;//新增
                 //插入本地数据库表
-                if (!Dao.GenerateOrder(MsgContral.oStockOutDTO))
+                if (!Dao.GenerateOrder(CenterContral.oStockOutDTO))
                 {
                     return false;
                 }
                 return true;
             }
             //更新订单
-            if (strProductList != null && 0 != MsgContral.oStockOutDTO.Base.ProductList.CompareTo(strProductList))
+            if (strProductList != null && 0 != CenterContral.oStockOutDTO.Base.ProductList.CompareTo(strProductList))
             {
-                CommUiltl.Log(" strProductList is modify [" + MsgContral.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
-                MsgContral.oStockOutDTO.Base.ProductList = strProductList;
-                MsgContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(MsgContral.oStockOutDTO, ref MsgContral.oStockOutDToRespond);
+                CommUiltl.Log(" strProductList is modify [" + CenterContral.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
+                CenterContral.oStockOutDTO.Base.ProductList = strProductList;
+                CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
 
-                if (MsgContral.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                if (CenterContral.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
                     
                 }else
                 {
-                    MsgContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(MsgContral.oStockOutDTO);
+                    CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 }
 
-                if (!Dao.updateRetailStock(MsgContral.oStockOutDTO))
+                if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
                 {
                     return false;
                 }
@@ -423,28 +419,28 @@ namespace CashRegisterApplication.comm
         internal static bool SaveStock(string strProductList)
         {
             //生成订单，状态为挂单
-            MsgContral.oStockOutDTO.Base.ProductList = strProductList;
-            MsgContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
-            if (!MsgContral.GenerateOrder(strProductList))
+            CenterContral.oStockOutDTO.Base.ProductList = strProductList;
+            CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
+            if (!CenterContral.GenerateOrder(strProductList))
             {
                 return false;
             }
-            addStockToLocal(MsgContral.oStockOutDTO);
+            addStockToLocal(CenterContral.oStockOutDTO);
             return true;
         }
         internal static void addStockToLocal(StockOutDTO oStockOutDTO)
         {
-            CommUiltl.Log("addStockToLocal Main.oSaveSotckOut.listStock.Count:" + MsgContral.oLocalSaveStock.listStock.Count);
-            for (int i=0;i< MsgContral.oLocalSaveStock.listStock.Count;++i)
+            CommUiltl.Log("addStockToLocal Main.oSaveSotckOut.listStock.Count:" + CenterContral.oLocalSaveStock.listStock.Count);
+            for (int i=0;i< CenterContral.oLocalSaveStock.listStock.Count;++i)
             {
-                if (oStockOutDTO.Base.serialNumber == MsgContral.oLocalSaveStock.listStock[i].Base.serialNumber)
+                if (oStockOutDTO.Base.serialNumber == CenterContral.oLocalSaveStock.listStock[i].Base.serialNumber)
                 {
                     CommUiltl.Log("addStockToLocal found" );
-                    MsgContral.oLocalSaveStock.listStock[i] = oStockOutDTO;//如果是已经存在挂单中的订单，那么就替换下
+                    CenterContral.oLocalSaveStock.listStock[i] = oStockOutDTO;//如果是已经存在挂单中的订单，那么就替换下
                     return;
                 }
             }
-            MsgContral.oLocalSaveStock.listStock.Add(oStockOutDTO);
+            CenterContral.oLocalSaveStock.listStock.Add(oStockOutDTO);
         }
         public static int CurrentStockIndex = -1;
 
@@ -452,73 +448,73 @@ namespace CashRegisterApplication.comm
 
         internal static void GetSaveOrderToCurrentMsg()
         {
-            if (MsgContral.oLocalSaveStock.listStock.Count == 0)
+            if (CenterContral.oLocalSaveStock.listStock.Count == 0)
             {
                 return;
             }
             ++CurrentStockIndex;
-            CurrentStockIndex = CurrentStockIndex % MsgContral.oLocalSaveStock.listStock.Count;
-            MsgContral.oStockOutDTO = MsgContral.oLocalSaveStock.listStock[CurrentStockIndex];
+            CurrentStockIndex = CurrentStockIndex % CenterContral.oLocalSaveStock.listStock.Count;
+            CenterContral.oStockOutDTO = CenterContral.oLocalSaveStock.listStock[CurrentStockIndex];
         }
 
         internal static void SetStockDetailByHttpRespone(StockOutDTO http,ref StockOutDTO Db)
         {
-            if (oStockOutDToRespond.data.details.Count != MsgContral.oStockOutDTO.details.Count)
+            if (oStockOutDToRespond.data.details.Count != CenterContral.oStockOutDTO.details.Count)
             {
                 //说明是有问题的
-                CommUiltl.Log("oRespond.data.details.Count[" + oStockOutDToRespond.data.details.Count + "] != Main.oStockOutDTO.details.Count [" + MsgContral.oStockOutDTO.details.Count + "]");
-                MessageBox.Show("下单异常，请联系后台同学检查下单返回[" + oStockOutDToRespond.data.details.Count + "] != Main.oStockOutDTO.details.Count [" + MsgContral.oStockOutDTO.details.Count + "]");
+                CommUiltl.Log("oRespond.data.details.Count[" + oStockOutDToRespond.data.details.Count + "] != Main.oStockOutDTO.details.Count [" + CenterContral.oStockOutDTO.details.Count + "]");
+                MessageBox.Show("下单异常，请联系后台同学检查下单返回[" + oStockOutDToRespond.data.details.Count + "] != Main.oStockOutDTO.details.Count [" + CenterContral.oStockOutDTO.details.Count + "]");
             }
             else
             {
                 for (int i = 0; i < oStockOutDToRespond.data.details.Count; ++i)
                 {
-                    MsgContral.oStockOutDTO.details[i].id = oStockOutDToRespond.data.details[i].id;
+                    CenterContral.oStockOutDTO.details[i].id = oStockOutDToRespond.data.details[i].id;
                 }
             }
         }
         internal static bool PayOrderByCash(long recieveFee)
         {
-            MsgContral.oPayWay.payType = PAY_TYPE_CASH;
-            MsgContral.oPayWay.payAmount = recieveFee;
-            MsgContral.oPayWay.generatePayOrderNumber();
-            MsgContral.oPayWay.serialNumber = MsgContral.oStockOutDTO.Base.serialNumber;
-            MsgContral.oPayWay.payStatus=  MsgContral.PAY_STATE_SUCCESS;
-            MsgContral.oPayWay.cloudState = MsgContral.CLOUD_SATE_PAY_SUCESS ;
-            PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
-            oPayWayHttpRequet.memberId = MsgContral.oMember.memberId;
-            oPayWayHttpRequet.list.Add(MsgContral.oPayWay);
-            MsgContral.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
-            if (!Dao.GeneratePay(MsgContral.oPayWay))
+            CenterContral.oPayWay.payType = PAY_TYPE_CASH;
+            CenterContral.oPayWay.payAmount = recieveFee;
+            CenterContral.oPayWay.generatePayOrderNumber();
+            CenterContral.oPayWay.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
+            CenterContral.oPayWay.payStatus=  CenterContral.PAY_STATE_SUCCESS;
+            CenterContral.oPayWay.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS ;
+            //PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
+            //oPayWayHttpRequet.memberId = CenterContral.oMember.memberId;
+            //oPayWayHttpRequet.list.Add(CenterContral.oPayWay);
+            ///CenterContral.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
+            if (!Dao.GeneratePay(CenterContral.oPayWay))
             {
                 return false;
             }
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay = new PayWay();
-            MsgContral.oStockOutDTO.addPayWay(MsgContral.oPayWay);
+            CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
         }
         internal static bool PayOrderByMember(long recieveFee)
         {
-            MsgContral.oPayWay.payType = PAY_TYPE_CASH;
-            MsgContral.oPayWay.payAmount = recieveFee;
-            MsgContral.oPayWay.generatePayOrderNumber();
-            MsgContral.oPayWay.serialNumber = MsgContral.oStockOutDTO.Base.serialNumber;
-            MsgContral.oPayWay.payStatus = MsgContral.PAY_STATE_SUCCESS;
-            MsgContral.oPayWay.cloudState = MsgContral.CLOUD_SATE_PAY_SUCESS;
-            PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
-            oPayWayHttpRequet.memberId = MsgContral.oMember.memberId;
-            oPayWayHttpRequet.list.Add(MsgContral.oPayWay);
-            MsgContral.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
-            if (!Dao.GeneratePay(MsgContral.oPayWay))
+            CenterContral.oPayWay.payType = PAY_TYPE_CASH;
+            CenterContral.oPayWay.payAmount = recieveFee;
+            CenterContral.oPayWay.generatePayOrderNumber();
+            CenterContral.oPayWay.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
+            CenterContral.oPayWay.payStatus = CenterContral.PAY_STATE_SUCCESS;
+            CenterContral.oPayWay.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
+            //PayWayHttpRequet oPayWayHttpRequet = new PayWayHttpRequet();
+            //oPayWayHttpRequet.memberId = CenterContral.oMember.memberId;
+            //oPayWayHttpRequet.list.Add(CenterContral.oPayWay);
+            //CenterContral.oPayWay.cloudState = HttpUtility.PayOrdr(oPayWayHttpRequet);
+            if (!Dao.GeneratePay(CenterContral.oPayWay))
             {
                 return false;
             }
             //修改环境变量，表示这笔单支付成功
             PayWay oPayWay = new PayWay();
-            MsgContral.oStockOutDTO.addPayWay(MsgContral.oPayWay);
+            CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
@@ -528,18 +524,18 @@ namespace CashRegisterApplication.comm
         {
             //充值金
             Member oRechargeMember = new Member();
-            oRechargeMember.memberId= MsgContral.oMember.memberId;
+            oRechargeMember.memberId= CenterContral.oMember.memberId;
             oRechargeMember.memberBalance = recieveFee;
-            oRechargeMember.name = MsgContral.oMember.name;
-            oRechargeMember.memberAccount=MsgContral.oMember.memberAccount;
+            oRechargeMember.name = CenterContral.oMember.name;
+            oRechargeMember.memberAccount=CenterContral.oMember.memberAccount;
             oRechargeMember.reqJson = JsonConvert.SerializeObject(oRechargeMember);
             //请求后台充值
             oRechargeMember.cloudState = HttpUtility.memberRecharge(oRechargeMember);
 
-            long beforeMberBalance = MsgContral.oMember.memberBalance;
+            long beforeMberBalance = CenterContral.oMember.memberBalance;
             //重新拉会员信息
-            MsgContral.GetMemberByMemberAccount(MsgContral.oMember.memberAccount);
-            long afterMemberAccount = MsgContral.oMember.memberBalance;
+            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
+            long afterMemberAccount = CenterContral.oMember.memberBalance;
             //记录流水
             Dao.memberRecharge(oRechargeMember, beforeMberBalance, afterMemberAccount, recieveFee);
 
@@ -557,7 +553,7 @@ namespace CashRegisterApplication.comm
             int iMemberRet=HttpUtility.GetMemberByMemberAccount(strMemberAccount,ref oMember);
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                MsgContral.oMember = oMember.data.list[0];
+                CenterContral.oMember = oMember.data.list[0];
                 return true;
             }
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_FAILD)
@@ -568,7 +564,45 @@ namespace CashRegisterApplication.comm
             MessageBox.Show("业务错误："+HttpUtility.lastErrorMsg);
             return false;
         }
+        //************************支付类型***********************
+        public static void _GenerateDefalutMsg()
+        {
+            int iCount = 0;
+            if (!Dao.GetLocalMsgDefaultCount(out iCount))
+            {
+                MessageBox.Show("初始化默认数据失败");
+                return;
+            }
+            if (0 == iCount)
+            {
+                Dao.InsertLocalMsgDefault();
+            }
 
+        }
+        internal static bool _GetPayTypeList()
+        {
+            string json = "";
+            if (!HttpUtility.GetPayType(ref CenterContral.oPayTypeList))
+            {
+                //取网络失败，那么就取数据库里面的
+                if (!Dao.GetPayType(ref json))
+                {
+                    MessageBox.Show("获取支付类型失败：" + HttpUtility.lastErrorMsg);
+                    return false;
+                }
+                //
+                CenterContral.oPayTypeList = JsonConvert.DeserializeObject<PayTypeData>(json);
+                return true;
+            }
+            json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
+            //取网络成功，则更新本地数据库
+            if (!Dao.SetPayType(ref json))
+            {
+                return false;
+            }
+
+            return false;
+        }
     }
 
 }

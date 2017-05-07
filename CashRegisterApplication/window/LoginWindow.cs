@@ -29,19 +29,18 @@ namespace CashRegiterApplication
          
         private void Form1_Load(object sender, EventArgs e)
         {
-            //拉出门店信息
-            MsgContral.GetStoreMsg();
+
             //生成下拉框
             List<ComboxItem> oListItem = new List<ComboxItem>();
 
-            if (MsgContral.oListStoreWhouse.Count != 0)
+            if (CenterContral.oListStoreWhouse.Count != 0)
             {
                 int selectIndex = 0;
-                for (int i=0;i< MsgContral.oListStoreWhouse.Count;++i)
+                for (int i=0;i< CenterContral.oListStoreWhouse.Count;++i)
                 {
-                    StoreWhouse item = MsgContral.oListStoreWhouse[i];
+                    StoreWhouse item = CenterContral.oListStoreWhouse[i];
                     ComboxItem oTmp = new ComboxItem(item.name, item.storeWhouseId.ToString());
-                    if (item.storeWhouseId == MsgContral.oStoreWhouse.storeWhouseId )
+                    if (item.storeWhouseId == CenterContral.oStoreWhouse.storeWhouseId )
                     {
                         selectIndex = i;
                        
@@ -54,10 +53,10 @@ namespace CashRegiterApplication
             else
             {
                 //MsgContral.oListStoreWhouse.Count == 0
-                if (MsgContral.oStoreWhouse.storeWhouseId != 0)
+                if (CenterContral.oStoreWhouse.storeWhouseId != 0)
                 {
                    
-                    ComboxItem oTmp = new ComboxItem(MsgContral.oStoreWhouse.name, MsgContral.oStoreWhouse.storeWhouseId.ToString());
+                    ComboxItem oTmp = new ComboxItem(CenterContral.oStoreWhouse.name, CenterContral.oStoreWhouse.storeWhouseId.ToString());
                     oListItem.Add(oTmp);
                     comboBox_StoreShop.DataSource = oListItem;
                     comboBox_StoreShop.SelectedIndex = 0;
@@ -71,15 +70,15 @@ namespace CashRegiterApplication
             //取得下拉框门店id信息
             int storeWhouseId=0;
             CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values ,out storeWhouseId);
-            for (int i = 0; i < MsgContral.oListStoreWhouse.Count; ++i)
+            for (int i = 0; i < CenterContral.oListStoreWhouse.Count; ++i)
             {
-                if (storeWhouseId == MsgContral.oListStoreWhouse[i].storeWhouseId)
+                if (storeWhouseId == CenterContral.oListStoreWhouse[i].storeWhouseId)
                 {
-                    MsgContral.oStoreWhouse = MsgContral.oListStoreWhouse[i];
+                    CenterContral.oStoreWhouse = CenterContral.oListStoreWhouse[i];
                 }
             }
             //登陆
-            if (MsgContral.Login(this.textBox_userName.Text, this.textBox_password.Text))
+            if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text))
             {
                 gProductListWindow.Show();
                 this.Hide();
