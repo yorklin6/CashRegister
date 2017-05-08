@@ -48,8 +48,8 @@ namespace CashRegisterApplication.comm
         public const int PAY_STATE_INIT = 0;
         public const  int PAY_STATE_SUCCESS = 1;
         public const int PAY_TYPE_CASH = 1;
+        public const int MEMBER_PAY_TYPE = 0;
 
-     
 
         public const int STOCK_BASE_STATUS_INIT = 0;
         public const int STOCK_BASE_STATUS_NORMAL = 1;
