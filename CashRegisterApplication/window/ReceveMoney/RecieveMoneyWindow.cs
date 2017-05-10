@@ -25,6 +25,7 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("RecieveMoneyWindows_Shown");
             this.ActiveControl = this.buttonCash;
             ShowByProductListWindow();
+
         }
 
         public void ShowByProductListWindow()
@@ -41,6 +42,9 @@ namespace CashRegisterApplication.window
             //其他订单信息
             this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
             this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            //默认不选中
+            this.dataGridView_payTypeList.ClearSelection();
+            this.dataGridView_payTypeList.CurrentCell = null;
         }
 
         public void ShowPaidMsg()
@@ -67,9 +71,30 @@ namespace CashRegisterApplication.window
             ShowByProductListWindow();
         }
 
+        int DESCRIPTION_COLUMN = 0;
+        int QUCK_KEY_COLUMN = 1;
+        int PAY_TYPE_COLUMN = 2;
         private void RecieveMoneyWindows_Load(object sender, EventArgs e)
         {
             CommUiltl.Log("RecieveMoneyWindows_Load");
+            int iRowIndex=0;
+            //不支持大于10的快捷键
+            int i = 0;
+            for (;i < CenterContral.oPayTypeList.list.Count ; ++i)
+            {
+                iRowIndex=this.dataGridView_payTypeList.Rows.Add();
+                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[DESCRIPTION_COLUMN].Value= CenterContral.oPayTypeList.list[i].description;
+                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = i;
+                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[PAY_TYPE_COLUMN].Value = CenterContral.oPayTypeList.list[i].payTypeId;
+                if (i > 9)
+                {
+                    this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "双击下单";
+                }
+            }
+            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[DESCRIPTION_COLUMN].Value ="返回上一层";
+            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "Esc";
+            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[PAY_TYPE_COLUMN].Value = "escKey";
+           
         }
 
         private void button_Confirm_Click(object sender, EventArgs e)
@@ -97,40 +122,113 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("Keys:"+ keyData);
             switch (keyData)
             {
-        
+
                 case System.Windows.Forms.Keys.Enter:
+                    {
+                        return base.ProcessCmdKey(ref msg, keyData);
+                    }
+                case System.Windows.Forms.Keys.D0:
+                case System.Windows.Forms.Keys.NumPad0:
+                    {
+                        callPayWindowsBayQuickKey(0);
+                        break;
+                    }
                 case System.Windows.Forms.Keys.D1:
                 case System.Windows.Forms.Keys.NumPad1:
                 case System.Windows.Forms.Keys.Oem1:
                     {
-                        buttonCash_Click(null, null);
+                        callPayWindowsBayQuickKey(1);
                         break;
                     }
                 case System.Windows.Forms.Keys.D2:
                 case System.Windows.Forms.Keys.NumPad2:
                 case System.Windows.Forms.Keys.Oem2:
                     {
-                        buttonWeixin_Click(null, null);
+                        callPayWindowsBayQuickKey(2);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D3:
+                case System.Windows.Forms.Keys.NumPad3:
+                case System.Windows.Forms.Keys.Oem3:
+                    {
+                        callPayWindowsBayQuickKey(3);
                         break;
                     }
                 case System.Windows.Forms.Keys.D4:
                 case System.Windows.Forms.Keys.NumPad4:
                 case System.Windows.Forms.Keys.Oem4:
                     {
-                        buttonMember_Click(null, null);
+                        callPayWindowsBayQuickKey(4);
                         break;
                     }
-                    
+                case System.Windows.Forms.Keys.D5:
+                case System.Windows.Forms.Keys.NumPad5:
+                case System.Windows.Forms.Keys.Oem5:
+                    {
+                        callPayWindowsBayQuickKey(5);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D6:
+                case System.Windows.Forms.Keys.NumPad6:
+                case System.Windows.Forms.Keys.Oem6:
+                    {
+                        callPayWindowsBayQuickKey(6);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D7:
+                case System.Windows.Forms.Keys.NumPad7:
+                case System.Windows.Forms.Keys.Oem7:
+                    {
+                        callPayWindowsBayQuickKey(7);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D8:
+                case System.Windows.Forms.Keys.NumPad8:
+                case System.Windows.Forms.Keys.Oem8:
+                    {
+                        callPayWindowsBayQuickKey(8);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D9:
+                case System.Windows.Forms.Keys.NumPad9:
+                    {
+                        callPayWindowsBayQuickKey(9);
+                        break;
+                    }
                 case System.Windows.Forms.Keys.Escape:
                     {
-                        CenterContral.Window_ProductList.EscapeShowByRecieveWindows();
-                        this.Hide();
+                        escapeToPreWindows();
+                       
                         break;
                     }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        private void escapeToPreWindows()
+        {
+            CenterContral.Window_ProductList.EscapeShowByRecieveWindows();
+            this.Hide();
+        }
+        private void callPayWindowsBayQuickKey(int indexPay)
+        {
+            CommUiltl.Log("indexPay:" + indexPay);
+            callPayWindowsBayPayTypeId(CenterContral.oPayTypeList.list[indexPay].payTypeId);
+            return;
+        }
+        private void callPayWindowsBayPayTypeId(int payTypeId)
+        {
+            CommUiltl.Log("payTypeId:" + payTypeId);
+            _CheckFee();
+            if (payTypeId == CenterContral.MEMBER_PAY_TYPE)
+            {
+                CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
+                this.Hide();
+                return;
+            }
+            CenterContral.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
+            this.Hide();
+            return;
+        }
         private void buttonCash_Click(object sender, EventArgs e)
         {
             _CheckFee();
@@ -150,6 +248,33 @@ namespace CashRegisterApplication.window
             _CheckFee();
             CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
             this.Hide();
+        }
+
+        private void dataGridView_payTypeList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_payTypeList_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string strPayType=this.dataGridView_payTypeList.Rows[e.RowIndex].Cells[PAY_TYPE_COLUMN].Value.ToString();
+            if(strPayType== "" || strPayType == null)
+            {
+                return;
+            }
+            if ( strPayType== "escKey")
+            {
+                escapeToPreWindows();
+                return;
+            }
+            int payType = 0;
+            if (!CommUiltl.CoverStrToInt(strPayType, out payType))
+            {
+                MessageBox.Show("错误支付类型:" + strPayType);
+                return;
+            }
+            callPayWindowsBayPayTypeId(payType);
+            return;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace CashRegisterApplication.comm
 
 
         public static SQLiteCommand sqlite_cmd;
+
+
         public static SQLiteDataReader sqlite_datareader;
         public static bool initDbFalg=false;
 
@@ -528,7 +530,6 @@ namespace CashRegisterApplication.comm
         internal static bool SetPayType(ref string json)
         {
             int iRow = 0;
-            //插入订单
             string strSql = "update tb_local_msg set pay_type_list='" + json + "'";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
@@ -580,6 +581,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
         
+        //
 
 
         internal static bool UpdateStoreWhouseDefault(string strStoreWhouseDefult)
@@ -608,7 +610,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-        //取出默认数据
+        //取出默认数据行数
         internal static bool GetLocalMsgDefaultCount(out int iCount)
         {
             iCount = 0;
@@ -638,9 +640,10 @@ namespace CashRegisterApplication.comm
         internal static bool InsertLocalMsgDefault()
         {
             string strSql = "insert into tb_local_msg  ";
-            strSql += " (store_whouse_default,pay_type_list) VALUES (";
+            strSql += " (store_whouse_default,pay_type_list,last_all_good_data_uinx_time) VALUES (";
             strSql += "'',";
-            strSql += "''";
+            strSql += "'',";
+            strSql += "0,";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;
@@ -664,7 +667,59 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("InsertLocalMsgDefault ok success");
             return true;
         }
+        //***********************本地商品数据*********************/
+        internal static bool GetLocalMsgLastUpdateAllDataGoods(out int iLastAllGoodsUpdateTime)
+        {
+            iLastAllGoodsUpdateTime = 0;
+            string strSql = "";
+            strSql += "select last_all_good_data_uinx_time from tb_local_msg ";
+            strSql += "limit 1 ";
 
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+            while (sqlite_datareader.Read())
+            {
+                iLastAllGoodsUpdateTime = sqlite_datareader.GetInt32(0);
+            }
+            return true;
+        }
+        internal static bool UpdateLocalMsgLastUpdateAllDataGoods( int iLastAllGoodsUpdateTime)
+        {
+            int iRow = 0;
+            string strSql = "update tb_local_msg set last_all_good_data_uinx_time=" + iLastAllGoodsUpdateTime + "";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("UpdateLocalMsgLastUpdateAllDataGoods update fialed sql: " + strSql);
+                CommUiltl.Log("UpdateLocalMsgLastUpdateAllDataGoods update fialed ex: " + ex);
+                return false;
+            }
+            if (0 == iRow)
+            {
+                CommUiltl.Log("UpdateLocalMsgLastUpdateAllDataGoods 0 == iRow " );
+                return false;
+            }
+            CommUiltl.Log("UpdateLocalMsgLastUpdateAllDataGoods ok success");
+            return true;
+        }
+        
+ 
         public bool Daemone()
         {
             ConnecSql();

@@ -10,6 +10,38 @@ namespace CashRegisterApplication.comm
     //异步处理数据库
     class MyTimerTask
     {
+        public static void UpdateLocalGoodsMsg()
+        {
+            //查db里面,最后一次更新时间是多少
+            int iLastAllGoodsUpdateTime = 0;
+            if (!Dao.GetLocalMsgLastUpdateAllDataGoods(out iLastAllGoodsUpdateTime))
+            {
+                CommUiltl.Log("GetLocalMsgLastUpdateAllDataGoods error");
+                return;
+            }
+            long iNow=CommUiltl.GetTimeStamp();
+            long diff = iNow - iLastAllGoodsUpdateTime;
+            //一天拉一次全量
+            if (iLastAllGoodsUpdateTime == 0 || diff > 24*60*60)
+            {
+                _UpdateAllGoodsdate();
+                Dao.UpdateLocalMsgLastUpdateAllDataGoods(iNow);
+            }
+        }
+        public static void _UpdateAllGoodsdate()
+        {
+            //拉出全量商品数据
+            //全量数据商品少于1个的时候，表示数据有问题，不删除
+
+            //老数据打上 老数据标志
+            //插入新数据
+
+            //删除 老数据标志 的商品
+            
+            //老数据的表
+        
+            return;
+        }
         public static void AddStaockOut()
         {
             List<StockOutDTO> oStockList = new List<StockOutDTO>();
