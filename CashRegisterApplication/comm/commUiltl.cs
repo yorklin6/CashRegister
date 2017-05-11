@@ -38,6 +38,7 @@ namespace CashRegisterApplication.comm
         internal static string GetMacInfo()
         {
             string macAddress = "";
+            return macAddress;
             Process p = null;
             StreamReader reader = null;
             try

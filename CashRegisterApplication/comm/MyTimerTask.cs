@@ -25,9 +25,11 @@ namespace CashRegisterApplication.comm
             if (iLastAllGoodsUpdateTime == 0 || diff > 24*60*60)
             {
                 _UpdateAllGoodsdate();
+                //记录今天已经更新全量信息
                 Dao.UpdateLocalMsgLastUpdateAllDataGoods(iNow);
             }
         }
+
         public static void _UpdateAllGoodsdate()
         {
             //拉出全量商品数据
@@ -157,7 +159,7 @@ namespace CashRegisterApplication.comm
             foreach (var oStock in oStockList)
             {
                 HttpBaseRespone oRespond = new HttpBaseRespone();
-                oStock.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(oStock, ref oRespond);
+                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlement(oStock, ref oRespond);
 
                 if (oStock.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {

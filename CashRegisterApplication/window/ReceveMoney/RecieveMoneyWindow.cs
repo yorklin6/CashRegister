@@ -23,7 +23,7 @@ namespace CashRegisterApplication.window
         {
             //注意，正常流程下面，这个窗体只有未收款的时候显示。
             CommUiltl.Log("RecieveMoneyWindows_Shown");
-            this.ActiveControl = this.buttonCash;
+            //this.ActiveControl = this.buttonCash;
             ShowByProductListWindow();
 
         }

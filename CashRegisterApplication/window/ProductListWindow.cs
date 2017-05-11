@@ -411,7 +411,7 @@ namespace CashRegiterApplication
             detail.remark = productInfo.remark;
             detail.specification = productInfo.specification;
             detail.categoryId = productInfo.categoryId;
-            detail.unit = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
+            detail.unit = productInfo.baseUnit;
    
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);

@@ -693,7 +693,7 @@ namespace CashRegisterApplication.comm
             }
             return true;
         }
-        internal static bool UpdateLocalMsgLastUpdateAllDataGoods( int iLastAllGoodsUpdateTime)
+        internal static bool UpdateLocalMsgLastUpdateAllDataGoods( long iLastAllGoodsUpdateTime)
         {
             int iRow = 0;
             string strSql = "update tb_local_msg set last_all_good_data_uinx_time=" + iLastAllGoodsUpdateTime + "";

@@ -83,6 +83,7 @@ namespace CashRegisterApplication.comm
         public static int flagCallShowRecharge = PRODUCTlIST_WINDOW;
 
         public static StoreWhouse oStoreWhouse;
+        public static int oPostId=0;
         public static int store_house_selete_flag;
         public static List<StoreWhouse> oListStoreWhouse;
         public static int store_whouse_id=0;
@@ -177,11 +178,11 @@ namespace CashRegisterApplication.comm
   
             //登陆之前，先去取出mac地址
             string strMac = CommUiltl.GetMacInfo();
-            //if (HttpUtility.)
-            //{
-            //    //mac地址获取信息 根据mac地址拿到post机id
+           //if (HttpUtility.mac)
+           // {
+           // //mac地址获取信息 根据mac地址拿到post机id
 
-            //}
+           // }
             CommUiltl.Log("mac*****:" + strMac);
             if (!HttpUtility.Login(userName, password))
             {
@@ -338,7 +339,7 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
-            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CloseOrderWhenPayAllFee(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
+            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
             if (!Dao.UpdateOrderCloudState(CenterContral.oStockOutDTO))
             {
                 return false;

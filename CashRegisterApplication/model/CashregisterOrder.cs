@@ -104,7 +104,9 @@ namespace CashRegisterApplication.model
 
         internal void generatePayOrderNumber()
         {
-            serialNumber = "JZ-" + DateTime.Now.ToString("yyMMddHHmmssSSS-") + CommUiltl.GetRandomNumber();
+            serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeId+"-"
+                + CenterContral.oPostId + "-"
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
 
@@ -145,7 +147,9 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" + DateTime.Now.ToString("yyMMddHHmmssSSS-")+CommUiltl.GetRandomNumber();
+            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" +CenterContral.oStoreWhouse.storeId+"-"
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
+
         }
 
 

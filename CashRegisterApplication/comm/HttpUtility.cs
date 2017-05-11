@@ -36,6 +36,7 @@ namespace CashRegiterApplication
         private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
         private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
+        private static readonly string RetailSettlementFunc = "/retail/settlement";
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "/retail/checkout?";
         private static readonly string rechargeMember = "/member/balance/";
@@ -137,13 +138,13 @@ namespace CashRegiterApplication
 
 
         //关闭订单
-        internal static int CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        internal static int RetailSettlement(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
-                iResult = _CloseOrderWhenPayAllFee(oReq, ref oRespond);
+                iResult = _RetailSettlement(oReq, ref oRespond);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
                 {
                     return iResult;
@@ -151,9 +152,9 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _CloseOrderWhenPayAllFee(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        internal static int _RetailSettlement(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
-            string funcUrl = GenerateOrderFunc;
+            string funcUrl = RetailSettlementFunc;
             String json = JsonConvert.SerializeObject(oReq);
 
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
