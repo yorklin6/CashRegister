@@ -643,7 +643,7 @@ namespace CashRegisterApplication.comm
             strSql += " (store_whouse_default,pay_type_list,last_all_good_data_uinx_time) VALUES (";
             strSql += "'',";
             strSql += "'',";
-            strSql += "0,";
+            strSql += "0 ";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;

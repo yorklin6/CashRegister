@@ -77,8 +77,8 @@ namespace CashRegiterApplication
         public long status { get; set; }
         public String remark { get; set; }
         public String creator { get; set; }
-      //  public long createTime { get; set; }
-      //  public long updateTime { get; set; }
+        public String createTime { get; set; }
+        public String updateTime { get; set; }
 
         //        barcode: "9556247516480",
         //baseUnit: "盒",

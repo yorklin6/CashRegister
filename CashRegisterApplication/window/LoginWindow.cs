@@ -68,15 +68,15 @@ namespace CashRegiterApplication
         private void button1_Click(object sender, EventArgs e)
         {
             //取得下拉框门店id信息
-            int storeWhouseId=0;
-            CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values ,out storeWhouseId);
-            for (int i = 0; i < CenterContral.oListStoreWhouse.Count; ++i)
-            {
-                if (storeWhouseId == CenterContral.oListStoreWhouse[i].storeWhouseId)
-                {
-                    CenterContral.oStoreWhouse = CenterContral.oListStoreWhouse[i];
-                }
-            }
+            //int storeWhouseId=0;
+            //CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values ,out storeWhouseId);
+            //for (int i = 0; i < CenterContral.oListStoreWhouse.Count; ++i)
+            //{
+            //    if (storeWhouseId == CenterContral.oListStoreWhouse[i].storeWhouseId)
+            //    {
+            //        CenterContral.oStoreWhouse = CenterContral.oListStoreWhouse[i];
+            //    }
+            //}
             //登陆
             if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text))
             {

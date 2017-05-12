@@ -12,6 +12,7 @@ namespace CashRegisterApplication.comm
     {
         public static void UpdateLocalGoodsMsg()
         {
+            CommUiltl.Log("UpdateLocalGoodsMsg ");
             //查db里面,最后一次更新时间是多少
             int iLastAllGoodsUpdateTime = 0;
             if (!Dao.GetLocalMsgLastUpdateAllDataGoods(out iLastAllGoodsUpdateTime))
@@ -33,6 +34,32 @@ namespace CashRegisterApplication.comm
         public static void _UpdateAllGoodsdate()
         {
             //拉出全量商品数据
+            int page = 1, pageSize=50;
+            List<ProductPricing> list = new List<ProductPricing>();
+            for (; page<10000; ++page)
+            {
+                //拉商品定价信息
+                ProductPricingInfoResp oProductPricingInfoResp = new ProductPricingInfoResp();
+                if (!HttpUtility.GetAllProduct(page, pageSize, ref oProductPricingInfoResp))
+                {
+                    CommUiltl.Log("_UpdateAllGoodsdate GetAllProduct err ");
+                    //拉取错误
+                    continue;
+                }
+
+           
+                CommUiltl.Log("oProductPricingInfoResp.data.list count " + oProductPricingInfoResp.data.list.Count);
+                CommUiltl.Log("list count " + list.Count);
+                //等到list为空
+                if (oProductPricingInfoResp.data.list.Count == 0)
+                {
+                    break;
+                }
+                list.AddRange(oProductPricingInfoResp.data.list);
+                CommUiltl.Log("oProductPricingInfoResp.data.list count " + oProductPricingInfoResp.data.list.Count);
+             
+            }
+
             //全量数据商品少于1个的时候，表示数据有问题，不删除
 
             //老数据打上 老数据标志

@@ -33,7 +33,7 @@ namespace CashRegiterApplication
         private static string gUserName;
         private static string gPassword;
         private static readonly string LoginFunc = "/user/login?";
-        private static readonly string ProductCodeFunc = "goods?page=1&pageSize=1&barcode=";
+        private static readonly string ProductCodeFunc = "goods";
         private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string RetailSettlementFunc = "/retail/settlement";
@@ -246,7 +246,6 @@ namespace CashRegiterApplication
         }
 
         /***************************************拉取商品***************************************/
-        //string tagUrl = "http://aladdin.chalubo.com/cashRegister/getPricingByProductCode.json?productCode=" + productCode;
         public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oProductPricingInfoResp)
         {
             lastErrorMsg = "";
@@ -263,12 +262,43 @@ namespace CashRegiterApplication
         }
         public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
         {
-            string funcUrl = ProductCodeFunc + productCode;
+            string funcUrl = ProductCodeFunc + "?page=1&pageSize=1&barcode=" + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);
             if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
             {
                 Console.WriteLine("ERR:Get failed");
                 lastErrorMsg = "异常:请检查网络";
+                return false;
+            }
+            return true;
+        }
+        public static bool GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oProductPricingInfoResp)
+        {
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                if (_GetAllProduct(page, pageSize, ref oProductPricingInfoResp))
+                {
+                    return true;
+                }
+            }
+            MessageBox.Show(lastErrorMsg);
+
+            return false;
+        }
+        public static bool _GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oProductPricingInfoResp)
+        {
+            string funcUrl = ProductCodeFunc + "?page="+ page + "&pageSize="+ pageSize;
+            CommUiltl.Log("funcUrl:" + funcUrl);
+            if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
+            {
+                Console.WriteLine("ERR:Get failed");
+                lastErrorMsg = "异常:请检查网络";
+                return false;
+            }
+            if (oProductPricingInfoResp.errorCode != 0 )
+            {
+                lastErrorMsg = "返回异常";
                 return false;
             }
             return true;
@@ -556,7 +586,7 @@ namespace CashRegiterApplication
             try
             {
                 returnObj = JsonConvert.DeserializeObject<T>(content);
-                Console.WriteLine("DEBUG:response.content:"+ content);
+               
             }
             catch (Exception e)
             {
