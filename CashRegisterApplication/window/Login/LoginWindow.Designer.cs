@@ -34,8 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox_password = new System.Windows.Forms.TextBox();
-            this.comboBox_StoreShop = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBox_Shop = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_loggin
@@ -87,14 +87,6 @@
             this.textBox_password.Size = new System.Drawing.Size(126, 23);
             this.textBox_password.TabIndex = 4;
             // 
-            // comboBox_StoreShop
-            // 
-            this.comboBox_StoreShop.FormattingEnabled = true;
-            this.comboBox_StoreShop.Location = new System.Drawing.Point(280, 67);
-            this.comboBox_StoreShop.Name = "comboBox_StoreShop";
-            this.comboBox_StoreShop.Size = new System.Drawing.Size(126, 25);
-            this.comboBox_StoreShop.TabIndex = 5;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -104,13 +96,23 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "门店：";
             // 
+            // textBox_Shop
+            // 
+            this.textBox_Shop.Location = new System.Drawing.Point(279, 70);
+            this.textBox_Shop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_Shop.Name = "textBox_Shop";
+            this.textBox_Shop.ReadOnly = true;
+            this.textBox_Shop.Size = new System.Drawing.Size(126, 23);
+            this.textBox_Shop.TabIndex = 7;
+            this.textBox_Shop.Text = " ";
+            // 
             // LoginWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 268);
+            this.Controls.Add(this.textBox_Shop);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBox_StoreShop);
             this.Controls.Add(this.textBox_password);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -134,8 +136,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_password;
-        private System.Windows.Forms.ComboBox comboBox_StoreShop;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox_Shop;
     }
 }
 

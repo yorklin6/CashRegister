@@ -173,7 +173,12 @@ namespace CashRegiterApplication
             }
             return true;
         }
-
+        internal void CallShowBySettingWindows()
+        {
+            this.Show();
+            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+            _SetDataGridViewOrderFee();
+        }
         internal void EscapeShowByRecieveWindows()
         {
             this.Show();
@@ -664,8 +669,8 @@ namespace CashRegiterApplication
                         SettingDefaultMsgWindow oSettingDefaultMsgWindow = new SettingDefaultMsgWindow();
                         oSettingDefaultMsgWindow.Show();
                         this.Hide();
+                        return true;
                     }
-                    break;
 
             }
             return base.ProcessCmdKey(ref msg, keyData);

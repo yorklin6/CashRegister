@@ -18,7 +18,6 @@ namespace CashRegisterApplication.window.Setting
         {
             InitializeComponent();
             CenterContral.Init();
-            
         }
 
        
@@ -32,7 +31,10 @@ namespace CashRegisterApplication.window.Setting
             //获取postID
             _GetPostId();
         }
-
+        private void SettingDefaultMsgWindow_Shown(object sender, EventArgs e)
+        {
+            textBox_PostID.Focus();
+        }
         private void _GetMac()
         {
            textBox_Mac.Text= CommUiltl.GetMacInfo();
@@ -40,7 +42,6 @@ namespace CashRegisterApplication.window.Setting
         private void _GetPostId()
         {
             CenterContral.GetPostIdFromDb();
-
             textBox_PostID.Text = CenterContral.iPostId.ToString();
         }
 
@@ -69,6 +70,7 @@ namespace CashRegisterApplication.window.Setting
             comboBox_StoreShop.DataSource = oListItem;
             comboBox_StoreShop.SelectedIndex = selectIndex;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             //取得下拉框门店id信息
@@ -83,7 +85,12 @@ namespace CashRegisterApplication.window.Setting
                     CenterContral.oStoreWhouseData.selectStockIndex = i;
                 }
             }
+            //更新默认门店信息
+            string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
+            CenterContral.UpdateStoreWhouseDefault(strStoreWhouseDefult);
 
+         
+            //更新postid
             if (CenterContral.iPostId == -1)
             {
                 //说明mac从来都没有注册过，于是自动生成
@@ -95,7 +102,7 @@ namespace CashRegisterApplication.window.Setting
                     }
                 }
             }
-            //else if (textBox_PostID.Text != CenterContral.iPostId.ToString())
+            else if (textBox_PostID.Text != CenterContral.iPostId.ToString())
             {
                 int iPostId = 0;
                 if (CommUiltl.CoverStrToInt(textBox_PostID.Text,out iPostId))
@@ -107,18 +114,24 @@ namespace CashRegisterApplication.window.Setting
                         CenterContral.SetPostIdFromDb();
                     }
                 }
-              
-           
-              
             }
-            //更新默认门店信息
-            string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
-            CenterContral.UpdateStoreWhouseDefault(strStoreWhouseDefult);
-
-            CenterContral.Window_ProductList.Show();
+            MessageBox.Show("更新成功");
+            CenterContral.Window_ProductList.CallShowBySettingWindows();
             this.Hide();
         }
-
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
+        {
+            CommUiltl.Log("keyData:" + keyData);
+            switch (keyData)
+            {
+                case System.Windows.Forms.Keys.Enter:
+                    {
+                        button1_Click(null,null);
+                        return true;
+                    }
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
         private bool _ConfirmRegisterPostId()
         {
             
@@ -150,10 +163,7 @@ namespace CashRegisterApplication.window.Setting
             return true;
         }
 
-        private void SettingDefaultMsgWindow_Shown(object sender, EventArgs e)
-        {
-        
-        }
+
     }
 
 }

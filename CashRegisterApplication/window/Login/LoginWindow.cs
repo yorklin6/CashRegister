@@ -30,6 +30,10 @@ namespace CashRegiterApplication
         private void Form1_Load(object sender, EventArgs e)
         {
             CenterContral.Init();
+            if (0 != CenterContral.oStoreWhouse.storeWhouseId)
+            {
+                textBox_Shop.Text = CenterContral.oStoreWhouse.name;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

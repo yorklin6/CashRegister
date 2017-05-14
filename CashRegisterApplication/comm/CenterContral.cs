@@ -128,6 +128,16 @@ namespace CashRegisterApplication.comm
             GetDbMsgToCenterConalMsg();//设置默认数据
   
         }
+        public static void GetDbMsgToCenterConalMsg()
+        {
+            _InitDbLocalMsg();
+            _GetSaveStock();//挂单数据
+            //门店信息
+            GetStoreMsgFromDb();
+            //Post机Id设置
+            GetPostIdFromDb();
+            _GetPayTypeList();//支付类型
+        }
 
 
         public static void InitDefaultLogin()
@@ -620,17 +630,7 @@ namespace CashRegisterApplication.comm
             return false;
         }
         //************************支付类型***********************
-        public static void GetDbMsgToCenterConalMsg()
-        {
-            _InitDbLocalMsg();
-            _GetSaveStock();//挂单数据
-            //门店信息
-            GetStoreMsgFromDb();
-            //Post机Id设置
-            GetPostIdFromDb();
-            _GetPayTypeList();//支付类型
-        }
-
+       
         internal static void _InitDbLocalMsg()
         {
             int iCount = 0;
