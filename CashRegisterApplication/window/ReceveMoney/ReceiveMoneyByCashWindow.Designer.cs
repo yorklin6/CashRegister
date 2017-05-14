@@ -75,13 +75,12 @@
             // 
             // buttonConfirm
             // 
-            this.buttonConfirm.BackgroundImage = global::CashRegisterApplication.Properties.Resources.xianjian;
             this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(313, 199);
+            this.buttonConfirm.Location = new System.Drawing.Point(313, 224);
             this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(121, 105);
+            this.buttonConfirm.Size = new System.Drawing.Size(121, 53);
             this.buttonConfirm.TabIndex = 17;
             this.buttonConfirm.UseVisualStyleBackColor = true;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);

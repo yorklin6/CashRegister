@@ -14,6 +14,7 @@ namespace CashRegisterApplication.model
     public class StoreWhouseData
     {
         public List<StoreWhouse> list;
+        public int selectStockIndex { get; set; }
     }
     public class StoreWhouse
     {

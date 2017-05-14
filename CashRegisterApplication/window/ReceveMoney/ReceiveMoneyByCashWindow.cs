@@ -25,12 +25,12 @@ namespace CashRegisterApplication.window
         }
         private void ReceiveMoneyByCash_Shown(object sender, EventArgs e)
         {
-            ShowByReceiveMoneyWindow();
         }
 
         public void ShowByReceiveMoneyWindow()
         {
             this.Show();
+            this.buttonConfirm.Text = CenterContral.oCurrentPayType.description;
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
@@ -162,7 +162,7 @@ namespace CashRegisterApplication.window
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
           
-            if (! CenterContral.PayOrderByCash(recieveFee))
+            if (! CenterContral.PayOrder(recieveFee))
             {
                 return;
             }

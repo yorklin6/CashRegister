@@ -219,6 +219,11 @@ namespace CashRegisterApplication.window
         {
             CommUiltl.Log("payTypeId:" + payTypeId);
             _CheckFee();
+            if (!CenterContral.SetCurrentPayTypeById(payTypeId))
+            {
+                MessageBox.Show("系统错误，未知支付类型:payTypeId-" + payTypeId);
+                return;
+            }
             if (payTypeId == CenterContral.MEMBER_PAY_TYPE)
             {
                 CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();

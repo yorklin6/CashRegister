@@ -37,61 +37,61 @@ namespace CashRegisterApplication.comm
 
         internal static string GetMacInfo()
         {
-            string macAddress = "";
+            string macAddress = "02-00-4C-4F-4F-51";
             return macAddress;
-            Process p = null;
-            StreamReader reader = null;
-            try
-            {
-                ProcessStartInfo start = new ProcessStartInfo("cmd.exe");
+            //Process p = null;
+            //StreamReader reader = null;
+            //try
+            //{
+            //    ProcessStartInfo start = new ProcessStartInfo("cmd.exe");
 
-                start.FileName = "ipconfig";
-                start.Arguments = "/all";
+            //    start.FileName = "ipconfig";
+            //    start.Arguments = "/all";
 
-                start.CreateNoWindow = true;
+            //    start.CreateNoWindow = true;
 
-                start.RedirectStandardOutput = true;
+            //    start.RedirectStandardOutput = true;
 
-                start.RedirectStandardInput = true;
+            //    start.RedirectStandardInput = true;
 
-                start.UseShellExecute = false;
+            //    start.UseShellExecute = false;
 
-                p = Process.Start(start);
+            //    p = Process.Start(start);
 
-                reader = p.StandardOutput;
+            //    reader = p.StandardOutput;
 
-                string line = reader.ReadLine();
+            //    string line = reader.ReadLine();
 
-                while (!reader.EndOfStream)
-                {
-                    if (line.ToLower().IndexOf("physical address") > 0 || line.ToLower().IndexOf("物理地址") > 0)
-                    {
-                        int index = line.IndexOf(":");
-                        index += 2;
-                        macAddress = line.Substring(index);
-                        macAddress = macAddress.Replace('-', ':');
-                        break;
-                    }
-                    line = reader.ReadLine();
-                }
-            }
-            catch
-            {
+            //    while (!reader.EndOfStream)
+            //    {
+            //        if (line.ToLower().IndexOf("physical address") > 0 || line.ToLower().IndexOf("物理地址") > 0)
+            //        {
+            //            int index = line.IndexOf(":");
+            //            index += 2;
+            //            macAddress = line.Substring(index);
+            //            macAddress = macAddress.Replace('-', ':');
+            //            break;
+            //        }
+            //        line = reader.ReadLine();
+            //    }
+            //}
+            //catch
+            //{
 
-            }
-            finally
-            {
-                if (p != null)
-                {
-                    p.WaitForExit();
-                    p.Close();
-                }
-                if (reader != null)
-                {
-                    reader.Close();
-                }
-            }
-            return macAddress;
+            //}
+            //finally
+            //{
+            //    if (p != null)
+            //    {
+            //        p.WaitForExit();
+            //        p.Close();
+            //    }
+            //    if (reader != null)
+            //    {
+            //        reader.Close();
+            //    }
+            //}
+            //return macAddress;
         }
 
         [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
@@ -172,7 +172,7 @@ namespace CashRegisterApplication.comm
         public static long GetTimeStamp()
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds * 1000);
+            return Convert.ToInt64(ts.TotalSeconds);
         }
 
         internal static string Jason(object obj)

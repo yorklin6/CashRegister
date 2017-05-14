@@ -1,6 +1,7 @@
 ﻿using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
 using CashRegisterApplication.window;
+using CashRegisterApplication.window.Setting;
 using CashRegiterApplication;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,11 @@ namespace CashRegiterApplication
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           //Application.Run(new ProductListWindow());
+    
           Application.Run(new LoginWindows());
-           // Application.Run(new RecieveMoneyWindow());
+            // Application.Run(new SettingDefaultMsgWindow());
+            //Application.Run(new ProductListWindow());
+            // Application.Run(new RecieveMoneyWindow());
             //Console.ReadLine();
         }
     }

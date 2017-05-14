@@ -36,10 +36,6 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
-            this.dataGridView_order = new System.Windows.Forms.DataGridView();
-            this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label7 = new System.Windows.Forms.Label();
             this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,6 +45,10 @@
             this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_order = new System.Windows.Forms.DataGridView();
+            this.orderMsg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.orderMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_order)).BeginInit();
@@ -126,6 +126,53 @@
             this.dataGridView_productList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.productListDataGridView_RowsAdded);
             this.dataGridView_productList.SelectionChanged += new System.EventHandler(this.productListDataGridView_SelectionChanged);
             // 
+            // ColumnIndex
+            // 
+            this.ColumnIndex.HeaderText = "序号";
+            this.ColumnIndex.Name = "ColumnIndex";
+            // 
+            // ColumnProductCode
+            // 
+            this.ColumnProductCode.HeaderText = "条码";
+            this.ColumnProductCode.Name = "ColumnProductCode";
+            // 
+            // ColumnGoodsName
+            // 
+            this.ColumnGoodsName.FillWeight = 200F;
+            this.ColumnGoodsName.HeaderText = "名称";
+            this.ColumnGoodsName.Name = "ColumnGoodsName";
+            // 
+            // ColumnRetailSpecification
+            // 
+            this.ColumnRetailSpecification.HeaderText = "规格";
+            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
+            // 
+            // ColumnAmount
+            // 
+            this.ColumnAmount.HeaderText = "数量";
+            this.ColumnAmount.Name = "ColumnAmount";
+            // 
+            // ColumnNormalPrice
+            // 
+            this.ColumnNormalPrice.HeaderText = "单价";
+            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
+            // 
+            // ColumnMoney
+            // 
+            this.ColumnMoney.HeaderText = "金额";
+            this.ColumnMoney.Name = "ColumnMoney";
+            // 
+            // ColumnRemark
+            // 
+            this.ColumnRemark.HeaderText = "备注";
+            this.ColumnRemark.Name = "ColumnRemark";
+            // 
+            // ProductID
+            // 
+            this.ProductID.HeaderText = "商品ID";
+            this.ProductID.Name = "ProductID";
+            this.ProductID.Visible = false;
+            // 
             // dataGridView_order
             // 
             this.dataGridView_order.AllowUserToAddRows = false;
@@ -175,58 +222,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(792, 320);
+            this.label7.Location = new System.Drawing.Point(804, 349);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(107, 72);
+            this.label7.Size = new System.Drawing.Size(107, 84);
             this.label7.TabIndex = 38;
-            this.label7.Text = "快捷键\r\nHOME:选择支付方式\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复";
-            // 
-            // ColumnIndex
-            // 
-            this.ColumnIndex.HeaderText = "序号";
-            this.ColumnIndex.Name = "ColumnIndex";
-            // 
-            // ColumnProductCode
-            // 
-            this.ColumnProductCode.HeaderText = "条码";
-            this.ColumnProductCode.Name = "ColumnProductCode";
-            // 
-            // ColumnGoodsName
-            // 
-            this.ColumnGoodsName.FillWeight = 200F;
-            this.ColumnGoodsName.HeaderText = "名称";
-            this.ColumnGoodsName.Name = "ColumnGoodsName";
-            // 
-            // ColumnRetailSpecification
-            // 
-            this.ColumnRetailSpecification.HeaderText = "规格";
-            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
-            // 
-            // ColumnAmount
-            // 
-            this.ColumnAmount.HeaderText = "数量";
-            this.ColumnAmount.Name = "ColumnAmount";
-            // 
-            // ColumnNormalPrice
-            // 
-            this.ColumnNormalPrice.HeaderText = "单价";
-            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
-            // 
-            // ColumnMoney
-            // 
-            this.ColumnMoney.HeaderText = "金额";
-            this.ColumnMoney.Name = "ColumnMoney";
-            // 
-            // ColumnRemark
-            // 
-            this.ColumnRemark.HeaderText = "备注";
-            this.ColumnRemark.Name = "ColumnRemark";
-            // 
-            // ProductID
-            // 
-            this.ProductID.HeaderText = "商品ID";
-            this.ProductID.Name = "ProductID";
-            this.ProductID.Visible = false;
+            this.label7.Text = "快捷键\r\nHOME:选择支付方式\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复\r\nEND:基本信息设置";
             // 
             // ProductListWindow
             // 

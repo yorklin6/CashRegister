@@ -15,7 +15,13 @@ namespace CashRegiterApplication
 
         public ProductPricingData data;
     }
+    public class GooodsLastUpdateResp
+    {
+        public int errorCode { get; set; }
+        public string msg { get; set; }
 
+        public List<ProductPricing> data;
+    }
     public class ProductPricingData
     {
         public List<ProductPricing> list;
@@ -80,6 +86,7 @@ namespace CashRegiterApplication
         public String createTime { get; set; }
         public String updateTime { get; set; }
 
+        public String json { get; set; }
         //        barcode: "9556247516480",
         //baseUnit: "盒",
         //bigUnit: "箱",

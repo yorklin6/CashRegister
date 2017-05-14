@@ -13,32 +13,30 @@ using System.Data.SQLite;
 using CashRegisterApplication.window;
 using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
+using CashRegisterApplication.window.Setting;
 
 namespace CashRegiterApplication
 {
 
     public partial class ProductListWindow : Form
     {
-
-
         bool gConstructEnd = false;
 
         public ProductListWindow()
         {
-            CenterContral.Init();
             InitializeComponent();
             InitData();
         }
 
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
+            CenterContral.Init();
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
-            Dao.ConnecSql();
+           
         }
         private void SetTimerTask()
         {
-            MyTimerTask.UpdateLocalGoodsMsg();
             CommUiltl.Log("SetTimerTask ");
             Timer MyTimer = new Timer();
             MyTimer.Interval = (10 * 60 * 1000); // 1 mins
@@ -192,7 +190,6 @@ namespace CashRegiterApplication
             this.dataGridView_productList.CurrentCell = null;
             _ShowPayTipsInProductListAndSaveOrderMsg();
 
-           // System.Windows.Forms.DataGridView  this.dataGridView_order.DataSource;
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
             this.dataGridView_productList.BeginEdit(true);
             _ResetAllData();
@@ -348,22 +345,15 @@ namespace CashRegiterApplication
                 return;
             }
 
-            ProductPricingInfoResp oStockOutDetailInfoResp = new ProductPricingInfoResp();
-            if (!HttpUtility.GetProductByBarcode(barcode, ref oStockOutDetailInfoResp))
-            {
-                //网络出现错误，要访问本地
-                MessageBox.Show("网络出现错误" );
-                _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
-                return;
-            }
-            if (oStockOutDetailInfoResp.errorCode != 0 || oStockOutDetailInfoResp.data.list.Count == 0)
+            ProductPricing productInfo = CenterContral.GetGoodsByProductCode(barcode);
+            if (productInfo == null)
             {
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
-                MessageBox.Show("后台返回商品失败 barcode:" + barcode);
                 return;
             }
 
-            ProductPricing productInfo = oStockOutDetailInfoResp.data.list[0];
+
+
             if (CommUiltl.IsObjEmpty(productInfo.barcode) ||
                CommUiltl.IsObjEmpty(productInfo.retailPrice) ||
                 CommUiltl.IsObjEmpty(productInfo.goodsName)
@@ -592,6 +582,7 @@ namespace CashRegiterApplication
 
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
         {
+            CommUiltl.Log("keyData:"+ keyData);
             switch (keyData)
             {
                 case System.Windows.Forms.Keys.Enter:
@@ -668,6 +659,13 @@ namespace CashRegiterApplication
                         RecoverStock();
                         return base.ProcessCmdKey(ref msg, keyData);
                     }
+                case System.Windows.Forms.Keys.End:
+                    {
+                        SettingDefaultMsgWindow oSettingDefaultMsgWindow = new SettingDefaultMsgWindow();
+                        oSettingDefaultMsgWindow.Show();
+                        this.Hide();
+                    }
+                    break;
 
             }
             return base.ProcessCmdKey(ref msg, keyData);

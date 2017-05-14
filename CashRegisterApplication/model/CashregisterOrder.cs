@@ -90,6 +90,8 @@ namespace CashRegisterApplication.model
         public long relatedOrder { get; set; }
         public long storeId { get; set; }
         public int isDeleted { get; set; }
+
+
         public PayWay()
         {
             id = 0;
@@ -104,8 +106,8 @@ namespace CashRegisterApplication.model
 
         internal void generatePayOrderNumber()
         {
-            serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeId+"-"
-                + CenterContral.oPostId + "-"
+            serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + CenterContral.iPostId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
@@ -147,7 +149,7 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" +CenterContral.oStoreWhouse.storeId+"-"
+            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
 
         }

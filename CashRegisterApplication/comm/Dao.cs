@@ -1,5 +1,6 @@
 ﻿using CashRegisterApplication.model;
 using CashRegiterApplication;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -22,9 +23,13 @@ namespace CashRegisterApplication.comm
         public static bool initDbFalg=false;
 
         public const int STOCK_BASE_SAVE_FLAG_INIT = 0;
+
+       
+
         public const int STOCK_BASE_SAVE_FLAG_SAVING = 1;//挂单状态
         public const int STOCK_BASE_SAVE_FLAG_CLOSE = 2;//挂单关单
 
+        public const int DELETE_FLAG =1;
         public static void  ConnecSql()
         {
             if (initDbFalg)
@@ -389,6 +394,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
+       
         /*********************支付单*********************/
         internal static bool GeneratePay(PayWay oPayWay)
         {
@@ -435,6 +441,9 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("PayOrderByCash ok success");
             return true;
         }
+
+
+
         //UpdatePayCloudStae
         internal static bool UpdatePayCloudStae(PayWay oPayWay)
         {
@@ -501,7 +510,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("PayOrderByCash ok success");
             return true;
         }
-        internal static bool GetPayType(ref string json)
+        internal static bool GetPayTypeList(ref string json)
         {
             string strSql = "";
             strSql += "select pay_type_list from tb_local_msg ";
@@ -551,7 +560,62 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("SetPayType ok success");
             return true;
         }
+        //**********************postID
+        internal static bool GetPostId(ref int  postId)
+        {
+            string strSql = "";
+            strSql += "select post_id from tb_local_msg ";
+            strSql += "limit 1 ";
 
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("ex:" + ex.ToString());
+                return false;
+            }
+
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                if (sqlite_datareader.IsDBNull(0))
+                {
+                    return false;
+                }
+                postId = sqlite_datareader.GetInt32(0);
+            }
+            return true;
+        }
+        internal static bool SetPostId( int postId)
+        {
+            int iRow = 0;
+            //插入订单
+            string strSql = "update tb_local_msg set post_id='" + postId + "'";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新本地数据库失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新支付本地数据库影响行数=0失败");
+                return false;
+            }
+            CommUiltl.Log("UpdateStoreWhouseDefault ok success");
+            return true;
+        }
         /************************门店信息****************************/
         //取出默认门店
         internal static bool GetStoreWhouseDefault(ref string json)
@@ -581,9 +645,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
         
-        //
-
-
+        //更新门店信息
         internal static bool UpdateStoreWhouseDefault(string strStoreWhouseDefult)
         {
             int iRow = 0;
@@ -640,9 +702,10 @@ namespace CashRegisterApplication.comm
         internal static bool InsertLocalMsgDefault()
         {
             string strSql = "insert into tb_local_msg  ";
-            strSql += " (store_whouse_default,pay_type_list,last_all_good_data_uinx_time) VALUES (";
+            strSql += " (store_whouse_default,pay_type_list,post_id,last_all_good_data_uinx_time) VALUES (";
             strSql += "'',";
             strSql += "'',";
+            strSql += "'-1',";
             strSql += "0 ";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -718,8 +781,187 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("UpdateLocalMsgLastUpdateAllDataGoods ok success");
             return true;
         }
-        
- 
+        internal static bool AddGoodsList(List<ProductPricing> list)
+        {
+            string strSql = "";
+            int iRow = 0;
+            //插入订单商品数据
+            foreach (var item in list)
+            {
+                item.json= JsonConvert.SerializeObject(item);
+                strSql = "INSERT INTO tb_local_goods ";
+                strSql += " (goodsId,barcode,data_json,old_data_flag,product_update_time) VALUES (";
+                strSql += " '" + item.goodsId + "',";
+                strSql += " '" + item.barcode + "',";
+                strSql += " '" + item.json + "',";
+                strSql += "'" + 0 + "',";
+                strSql += " '" + item.updateTime + "' ";
+                strSql += ")";
+                sqlite_cmd = sqlite_conn.CreateCommand();
+
+                try
+                {
+                    sqlite_cmd.CommandText = strSql;
+                    iRow = sqlite_cmd.ExecuteNonQuery();
+                }
+
+                catch (SQLiteException ex)
+                {
+                    CommUiltl.Log("AddAllGoods ex:" + ex.ToString());
+                   continue;
+                }
+
+                if (0 == iRow)
+                {
+                    CommUiltl.Log("AddAllGoods iRow=0");
+                    continue ;
+                }
+            }
+            CommUiltl.Log("AddAllGoods ok count:"+list.Count);
+            return true;
+        }
+        internal static bool UpdateAllGoodsToDelelete()
+        {
+            ConnecSql();
+            CommUiltl.Log("Dao  UpdateAllGoodsToDelelete");
+            int iRow = 0;
+            //插入订单
+            string strSql = "update tb_local_goods set   ";
+            strSql += " old_data_flag=" + Dao.DELETE_FLAG + " ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("更新本地数据库操作失败:" + ex.ToString());
+                return false;
+            }
+            CommUiltl.Log("UpdateAllGoodsToDelelete ok");
+            return true;
+        }
+        internal static bool DeleteGoodsWithDeleteFlag()
+        {
+            ConnecSql();
+            CommUiltl.Log("Dao  UpdateAllGoodsToDelelete");
+            int iRow = 0;
+            //插入订单
+            string strSql = "delete from tb_local_goods where   ";
+            strSql += " old_data_flag=" + Dao.DELETE_FLAG + " ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("DeleteAllGoods failded:" + ex.ToString());
+                return false;
+            }
+            CommUiltl.Log("DeleteAllGoods ok");
+            return true;
+        }
+        internal static bool GetGoodsLastUpdateTime(out string strLastUpdateTime)
+        {
+            strLastUpdateTime = "";
+            string strSql = "";
+            strSql += "select max(product_update_time) from tb_local_goods ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+            while (sqlite_datareader.Read())
+            {
+                if (sqlite_datareader.IsDBNull(0))
+                {
+                    return false;
+                }
+                strLastUpdateTime = sqlite_datareader.GetString(0);
+            }
+            return true;
+        }
+        internal static bool UpdateGoodsToDeleleteByList(List<ProductPricing> list)
+        {
+            ConnecSql();
+            CommUiltl.Log("Dao  UpdateAllGoodsToDelelete");
+            int iRow = 0;
+            //插入订单
+            string strSql = "update tb_local_goods set   ";
+            strSql += " old_data_flag=" + Dao.DELETE_FLAG + " ";
+            strSql += " where goodsId in (";
+            foreach (var item in list)
+            {
+                strSql += item.goodsId + ",";
+            }
+            strSql += "-1";//为了语法统一加上
+            strSql += " )";
+          
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("更新本地数据库操作失败:" + ex.ToString());
+                return false;
+            }
+            CommUiltl.Log("UpdateAllGoodsToDelelete ok");
+            return true;
+        }
+        internal static bool GetProductByBarcode(string barcode, ref string strJson)
+        {
+            string strSql = "";
+            strSql += "select  data_json from tb_local_goods  ";
+            strSql += "where barcode='"+barcode+"' ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+           
+            while (sqlite_datareader.Read())
+            {
+                if (sqlite_datareader.IsDBNull(0))
+                {
+                    CommUiltl.Log("IsDBNull");
+                    return false;
+                }
+                strJson = sqlite_datareader.GetString(0);
+            }
+            return true;
+        }
         public bool Daemone()
         {
             ConnecSql();

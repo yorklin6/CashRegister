@@ -13,6 +13,42 @@ namespace CashRegisterApplication.comm
         public static void UpdateLocalGoodsMsg()
         {
             CommUiltl.Log("UpdateLocalGoodsMsg ");
+            _UpdateAllGoodsdate();
+            _UpdateLastGoodMsg();
+        }
+        public static void _UpdateLastGoodMsg()
+        {
+            string strLastUpdateTime = "";
+            if (!Dao.GetGoodsLastUpdateTime(out strLastUpdateTime))
+            {
+                CommUiltl.Log("_UpdateLastGoodMsg GetGoodsLastUpdateTime error");
+                return;
+            }
+            if (strLastUpdateTime =="")
+            {
+                return;
+            }
+            CommUiltl.Log("_UpdateLastGoodMsg strLastUpdateTime:"+ strLastUpdateTime);
+            List<ProductPricing> list = new List<ProductPricing>();
+            if (!HttpUtility.GetGoodsLastUpdate(strLastUpdateTime,ref list))
+            {
+                CommUiltl.Log("_UpdateLastGoodMsg GetGoodSlastUpdate error");
+                return;
+            }
+            if (list.Count ==0 )
+            {
+                CommUiltl.Log("_UpdateLastGoodMsg list.Count ==0");
+                return;
+            }
+            //老数据打上 老数据标志
+            Dao.UpdateGoodsToDeleleteByList(list);
+            //插入新数据
+            Dao.AddGoodsList(list);
+            //删除 老数据标志 的商品
+            Dao.DeleteGoodsWithDeleteFlag();
+        }
+        public static void _UpdateAllGoodsdate()
+        {
             //查db里面,最后一次更新时间是多少
             int iLastAllGoodsUpdateTime = 0;
             if (!Dao.GetLocalMsgLastUpdateAllDataGoods(out iLastAllGoodsUpdateTime))
@@ -20,18 +56,20 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log("GetLocalMsgLastUpdateAllDataGoods error");
                 return;
             }
-            long iNow=CommUiltl.GetTimeStamp();
+            long iNow = CommUiltl.GetTimeStamp();
             long diff = iNow - iLastAllGoodsUpdateTime;
+            CommUiltl.Log("diff:" + diff + " iNow:" + iNow + " iLastAllGoodsUpdateTime:" + iLastAllGoodsUpdateTime);
             //一天拉一次全量
-            if (iLastAllGoodsUpdateTime == 0 || diff > 24*60*60)
+            if (iLastAllGoodsUpdateTime != 0 && diff < 24 * 60 * 60)
             {
-                _UpdateAllGoodsdate();
-                //记录今天已经更新全量信息
-                Dao.UpdateLocalMsgLastUpdateAllDataGoods(iNow);
+                CommUiltl.Log("UpdateLocalGoodsMsg:no need update data");
+                return;
             }
+            _UpdateAllGoods();
+            //记录今天已经更新全量信息
+            Dao.UpdateLocalMsgLastUpdateAllDataGoods(iNow);
         }
-
-        public static void _UpdateAllGoodsdate()
+        public static void _UpdateAllGoods()
         {
             //拉出全量商品数据
             int page = 1, pageSize=50;
@@ -46,8 +84,6 @@ namespace CashRegisterApplication.comm
                     //拉取错误
                     continue;
                 }
-
-           
                 CommUiltl.Log("oProductPricingInfoResp.data.list count " + oProductPricingInfoResp.data.list.Count);
                 CommUiltl.Log("list count " + list.Count);
                 //等到list为空
@@ -60,15 +96,17 @@ namespace CashRegisterApplication.comm
              
             }
 
-            //全量数据商品少于1个的时候，表示数据有问题，不删除
-
+            //全量数据商品少于5个的时候，表示数据有问题，不删除
+            if (list.Count < 2)
+            {
+                return;
+            }
             //老数据打上 老数据标志
+            Dao.UpdateAllGoodsToDelelete();
             //插入新数据
-
+            Dao.AddGoodsList(list);
             //删除 老数据标志 的商品
-            
-            //老数据的表
-        
+            Dao.DeleteGoodsWithDeleteFlag();
             return;
         }
         public static void AddStaockOut()

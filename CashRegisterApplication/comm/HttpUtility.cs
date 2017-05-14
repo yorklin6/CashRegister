@@ -28,20 +28,25 @@ namespace CashRegiterApplication
         private static readonly string CashRegistHost = "https://120.24.210.161:8686/jweb_sugu/";
         private static CookieContainer gCookies = null;//全局登录态cookie
         private static readonly string DefaultUser = "york";
+
+
+
         private static readonly string DefaultPassword = "york";
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
-        private static readonly string LoginFunc = "/user/login?";
+        private static readonly string LoginFunc = "user/login?";
         private static readonly string ProductCodeFunc = "goods";
+        private static readonly string GeneratePostIdFunc = "pos/";
+        private static readonly string GoodsLastUpdateFunc = "goods/latest";
         private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
         private static readonly string GenerateOrderFunc = "stockOut?";
-        private static readonly string RetailSettlementFunc = "/retail/settlement";
+        private static readonly string RetailSettlementFunc = "retail/settlement";
         private static readonly string updateOrderFunc = "stockOut/retail/";
-        private static readonly string userPayFunc = "/retail/checkout?";
-        private static readonly string rechargeMember = "/member/balance/";
-        private static readonly string storeFunc = "/store/?";
-        private static readonly string payTypeFunc = "/payType?";
+        private static readonly string userPayFunc = "retail/checkout?";
+        private static readonly string rechargeMember = "member/balance/";
+        private static readonly string storeFunc = "store/?";
+        private static readonly string payTypeFunc = "payType?";
 
         private static UserLogin oLoginer;
 
@@ -50,6 +55,7 @@ namespace CashRegiterApplication
         public const int CLOUD_SATE_BUSSINESS_FAILD = 2;
         public static string lastErrorMsg;
 
+        
         /***************************************登陆***************************************/
         public static bool Login(string user, string password)
         {
@@ -90,7 +96,10 @@ namespace CashRegiterApplication
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + oLoginer.errorCode);
             return true;
         }
-
+        public static bool LoginDefault()
+        {
+            return Login(DefaultUser, DefaultPassword);
+        }
 
 
         private static User GetLoginUser()
@@ -246,25 +255,23 @@ namespace CashRegiterApplication
         }
 
         /***************************************拉取商品***************************************/
-        public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oHttpRespone)
         {
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 1; ++i)
             {
-                if (_GetProductByBarcode(productCode,ref oProductPricingInfoResp))
+                if (_GetProductByBarcode(productCode,ref oHttpRespone))
                 {
                     return true;
                 }
             }
-            MessageBox.Show(lastErrorMsg);
-      
             return false;
         }
-        public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oHttpRespone)
         {
             string funcUrl = ProductCodeFunc + "?page=1&pageSize=1&barcode=" + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);
-            if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
+            if (!Get<ProductPricingInfoResp>(funcUrl, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get failed");
                 lastErrorMsg = "异常:请检查网络";
@@ -272,35 +279,90 @@ namespace CashRegiterApplication
             }
             return true;
         }
-        public static bool GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oHttpRespone)
         {
             lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
-                if (_GetAllProduct(page, pageSize, ref oProductPricingInfoResp))
+                if (_GetAllProduct(page, pageSize, ref oHttpRespone))
                 {
                     return true;
                 }
             }
-            MessageBox.Show(lastErrorMsg);
+            CommUiltl.Log(lastErrorMsg);
 
             return false;
         }
-        public static bool _GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oProductPricingInfoResp)
+        public static bool _GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oHttpRespone)
         {
             string funcUrl = ProductCodeFunc + "?page="+ page + "&pageSize="+ pageSize;
             CommUiltl.Log("funcUrl:" + funcUrl);
-            if (!Get<ProductPricingInfoResp>(funcUrl, ref oProductPricingInfoResp))
+            if (!Get<ProductPricingInfoResp>(funcUrl, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get failed");
                 lastErrorMsg = "异常:请检查网络";
                 return false;
             }
-            if (oProductPricingInfoResp.errorCode != 0 )
+            if (oHttpRespone.errorCode != 0 )
             {
                 lastErrorMsg = "返回异常";
                 return false;
             }
+            return true;
+        }
+
+        internal static bool GeneratePostId(int storeId, string mac, ref int iPostId)
+        {
+            string funcUrl = GeneratePostIdFunc + "/" + storeId + "/" + mac;
+            CommUiltl.Log("funcUrl:" + funcUrl);
+            PostIdRespone oHttpRespone = new PostIdRespone();
+            if (!Get<PostIdRespone>(funcUrl, ref oHttpRespone))
+            {
+                Console.WriteLine("ERR:Get failed");
+                lastErrorMsg = "异常:请检查网络";
+                return false;
+            }
+            if (oHttpRespone.errorCode != 0)
+            {
+                lastErrorMsg = "返回异常:"+oHttpRespone.msg;
+                return false;
+            }
+            return true;
+        }
+
+        internal static bool GetGoodsLastUpdate(string strLastUpdateTime,ref List<ProductPricing> list)
+        {
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                if (_GetGoodslastUpdate(strLastUpdateTime, ref list))
+                {
+                    return true;
+                }
+            }
+            CommUiltl.Log(lastErrorMsg);
+            return false;
+        }
+        internal static bool _GetGoodslastUpdate(string strLastUpdateTime, ref List<ProductPricing> list)
+        {
+            string funcUrl = GoodsLastUpdateFunc + "?ts=" +strLastUpdateTime;
+            CommUiltl.Log("funcUrl:" + funcUrl);
+            GooodsLastUpdateResp oHttpRespone = new GooodsLastUpdateResp();
+            if (!Get<GooodsLastUpdateResp>(funcUrl, ref oHttpRespone))
+            {
+                Console.WriteLine("ERR:Get failed");
+                lastErrorMsg = "异常:请检查网络";
+                return false;
+            }
+            CommUiltl.Log("list,cout:" + list.Count);
+            if (oHttpRespone.errorCode != 0)
+            {
+                lastErrorMsg = "返回异常:errorCode:"+ oHttpRespone.errorCode+" msg:" + oHttpRespone.msg;
+                Console.WriteLine("oHttpRespone.errorCode != 0");
+                return false;
+            }
+            CommUiltl.Log("list,cout:"+ list.Count);
+            list = oHttpRespone.data;
             return true;
         }
         /***************************************会员信息***************************************/
@@ -318,26 +380,26 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        public static int _GetMemberByMemberAccount(string strMemberAccount, ref MemberHttpRespone oMemberHttpRespone)
+        public static int _GetMemberByMemberAccount(string strMemberAccount, ref MemberHttpRespone oHttpRespone)
         {
             string funcUrl = QueryMemberInfoFunc + strMemberAccount;
             CommUiltl.Log("funcUrl:" + funcUrl);
-            if (!Get<MemberHttpRespone>(funcUrl, ref oMemberHttpRespone))
+            if (!Get<MemberHttpRespone>(funcUrl, ref oHttpRespone))
             {
                 CommUiltl.Log("ERR:_GetMemberByMemberAccount Get FAILDED 网络异常：请检查网络 ");
                 lastErrorMsg = "网络异常：请检查网络";
                 return CLOUD_SATE_HTTP_FAILD;
             }
 
-            if (oMemberHttpRespone.errorCode != 0)
+            if (oHttpRespone.errorCode != 0)
             {
-                CommUiltl.LogObj("ERR:Get failed oCashregisterOrderResp:" , oMemberHttpRespone);
-                lastErrorMsg = "支付异常:oMemberHttpRespone[" + CommUiltl.Jason(oMemberHttpRespone) + "]";
+                CommUiltl.LogObj("ERR:Get failed oCashregisterOrderResp:" , oHttpRespone);
+                lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
                 return CLOUD_SATE_BUSSINESS_FAILD;
             }
-            if (oMemberHttpRespone.data.list.Count != 1)
+            if (oHttpRespone.data.list.Count != 1)
             {
-                CommUiltl.LogObj("oMemberHttpRespone.data.list.Count != 1 oMemberHttpRespone:", oMemberHttpRespone);
+                CommUiltl.LogObj("oHttpRespone.data.list.Count != 1 oHttpRespone:", oHttpRespone);
                 return CLOUD_SATE_HTTP_SUCESS;
             }
             return CLOUD_SATE_HTTP_SUCESS;
@@ -346,64 +408,64 @@ namespace CashRegiterApplication
         internal static int memberRecharge(Member oReq)
         {
             string funcUrl = rechargeMember+ oReq.memberId.ToString();
-            HttpBaseRespone oResp = new HttpBaseRespone();
+            HttpBaseRespone oHttpRespone = new HttpBaseRespone();
             String json = JsonConvert.SerializeObject(oReq);
-            if (!Put<HttpBaseRespone>(funcUrl, json, ref oResp))
+            if (!Put<HttpBaseRespone>(funcUrl, json, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "支付异常：请检查网络";
                 return CLOUD_SATE_HTTP_FAILD;
             }
 
-            if (oResp.errorCode != 0)
+            if (oHttpRespone.errorCode != 0)
             {
-                Console.WriteLine("ERR:Get failed oResp:" + oResp);
-                lastErrorMsg = "充值异常:oResp[" + oResp + "]";
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + oHttpRespone);
+                lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
                 return CLOUD_SATE_BUSSINESS_FAILD;
             }
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //门店信息
-        internal static bool GetStoreMsg(ref List<StoreWhouse>  list)
+        internal static bool GetStoreMsg(ref StoreWhouseData oData)
         {
             string funcUrl = storeFunc + "page=1&pageSize=100&type=1";
-            StoreWhouseRespone oResp = new StoreWhouseRespone();
-            if (!Get<StoreWhouseRespone>(funcUrl, ref oResp))
+            StoreWhouseRespone oHttpRespone = new StoreWhouseRespone();
+            if (!Get<StoreWhouseRespone>(funcUrl, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GetStoreMsg failed");
                 lastErrorMsg = "门店信息异常：请检查网络";
                 return false;
             }
 
-            if (oResp.errorCode != 0)
+            if (oHttpRespone.errorCode != 0)
             {
-                Console.WriteLine("ERR:Get failed oResp:" + JsonConvert.SerializeObject( oResp));
-                lastErrorMsg = "门店信息异常:oResp[" + JsonConvert.SerializeObject(oResp) + "]";
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + JsonConvert.SerializeObject( oHttpRespone));
+                lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
                 return false;
             }
-            list = oResp.data.list;
-            CommUiltl.Log("list .size ="+ list.Count);
+            oData= oHttpRespone.data;
+            CommUiltl.Log("list .size ="+ oData.list.Count);
             return true;
         }
         /***************************************付款方式查询***************************************/
         internal static bool GetPayType(ref PayTypeData oPayTypeList)
         {
             string funcUrl = payTypeFunc + "page=1&pageSize=100";
-            PayTypeHttpRespone oResp = new PayTypeHttpRespone();
-            if (!Get<PayTypeHttpRespone>(funcUrl, ref oResp))
+            PayTypeHttpRespone oHttpRespone = new PayTypeHttpRespone();
+            if (!Get<PayTypeHttpRespone>(funcUrl, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GetStoreMsg failed");
                 lastErrorMsg = "门店信息异常：请检查网络";
                 return false;
             }
 
-            if (oResp.errorCode != 0)
+            if (oHttpRespone.errorCode != 0)
             {
-                Console.WriteLine("ERR:Get failed oResp:" + JsonConvert.SerializeObject(oResp));
-                lastErrorMsg = "付款方式查询:oResp[" + JsonConvert.SerializeObject(oResp) + "]";
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + JsonConvert.SerializeObject(oHttpRespone));
+                lastErrorMsg = "付款方式查询:oHttpRespone[" + JsonConvert.SerializeObject(oHttpRespone) + "]";
                 return false;
             }
-            oPayTypeList = oResp.data;
+            oPayTypeList = oHttpRespone.data;
             CommUiltl.Log("list .size =" + oPayTypeList.list.Count);
             return true;
         }
@@ -586,7 +648,7 @@ namespace CashRegiterApplication
             try
             {
                 returnObj = JsonConvert.DeserializeObject<T>(content);
-               
+                CommUiltl.Log("content:"+ content);
             }
             catch (Exception e)
             {
