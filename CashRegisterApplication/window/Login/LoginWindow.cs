@@ -25,6 +25,7 @@ namespace CashRegiterApplication
             gProductListWindow = new ProductListWindow();
             this.textBox_userName.Text = "york";
             this.textBox_password.Text = "york";
+           // HttpUtility.TestTimeOut();
         }
          
         private void Form1_Load(object sender, EventArgs e)

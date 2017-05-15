@@ -25,13 +25,13 @@ namespace CashRegiterApplication
     public class HttpUtility
     {
         private static readonly string DefaultUserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+      
+
         private static readonly string CashRegistHost = "https://120.24.210.161:8686/jweb_sugu/";
         private static CookieContainer gCookies = null;//全局登录态cookie
-        private static readonly string DefaultUser = "york";
-
-
-
-        private static readonly string DefaultPassword = "york";
+        private static string  DefaultUser = "york";
+        private static string  DefaultPassword = "york";
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
@@ -93,15 +93,22 @@ namespace CashRegiterApplication
                 MessageBox.Show("帐号密码不对");
                 return false;
             }
+            DefaultUser = user;
+            DefaultPassword = password;
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + oLoginer.errorCode);
             return true;
         }
         public static bool LoginDefault()
         {
+            CommUiltl.Log("LoginDefault by DefaultUser:" + DefaultUser + " DefaultPassword:" + DefaultPassword);
             return Login(DefaultUser, DefaultPassword);
         }
-
-
+        public static bool _LoginBySaveUser()
+        {
+            //当登陆态失效的时候，重新用老的用户登录
+            CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + DefaultUser + " DefaultPassword:"+ DefaultPassword);
+            return Login(DefaultUser, DefaultPassword);
+        }
         private static User GetLoginUser()
                                                                                                                                                                                                                                 {
             return oLoginer.data;
@@ -310,8 +317,21 @@ namespace CashRegiterApplication
             }
             return true;
         }
-
         internal static bool GeneratePostId(int storeId, string mac, ref int iPostId)
+        {
+            bool iResult = true;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _GeneratePostId( storeId,  mac, ref  iPostId);
+                if (true == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static bool _GeneratePostId(int storeId, string mac, ref int iPostId)
         {
             string funcUrl = GeneratePostIdFunc + "/" + storeId + "/" + mac;
             CommUiltl.Log("funcUrl:" + funcUrl);
@@ -407,6 +427,20 @@ namespace CashRegiterApplication
         //会员充值
         internal static int memberRecharge(WalletHistory oReq)
         {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _memberRecharge( oReq);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static int _memberRecharge(WalletHistory oReq)
+        {
             string funcUrl = rechargeMember+ oReq.memberId.ToString();
             HttpBaseRespone oHttpRespone = new HttpBaseRespone();
             String json = JsonConvert.SerializeObject(oReq);
@@ -429,6 +463,20 @@ namespace CashRegiterApplication
         //门店信息
         internal static bool GetStoreMsg(ref StoreWhouseData oData)
         {
+            bool iResult = true;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _GetStoreMsg(ref oData);
+                if (true == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static bool _GetStoreMsg(ref StoreWhouseData oData)
+        {
             string funcUrl = storeFunc + "page=1&pageSize=100&type=1";
             StoreWhouseRespone oHttpRespone = new StoreWhouseRespone();
             if (!Get<StoreWhouseRespone>(funcUrl, ref oHttpRespone))
@@ -449,7 +497,21 @@ namespace CashRegiterApplication
             return true;
         }
         /***************************************付款方式查询***************************************/
-        internal static bool GetPayType(ref PayTypeData oPayTypeList)
+        internal static bool GetPayType(ref PayTypeData oData)
+        {
+            bool iResult = true;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _GetPayType(ref oData);
+                if (true == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static bool _GetPayType(ref PayTypeData oPayTypeList)
         {
             string funcUrl = payTypeFunc + "page=1&pageSize=100";
             PayTypeHttpRespone oHttpRespone = new PayTypeHttpRespone();
@@ -468,6 +530,27 @@ namespace CashRegiterApplication
             }
             oPayTypeList = oHttpRespone.data;
             CommUiltl.Log("list .size =" + oPayTypeList.list.Count);
+            return true;
+        }
+        /****************************测试登陆态接口****************/
+        internal static bool TestTimeOut()
+        {
+            string funcUrl = "timeout";
+            PayTypeHttpRespone oHttpRespone = new PayTypeHttpRespone();
+            if (!Get<PayTypeHttpRespone>(funcUrl, ref oHttpRespone))
+            {
+                Console.WriteLine("ERR:Get GetStoreMsg failed");
+                lastErrorMsg = "门店信息异常：请检查网络";
+                return false;
+            }
+
+            if (oHttpRespone.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + JsonConvert.SerializeObject(oHttpRespone));
+                lastErrorMsg = "TestTimeOut:oHttpRespone[" + JsonConvert.SerializeObject(oHttpRespone) + "]";
+                return false;
+            }
+            CommUiltl.Log("TestTimeOut ok" );
             return true;
         }
         /***************************************Post信息***************************************/
@@ -505,8 +588,6 @@ namespace CashRegiterApplication
                 HandelWEbException(e);
                 return false;
             }
-
-
 
             if (!HttpResp<T>(request, ref returnObj))
             {
@@ -640,6 +721,7 @@ namespace CashRegiterApplication
             {
                 Console.WriteLine("网络异常");
                 HandelWEbException(e);
+              
                 return false;
             }
             Console.WriteLine("DEBUG:response.StatusCode : {0}", (int)response.StatusCode);
@@ -682,16 +764,37 @@ namespace CashRegiterApplication
             HttpWebResponse response = (HttpWebResponse)e.Response;
             if (e.Status == WebExceptionStatus.ProtocolError)
             {
-                Console.WriteLine("ERR:response.StatusCode : {0}", (int)response.StatusCode);
+                Console.WriteLine("ERR:HandelWEbException WebExceptionStatus.ProtocolError response.StatusCode : {0}", (int)response.StatusCode);
+                _CheckNeedReLogin(e);
             }
             else
             {
-                Console.WriteLine("ERR:e.Status: {0}", e.Status);
+                Console.WriteLine("ERR:HandelWEbException e.Status: {0}", e.Status);
             }
+
             if (response != null)
             {
                 response.Close();
             }
+        }
+        private static void _CheckNeedReLogin(WebException e)
+        {
+            HttpWebResponse response = (HttpWebResponse)e.Response;
+            if (e.Status != WebExceptionStatus.ProtocolError)
+            {
+                CommUiltl.Log("e.Status != WebExceptionStatus.ProtocolError ");
+                return;
+            }
+            int statusCode = (int)response.StatusCode;
+            CommUiltl.Log("_CheckNeedReLogin statusCode：" + statusCode);
+            if (statusCode == 401)
+            {
+                //需要重新登录
+                CommUiltl.Log("statusCode == 401");
+                _LoginBySaveUser();
+                return;
+            }
+
         }
 
 
