@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CashRegisterApplication.comm;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -35,10 +36,9 @@ namespace CashRegisterApplication.model
         public long consumePoint{ get; set; }
 
 
-        public long exchangePoint{ get; set; }
+        public long point { get; set; }
 
-
-        public long memberBalance{ get; set; }
+        public long balance { get; set; }
 
         public String password{ get; set; }
 
@@ -50,10 +50,6 @@ namespace CashRegisterApplication.model
 
         public String storeName{ get; set; }
 
-
-
-
-
         public Byte status{ get; set; }
         public Byte isDeleted{ get; set; }
         public String createTime { get; set; }
@@ -64,4 +60,45 @@ namespace CashRegisterApplication.model
         public String reqJson { get; set; }
 
     }
+
+    public class WalletHistory
+    {
+        public long id { get; set; }
+        public long memberId { get; set; }
+
+        public String relatedOrder { get; set; }
+
+        public String serialNumber { get; set; }
+
+        public int type { get; set; }
+
+        public long originalBalance { get; set; }
+
+        public long changeValue { get; set; }
+
+        public long newBalance { get; set; }
+
+        public String tradeTime { get; set; }
+
+        public long isDeleted { get; set; }
+
+        public String createTime { get; set; }
+        public String updateTime { get; set; }
+
+        public Byte status { get; set; }
+
+        public String goodsStringWithoutMemberPrice { get; set; }
+
+        public int cloudState { get; set; }
+        public String reqJson { get; set; }
+
+
+        internal void generateSerialNamber()
+        {
+            serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + 0 + "-" //会员充值支付，未做支付类型
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+        }
+    }
+
 }

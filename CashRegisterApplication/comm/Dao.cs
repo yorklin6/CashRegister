@@ -472,7 +472,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
         //会员充值流水
-        internal static bool memberRecharge(Member oRechargeMember, long beforeMberBalance, long afterMemberAccount, long recieveFee)
+        internal static bool memberRecharge(WalletHistory oRechargeMember, long beforeMberBalance, long afterMemberAccount, long recieveFee, Member oMermber)
         {
             CommUiltl.Log("Dao memberRecharge");
             int iRow = 0;
@@ -480,8 +480,8 @@ namespace CashRegisterApplication.comm
             string strSql = "insert into tb_member_recharge  ";
             strSql += " (member_id,name,member_account,berfore_balance,after_balance,create_time,cloud_state,req_json) VALUES (";
             strSql += "" + oRechargeMember.memberId + ",";
-            strSql += "'" + oRechargeMember.name + "',";
-            strSql += "" + oRechargeMember.memberAccount + ",";
+            strSql += "'" + oMermber.name + "',";
+            strSql += "" + oMermber.memberAccount + ",";
             strSql += "" + beforeMberBalance + ",";
             strSql += "" + afterMemberAccount + ",";
             strSql += "datetime('now'),";

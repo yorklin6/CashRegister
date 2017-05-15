@@ -46,7 +46,7 @@ namespace CashRegisterApplication.window.member
             
             this.textBox_memberAccount.Text= CenterContral.oMember.memberAccount;
             this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
             this.textBox_phone.Text = CenterContral.oMember.phone;
             this.textBox_memberAccount.Focus();
 
@@ -81,7 +81,7 @@ namespace CashRegisterApplication.window.member
    
                 //查成功
                 this.textBox_name.Text = CenterContral.oMember.name;
-                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
                 this.textBox_phone.Text = CenterContral.oMember.phone;
             }
             //查成功或者没有修改会员账号

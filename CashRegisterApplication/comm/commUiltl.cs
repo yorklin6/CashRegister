@@ -183,7 +183,7 @@ namespace CashRegisterApplication.comm
         internal static string GetRandomNumber()
         {
             Random rnd = new Random();
-            int card = rnd.Next(999);
+            int card = rnd.Next(100, 999);
             return card.ToString();
         }
     }

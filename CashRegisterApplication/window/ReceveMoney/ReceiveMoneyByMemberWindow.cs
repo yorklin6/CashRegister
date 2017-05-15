@@ -52,7 +52,7 @@ namespace CashRegisterApplication.window.member
         {
             this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
             this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.memberBalance));
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
             this.textBox_phone.Text = CenterContral.oMember.phone;
             _SelectRecieve();
             _ShowGoodsMemberInfo();
@@ -158,7 +158,7 @@ namespace CashRegisterApplication.window.member
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            if (recieveFee > CenterContral.oMember.memberBalance)
+            if (recieveFee > CenterContral.oMember.balance )
             {
                 MessageBox.Show("余额不足" );
                 //跳转到充值页面

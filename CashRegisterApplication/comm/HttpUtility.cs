@@ -44,7 +44,7 @@ namespace CashRegiterApplication
         private static readonly string RetailSettlementFunc = "retail/settlement";
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "retail/checkout?";
-        private static readonly string rechargeMember = "member/balance/";
+        private static readonly string rechargeMember = "member/balance_recharge/";
         private static readonly string storeFunc = "store/?";
         private static readonly string payTypeFunc = "payType?";
 
@@ -405,11 +405,12 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //会员充值
-        internal static int memberRecharge(Member oReq)
+        internal static int memberRecharge(WalletHistory oReq)
         {
             string funcUrl = rechargeMember+ oReq.memberId.ToString();
             HttpBaseRespone oHttpRespone = new HttpBaseRespone();
             String json = JsonConvert.SerializeObject(oReq);
+          
             if (!Put<HttpBaseRespone>(funcUrl, json, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
@@ -569,7 +570,7 @@ namespace CashRegiterApplication
 
             // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
             CommUiltl.Log("url:" + url);
-
+            CommUiltl.Log("req json:" + json);
             request.Method = "PUT";
             request.UserAgent = DefaultUserAgent;
             request.Timeout = timeOutDefault;

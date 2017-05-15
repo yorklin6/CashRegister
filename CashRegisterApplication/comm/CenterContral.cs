@@ -588,26 +588,27 @@ namespace CashRegisterApplication.comm
         internal static bool RechargeMoneyByMember(long recieveFee)
         {
             //充值金
-            Member oRechargeMember = new Member();
-            oRechargeMember.memberId = CenterContral.oMember.memberId;
-            oRechargeMember.memberBalance = recieveFee;
-            oRechargeMember.name = CenterContral.oMember.name;
-            oRechargeMember.memberAccount = CenterContral.oMember.memberAccount;
-            oRechargeMember.reqJson = JsonConvert.SerializeObject(oRechargeMember);
+            WalletHistory oRecharge = new WalletHistory();
+            oRecharge.memberId = CenterContral.oMember.memberId;
+            oRecharge.changeValue = recieveFee;
+            oRecharge.generateSerialNamber();
+            oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+            oRecharge.reqJson = JsonConvert.SerializeObject(oRecharge);
             //请求后台充值
-            oRechargeMember.cloudState = HttpUtility.memberRecharge(oRechargeMember);
-
-            long beforeMberBalance = CenterContral.oMember.memberBalance;
-            //重新拉会员信息
-            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
-            long afterMemberAccount = CenterContral.oMember.memberBalance;
-            //记录流水
-            Dao.memberRecharge(oRechargeMember, beforeMberBalance, afterMemberAccount, recieveFee);
-
-            if (oRechargeMember.cloudState != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            oRecharge.cloudState = HttpUtility.memberRecharge(oRecharge);
+            if (HttpUtility.CLOUD_SATE_HTTP_SUCESS != oRecharge.cloudState)
             {
+                MessageBox.Show("充值失败" + HttpUtility.lastErrorMsg );
                 return false;
             }
+
+            long beforeMberBalance = CenterContral.oMember.balance ;
+            //重新拉会员信息
+            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
+            long afterMemberAccount = CenterContral.oMember.balance ;
+            //记录流水
+            Dao.memberRecharge(oRecharge, beforeMberBalance, afterMemberAccount, recieveFee, CenterContral.oMember);
+           
             return true;
         }
 
