@@ -101,7 +101,7 @@ namespace CashRegisterApplication.model
             cloudState = 0;
             serialNumber = "";
             stockOutSerialNumber = "";
-            posId = CenterContral.POST_ID;
+            posId = CenterContral.iPostId;
         }
 
         internal void generatePayOrderNumber()
@@ -157,22 +157,21 @@ namespace CashRegisterApplication.model
 
         internal void Reset()
         {
-
-            CenterContral.oStockOutDTO.Base.serialNumber = "";
+            generateSeariseNumber();
             CenterContral.oStockOutDTO.Base.stockOutId = 0;
             CenterContral.oStockOutDTO.Base.RecieveFee = 0;
             CenterContral.oStockOutDTO.Base.orderAmount = 0;
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
 
             CenterContral.oStockOutDTO.Base.type = 1;
-            CenterContral.oStockOutDTO.Base.storeId = 1;
-            CenterContral.oStockOutDTO.Base.whouseId = 1;
+            CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
+            CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
-            CenterContral.oStockOutDTO.Base.posId = 1;
+            CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId = 1;
-            CenterContral.oStockOutDTO.Base.cashierId = 1;
+            CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
             CenterContral.oStockOutDTO.Base.orderAmount = 0;
-            CenterContral.oStockOutDTO.Base.creator = "sys";
+            CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
             CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
             CenterContral.oStockOutDTO.Base.remark = "";
 

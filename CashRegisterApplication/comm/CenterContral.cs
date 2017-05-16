@@ -46,7 +46,8 @@ namespace CashRegisterApplication.comm
         public static PayWay oPayWay;//支付信息
         public static PayType oCurrentPayType;// 支付类型全局
 
-        public const int POST_ID = 12345;
+        public static UserLogin oLoginer;//登录用户
+
 
         public const int PAY_STATE_INIT = 0;
         public const int PAY_STATE_SUCCESS = 1;
@@ -117,6 +118,7 @@ namespace CashRegisterApplication.comm
             oStoreWhouse = new StoreWhouse();
             store_house_selete_flag = STORE_HOUSE_UNSET_SELETED;
             oStoreWhouseData = new StoreWhouseData();
+            oLoginer = new UserLogin();
 
             initFlag = true;
 
@@ -416,7 +418,6 @@ namespace CashRegisterApplication.comm
             {
                 CenterContral.oStockOutDTO.Base.ProductList = strProductList;
                 CommUiltl.Log("Order.OrderCode ==  empty GenerateOrder ");
-                CenterContral.oStockOutDTO.Base.generateSeariseNumber();
 
                 // CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
                 CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_SUCESS;

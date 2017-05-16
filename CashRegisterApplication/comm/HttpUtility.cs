@@ -30,8 +30,8 @@ namespace CashRegiterApplication
 
         private static readonly string CashRegistHost = "https://120.24.210.161:8686/jweb_sugu/";
         private static CookieContainer gCookies = null;//全局登录态cookie
-        private static string  DefaultUser = "york";
-        private static string  DefaultPassword = "york";
+        public static string  DefaultUser = "york";
+        public static string  DefaultPassword = "york";
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
@@ -48,7 +48,7 @@ namespace CashRegiterApplication
         private static readonly string storeFunc = "store/?";
         private static readonly string payTypeFunc = "payType?";
 
-        private static UserLogin oLoginer;
+
 
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
         public const int CLOUD_SATE_HTTP_FAILD = 1;
@@ -62,8 +62,7 @@ namespace CashRegiterApplication
             gUserName = user;
             gPassword = password;
             gCookies = null;
-            oLoginer = new UserLogin();
-
+            CenterContral.oLoginer = new UserLogin();
             string loginUrl = LoginFunc;
             // "account=" + gUserName + "&password=" + CommUiltl.HEX_MD5(gPassword);
             UserLoginMsg oUserLoginMsg = new UserLoginMsg();
@@ -75,7 +74,7 @@ namespace CashRegiterApplication
             loginJson= "rememberMe=true&account="+ gUserName+"&password="+ CommUiltl.HEX_MD5(gPassword);
             Console.WriteLine("Debug loginUrl:" + loginUrl);
             Console.WriteLine("Debug loginJson:" + loginJson);
-            if (!PostUrlencoded<UserLogin>(loginUrl, loginJson, ref oLoginer))
+            if (!PostUrlencoded<UserLogin>(loginUrl, loginJson, ref CenterContral.oLoginer))
             {
                 Console.WriteLine("ERR:Get failed");
                 MessageBox.Show("登录异常:请检查网络");
@@ -87,15 +86,15 @@ namespace CashRegiterApplication
                 }
                 return false;
             }
-            if (0 != oLoginer.errorCode)
+            if (0 != CenterContral.oLoginer.errorCode)
             {
-                Console.WriteLine("ERR:Get OK but errorCode:" + oLoginer.errorCode);
+                Console.WriteLine("ERR:Get OK but errorCode:" + CenterContral.oLoginer.errorCode);
                 MessageBox.Show("帐号密码不对");
                 return false;
             }
             DefaultUser = user;
             DefaultPassword = password;
-            Console.WriteLine("ERR:Get OK oLoginer errorCode: " + oLoginer.errorCode);
+            Console.WriteLine("ERR:Get OK oLoginer errorCode: " + CenterContral.oLoginer.errorCode);
             return true;
         }
         public static bool LoginDefault()
@@ -109,10 +108,7 @@ namespace CashRegiterApplication
             CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + DefaultUser + " DefaultPassword:"+ DefaultPassword);
             return Login(DefaultUser, DefaultPassword);
         }
-        private static User GetLoginUser()
-                                                                                                                                                                                                                                {
-            return oLoginer.data;
-        }
+       
         // MessageBox.Show();
         /***************************************生成订单***************************************/
         public static   int GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
