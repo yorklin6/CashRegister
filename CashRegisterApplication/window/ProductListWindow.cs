@@ -33,7 +33,9 @@ namespace CashRegiterApplication
             CenterContral.Init();
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
-           
+            _ResetAllData();
+
+
         }
         private void SetTimerTask()
         {

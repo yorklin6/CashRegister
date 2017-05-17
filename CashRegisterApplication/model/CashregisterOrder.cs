@@ -80,7 +80,7 @@ namespace CashRegisterApplication.model
         public int payType { get; set; }
         public long payAmount { get; set; }
 
-        public String stockOutSerialNumber { get; set; }
+        public string stockOutSerialNumber { get; set; }
 
         public string serialNumber { get; internal set; }
         public int cloudState { get; set; }
@@ -91,7 +91,7 @@ namespace CashRegisterApplication.model
         public long storeId { get; set; }
         public int isDeleted { get; set; }
 
-
+        public string reqMemberZfJson { get; set; }
         public PayWay()
         {
             id = 0;
@@ -146,6 +146,7 @@ namespace CashRegisterApplication.model
 
         public int dbGenerateFlag { get; set; }
         public int localSaveFlag { get; set; }
+        
 
         public void generateSeariseNumber()
         {
@@ -154,37 +155,7 @@ namespace CashRegisterApplication.model
 
         }
 
-
-        internal void Reset()
-        {
-            generateSeariseNumber();
-            CenterContral.oStockOutDTO.Base.stockOutId = 0;
-            CenterContral.oStockOutDTO.Base.RecieveFee = 0;
-            CenterContral.oStockOutDTO.Base.orderAmount = 0;
-            CenterContral.oStockOutDTO.Base.ChangeFee = 0;
-
-            CenterContral.oStockOutDTO.Base.type = 1;
-            CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
-            CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
-            CenterContral.oStockOutDTO.Base.relatedOrder = 0;
-            CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
-            CenterContral.oStockOutDTO.Base.clientId = 1;
-            CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
-            CenterContral.oStockOutDTO.Base.orderAmount = 0;
-            CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
-            CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
-            CenterContral.oStockOutDTO.Base.remark = "";
-
-            CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CenterContral.oStockOutDTO.Base.baseDataJson = "";
-            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CenterContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-
-            CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
-            CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
-
-        }
+ 
 
     }
     public class StockOutDetail

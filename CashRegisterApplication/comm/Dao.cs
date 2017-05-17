@@ -403,7 +403,7 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //插入订单
             string strSql = "insert into tb_checkout  ";
-            strSql += " (id,pos_id,store_id,is_deleted,related_order,serial_number,CashRegisterPayOrderNumber,pay_amount,pay_type,payStatus,create_time,CloudState,PayCode) VALUES (";
+            strSql += " (id,pos_id,store_id,is_deleted,related_order,serial_number,CashRegisterPayOrderNumber,pay_amount,pay_type,payStatus,create_time,CloudState,reqMemberZfJson,PayCode) VALUES (";
             strSql += "" + oPayWay.id + ",";
             strSql += "" + oPayWay.posId + ",";
             strSql += "" + oPayWay.storeId + ",";
@@ -417,6 +417,7 @@ namespace CashRegisterApplication.comm
             strSql += "" + oPayWay.payStatus + ",";
             strSql += "datetime('now'),";
             strSql += "" + oPayWay.cloudState + ",";
+            strSql += "'" + oPayWay.reqMemberZfJson + "',";
             strSql += "'PayCode'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -478,7 +479,7 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //插入订单
             string strSql = "insert into tb_member_recharge  ";
-            strSql += " (member_id,name,member_account,berfore_balance,after_balance,create_time,cloud_state,req_json) VALUES (";
+            strSql += " (member_id,name,member_account,berfore_balance,after_balance,create_time,cloud_state,reqRechargeJson) VALUES (";
             strSql += "" + oRechargeMember.memberId + ",";
             strSql += "'" + oMermber.name + "',";
             strSql += "" + oMermber.memberAccount + ",";
@@ -486,7 +487,7 @@ namespace CashRegisterApplication.comm
             strSql += "" + afterMemberAccount + ",";
             strSql += "datetime('now'),";
             strSql += "" + oRechargeMember.cloudState + ",";
-            strSql += "'" + oRechargeMember.reqJson + "'";
+            strSql += "'" + oRechargeMember.reqRechargeJson + "'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try

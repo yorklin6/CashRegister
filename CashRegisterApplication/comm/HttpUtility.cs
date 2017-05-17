@@ -45,6 +45,7 @@ namespace CashRegiterApplication
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "retail/checkout?";
         private static readonly string rechargeMember = "member/balance_recharge/";
+        private static readonly string paymentMember = "member/payment/";
         private static readonly string storeFunc = "store/?";
         private static readonly string payTypeFunc = "payType?";
 
@@ -456,6 +457,42 @@ namespace CashRegiterApplication
             }
             return CLOUD_SATE_HTTP_SUCESS;
         }
+        //会员扣款
+        internal static int MemberPay(WalletHistory oReq)
+        {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _MemberPay(oReq);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static int _MemberPay(WalletHistory oReq)
+        {
+            string funcUrl = paymentMember + oReq.memberId.ToString();
+            HttpBaseRespone oHttpRespone = new HttpBaseRespone();
+            String json = JsonConvert.SerializeObject(oReq);
+
+            if (!Put<HttpBaseRespone>(funcUrl, json, ref oHttpRespone))
+            {
+                Console.WriteLine("ERR:Get GenerateOrder failed");
+                lastErrorMsg = "支付异常：请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+
+            if (oHttpRespone.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + oHttpRespone);
+                lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
         //门店信息
         internal static bool GetStoreMsg(ref StoreWhouseData oData)
         {
@@ -592,6 +629,8 @@ namespace CashRegiterApplication
             }
             return true;
         }
+
+
         /***************************************Post信息***************************************/
         public static bool Post<T>(string funcUrl,string json, ref T returnObj)
         {

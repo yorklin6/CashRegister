@@ -57,7 +57,7 @@ namespace CashRegisterApplication.model
         public String goodsStringWithoutMemberPrice { get; set; }
 
         public int cloudState { get; set; }
-        public String reqJson { get; set; }
+        public String reqRechargeJson { get; set; }
 
     }
 
@@ -90,12 +90,19 @@ namespace CashRegisterApplication.model
         public String goodsStringWithoutMemberPrice { get; set; }
 
         public int cloudState { get; set; }
-        public String reqJson { get; set; }
 
+        public String reqRechargeJson { get; set; }
+        public String relatePayWaySerialNumber { get; set; }
 
-        internal void generateSerialNamber()
+        internal void generateRechargeSerialNamber()
         {
             serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + 0 + "-" //会员充值支付，未做支付类型
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+        }
+        internal void generatePaySerialNamber()
+        {
+            serialNumber = "ZF-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + 0 + "-" //会员充值支付，未做支付类型
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
         }
