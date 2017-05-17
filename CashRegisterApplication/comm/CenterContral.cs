@@ -618,8 +618,10 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
-            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
-            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
+
+            //重新拉会员信息
+            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
+
             return true;
         }
         //充值

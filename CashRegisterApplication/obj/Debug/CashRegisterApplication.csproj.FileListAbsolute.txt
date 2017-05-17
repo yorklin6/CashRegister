@@ -82,7 +82,6 @@ C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplicatio
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.csproj.GenerateResource.Cache
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.ProductListWindow.resources
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.LoginWindows.resources
-C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.payWayWindow.resources
 F:\QQVipDownload\QQ\1643602623\FileRecv\CashRegisterApplication\CashRegisterApplication\CashRegisterApplication\bin\Debug\CashRegisterApplication.exe.config
 F:\QQVipDownload\QQ\1643602623\FileRecv\CashRegisterApplication\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.exe
 F:\QQVipDownload\QQ\1643602623\FileRecv\CashRegisterApplication\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.pdb
@@ -133,3 +132,7 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.MemberInfoWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Member.RechargeMoneyForMember.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Setting.SettingDefaultMsgWindow.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.MemberInfoWindows.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Member.RechargeMoneyForMember.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.ReceiveMoneyByMember.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Setting.SettingDefaultMsgWindow.resources

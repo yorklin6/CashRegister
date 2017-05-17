@@ -50,15 +50,18 @@ namespace CashRegisterApplication.window.member
 
         internal void ShowWithMemberInfo()
         {
-            this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
-            this.textBox_phone.Text = CenterContral.oMember.phone;
+            UpdateMemberInfor();
+           
             _SelectRecieve();
             _ShowGoodsMemberInfo();
             this.Show();
         }
-
+        public void  UpdateMemberInfor(){
+            this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance));
+            this.textBox_phone.Text = CenterContral.oMember.phone;
+        }
         private void _SelectRecieve()
         {
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
@@ -198,10 +201,15 @@ namespace CashRegisterApplication.window.member
             {
                 return;
             }
+
+            this.UpdateMemberInfor();
+            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
+            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             CenterContral.ControlWindowsAfterPay();
             this.Hide();
             return;
         }
+
         private void textBox_ReceiveFee_KeyPress(object sender, KeyPressEventArgs e)
         {
             CommUiltl.Log("Keys:" + e.KeyChar);
