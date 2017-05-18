@@ -627,7 +627,8 @@ namespace CashRegiterApplication
                         //tabl的操作被禁止
                         return true;
                     }
-                case System.Windows.Forms.Keys.Delete:
+                case System.Windows.Forms.Keys.OemMinus:
+                case System.Windows.Forms.Keys.Subtract:
                     {
                         CommUiltl.Log("Keys.Delete");
                         //删除操作，把当前行给删除
@@ -636,7 +637,7 @@ namespace CashRegiterApplication
                             CommUiltl.Log("Keys.Delete CurrentCell");
                             if ( !this.dataGridView_productList.CurrentRow.IsNewRow)
                             {
-                                CommUiltl.Log("Keys.Delete !IsNewRow");
+                                CommUiltl.Log("Keys.Delete !IsNewRow this.dataGridView_productList.CurrentRow.Index:" + this.dataGridView_productList.CurrentRow.Index);
                                 if (this.dataGridView_productList.CurrentRow.Index >= 0)
                                 {
                                     this.dataGridView_productList.Rows.RemoveAt(this.dataGridView_productList.CurrentRow.Index);
