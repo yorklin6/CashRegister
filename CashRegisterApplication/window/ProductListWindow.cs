@@ -558,6 +558,7 @@ namespace CashRegiterApplication
             if (gMoveToRetailDetailCountFlag)
             {
                 CommUiltl.Log("gMoveToRetailDetailCountFlag:" + gMoveToRetailDetailCountFlag);
+                CommUiltl.Log("gCurrentCell:" + gCurrentCell);
                 gMoveToRetailDetailCountFlag = false;
                 this.dataGridView_productList.CurrentCell = gCurrentCell;
                 this.dataGridView_productList.CurrentCell.Selected = true;
@@ -627,15 +628,16 @@ namespace CashRegiterApplication
                         //tabl的操作被禁止
                         return true;
                     }
-                case System.Windows.Forms.Keys.OemMinus:
-                case System.Windows.Forms.Keys.Subtract:
+                // case System.Windows.Forms.Keys.OemMinus:
+                //case System.Windows.Forms.Keys.Subtract:
+                case System.Windows.Forms.Keys.Delete:
                     {
                         CommUiltl.Log("Keys.Delete");
                         //删除操作，把当前行给删除
                         if (this.dataGridView_productList.CurrentCell != null )
                         {
                             CommUiltl.Log("Keys.Delete CurrentCell");
-                            if ( !this.dataGridView_productList.CurrentRow.IsNewRow)
+                            if ( !this.dataGridView_productList.CurrentRow.IsNewRow )
                             {
                                 CommUiltl.Log("Keys.Delete !IsNewRow this.dataGridView_productList.CurrentRow.Index:" + this.dataGridView_productList.CurrentRow.Index);
                                 if (this.dataGridView_productList.CurrentRow.Index >= 0)
