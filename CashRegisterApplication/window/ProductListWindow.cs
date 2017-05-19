@@ -547,6 +547,12 @@ namespace CashRegiterApplication
                 CommUiltl.Log("gCurrentCell== null ");
                 return;
             }
+            CommUiltl.Log("gCurrentCell:" + gCurrentCell);
+            if (gCurrentCell.RowIndex<0)
+            {
+                CommUiltl.Log("gCurrentCell.RowIndex<0");
+                return;
+            }
             if (gResetRow)
             {
                 CommUiltl.Log("gResetRow:" + gResetRow);
@@ -558,7 +564,7 @@ namespace CashRegiterApplication
             if (gMoveToRetailDetailCountFlag)
             {
                 CommUiltl.Log("gMoveToRetailDetailCountFlag:" + gMoveToRetailDetailCountFlag);
-                CommUiltl.Log("gCurrentCell:" + gCurrentCell);
+              
                 gMoveToRetailDetailCountFlag = false;
                 this.dataGridView_productList.CurrentCell = gCurrentCell;
                 this.dataGridView_productList.CurrentCell.Selected = true;
