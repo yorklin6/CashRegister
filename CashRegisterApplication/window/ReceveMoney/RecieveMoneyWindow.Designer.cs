@@ -55,10 +55,16 @@
             // 
             // textBox_OrderFee
             // 
+            this.textBox_OrderFee.CausesValidation = false;
+            this.textBox_OrderFee.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox_OrderFee.Enabled = false;
+            this.textBox_OrderFee.HideSelection = false;
+            this.textBox_OrderFee.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox_OrderFee.Location = new System.Drawing.Point(186, 138);
             this.textBox_OrderFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_OrderFee.Name = "textBox_OrderFee";
             this.textBox_OrderFee.ReadOnly = true;
+            this.textBox_OrderFee.ShortcutsEnabled = false;
             this.textBox_OrderFee.Size = new System.Drawing.Size(126, 21);
             this.textBox_OrderFee.TabIndex = 8;
             // 
@@ -73,6 +79,8 @@
             // 
             // textBox_RecieveFee
             // 
+            this.textBox_RecieveFee.Enabled = false;
+            this.textBox_RecieveFee.ImeMode = System.Windows.Forms.ImeMode.On;
             this.textBox_RecieveFee.Location = new System.Drawing.Point(186, 181);
             this.textBox_RecieveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_RecieveFee.Name = "textBox_RecieveFee";
@@ -100,6 +108,9 @@
             // 
             // textBox_LeftFee
             // 
+            this.textBox_LeftFee.Enabled = false;
+            this.textBox_LeftFee.HideSelection = false;
+            this.textBox_LeftFee.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox_LeftFee.Location = new System.Drawing.Point(186, 100);
             this.textBox_LeftFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_LeftFee.Name = "textBox_LeftFee";
@@ -171,6 +182,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RecieveMoneyWindow";
             this.Text = "收款";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecieveMoneyWindow_FormClosing);
             this.Load += new System.EventHandler(this.RecieveMoneyWindows_Load);
             this.Shown += new System.EventHandler(this.RecieveMoneyWindows_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payTypeList)).EndInit();

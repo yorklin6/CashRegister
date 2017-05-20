@@ -34,21 +34,19 @@ namespace CashRegiterApplication
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
-
-
         }
         private void SetTimerTask()
         {
             CommUiltl.Log("SetTimerTask ");
             Timer MyTimer = new Timer();
-            MyTimer.Interval = (10 * 60 * 1000); // 1 mins
+            MyTimer.Interval = (1 * 60 * 1000); // 1 mins
             MyTimer.Tick += new EventHandler(MyTimer_Tick);
             MyTimer.Start();
         }
         private void MyTimer_Tick(object sender, EventArgs e)
         {
             CommUiltl.Log("SetTimerTask ");
-            MyTimerTask.UpdateLocalGoodsMsg();
+            MyTimerTask.Run();
         }
 
         public System.Windows.Forms.DataGridView GetDataGridViewProduct()
@@ -640,7 +638,8 @@ namespace CashRegiterApplication
                     {
                         CommUiltl.Log("Keys.Delete");
                         //删除操作，把当前行给删除
-                        if (this.dataGridView_productList.CurrentCell != null )
+                        if (this.dataGridView_productList.CurrentCell != null && this.dataGridView_productList.CurrentCell.RowIndex
+                             >-1 )
                         {
                             CommUiltl.Log("Keys.Delete CurrentCell");
                             if ( !this.dataGridView_productList.CurrentRow.IsNewRow )
@@ -896,6 +895,10 @@ namespace CashRegiterApplication
             this.dataGridView_order.SelectionChanged += new EventHandler(orderDataGridView_SelectionChanged);
         }
 
+        private void ProductListWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+           
+        }
     }
 
     public static class CELL_INDEX

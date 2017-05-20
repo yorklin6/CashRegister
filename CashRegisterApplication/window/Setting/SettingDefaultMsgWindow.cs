@@ -162,8 +162,18 @@ namespace CashRegisterApplication.window.Setting
             }
             return true;
         }
+        private void returnPreventWindows()
+        {
+            CenterContral.Window_ProductList.CallShowBySettingWindows();
+            this.Hide();
+        }
 
-
+        private void SettingDefaultMsgWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+        }
+        
     }
 
 }

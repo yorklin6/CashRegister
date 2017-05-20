@@ -82,7 +82,7 @@ namespace CashRegisterApplication.model
 
         public string stockOutSerialNumber { get; set; }
 
-        public string serialNumber { get; internal set; }
+        public string serialNumber { get;  set; }
         public int cloudState { get; set; }
         public int id { get; set; }
         public int posId { get; set; }

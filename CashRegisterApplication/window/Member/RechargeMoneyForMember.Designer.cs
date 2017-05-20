@@ -161,6 +161,7 @@
             this.Controls.Add(this.textBox_memberAccount);
             this.Name = "RechargeMoneyForMember";
             this.Text = "RechargeMoneyForMember";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RechargeMoneyForMember_FormClosing);
             this.Load += new System.EventHandler(this.RechargeMoneyForMember_Load);
             this.Shown += new System.EventHandler(this.RechargeMoneyForMember_Shown);
             this.ResumeLayout(false);

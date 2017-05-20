@@ -240,6 +240,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProductListWindow";
             this.Text = "收银台";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProductListWindow_FormClosing);
             this.Load += new System.EventHandler(this.ProductListWindow_Load);
             this.Shown += new System.EventHandler(this.ProductListWindow_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).EndInit();

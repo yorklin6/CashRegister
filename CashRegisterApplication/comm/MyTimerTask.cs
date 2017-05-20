@@ -10,11 +10,12 @@ namespace CashRegisterApplication.comm
     //异步处理数据库
     class MyTimerTask
     {
-        public static void UpdateLocalGoodsMsg()
+        public static void Run()
         {
             CommUiltl.Log("UpdateLocalGoodsMsg ");
             _UpdateAllGoodsdate();
             _UpdateLastGoodMsg();
+            CloseStaockOut();
         }
         public static void _UpdateLastGoodMsg()
         {
@@ -109,6 +110,35 @@ namespace CashRegisterApplication.comm
             Dao.DeleteGoodsWithDeleteFlag();
             return;
         }
+
+        //关闭单(结算订单)
+        public static void CloseStaockOut()
+        {
+            List<StockOutDTO> oStockList = new List<StockOutDTO>();
+            StockOutDTO oState = new StockOutDTO();
+            oState.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            GetStockOutPutByDbWithCloudeState(oState, ref oStockList);
+            //http redo
+            foreach (var oStock in oStockList)
+            {
+                CommUiltl.Log("CloseStaockOut serialNumber:" + oStock.Base.serialNumber);
+                HttpBaseRespone oRespond = new HttpBaseRespone();
+                string strDataJson = oStock.Base.baseDataJson;
+                oStock.Base.baseDataJson = "";
+                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlement(oStock, ref oRespond);
+
+                if (oStock.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                {
+                    oStock.Base.baseDataJson = strDataJson;
+                    Dao.UpdateOrderCloudState(oStock);
+                }
+                else
+                {
+                    //重试失败，则不管，后面队列继续重试
+                }
+            }
+        }//CloseStaockOut
+
         public static void AddStaockOut()
         {
             List<StockOutDTO> oStockList = new List<StockOutDTO>();
@@ -213,29 +243,7 @@ namespace CashRegisterApplication.comm
 
         }//DeleteStaockOut
 
-        //关闭单
-        public static void CloseStaockOut()
-        {
-            List<StockOutDTO> oStockList = new List<StockOutDTO>();
-            StockOutDTO oState = new StockOutDTO();
-            oState.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            GetStockOutPutByDbWithCloudeState(oState, ref oStockList);
-            //http redo
-            foreach (var oStock in oStockList)
-            {
-                HttpBaseRespone oRespond = new HttpBaseRespone();
-                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlement(oStock, ref oRespond);
-
-                if (oStock.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
-                {
-                    Dao.UpdateOrderCloudState(oStock);
-                }
-                else
-                {
-                    //重试失败，则不管，后面队列继续重试
-                }
-            }
-        }//DeleteStaockOut
+     
 
         public static void GetStockOutPutByDbWithCloudeState(StockOutDTO oState, ref List<StockOutDTO> oStockList)
         {

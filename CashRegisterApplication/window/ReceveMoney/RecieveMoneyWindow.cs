@@ -241,12 +241,7 @@ namespace CashRegisterApplication.window
             this.Hide();
         }
 
-        private void buttonWeixin_Click(object sender, EventArgs e)
-        {
-            _CheckFee();
-            CenterContral.Window_RecieveMoneyByWeixin.Show();
-            this.Hide();
-        }
+
 
         private void buttonMember_Click(object sender, EventArgs e)
         {
@@ -281,5 +276,18 @@ namespace CashRegisterApplication.window
             callPayWindowsBayPayTypeId(payType);
             return;
         }
+        private void returnPreventWindows()
+        {
+            CenterContral.Window_RecieveMoney.Show();
+            this.Hide();
+        }
+
+        private void RecieveMoneyWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_RecieveMoney = new RecieveMoneyWindow();
+        }
+       
     }
 }

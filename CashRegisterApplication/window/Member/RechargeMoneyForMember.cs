@@ -56,6 +56,7 @@ namespace CashRegisterApplication.window.Member
             if (CenterContral.oMember.memberAccount == null || CenterContral.oMember.memberAccount == "")
             {
                 CenterContral.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
+                this.Hide();
                 return;
             }
 
@@ -74,8 +75,7 @@ namespace CashRegisterApplication.window.Member
                     }
                 case System.Windows.Forms.Keys.Escape:
                     {
-                        this.Hide();
-                        CenterContral.Window_ProductList.Show();
+                        returnPreventWindows();
                         break;
                     }
             }
@@ -132,6 +132,16 @@ namespace CashRegisterApplication.window.Member
             this.textBox_ReceiveFee.SelectionStart = 0;
             this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
         }
-
+        private void returnPreventWindows()
+        {
+            CenterContral.Window_ProductList.Show();
+            this.Hide();
+        }
+        private void RechargeMoneyForMember_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_RechargeMoneyForMember = new RechargeMoneyForMember();
+        }
     }
 }

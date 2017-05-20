@@ -136,6 +136,7 @@
             this.Controls.Add(this.textBox_memberAccount);
             this.Name = "MemberInfoWindows";
             this.Text = "会员信息";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemberInfoWindows_FormClosing);
             this.Load += new System.EventHandler(this.memberRechargeWindows_Load);
             this.Shown += new System.EventHandler(this.memberRechargeWindows_Shown);
             this.ResumeLayout(false);

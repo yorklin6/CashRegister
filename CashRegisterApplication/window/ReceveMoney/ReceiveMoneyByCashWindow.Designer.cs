@@ -118,6 +118,7 @@
             this.Controls.Add(this.textBox_ReceiveFee);
             this.Name = "ReceiveMoneyByCashWindow";
             this.Text = "收银-现金";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceiveMoneyByCashWindow_FormClosing);
             this.Load += new System.EventHandler(this.ReceiveMoneyByCash_Load);
             this.Shown += new System.EventHandler(this.ReceiveMoneyByCash_Shown);
             this.ResumeLayout(false);

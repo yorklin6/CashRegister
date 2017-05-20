@@ -40,6 +40,7 @@ namespace CashRegisterApplication.window.member
             {
                 //输入会员信息
                 CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
+                this.Hide();
                 return;
             }
             //成功后，需要更新订单信息，按照会员价来计算订单总价
@@ -98,10 +99,8 @@ namespace CashRegisterApplication.window.member
                         break;
                     }
                 case System.Windows.Forms.Keys.Escape:
-                case System.Windows.Forms.Keys.Delete:
                     {
-                        this.Hide();
-                        CenterContral.Window_RecieveMoney.Show();
+                        returnPreventWindows();
                         break;
                     }
             }
@@ -277,7 +276,17 @@ namespace CashRegisterApplication.window.member
         {
 
         }
-
-
+        private void returnPreventWindows()
+        {
+            CenterContral.Window_RecieveMoney.Show();
+            this.Hide();
+        }
+     
+        private void ReceiveMoneyByMember_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
+        }
     }
 }

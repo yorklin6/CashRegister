@@ -173,7 +173,7 @@ namespace CashRegiterApplication
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
-                CommUiltl.Log("ERR:Get GenerateOrder failed]");
+                CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] req:\n"+ json);
                 lastErrorMsg = "http生成订单异常:请检查网络";
                 return CLOUD_SATE_HTTP_FAILD;
             }

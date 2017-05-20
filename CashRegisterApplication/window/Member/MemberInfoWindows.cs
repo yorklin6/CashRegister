@@ -33,12 +33,16 @@ namespace CashRegisterApplication.window.member
                     }
                 case System.Windows.Forms.Keys.Escape:
                     {
-                        CenterContral.ShowWindowWhenMemberInfoCancel();
-                        this.Hide();
+                        returnPreventWindows();
                         break;
                     }
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        internal void returnPreventWindows()
+        {
+            CenterContral.ShowWindowWhenMemberInfoCancel();
+            this.Hide();
         }
 
         internal void ShowWhithMember()
@@ -119,6 +123,11 @@ namespace CashRegisterApplication.window.member
 
         }
 
-
+        private void MemberInfoWindows_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_MemberInfoWindows = new MemberInfoWindows();
+        }
     }
 }

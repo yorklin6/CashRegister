@@ -19,7 +19,6 @@ namespace CashRegisterApplication.comm
         public static ProductListWindow Window_ProductList;//全局窗口
         public static RecieveMoneyWindow Window_RecieveMoney;//收款窗口
         public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
-        public static RecieveMoneyByWeixinWindow Window_RecieveMoneyByWeixin;//微信收款窗口
         public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//会员收款窗口
 
 
@@ -104,7 +103,6 @@ namespace CashRegisterApplication.comm
             //Window_ProductList = new ProductListWindow();//全局窗口
             Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
             Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
-            Window_RecieveMoneyByWeixin = new RecieveMoneyByWeixinWindow();//微信收款窗口
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
 
@@ -214,7 +212,12 @@ namespace CashRegisterApplication.comm
         internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
         {
             flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
+            if (CenterContral.Window_MemberInfoWindows == null)
+            {
+                CommUiltl.Log("CenterContral.Window_MemberInfoWindows == null");
+            }
             CenterContral.Window_MemberInfoWindows.ShowWhithMember();
+            
         }
         internal static void Show_MemberInfoWindow_By_RechargeMoeneyByMember()
         {
@@ -375,9 +378,9 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId = 1;
-            CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
+          //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
             CenterContral.oStockOutDTO.Base.orderAmount = 0;
-            CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
+          //  CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
             CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
             CenterContral.oStockOutDTO.Base.remark = "";
 
@@ -416,7 +419,9 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
             CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
-            if (!Dao.UpdateOrderCloudState(CenterContral.oStockOutDTO))
+            CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
+
+            if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
             {
                 return false;
             }
@@ -466,16 +471,9 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log(" strProductList is modify [" + CenterContral.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
                 CenterContral.oStockOutDTO.Base.ProductList = strProductList;
                 CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
+                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
-                if (CenterContral.oStockOutDTO.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
-                {
-
-                }
-                else
-                {
-                    CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
-                }
-
+                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
                 {
                     return false;

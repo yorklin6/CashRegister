@@ -111,6 +111,7 @@
             this.Controls.Add(this.comboBox_StoreShop);
             this.Name = "SettingDefaultMsgWindow";
             this.Text = "SettingDefaultMsg";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingDefaultMsgWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingDefaultMsg_Load);
             this.Shown += new System.EventHandler(this.SettingDefaultMsgWindow_Shown);
             this.ResumeLayout(false);

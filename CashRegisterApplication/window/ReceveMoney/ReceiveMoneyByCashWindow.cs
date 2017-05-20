@@ -59,10 +59,8 @@ namespace CashRegisterApplication.window
                         break;
                     }
                 case System.Windows.Forms.Keys.Escape:
-                case System.Windows.Forms.Keys.Delete:
                     {
-                        this.Hide();
-                        CenterContral.Window_RecieveMoney.Show();
+                        returnPreventWindows();
                         break;
                     }
             }
@@ -170,7 +168,18 @@ namespace CashRegisterApplication.window
             this.Hide();
             return;
         }
+        private void returnPreventWindows()
+        {
+            CenterContral.Window_RecieveMoney.Show();
+            this.Hide();
+        }
 
+        private void ReceiveMoneyByCashWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();
+        }
 
     }
 }
