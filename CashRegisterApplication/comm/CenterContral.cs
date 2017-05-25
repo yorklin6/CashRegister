@@ -123,7 +123,7 @@ namespace CashRegisterApplication.comm
             oLocalSaveStock = new LocalSaveStock();
             oPayTypeList = new PayTypeData();
             //先默认登陆，取可信任的登陆态
-            CenterContral.InitDefaultLogin();
+           // CenterContral.InitDefaultLogin();
             Dao.ConnecSql();
             GetDbMsgToCenterConalMsg();//设置默认数据
   
@@ -686,8 +686,8 @@ namespace CashRegisterApplication.comm
         internal static bool _GetPayTypeList()
         {
             string json = "";
-            if (!HttpUtility.GetPayType(ref CenterContral.oPayTypeList))
-            {
+            //if (!HttpUtility.GetPayType(ref CenterContral.oPayTypeList))
+            //{
                 //取网络失败，那么就取数据库里面的
                 if (!Dao.GetPayTypeList(ref json))
                 {
@@ -697,15 +697,15 @@ namespace CashRegisterApplication.comm
                
                 CenterContral.oPayTypeList = JsonConvert.DeserializeObject<PayTypeData>(json);
                 return true;
-            }
-            json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
-            //取网络成功，则更新本地数据库
-            if (!Dao.SetPayType(ref json))
-            {
-                return false;
-            }
+            //}
+            //json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
+            ////取网络成功，则更新本地数据库
+            //if (!Dao.SetPayType(ref json))
+            //{
+            //    return false;
+            //}
 
-            return false;
+            //return false;
         }
         internal static bool _GetPayTypeListByDao()
         {

@@ -21,10 +21,10 @@ namespace CashRegiterApplication
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-    
-          Application.Run(new LoginWindows());
+
+            //Application.Run(new LoginWindows());
             // Application.Run(new SettingDefaultMsgWindow());
-            //Application.Run(new ProductListWindow());
+            Application.Run(new ProductListWindow());
             // Application.Run(new RecieveMoneyWindow());
             //Console.ReadLine();
         }

@@ -123,6 +123,7 @@ namespace CashRegisterApplication.comm
             decimal decimalNumber = 0;
             bool isNumber = decimal.TryParse(value.ToString(), out decimalNumber);
             if (!isNumber) return false;
+            if (decimalNumber > 100000) return false;
             number = Convert.ToInt32(decimalNumber * 10000);
             return true;
 

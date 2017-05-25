@@ -67,15 +67,15 @@ namespace CashRegiterApplication
 
         private void InitData()
         {
-            this.dataGridView_productList.RowsDefaultCellStyle.BackColor = Color.Bisque;
-            this.dataGridView_productList.AlternatingRowsDefaultCellStyle.BackColor = Color.Beige;
+            //york
+            //this.dataGridView_productList.RowsDefaultCellStyle.BackColor = Color.Bisque;
+            //this.dataGridView_productList.AlternatingRowsDefaultCellStyle.BackColor = Color.Beige;
 
             long index = 0;
 
             this.dataGridView_order.RowHeadersVisible = false;
             this.dataGridView_order.ColumnHeadersVisible = false;
 
-            index = this.dataGridView_order.Rows.Add();
             index = this.dataGridView_order.Rows.Add();
             index = this.dataGridView_order.Rows.Add();
 
@@ -88,8 +88,8 @@ namespace CashRegiterApplication
             _InitOrderMsg();
 
             //this.productListDataGridView.AllowUserToAddRows = false;
-            this.dataGridView_order.AllowUserToAddRows = false;
-            this.dataGridView_payWay.AllowUserToAddRows = false;
+            //this.dataGridView_order.AllowUserToAddRows = false;
+            //this.dataGridView_payWay.AllowUserToAddRows = false;
      
 
             this.ColumnIndex.ReadOnly = true;
@@ -898,6 +898,26 @@ namespace CashRegiterApplication
         private void ProductListWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
            
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
