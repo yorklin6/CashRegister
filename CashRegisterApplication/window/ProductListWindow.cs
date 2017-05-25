@@ -73,22 +73,10 @@ namespace CashRegiterApplication
 
             long index = 0;
 
-            this.dataGridView_order.RowHeadersVisible = false;
-            this.dataGridView_order.ColumnHeadersVisible = false;
 
-            index = this.dataGridView_order.Rows.Add();
-            index = this.dataGridView_order.Rows.Add();
-
-            this.dataGridView_order.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[0].Value = "实收";
-            this.dataGridView_order.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
-            this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[0].Value = "总价";
-            this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
-            this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[0].Value = "找零";
-            this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].ReadOnly = true;
             _InitOrderMsg();
 
             //this.productListDataGridView.AllowUserToAddRows = false;
-            //this.dataGridView_order.AllowUserToAddRows = false;
             //this.dataGridView_payWay.AllowUserToAddRows = false;
      
 
@@ -97,17 +85,15 @@ namespace CashRegiterApplication
             this.ColumnRetailSpecification.ReadOnly = true;
             this.ColumnRemark.ReadOnly = true;
             this.ColumnMoney.ReadOnly = true;
-            this.orderMsg.ReadOnly = true;
             System.Windows.Forms.Clipboard.SetText("9556247516480");
             gConstructEnd = true;
         }
       
         private void _InitOrderMsg()
         {
-   
-            this.dataGridView_order.Rows[CELL_INDEX.RECIEVE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
-            this.dataGridView_order.Rows[CELL_INDEX.ORDER_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
-            this.dataGridView_order.Rows[CELL_INDEX.CHANGE_FEE_ROW].Cells[CELL_INDEX.ORDER_COLUMN].Value = "0.00";
+            this.label_receiveFee.Text = "0.00";
+            this.label_orderFee.Text = "0.00";
+            this.label_changeFee.Text = "0.00";
         }
         private void _GeneraterOrder()
         {
@@ -190,7 +176,7 @@ namespace CashRegiterApplication
             this.Show();
             _SetPayWayGrid();
             _SetDataGridViewOrderFee();
-            this.dataGridView_order.CurrentCell = null;
+         
             this.dataGridView_payWay.CurrentCell = null;
             this.dataGridView_productList.CurrentCell = null;
             _ShowPayTipsInProductListAndSaveOrderMsg();
@@ -219,8 +205,8 @@ namespace CashRegiterApplication
         private void _SetDataGridViewOrderFee()
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee) ;
+            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
         }
 
         private void _SetPayWayGrid()
@@ -254,10 +240,8 @@ namespace CashRegiterApplication
         }
         private void _GoProductList()
         {
-            this.dataGridView_order.CurrentCell = null;
             this.dataGridView_payWay.CurrentCell = null;
             this.dataGridView_payWay.ClearSelection();
-            this.dataGridView_order.ClearSelection();
             //默认第一行正在编辑中
             this.dataGridView_productList.Select();
 
@@ -327,7 +311,7 @@ namespace CashRegiterApplication
             }
             CenterContral.oStockOutDTO.Base.orderAmount = orderPrice;
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
+            this.label_orderFee.Text = strOrderPrice;
             return;
         }
 
@@ -420,18 +404,6 @@ namespace CashRegiterApplication
 
 
 
-        private void _GoOrderDataGrid()
-        {
-            CommUiltl.Log("this.productListDataGridView CurrentCell: " + (this.dataGridView_productList.CurrentCell == null));
-            //MessageBox.Show("_GoOrderDataGrid " + this.productListDataGridView.CurrentRow.Index + " index" + this.productListDataGridView.CurrentCell.ColumnIndex);
-            //跳转到总价的金额编辑
-            this.dataGridView_productList.CurrentRow.Selected = false;
-            this.dataGridView_payWay.ClearSelection();
-
-            this.dataGridView_order.Select();
-            this.dataGridView_order.CurrentCell = this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW];
-            this.dataGridView_order.BeginEdit(true);
-        }
 
         
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -443,17 +415,7 @@ namespace CashRegiterApplication
         private void productListDataGridView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             CommUiltl.Log("row:" + e.RowIndex + " Column:" + e.ColumnIndex);
-            //long RowIndex=this.productListDataGridView.CurrentCell.RowIndex;
-            ////MessageBox.Show("Begin edit RowIndex:" + RowIndex);
-            //if (RowIndex >= 1)
-            //{
-            //    if (CommUiltl.IsObjEmpty( this.productListDataGridView.Rows[RowIndex].Cells[CELL_INDEX.PRODUCT_CODE].Value)
-            //        && CommUiltl.IsObjEmpty(this.productListDataGridView.Rows[RowIndex-1].Cells[CELL_INDEX.PRODUCT_CODE].Value))
-            //    {
-            //        _SetOrderPrice();
-            //        _GoOrderDataGrid();
-            //    }
-            //}
+
 
         }
 
@@ -798,11 +760,11 @@ namespace CashRegiterApplication
         private void _SetOrderGridView()
         {
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value = strOrderPrice;
+            this.label_orderFee.Text = strOrderPrice;
             string strChangeFee = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = strChangeFee;
+            this.label_changeFee.Text = strChangeFee;
             string strRecieveFee = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value = strRecieveFee;
+            this.label_receiveFee.Text = strRecieveFee;
         }
 
         private  DataGridViewCell gCurrentCell=null;
@@ -813,22 +775,21 @@ namespace CashRegiterApplication
 
             CommUiltl.Log("begin");
             long orderFee = 0, recieveFee = 0, changeFee = 0;
-            if (! CommUiltl.ConverStrYuanToUnion(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value, out orderFee))
+            if (! CommUiltl.ConverStrYuanToUnion(this.label_orderFee.Text, out orderFee))
             {
-                MessageBox.Show("总价错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.ORDER_FEE_ROW].Value);
+                MessageBox.Show("总价错误:" + this.label_orderFee.Text );
                 return;
             }
-            if (! CommUiltl.ConverStrYuanToUnion(this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value, out recieveFee))
+            if (! CommUiltl.ConverStrYuanToUnion(this.label_receiveFee.Text, out recieveFee))
             {
-                MessageBox.Show("实收错误:" + this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.RECIEVE_FEE_ROW].Value);
+                MessageBox.Show("实收错误:" + this.label_receiveFee.Text);
                 return;
             }
 
             changeFee = recieveFee - orderFee;
-            this.dataGridView_order[CELL_INDEX.ORDER_COLUMN, CELL_INDEX.CHANGE_FEE_ROW].Value = CommUiltl.CoverMoneyUnionToStrYuan(changeFee);
+            this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(changeFee);
             if (changeFee < 0)
             {
-                _SetPointToResetCurrentCell(dataGridView_order.Rows[e.RowIndex].Cells[e.ColumnIndex]);
                 MessageBox.Show("实收价钱小于总价" );
                 return;
             }
@@ -844,8 +805,6 @@ namespace CashRegiterApplication
             this.dataGridView_payWay.Rows.Clear();
             CenterContral.Clean();
             _InitOrderMsg();
-            this.dataGridView_order.ClearSelection();
-            this.dataGridView_order.CurrentCell = null;
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
             this.dataGridView_productList.BeginEdit(true);
             gConstructEnd = true;
@@ -879,7 +838,6 @@ namespace CashRegiterApplication
             {
                 CommUiltl.Log("gResetRow");
                 gResetRow = false;
-                this.dataGridView_order.CurrentCell = gCurrentCell;
             }
         }
      
@@ -892,7 +850,6 @@ namespace CashRegiterApplication
 
         void orderDataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            this.dataGridView_order.SelectionChanged += new EventHandler(orderDataGridView_SelectionChanged);
         }
 
         private void ProductListWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -916,6 +873,16 @@ namespace CashRegiterApplication
         }
 
         private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label28_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
         {
 
         }
