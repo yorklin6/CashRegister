@@ -41,7 +41,7 @@
             // button_loggin
             // 
             this.button_loggin.ImageKey = "(无)";
-            this.button_loggin.Location = new System.Drawing.Point(280, 191);
+            this.button_loggin.Location = new System.Drawing.Point(294, 187);
             this.button_loggin.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_loggin.Name = "button_loggin";
             this.button_loggin.Size = new System.Drawing.Size(87, 33);
