@@ -197,9 +197,9 @@ namespace CashRegisterApplication.comm
             return;
         }
         /******************登陆**********************/
-        internal static bool Login(string userName, string password)
+        internal static bool Login(string userName, string password, long storeId)
         {
-            if (!HttpUtility.Login(userName, password))
+            if (!HttpUtility.Login(userName, password,  storeId))
             {
                 return false;
             }
@@ -393,7 +393,9 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
             CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
 
-        
+            //收银台界面
+            CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
+            CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
     }
 
 

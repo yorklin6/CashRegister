@@ -34,6 +34,19 @@ namespace CashRegiterApplication
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
+            System.Windows.Forms.Clipboard.SetText("9556247516480");
+            this.label_defaultUser.Text = HttpUtility.DefaultUser;
+            this.label_postId.Text = CenterContral.iPostId.ToString();
+        }
+        public void  SetSerialNumber(string strSerialNumber)
+        {
+            //设置流水号
+            this.label_serial_number.Text = strSerialNumber;
+        }
+        public void SetStoreName(string strStoreName)
+        {
+            //设置门店
+            this.Text = "收银台-" + strStoreName;
         }
         private void SetTimerTask()
         {
@@ -67,26 +80,16 @@ namespace CashRegiterApplication
 
         private void InitData()
         {
-            //york
-            //this.dataGridView_productList.RowsDefaultCellStyle.BackColor = Color.Bisque;
-            //this.dataGridView_productList.AlternatingRowsDefaultCellStyle.BackColor = Color.Beige;
-
-            long index = 0;
-
-
             _InitOrderMsg();
-
-            //this.productListDataGridView.AllowUserToAddRows = false;
-            //this.dataGridView_payWay.AllowUserToAddRows = false;
-     
-
             this.ColumnIndex.ReadOnly = true;
             this.ColumnGoodsName.ReadOnly = true;
             this.ColumnRetailSpecification.ReadOnly = true;
             this.ColumnRemark.ReadOnly = true;
             this.ColumnMoney.ReadOnly = true;
-            System.Windows.Forms.Clipboard.SetText("9556247516480");
+
             gConstructEnd = true;
+
+          
         }
       
         private void _InitOrderMsg()
@@ -883,6 +886,26 @@ namespace CashRegiterApplication
         }
 
         private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label25_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_payWay_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label_connectStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label_defaultUser_Click(object sender, EventArgs e)
         {
 
         }

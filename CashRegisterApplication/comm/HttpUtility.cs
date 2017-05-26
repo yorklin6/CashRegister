@@ -32,6 +32,7 @@ namespace CashRegiterApplication
         private static CookieContainer gCookies = null;//全局登录态cookie
         public static string  DefaultUser = "york";
         public static string  DefaultPassword = "york";
+        public static long    DefaultStoreId = 5;//临时分配门店
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
@@ -58,7 +59,7 @@ namespace CashRegiterApplication
 
         
         /***************************************登陆***************************************/
-        public static bool Login(string user, string password)
+        public static bool Login(string user, string password,long storeId)
         {
             gUserName = user;
             gPassword = password;
@@ -72,7 +73,10 @@ namespace CashRegiterApplication
             oUserLoginMsg.rememberMe = true;
 
             string loginJson = JsonConvert.SerializeObject(oUserLoginMsg);
-            loginJson= "rememberMe=true&account="+ gUserName+"&password="+ CommUiltl.HEX_MD5(gPassword);
+            loginJson = "rememberMe=true&account=" + gUserName;
+            loginJson +="&password="+ CommUiltl.HEX_MD5(gPassword);
+            loginJson +="&storeId=" + storeId;
+            
             Console.WriteLine("Debug loginUrl:" + loginUrl);
             Console.WriteLine("Debug loginJson:" + loginJson);
             if (!PostUrlencoded<UserLogin>(loginUrl, loginJson, ref CenterContral.oLoginer))
@@ -95,19 +99,20 @@ namespace CashRegiterApplication
             }
             DefaultUser = user;
             DefaultPassword = password;
+            DefaultStoreId = storeId;
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + CenterContral.oLoginer.errorCode);
             return true;
         }
         public static bool LoginDefault()
         {
             CommUiltl.Log("LoginDefault by DefaultUser:" + DefaultUser + " DefaultPassword:" + DefaultPassword);
-            return Login(DefaultUser, DefaultPassword);
+            return Login(DefaultUser, DefaultPassword, DefaultStoreId);
         }
         public static bool _LoginBySaveUser()
         {
             //当登陆态失效的时候，重新用老的用户登录
             CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + DefaultUser + " DefaultPassword:"+ DefaultPassword);
-            return Login(DefaultUser, DefaultPassword);
+            return Login(DefaultUser, DefaultPassword, DefaultStoreId);
         }
        
         // MessageBox.Show();

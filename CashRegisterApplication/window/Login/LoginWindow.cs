@@ -42,7 +42,8 @@ namespace CashRegiterApplication
 
      
             //登陆
-            if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text))
+
+            if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text,CenterContral.oStoreWhouse.storeWhouseId))
             {
                 gProductListWindow.Show();
                 this.Hide();
