@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductListWindow));
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label30 = new System.Windows.Forms.Label();
@@ -72,18 +74,18 @@
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
-            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnNormalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnRetailSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label7 = new System.Windows.Forms.Label();
+            this.ColumnIndex = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnProductCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnGoodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnRetailSpecification = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnNormalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnMoney = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnRemark = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -600,26 +602,26 @@
             this.dataGridView_payWay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView_payWay.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dataGridView_payWay.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView_payWay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_payWay.Enabled = false;
             this.dataGridView_payWay.EnableHeadersVisualStyles = false;
@@ -648,13 +650,14 @@
             // 
             // dataGridView_productList
             // 
-            this.dataGridView_productList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_productList.AllowUserToOrderColumns = true;
+            this.dataGridView_productList.AllowUserToResizeColumns = false;
             this.dataGridView_productList.BackgroundColor = System.Drawing.SystemColors.WindowText;
             this.dataGridView_productList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView_productList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -672,14 +675,14 @@
             this.ColumnRemark,
             this.ProductID});
             this.tableLayoutPanel1.SetColumnSpan(this.dataGridView_productList, 4);
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_productList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_productList.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_productList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_productList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView_productList.EnableHeadersVisualStyles = false;
@@ -698,53 +701,6 @@
             this.dataGridView_productList.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_RowEnter);
             this.dataGridView_productList.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.productListDataGridView_RowsAdded);
             this.dataGridView_productList.SelectionChanged += new System.EventHandler(this.productListDataGridView_SelectionChanged);
-            // 
-            // ProductID
-            // 
-            this.ProductID.HeaderText = "商品ID";
-            this.ProductID.Name = "ProductID";
-            this.ProductID.Visible = false;
-            // 
-            // ColumnRemark
-            // 
-            this.ColumnRemark.HeaderText = "备注";
-            this.ColumnRemark.Name = "ColumnRemark";
-            // 
-            // ColumnMoney
-            // 
-            this.ColumnMoney.HeaderText = "金额";
-            this.ColumnMoney.Name = "ColumnMoney";
-            // 
-            // ColumnNormalPrice
-            // 
-            this.ColumnNormalPrice.HeaderText = "单价";
-            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
-            // 
-            // ColumnAmount
-            // 
-            this.ColumnAmount.HeaderText = "数量";
-            this.ColumnAmount.Name = "ColumnAmount";
-            // 
-            // ColumnRetailSpecification
-            // 
-            this.ColumnRetailSpecification.HeaderText = "规格";
-            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
-            // 
-            // ColumnGoodsName
-            // 
-            this.ColumnGoodsName.FillWeight = 200F;
-            this.ColumnGoodsName.HeaderText = "名称";
-            this.ColumnGoodsName.Name = "ColumnGoodsName";
-            // 
-            // ColumnProductCode
-            // 
-            this.ColumnProductCode.HeaderText = "条码";
-            this.ColumnProductCode.Name = "ColumnProductCode";
-            // 
-            // ColumnIndex
-            // 
-            this.ColumnIndex.HeaderText = "序号";
-            this.ColumnIndex.Name = "ColumnIndex";
             // 
             // tableLayoutPanel1
             // 
@@ -799,6 +755,75 @@
             this.label7.TabIndex = 7;
             this.label7.Text = "HOME:选择支付方式\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复\r\nEND:基本信息设置";
             // 
+            // ColumnIndex
+            // 
+            this.ColumnIndex.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnIndex.FillWeight = 10F;
+            this.ColumnIndex.HeaderText = "序";
+            this.ColumnIndex.Name = "ColumnIndex";
+            this.ColumnIndex.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColumnIndex.Width = 30;
+            // 
+            // ColumnProductCode
+            // 
+            this.ColumnProductCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnProductCode.FillWeight = 15F;
+            this.ColumnProductCode.HeaderText = "商品货号";
+            this.ColumnProductCode.Name = "ColumnProductCode";
+            // 
+            // ColumnGoodsName
+            // 
+            this.ColumnGoodsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnGoodsName.FillWeight = 25F;
+            this.ColumnGoodsName.HeaderText = "名称";
+            this.ColumnGoodsName.Name = "ColumnGoodsName";
+            // 
+            // ColumnRetailSpecification
+            // 
+            this.ColumnRetailSpecification.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnRetailSpecification.FillWeight = 8F;
+            this.ColumnRetailSpecification.HeaderText = "单位";
+            this.ColumnRetailSpecification.Name = "ColumnRetailSpecification";
+            // 
+            // ColumnAmount
+            // 
+            this.ColumnAmount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnAmount.FillWeight = 8F;
+            this.ColumnAmount.HeaderText = "数量";
+            this.ColumnAmount.Name = "ColumnAmount";
+            // 
+            // ColumnNormalPrice
+            // 
+            this.ColumnNormalPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnNormalPrice.DefaultCellStyle = dataGridViewCellStyle2;
+            this.ColumnNormalPrice.FillWeight = 10F;
+            this.ColumnNormalPrice.HeaderText = "单价";
+            this.ColumnNormalPrice.Name = "ColumnNormalPrice";
+            // 
+            // ColumnMoney
+            // 
+            this.ColumnMoney.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ColumnMoney.FillWeight = 10F;
+            this.ColumnMoney.HeaderText = "金额";
+            this.ColumnMoney.Name = "ColumnMoney";
+            // 
+            // ColumnRemark
+            // 
+            this.ColumnRemark.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ColumnRemark.DefaultCellStyle = dataGridViewCellStyle3;
+            this.ColumnRemark.FillWeight = 15F;
+            this.ColumnRemark.HeaderText = "备注";
+            this.ColumnRemark.Name = "ColumnRemark";
+            // 
+            // ProductID
+            // 
+            this.ProductID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ProductID.HeaderText = "商品ID";
+            this.ProductID.Name = "ProductID";
+            this.ProductID.Visible = false;
+            // 
             // ProductListWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -847,15 +872,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView dataGridView_productList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIndex;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProductCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnGoodsName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRetailSpecification;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAmount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNormalPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMoney;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRemark;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
         private System.Windows.Forms.DataGridView dataGridView_payWay;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
@@ -888,5 +904,14 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnIndex;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnProductCode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnGoodsName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRetailSpecification;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnNormalPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnMoney;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRemark;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
     }
 }

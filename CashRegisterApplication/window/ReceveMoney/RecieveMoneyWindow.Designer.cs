@@ -135,7 +135,7 @@
             this.payTypeDescription,
             this.quickKey,
             this.payType});
-            this.dataGridView_payTypeList.Location = new System.Drawing.Point(422, 21);
+            this.dataGridView_payTypeList.Location = new System.Drawing.Point(458, 25);
             this.dataGridView_payTypeList.Name = "dataGridView_payTypeList";
             this.dataGridView_payTypeList.ReadOnly = true;
             this.dataGridView_payTypeList.RowHeadersVisible = false;
