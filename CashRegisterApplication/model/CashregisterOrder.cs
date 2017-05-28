@@ -131,12 +131,12 @@ namespace CashRegisterApplication.model
         public Byte status { get; set; }
         public String remark { get; set; }
 
-
+        //************本地缓存数据
         public long RecieveFee { get; set; }
         public String ProductList { get; set; }
         public long ChangeFee { get; set; }
 
-
+   
         public String baseDataJson { get; set; }
         public int cloudAddFlag { get; set; }
         public int cloudCloseFlag { get; set; }
@@ -144,19 +144,21 @@ namespace CashRegisterApplication.model
         public int cloudUpdateFlag { get; set; }
         public String cloudRespJson { get; set; }
 
+      
         public int dbGenerateFlag { get; set; }
         public int localSaveFlag { get; set; }
-        
+
+        // 折扣
+        public long discountAmount { get; set; }
+        public long discountRate { get; set; }
+        // 全班商品累计价格
+        public long allGoodsMoneyAmount { get; set; }
 
         public void generateSeariseNumber()
         {
             CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
-
         }
-
- 
-
     }
     public class StockOutDetail
     {

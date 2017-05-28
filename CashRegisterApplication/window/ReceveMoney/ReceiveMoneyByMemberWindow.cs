@@ -44,7 +44,7 @@ namespace CashRegisterApplication.window.member
                 return;
             }
             //成功后，需要更新订单信息，按照会员价来计算订单总价
-            CenterContral.UpdateStockOrderByMemberInfo();
+            // CenterContral.UpdateStockOrderByMemberInfo();
             ShowWithMemberInfo();
             this.textBox_ReceiveFee.Focus();
         }
@@ -150,7 +150,6 @@ namespace CashRegisterApplication.window.member
             {
                 this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
             }
-
         }
         private void buttonConfirm_Click(object sender, EventArgs e)
         {

@@ -101,6 +101,12 @@
     <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\productList\DiscountWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\productList\DiscountWindows.Designer.cs">
+      <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,10 +125,10 @@
     <Compile Include="window\ReceveMoney\RecieveMoneyWindow.Designer.cs">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\ProductListWindow.cs">
+    <Compile Include="window\productList\ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\ProductListWindow.Designer.cs">
+    <Compile Include="window\productList\ProductListWindow.Designer.cs">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="comm\HttpUtility.cs" />
@@ -147,6 +153,9 @@
     <EmbeddedResource Include="window\Member\RechargeMoneyForMember.resx">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="window\productList\DiscountWindows.resx">
+      <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.resx">
       <DependentUpon>ReceiveMoneyByMemberWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -156,7 +165,7 @@
     <EmbeddedResource Include="window\ReceveMoney\RecieveMoneyWindow.resx">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\ProductListWindow.resx">
+    <EmbeddedResource Include="window\productList\ProductListWindow.resx">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Login\LoginWindow.resx">

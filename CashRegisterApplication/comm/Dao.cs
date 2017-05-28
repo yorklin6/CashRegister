@@ -287,7 +287,6 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //更新订单
             string strSql = "update  tb_stock_out_base set ";
-            strSql += "order_amount=" + CenterContral.oStockOutDTO.Base.orderAmount + ", ";
             strSql += "local_save_flag=" + CenterContral.oStockOutDTO.Base.localSaveFlag + " ";
             strSql += "where serialNumber='" + CenterContral.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();

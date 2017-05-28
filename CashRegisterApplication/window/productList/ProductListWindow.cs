@@ -34,20 +34,37 @@ namespace CashRegiterApplication
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
+            SetLocalSaveDataNumber();
             System.Windows.Forms.Clipboard.SetText("9556247516480");
             this.label_defaultUser.Text = HttpUtility.DefaultUser;
             this.label_postId.Text = CenterContral.iPostId.ToString();
+        }
+
+        public void SetLocalSaveDataNumber()
+        {
+            this.label_local_save_stock_number.Text = CenterContral.oLocalSaveStock.listStock.Count.ToString();
         }
         public void  SetSerialNumber(string strSerialNumber)
         {
             //设置流水号
             this.label_serial_number.Text = strSerialNumber;
         }
+        
         public void SetStoreName(string strStoreName)
         {
             //设置门店
             this.Text = "收银台-" + strStoreName;
         }
+
+        //折扣信息
+        public void UpdateDiscount()
+        {
+            //折扣额度
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.discountAmount);
+            //折扣率
+            this.label_discount_rate.Text = CenterContral.oStockOutDTO.Base.discountRate.ToString();
+        }
+
         private void SetTimerTask()
         {
             CommUiltl.Log("SetTimerTask ");
@@ -86,16 +103,14 @@ namespace CashRegiterApplication
             this.ColumnRetailSpecification.ReadOnly = true;
             this.ColumnRemark.ReadOnly = true;
             this.ColumnMoney.ReadOnly = true;
-
             gConstructEnd = true;
-
           
         }
       
         private void _InitOrderMsg()
         {
-            this.label_receiveFee.Text = "0.00";
             this.label_orderFee.Text = "0.00";
+            this.label_receiveFee.Text = "0.00";
             this.label_changeFee.Text = "0.00";
         }
         private void _GeneraterOrder()
@@ -208,7 +223,7 @@ namespace CashRegiterApplication
         private void _SetDataGridViewOrderFee()
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
-            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
             this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
         }
 
@@ -312,8 +327,8 @@ namespace CashRegiterApplication
 
                 orderPrice += subtotal;
             }
-            CenterContral.oStockOutDTO.Base.orderAmount = orderPrice;
-            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
+            CenterContral.updateOrderAmount(orderPrice);
+            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
             this.label_orderFee.Text = strOrderPrice;
             return;
         }
@@ -343,8 +358,6 @@ namespace CashRegiterApplication
                 _SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex]);
                 return;
             }
-
-
 
             if (CommUiltl.IsObjEmpty(productInfo.barcode) ||
                CommUiltl.IsObjEmpty(productInfo.retailPrice) ||
@@ -404,9 +417,6 @@ namespace CashRegiterApplication
             detail.detailDataJson = JsonConvert.SerializeObject(productInfo);
 
         }
-
-
-
 
         
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -637,7 +647,7 @@ namespace CashRegiterApplication
                     {
                         //挂单恢复
                         RecoverStock();
-                        return base.ProcessCmdKey(ref msg, keyData);
+                        return true;
                     }
                 case System.Windows.Forms.Keys.End:
                     {
@@ -646,16 +656,27 @@ namespace CashRegiterApplication
                         this.Hide();
                         return true;
                     }
+                case System.Windows.Forms.Keys.Insert:
+                    {
+                        //挂单恢复
+                        Discount();
+                        return true;
+                    }
 
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        /**********************************整单打折******************************************/
+        private void Discount()
+        {
+            CenterContral.Window_DiscountWindows.ShowWithDiscountMsg();
         }
         /**********************************挂单**********************************************/
         private void SaveStock()
         {
             string showTips = "是否要挂单";
             var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "挂单确认",
+                                  "挂单操作",
                                   MessageBoxButtons.YesNo);
 
             if (confirmPayApartResult != DialogResult.Yes)
@@ -678,7 +699,7 @@ namespace CashRegiterApplication
             CommUiltl.Log("Main.oSaveSotckOut.listStock.Count: "+ CenterContral.oLocalSaveStock.listStock.Count);
             if (CenterContral.oLocalSaveStock.listStock.Count==0)
             {
-                MessageBox.Show("无挂单", "恢复挂单");
+                MessageBox.Show("无挂单", "挂单操作");
                 return;
             }
 
@@ -689,7 +710,7 @@ namespace CashRegiterApplication
             }
           
             var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "恢复挂单",
+                                  "挂单操作",
                                   MessageBoxButtons.YesNo);
 
             if (confirmPayApartResult != DialogResult.Yes)
@@ -713,6 +734,7 @@ namespace CashRegiterApplication
             _ResetAllData();
             CenterContral.GetSaveOrderToCurrentMsg();
             SetProductListWindowByStockOut(CenterContral.oStockOutDTO);
+
         }
 
         private bool ProductListIsEmpty(StockOutDTO oStockOutDTO)
@@ -778,7 +800,7 @@ namespace CashRegiterApplication
 
             CommUiltl.Log("begin");
             long orderFee = 0, recieveFee = 0, changeFee = 0;
-            if (! CommUiltl.ConverStrYuanToUnion(this.label_orderFee.Text, out orderFee))
+            if (! CommUiltl.ConverStrYuanToUnion(this.label_orderFee .Text, out orderFee))
             {
                 MessageBox.Show("总价错误:" + this.label_orderFee.Text );
                 return;

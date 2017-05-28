@@ -2,6 +2,7 @@
 using CashRegisterApplication.window;
 using CashRegisterApplication.window.member;
 using CashRegisterApplication.window.Member;
+using CashRegisterApplication.window.productList;
 using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
@@ -27,8 +28,7 @@ namespace CashRegisterApplication.comm
 
 
         public static MemberInfoWindows Window_MemberInfoWindows;//输入会员弹窗
-
-
+        public static DiscountWindows Window_DiscountWindows;
 
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
@@ -107,7 +107,7 @@ namespace CashRegisterApplication.comm
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
 
             Window_MemberInfoWindows = new MemberInfoWindows();
-
+            Window_DiscountWindows = new DiscountWindows();
             oStockOutDTO = new StockOutDTO();//商品列表
             oStockOutDToRespond = new StockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
@@ -145,7 +145,7 @@ namespace CashRegisterApplication.comm
             HttpUtility.LoginDefault();
         }
 
-
+        
         public static void _GetSaveStock()
         {
             //查出挂单的单据
@@ -260,7 +260,6 @@ namespace CashRegisterApplication.comm
                 }
                 totalPrice += CenterContral.oStockOutDTO.details[i].unitPrice;
             }
-            //
             CenterContral.oStockOutDTO.Base.orderAmount = totalPrice;
             CenterContral.Window_ProductList.SetProductListWindowByStockOut(CenterContral.oStockOutDTO);
             //更新数据库里面订单信息
@@ -363,14 +362,15 @@ namespace CashRegisterApplication.comm
 
         public static void Clean()
         {
-            oStockOutDTO = new StockOutDTO();//商品列表
-            oStockOutDToRespond = new StockOutDTORespone();
+            CenterContral.oStockOutDTO = new StockOutDTO();//商品列表
+            CenterContral.oStockOutDToRespond = new StockOutDTORespone();
 
             CenterContral.oStockOutDTO.Base.generateSeariseNumber();
             CenterContral.oStockOutDTO.Base.stockOutId = 0;
             CenterContral.oStockOutDTO.Base.RecieveFee = 0;
             CenterContral.oStockOutDTO.Base.orderAmount = 0;
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
+            CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = 0;
 
             CenterContral.oStockOutDTO.Base.type = 1;
             CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
@@ -379,7 +379,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId = 1;
           //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
-            CenterContral.oStockOutDTO.Base.orderAmount = 0;
+       
           //  CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
             CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
             CenterContral.oStockOutDTO.Base.remark = "";
@@ -393,12 +393,35 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
             CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
 
-            //收银台界面
+
+            //收款折扣
+            CenterContral.oStockOutDTO.Base.discountRate = 100;
+            CenterContral.oStockOutDTO.Base.discountAmount =0;
+
+            CenterContral.Window_ProductList.UpdateDiscount();
+            //*收银台界面
             CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
             CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
+            
     }
-
-
+       public static void updateOrderAmount(long orderPrice)
+        {
+            CommUiltl.Log(" updateOrderAmount:" + orderPrice);
+            CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = orderPrice;
+            CenterContral.UpdateDiscountRate(CenterContral.oStockOutDTO.Base.discountRate);
+        }
+        public static void UpdateDiscountRate(long discountRate)
+        {
+            CenterContral.oStockOutDTO.Base.orderAmount = GetMoneyAmountByDiscountRate(discountRate);
+            CenterContral.oStockOutDTO.Base.discountRate = discountRate;
+            CenterContral.oStockOutDTO.Base.discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - CenterContral.oStockOutDTO.Base.orderAmount;
+            CenterContral.Window_ProductList.UpdateDiscount();
+        }
+        public static long GetMoneyAmountByDiscountRate(long discountRate)
+        {
+            //CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount本来是4位长度
+            return (long)( (double)(CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount) /100 * discountRate);
+        }
         public static void ControlWindowsAfterPay()
         {
             CommUiltl.Log("ControlWindowsAfterPay");
@@ -427,9 +450,25 @@ namespace CashRegisterApplication.comm
             {
                 return false;
             }
+            RemoveSaveStock();//挂单->关单
             return true;
         }
-
+        internal static void RemoveSaveStock()
+        {
+            if (CenterContral.oStockOutDTO.Base.localSaveFlag == Dao.STOCK_BASE_SAVE_FLAG_CLOSE)
+            {
+                //挂单给关闭掉
+                for (int i = 0; i < CenterContral.oLocalSaveStock.listStock.Count; ++i)
+                {
+                    if (oStockOutDTO.Base.serialNumber == CenterContral.oLocalSaveStock.listStock[i].Base.serialNumber)
+                    {
+                        CenterContral.oLocalSaveStock.listStock.RemoveAt(i);
+                        break;
+                    }
+                }
+                CenterContral.Window_ProductList.SetLocalSaveDataNumber();
+            }
+        }
         internal static void SetSaveFlag()
         {
             if (CenterContral.oStockOutDTO.Base.localSaveFlag == Dao.STOCK_BASE_SAVE_FLAG_SAVING)
@@ -450,6 +489,7 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log("Main.oStockOutDTO.details.Count == 0]");
                 return true;
             }
+            CommUiltl.Log("CenterContral.oStockOutDTO.Base.dbGenerateFlag:"+CenterContral.oStockOutDTO.Base.dbGenerateFlag);
             if (IsCurrentOrderInit())
             {
                 
@@ -458,8 +498,9 @@ namespace CashRegisterApplication.comm
 
                 // CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.GenerateOrder(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
                 CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_SUCESS;
-                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_DONE;//新增
+
+                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 //插入本地数据库表
                 if (!Dao.GenerateOrder(CenterContral.oStockOutDTO))
                 {
@@ -473,7 +514,6 @@ namespace CashRegisterApplication.comm
                 CommUiltl.Log(" strProductList is modify [" + CenterContral.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
                 CenterContral.oStockOutDTO.Base.ProductList = strProductList;
                 CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
-                CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
                 CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
@@ -537,10 +577,12 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             addStockToLocal(CenterContral.oStockOutDTO);
+            
             return true;
         }
         internal static void addStockToLocal(StockOutDTO oStockOutDTO)
         {
+            CommUiltl.Log("addStockToLocal CenterContral.oStockOutDTO.Base.dbGenerateFlag:" + oStockOutDTO.Base.dbGenerateFlag);
             CommUiltl.Log("addStockToLocal Main.oSaveSotckOut.listStock.Count:" + CenterContral.oLocalSaveStock.listStock.Count);
             for (int i = 0; i < CenterContral.oLocalSaveStock.listStock.Count; ++i)
             {
@@ -552,6 +594,7 @@ namespace CashRegisterApplication.comm
                 }
             }
             CenterContral.oLocalSaveStock.listStock.Add(oStockOutDTO);
+            CenterContral.Window_ProductList.SetLocalSaveDataNumber();
         }
         public static int CurrentStockIndex = -1;
 
