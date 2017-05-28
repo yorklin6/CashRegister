@@ -48,10 +48,10 @@ namespace CashRegisterApplication.window.member
         internal void ShowWhithMember()
         {
             
-            this.textBox_memberAccount.Text= CenterContral.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
-            this.textBox_phone.Text = CenterContral.oMember.phone;
+            this.textBox_memberAccount.Text= CenterContral.oStockOutDTO.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
+            this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
             this.textBox_memberAccount.Focus();
 
             this.textBox_memberAccount.Text = "123456";
@@ -70,7 +70,7 @@ namespace CashRegisterApplication.window.member
                 this.textBox_memberAccount.SelectionStart = 0;
                 return;
             }
-            if (CenterContral.oMember.memberAccount != this.textBox_memberAccount.Text)
+            if (CenterContral.oStockOutDTO.oMember.memberAccount != this.textBox_memberAccount.Text)
             {
                 //查会员信息
                 if (!CenterContral.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
@@ -84,9 +84,9 @@ namespace CashRegisterApplication.window.member
               
    
                 //查成功
-                this.textBox_name.Text = CenterContral.oMember.name;
-                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
-                this.textBox_phone.Text = CenterContral.oMember.phone;
+                this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
+                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
+                this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
             }
             //查成功或者没有修改会员账号
             CenterContral.ShowWindowWhenGetMemberSuccess();

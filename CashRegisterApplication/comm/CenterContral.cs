@@ -40,8 +40,6 @@ namespace CashRegisterApplication.comm
 
         public static PayTypeData oPayTypeList;
 
-        public static Member oMember;//用户账户
-
         public static PayWay oPayWay;//支付信息
         public static PayType oCurrentPayType;// 支付类型全局
 
@@ -94,6 +92,8 @@ namespace CashRegisterApplication.comm
 
         public const int STORE_HOUSE_UNSET_SELETED = 0;
         public const int STORE_HOUSE_SELETED = 1;
+        public const int STOCK_OUT_BASE_TYPE = 21;
+
         public static void Init()
         {
             if (initFlag == true)
@@ -109,9 +109,9 @@ namespace CashRegisterApplication.comm
             Window_MemberInfoWindows = new MemberInfoWindows();
             Window_DiscountWindows = new DiscountWindows();
             oStockOutDTO = new StockOutDTO();//商品列表
+
             oStockOutDToRespond = new StockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
-            oMember = new Member();
             oPayWay = new PayWay();
             oStoreWhouse = new StoreWhouse();
             store_house_selete_flag = STORE_HOUSE_UNSET_SELETED;
@@ -310,7 +310,7 @@ namespace CashRegisterApplication.comm
                 }
 
             }
-            CenterContral.oMember.goodsStringWithoutMemberPrice = strTmp;
+            CenterContral.oStockOutDTO.oMember.goodsStringWithoutMemberPrice = strTmp;
 
         }
         //***************************充值相关
@@ -372,7 +372,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
             CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = 0;
 
-            CenterContral.oStockOutDTO.Base.type = 1;
+            CenterContral.oStockOutDTO.Base.type = CenterContral.STOCK_OUT_BASE_TYPE;
             CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
             CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
@@ -402,8 +402,12 @@ namespace CashRegisterApplication.comm
             //*收银台界面
             CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
             CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
-            
-    }
+
+            //会员信息清空
+            CenterContral.oStockOutDTO.oMember = new Member();
+            CenterContral.Window_ProductList.SetMemberInfo();
+        }
+
        public static void updateOrderAmount(long orderPrice)
         {
             CommUiltl.Log(" updateOrderAmount:" + orderPrice);
@@ -443,7 +447,11 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
-            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
+
+            //关单请求
+            CenterContral.oStockOutDTO.Base.cloudCloseFlag
+                = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
+
             CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
             if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
@@ -645,7 +653,7 @@ namespace CashRegisterApplication.comm
             oPayWay.payAmount = recieveFee;
 
             WalletHistory oRecharge = new WalletHistory();
-            oRecharge.memberId = CenterContral.oMember.memberId;
+            oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.changeValue = recieveFee;
             oRecharge.generatePaySerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
@@ -663,8 +671,8 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
 
             //重新拉会员信息
-            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
-
+            CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
+            CenterContral.Window_ProductList.SetMemberInfo();
             return true;
         }
         //充值
@@ -672,7 +680,7 @@ namespace CashRegisterApplication.comm
         {
             //充值金
             WalletHistory oRecharge = new WalletHistory();
-            oRecharge.memberId = CenterContral.oMember.memberId;
+            oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.changeValue = recieveFee;
             oRecharge.generateRechargeSerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
@@ -684,13 +692,13 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             oRecharge.reqRechargeJson = JsonConvert.SerializeObject(oRecharge);
-            long beforeMberBalance = CenterContral.oMember.balance ;
+            long beforeMberBalance = CenterContral.oStockOutDTO.oMember.balance ;
             //重新拉会员信息
-            CenterContral.GetMemberByMemberAccount(CenterContral.oMember.memberAccount);
-            long afterMemberAccount = CenterContral.oMember.balance ;
+            CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
+            long afterMemberAccount = CenterContral.oStockOutDTO.oMember.balance ;
             //记录流水
-            Dao.memberRecharge(oRecharge, beforeMberBalance, afterMemberAccount, recieveFee, CenterContral.oMember);
-           
+            Dao.memberRecharge(oRecharge, beforeMberBalance, afterMemberAccount, recieveFee, CenterContral.oStockOutDTO.oMember);
+            //CenterContral.Window_ProductList.SetMemberInfo();
             return true;
         }
 
@@ -701,7 +709,7 @@ namespace CashRegisterApplication.comm
             int iMemberRet = HttpUtility.GetMemberByMemberAccount(strMemberAccount, ref oMember);
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                CenterContral.oMember = oMember.data.list[0];
+                CenterContral.oStockOutDTO.oMember = oMember.data.list[0];
                 return true;
             }
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_FAILD)
@@ -710,6 +718,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             MessageBox.Show("业务错误：" + HttpUtility.lastErrorMsg);
+           
             return false;
         }
         //************************支付类型***********************

@@ -55,6 +55,8 @@ namespace CashRegiterApplication
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
         public const int CLOUD_SATE_HTTP_FAILD = 1;
         public const int CLOUD_SATE_BUSSINESS_FAILD = 2;
+
+    
         public static string lastErrorMsg;
 
         

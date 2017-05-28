@@ -479,9 +479,9 @@ namespace CashRegisterApplication.comm
             //插入订单
             string strSql = "insert into tb_member_recharge  ";
             strSql += " (member_id,name,member_account,berfore_balance,after_balance,create_time,cloud_state,reqRechargeJson) VALUES (";
-            strSql += "" + oRechargeMember.memberId + ",";
+            strSql += "'" + oRechargeMember.memberId + "',";
             strSql += "'" + oMermber.name + "',";
-            strSql += "" + oMermber.memberAccount + ",";
+            strSql += "'" + oMermber.memberAccount + "',";
             strSql += "" + beforeMberBalance + ",";
             strSql += "" + afterMemberAccount + ",";
             strSql += "datetime('now'),";

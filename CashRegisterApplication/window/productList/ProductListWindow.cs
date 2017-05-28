@@ -39,9 +39,17 @@ namespace CashRegiterApplication
             this.label_defaultUser.Text = HttpUtility.DefaultUser;
             this.label_postId.Text = CenterContral.iPostId.ToString();
         }
-
+        public void SetMemberInfo()
+        {
+            CommUiltl.Log("this.label_member_account.Text:"+ this.label_member_account.Text);
+            //挂单数量
+            this.label_member_account.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
+            this.label_member_point.Text = CenterContral.oStockOutDTO.oMember.point.ToString();
+            this.label_member_balance.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.oMember.balance).ToString();
+        }
         public void SetLocalSaveDataNumber()
         {
+            //挂单数量
             this.label_local_save_stock_number.Text = CenterContral.oLocalSaveStock.listStock.Count.ToString();
         }
         public void  SetSerialNumber(string strSerialNumber)

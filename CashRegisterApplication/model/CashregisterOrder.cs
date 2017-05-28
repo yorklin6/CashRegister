@@ -28,12 +28,15 @@ namespace CashRegisterApplication.model
         public StockOutBase Base;
         public List<StockOutDetail> details;
         public List<PayWay> checkouts;
+
+        public Member oMember;
         
         public StockOutDTO()
         {
             Base = new StockOutBase();
             details = new List<StockOutDetail>();
             checkouts = new List<PayWay>();
+            oMember = new Member();
         }
 
         internal void addPayWay(PayWay oPayWay)

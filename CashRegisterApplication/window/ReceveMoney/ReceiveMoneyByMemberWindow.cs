@@ -36,7 +36,7 @@ namespace CashRegisterApplication.window.member
         public void ShowByReceiveMoneyWindows()
         {
             this.Show();
-            if (CenterContral.oMember.memberAccount == null || CenterContral.oMember.memberAccount =="")
+            if (CenterContral.oStockOutDTO.oMember.memberAccount == null || CenterContral.oStockOutDTO.oMember.memberAccount =="")
             {
                 //输入会员信息
                 CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
@@ -51,17 +51,17 @@ namespace CashRegisterApplication.window.member
 
         internal void ShowWithMemberInfo()
         {
+            this.Show();
             UpdateMemberInfor();
-           
             _SelectRecieve();
             _ShowGoodsMemberInfo();
-            this.Show();
         }
         public void  UpdateMemberInfor(){
-            this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance));
-            this.textBox_phone.Text = CenterContral.oMember.phone;
+            this.textBox_memberAccount.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance));
+            this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
+
         }
         private void _SelectRecieve()
         {
@@ -76,10 +76,10 @@ namespace CashRegisterApplication.window.member
         private void _ShowGoodsMemberInfo()
         {
             string str = "\n";
-            if (CenterContral.oMember.goodsStringWithoutMemberPrice != "")
+            if (CenterContral.oStockOutDTO.oMember.goodsStringWithoutMemberPrice != "")
             {
                 str += "未参加会员价的商品:\n";
-                str += CenterContral.oMember.goodsStringWithoutMemberPrice;
+                str += CenterContral.oStockOutDTO.oMember.goodsStringWithoutMemberPrice;
             }
             this.lable_goodsStringWithoutMemberPrice.Text = str;
         }
@@ -159,7 +159,7 @@ namespace CashRegisterApplication.window.member
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            if (recieveFee > CenterContral.oMember.balance )
+            if (recieveFee > CenterContral.oStockOutDTO.oMember.balance )
             {
                 MessageBox.Show("余额不足" );
                 //跳转到充值页面

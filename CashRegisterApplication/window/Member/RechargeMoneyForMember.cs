@@ -18,21 +18,20 @@ namespace CashRegisterApplication.window.Member
 
         internal void ShowWithMemberInfo()
         {
-
+            this.Show();
             _SetMemberInfo();
             this.textBox_ReceiveFee.Text = "100";//默认100元
-
             this.textBox_ReceiveFee.Focus();
             this.textBox_ReceiveFee.SelectionStart = 0;
             this.textBox_ReceiveFee.SelectionLength = this.textBox_ReceiveFee.Text.Length;
-            this.Show();
+          
         }
         private void _SetMemberInfo()
         {
-            this.textBox_memberAccount.Text = CenterContral.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance));
-            this.textBox_phone.Text = CenterContral.oMember.phone;
+            this.textBox_memberAccount.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
+            this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
+            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance));
+            this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
         }
 
 
@@ -53,7 +52,7 @@ namespace CashRegisterApplication.window.Member
         public void ShowRechargeMoneyWindow()
         {
             this.Show();
-            if (CenterContral.oMember.memberAccount == null || CenterContral.oMember.memberAccount == "")
+            if (CenterContral.oStockOutDTO.oMember.memberAccount == null || CenterContral.oStockOutDTO.oMember.memberAccount == "")
             {
                 CenterContral.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
                 this.Hide();
@@ -108,7 +107,7 @@ namespace CashRegisterApplication.window.Member
             }
             //下单支付
             CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-            string strBeforeRecharge = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance ));
+            string strBeforeRecharge = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
             if (!CenterContral.RechargeMoneyByMember(recieveFee))
             {
                  _SelectRecieve();
@@ -117,7 +116,7 @@ namespace CashRegisterApplication.window.Member
 
             MessageBox.Show("充值成功!\n\n充值前:" + strBeforeRecharge
                 + "\n充值:" + this.textBox_ReceiveFee.Text
-                + "\n充值后:" + CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oMember.balance)), "充值结果");
+                + "\n充值后:" + CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance)), "充值结果");
 
             _SetMemberInfo();
 
