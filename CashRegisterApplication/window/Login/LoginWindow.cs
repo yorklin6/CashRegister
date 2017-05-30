@@ -38,7 +38,8 @@ namespace CashRegiterApplication
             //登陆
             if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text,CenterContral.oStoreWhouse.storeWhouseId))
             {
-                gProductListWindow.Show();
+                CenterContral.LoginSuccess();
+          
                 this.Hide();
             }
         }
@@ -57,7 +58,7 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("LoginWindows_Shown ");
             CenterContral.InitWindows();
-
+  
             if (0 != CenterContral.oStoreWhouse.storeWhouseId)
             {
                 textBox_Shop.Text = CenterContral.oStoreWhouse.name;
@@ -66,6 +67,7 @@ namespace CashRegiterApplication
         public void UpdateSetttingDefaultMsg()
         {
             textBox_Shop.Text = CenterContral.oStoreWhouse.name;
+            CenterContral.InitWindows();
         }
     }
 }

@@ -32,6 +32,8 @@ namespace CashRegisterApplication.comm
         public static MemberInfoWindows Window_MemberInfoWindows;//输入会员弹窗
         public static DiscountWindows Window_DiscountWindows;
 
+ 
+
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
         public static SelectGoodWindows Window_SelectGood;
@@ -130,6 +132,7 @@ namespace CashRegisterApplication.comm
 
             Window_SelectGood = new SelectGoodWindows();
             oPayTypeList = new PayTypeData();
+            oPayTypeList.list = new List<PayType>();
             //先默认登陆，取可信任的登陆态
             // CenterContral.InitDefaultLogin();
             CommUiltl.Log("CheckIsInit ");
@@ -172,9 +175,14 @@ namespace CashRegisterApplication.comm
             }
             return true;
         }
+        internal static void LoginSuccess()
+        {
+            CenterContral.GetPayTypeList();
+            CenterContral.Window_ProductList.Show();
+            return;
+        }
         public static void GetDefaultMsgFromDb()
         {
-            Dao.ConnecSql();
             GetDbMsgToCenterConalMsg();//设置默认数据
         }
 
@@ -182,14 +190,14 @@ namespace CashRegisterApplication.comm
         public static void GetDbMsgToCenterConalMsg()
         {
             //_InitDbLocalMsg();
-            _GetSaveStock();//挂单数据
+            GetSaveStock();//挂单数据
             //门店信息
             GetStoreMsgFromDb();
             //Post机Id设置
             GetPostIdFromDb();
-            _GetPayTypeList();//支付类型
         }
 
+       
 
         public static void InitDefaultLogin()
         {
@@ -197,7 +205,7 @@ namespace CashRegisterApplication.comm
         }
 
         
-        public static void _GetSaveStock()
+        public static void GetSaveStock()
         {
             //查出挂单的单据
             StockOutDTO oState = new StockOutDTO();
@@ -335,7 +343,6 @@ namespace CashRegisterApplication.comm
             {
                if( CenterContral.oPayTypeList.list[index].payTypeId == payTypeId)
                 {
-                   
                     CenterContral.oCurrentPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
                     CenterContral.oPayWay.payType = CenterContral.oCurrentPayType.payTypeId;
@@ -786,43 +793,31 @@ namespace CashRegisterApplication.comm
         }
         //************************支付类型***********************
               
-        internal static bool _GetPayTypeList()
+        internal static bool GetPayTypeList()
         {
             string json = "";
-            //if (!HttpUtility.GetPayType(ref CenterContral.oPayTypeList))
-            //{
+            if (!HttpUtility.GetPayType(ref CenterContral.oPayTypeList))
+            {
                 //取网络失败，那么就取数据库里面的
                 if (!Dao.GetPayTypeList(ref json))
                 {
                     MessageBox.Show("获取支付类型失败：" + HttpUtility.lastErrorMsg);
                     return false;
                 }
-               
+
                 CenterContral.oPayTypeList = JsonConvert.DeserializeObject<PayTypeData>(json);
                 return true;
-            //}
-            //json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
-            ////取网络成功，则更新本地数据库
-            //if (!Dao.SetPayType(ref json))
-            //{
-            //    return false;
-            //}
-
-            //return false;
-        }
-        internal static bool _GetPayTypeListByDao()
-        {
-            string json = "";
+            }
+            json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
             //取网络成功，则更新本地数据库
-            if (!Dao.GetPayTypeList(ref json))
+            if (!Dao.SetPayType(ref json))
             {
-                MessageBox.Show("获取支付类型失败：" + HttpUtility.lastErrorMsg);
                 return false;
             }
-            //
-            CenterContral.oPayTypeList = JsonConvert.DeserializeObject<PayTypeData>(json);
+
             return false;
         }
+      
 
         //post 机id
         internal static void GetPostIdFromDb()

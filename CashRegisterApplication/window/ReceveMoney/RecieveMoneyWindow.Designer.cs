@@ -28,127 +28,206 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RecieveMoneyWindow));
             this.label_OrderFee = new System.Windows.Forms.Label();
-            this.textBox_OrderFee = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox_RecieveFee = new System.Windows.Forms.TextBox();
             this.label_RecieveFee = new System.Windows.Forms.Label();
-            this.label_LeftFee = new System.Windows.Forms.Label();
-            this.textBox_LeftFee = new System.Windows.Forms.TextBox();
-            this.labelPaidMsg = new System.Windows.Forms.Label();
+            this.label_LeftFee1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView_payTypeList = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lable_LeftFee = new System.Windows.Forms.Label();
+            this.lable_OrderFee = new System.Windows.Forms.Label();
+            this.lable_RecieveFee = new System.Windows.Forms.Label();
             this.payTypeDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.quickKey = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.payType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payTypeList)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label_OrderFee
             // 
             this.label_OrderFee.AutoSize = true;
-            this.label_OrderFee.Location = new System.Drawing.Point(139, 147);
+            this.label_OrderFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_OrderFee.Font = new System.Drawing.Font("微软雅黑", 14.25F);
+            this.label_OrderFee.Location = new System.Drawing.Point(4, 128);
             this.label_OrderFee.Name = "label_OrderFee";
-            this.label_OrderFee.Size = new System.Drawing.Size(41, 12);
+            this.label_OrderFee.Size = new System.Drawing.Size(162, 199);
             this.label_OrderFee.TabIndex = 7;
-            this.label_OrderFee.Text = "总价：";
-            // 
-            // textBox_OrderFee
-            // 
-            this.textBox_OrderFee.CausesValidation = false;
-            this.textBox_OrderFee.Cursor = System.Windows.Forms.Cursors.Default;
-            this.textBox_OrderFee.Enabled = false;
-            this.textBox_OrderFee.HideSelection = false;
-            this.textBox_OrderFee.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_OrderFee.Location = new System.Drawing.Point(186, 138);
-            this.textBox_OrderFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox_OrderFee.Name = "textBox_OrderFee";
-            this.textBox_OrderFee.ReadOnly = true;
-            this.textBox_OrderFee.ShortcutsEnabled = false;
-            this.textBox_OrderFee.Size = new System.Drawing.Size(126, 21);
-            this.textBox_OrderFee.TabIndex = 8;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(184, 305);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(95, 60);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "提示:\r\n1键：现金支付\r\n2键：微信支付\r\n3键：支付宝支付\r\n4键：会员支付\r\n";
-            // 
-            // textBox_RecieveFee
-            // 
-            this.textBox_RecieveFee.Enabled = false;
-            this.textBox_RecieveFee.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.textBox_RecieveFee.Location = new System.Drawing.Point(186, 181);
-            this.textBox_RecieveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox_RecieveFee.Name = "textBox_RecieveFee";
-            this.textBox_RecieveFee.ReadOnly = true;
-            this.textBox_RecieveFee.Size = new System.Drawing.Size(126, 21);
-            this.textBox_RecieveFee.TabIndex = 21;
+            this.label_OrderFee.Text = "总计应收";
+            this.label_OrderFee.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label_RecieveFee
             // 
             this.label_RecieveFee.AutoSize = true;
-            this.label_RecieveFee.Location = new System.Drawing.Point(121, 184);
+            this.label_RecieveFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_RecieveFee.Font = new System.Drawing.Font("微软雅黑", 14.25F);
+            this.label_RecieveFee.Location = new System.Drawing.Point(4, 328);
             this.label_RecieveFee.Name = "label_RecieveFee";
-            this.label_RecieveFee.Size = new System.Drawing.Size(59, 12);
+            this.label_RecieveFee.Size = new System.Drawing.Size(162, 325);
             this.label_RecieveFee.TabIndex = 22;
-            this.label_RecieveFee.Text = " 已收款：";
+            this.label_RecieveFee.Text = "实际已收";
+            this.label_RecieveFee.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // label_LeftFee
+            // label_LeftFee1
             // 
-            this.label_LeftFee.AutoSize = true;
-            this.label_LeftFee.Location = new System.Drawing.Point(121, 103);
-            this.label_LeftFee.Name = "label_LeftFee";
-            this.label_LeftFee.Size = new System.Drawing.Size(59, 12);
-            this.label_LeftFee.TabIndex = 23;
-            this.label_LeftFee.Text = " 未收款：";
+            this.label_LeftFee1.AutoSize = true;
+            this.label_LeftFee1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_LeftFee1.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label_LeftFee1.Location = new System.Drawing.Point(4, 1);
+            this.label_LeftFee1.Name = "label_LeftFee1";
+            this.label_LeftFee1.Size = new System.Drawing.Size(162, 126);
+            this.label_LeftFee1.TabIndex = 23;
+            this.label_LeftFee1.Text = " 还需收款";
+            this.label_LeftFee1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label_LeftFee1.Click += new System.EventHandler(this.label_LeftFee_Click);
             // 
-            // textBox_LeftFee
+            // tableLayoutPanel1
             // 
-            this.textBox_LeftFee.Enabled = false;
-            this.textBox_LeftFee.HideSelection = false;
-            this.textBox_LeftFee.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.textBox_LeftFee.Location = new System.Drawing.Point(186, 100);
-            this.textBox_LeftFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox_LeftFee.Name = "textBox_LeftFee";
-            this.textBox_LeftFee.ReadOnly = true;
-            this.textBox_LeftFee.Size = new System.Drawing.Size(126, 21);
-            this.textBox_LeftFee.TabIndex = 24;
-            // 
-            // labelPaidMsg
-            // 
-            this.labelPaidMsg.AutoSize = true;
-            this.labelPaidMsg.Location = new System.Drawing.Point(402, 117);
-            this.labelPaidMsg.Name = "labelPaidMsg";
-            this.labelPaidMsg.Size = new System.Drawing.Size(0, 12);
-            this.labelPaidMsg.TabIndex = 25;
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView_payTypeList, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35.80442F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(681, 654);
+            this.tableLayoutPanel1.TabIndex = 27;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // dataGridView_payTypeList
             // 
             this.dataGridView_payTypeList.AllowUserToAddRows = false;
             this.dataGridView_payTypeList.AllowUserToDeleteRows = false;
+            this.dataGridView_payTypeList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_payTypeList.BackgroundColor = System.Drawing.SystemColors.WindowText;
+            this.dataGridView_payTypeList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payTypeList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_payTypeList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_payTypeList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.payTypeDescription,
             this.quickKey,
             this.payType});
-            this.dataGridView_payTypeList.Location = new System.Drawing.Point(458, 25);
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_payTypeList.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView_payTypeList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_payTypeList.EnableHeadersVisualStyles = false;
+            this.dataGridView_payTypeList.GridColor = System.Drawing.SystemColors.Window;
+            this.dataGridView_payTypeList.Location = new System.Drawing.Point(1, 1);
+            this.dataGridView_payTypeList.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView_payTypeList.Name = "dataGridView_payTypeList";
             this.dataGridView_payTypeList.ReadOnly = true;
+            this.dataGridView_payTypeList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payTypeList.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_payTypeList.RowHeadersVisible = false;
             this.dataGridView_payTypeList.RowTemplate.Height = 23;
             this.dataGridView_payTypeList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_payTypeList.Size = new System.Drawing.Size(209, 436);
+            this.dataGridView_payTypeList.Size = new System.Drawing.Size(339, 652);
             this.dataGridView_payTypeList.TabIndex = 26;
+            this.dataGridView_payTypeList.VirtualMode = true;
+            this.dataGridView_payTypeList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payTypeList_CellContentClick);
             this.dataGridView_payTypeList.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_payTypeList_CellMouseDoubleClick);
             this.dataGridView_payTypeList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_payTypeList_MouseDoubleClick);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 168F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tableLayoutPanel2.Controls.Add(this.label_LeftFee1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label_RecieveFee, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label_OrderFee, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.lable_LeftFee, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lable_OrderFee, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.lable_RecieveFee, 1, 2);
+            this.tableLayoutPanel2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tableLayoutPanel2.Font = new System.Drawing.Font("微软雅黑", 14.25F);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(343, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.69565F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 61.30435F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 324F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(338, 654);
+            this.tableLayoutPanel2.TabIndex = 28;
+            this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
+            // 
+            // lable_LeftFee
+            // 
+            this.lable_LeftFee.AutoSize = true;
+            this.lable_LeftFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lable_LeftFee.Location = new System.Drawing.Point(173, 1);
+            this.lable_LeftFee.Name = "lable_LeftFee";
+            this.lable_LeftFee.Size = new System.Drawing.Size(164, 126);
+            this.lable_LeftFee.TabIndex = 25;
+            this.lable_LeftFee.Text = " 未收款";
+            this.lable_LeftFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lable_OrderFee
+            // 
+            this.lable_OrderFee.AutoSize = true;
+            this.lable_OrderFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lable_OrderFee.Location = new System.Drawing.Point(173, 128);
+            this.lable_OrderFee.Name = "lable_OrderFee";
+            this.lable_OrderFee.Size = new System.Drawing.Size(164, 199);
+            this.lable_OrderFee.TabIndex = 26;
+            this.lable_OrderFee.Text = "总价";
+            this.lable_OrderFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lable_OrderFee.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lable_RecieveFee
+            // 
+            this.lable_RecieveFee.AutoSize = true;
+            this.lable_RecieveFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lable_RecieveFee.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lable_RecieveFee.Location = new System.Drawing.Point(173, 328);
+            this.lable_RecieveFee.Name = "lable_RecieveFee";
+            this.lable_RecieveFee.Size = new System.Drawing.Size(164, 325);
+            this.lable_RecieveFee.TabIndex = 27;
+            this.lable_RecieveFee.Text = "已收";
+            this.lable_RecieveFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // payTypeDescription
             // 
-            this.payTypeDescription.HeaderText = "类型";
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.Window;
+            this.payTypeDescription.DefaultCellStyle = dataGridViewCellStyle2;
+            this.payTypeDescription.HeaderText = "支付方式";
             this.payTypeDescription.Name = "payTypeDescription";
             this.payTypeDescription.ReadOnly = true;
             // 
@@ -167,39 +246,39 @@
             // 
             // RecieveMoneyWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 634);
-            this.Controls.Add(this.dataGridView_payTypeList);
-            this.Controls.Add(this.labelPaidMsg);
-            this.Controls.Add(this.textBox_LeftFee);
-            this.Controls.Add(this.label_LeftFee);
-            this.Controls.Add(this.label_RecieveFee);
-            this.Controls.Add(this.textBox_RecieveFee);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox_OrderFee);
-            this.Controls.Add(this.label_OrderFee);
+            this.BackColor = System.Drawing.SystemColors.WindowText;
+            this.ClientSize = new System.Drawing.Size(681, 654);
+            this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "RecieveMoneyWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "收款";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RecieveMoneyWindow_FormClosing);
             this.Load += new System.EventHandler(this.RecieveMoneyWindows_Load);
             this.Shown += new System.EventHandler(this.RecieveMoneyWindows_Shown);
+            this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payTypeList)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.Label label_OrderFee;
-        private System.Windows.Forms.TextBox textBox_OrderFee;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox_RecieveFee;
         private System.Windows.Forms.Label label_RecieveFee;
-        private System.Windows.Forms.Label label_LeftFee;
-        private System.Windows.Forms.TextBox textBox_LeftFee;
-        private System.Windows.Forms.Label labelPaidMsg;
+        private System.Windows.Forms.Label label_LeftFee1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label lable_LeftFee;
+        private System.Windows.Forms.Label lable_OrderFee;
+        private System.Windows.Forms.Label lable_RecieveFee;
         private System.Windows.Forms.DataGridView dataGridView_payTypeList;
         private System.Windows.Forms.DataGridViewTextBoxColumn payTypeDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn quickKey;

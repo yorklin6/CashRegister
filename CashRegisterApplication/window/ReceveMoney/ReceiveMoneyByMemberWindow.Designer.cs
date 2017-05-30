@@ -237,6 +237,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_memberAccount);
             this.Name = "ReceiveMoneyByMember";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "会员支付";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceiveMoneyByMember_FormClosing);
             this.Load += new System.EventHandler(this.MemberBuy_Load);

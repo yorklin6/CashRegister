@@ -135,7 +135,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_discountRate);
             this.Controls.Add(this.button_loggin);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Name = "DiscountWindows";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "折扣";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DiscountWindows_FormClosing);
             this.Load += new System.EventHandler(this.DiscountWindows_Load);

@@ -28,11 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductListWindow));
@@ -337,7 +341,7 @@
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 167F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 168F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.label_member_balance, 1, 5);
             this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
@@ -372,28 +376,28 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.21739F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.78261F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 93F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 95F));
             this.tableLayoutPanel4.Controls.Add(this.label_discount_amount, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label16, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label_discount_rate, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(38, 55);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(37, 55);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(167, 21);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(168, 21);
             this.tableLayoutPanel4.TabIndex = 13;
             // 
             // label_discount_amount
             // 
             this.label_discount_amount.AutoSize = true;
             this.label_discount_amount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_amount.Location = new System.Drawing.Point(72, 1);
+            this.label_discount_amount.Location = new System.Drawing.Point(71, 1);
             this.label_discount_amount.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_amount.Name = "label_discount_amount";
-            this.label_discount_amount.Size = new System.Drawing.Size(94, 19);
+            this.label_discount_amount.Size = new System.Drawing.Size(96, 19);
             this.label_discount_amount.TabIndex = 4;
             this.label_discount_amount.Text = "0";
             this.label_discount_amount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -403,7 +407,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(30, 1);
+            this.label16.Location = new System.Drawing.Point(29, 1);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(41, 19);
@@ -418,7 +422,7 @@
             this.label_discount_rate.Location = new System.Drawing.Point(1, 1);
             this.label_discount_rate.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_rate.Name = "label_discount_rate";
-            this.label_discount_rate.Size = new System.Drawing.Size(28, 19);
+            this.label_discount_rate.Size = new System.Drawing.Size(27, 19);
             this.label_discount_rate.TabIndex = 2;
             this.label_discount_rate.Text = "100";
             this.label_discount_rate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -427,10 +431,10 @@
             // 
             this.label_member_balance.AutoSize = true;
             this.label_member_balance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_balance.Location = new System.Drawing.Point(38, 119);
+            this.label_member_balance.Location = new System.Drawing.Point(37, 119);
             this.label_member_balance.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_balance.Name = "label_member_balance";
-            this.label_member_balance.Size = new System.Drawing.Size(167, 21);
+            this.label_member_balance.Size = new System.Drawing.Size(168, 21);
             this.label_member_balance.TabIndex = 11;
             this.label_member_balance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -441,7 +445,7 @@
             this.label12.Location = new System.Drawing.Point(1, 119);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(36, 21);
+            this.label12.Size = new System.Drawing.Size(35, 21);
             this.label12.TabIndex = 10;
             this.label12.Text = "余额";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -450,10 +454,10 @@
             // 
             this.label_member_point.AutoSize = true;
             this.label_member_point.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_point.Location = new System.Drawing.Point(38, 98);
+            this.label_member_point.Location = new System.Drawing.Point(37, 98);
             this.label_member_point.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_point.Name = "label_member_point";
-            this.label_member_point.Size = new System.Drawing.Size(167, 20);
+            this.label_member_point.Size = new System.Drawing.Size(168, 20);
             this.label_member_point.TabIndex = 9;
             this.label_member_point.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -464,7 +468,7 @@
             this.label10.Location = new System.Drawing.Point(1, 98);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(36, 20);
+            this.label10.Size = new System.Drawing.Size(35, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "积分";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -473,10 +477,10 @@
             // 
             this.label_member_account.AutoSize = true;
             this.label_member_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_account.Location = new System.Drawing.Point(38, 77);
+            this.label_member_account.Location = new System.Drawing.Point(37, 77);
             this.label_member_account.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_account.Name = "label_member_account";
-            this.label_member_account.Size = new System.Drawing.Size(167, 20);
+            this.label_member_account.Size = new System.Drawing.Size(168, 20);
             this.label_member_account.TabIndex = 7;
             this.label_member_account.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_member_account.Click += new System.EventHandler(this.label9_Click);
@@ -488,7 +492,7 @@
             this.label8.Location = new System.Drawing.Point(1, 77);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(36, 20);
+            this.label8.Size = new System.Drawing.Size(35, 20);
             this.label8.TabIndex = 6;
             this.label8.Text = "会员卡";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -500,7 +504,7 @@
             this.label5.Location = new System.Drawing.Point(1, 55);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(36, 21);
+            this.label5.Size = new System.Drawing.Size(35, 21);
             this.label5.TabIndex = 4;
             this.label5.Text = "折扣率";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -512,7 +516,7 @@
             this.label31.Location = new System.Drawing.Point(1, 28);
             this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(36, 26);
+            this.label31.Size = new System.Drawing.Size(35, 26);
             this.label31.TabIndex = 2;
             this.label31.Text = "挂单";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -521,10 +525,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(38, 1);
+            this.label2.Location = new System.Drawing.Point(37, 1);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(167, 26);
+            this.label2.Size = new System.Drawing.Size(168, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "输入商品";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -536,7 +540,7 @@
             this.label1.Location = new System.Drawing.Point(1, 1);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 26);
+            this.label1.Size = new System.Drawing.Size(35, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "状态";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -549,13 +553,13 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.13044F));
             this.tableLayoutPanel3.Controls.Add(this.label_local_save_stock_number, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(38, 28);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(37, 28);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(167, 26);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(168, 26);
             this.tableLayoutPanel3.TabIndex = 12;
             // 
             // label_local_save_stock_number
@@ -565,38 +569,42 @@
             this.label_local_save_stock_number.Location = new System.Drawing.Point(1, 1);
             this.label_local_save_stock_number.Margin = new System.Windows.Forms.Padding(0);
             this.label_local_save_stock_number.Name = "label_local_save_stock_number";
-            this.label_local_save_stock_number.Size = new System.Drawing.Size(165, 24);
+            this.label_local_save_stock_number.Size = new System.Drawing.Size(166, 24);
             this.label_local_save_stock_number.TabIndex = 2;
             this.label_local_save_stock_number.Text = "0";
             this.label_local_save_stock_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // dataGridView_payWay
             // 
+            this.dataGridView_payWay.AllowUserToAddRows = false;
+            this.dataGridView_payWay.AllowUserToDeleteRows = false;
+            this.dataGridView_payWay.AllowUserToResizeColumns = false;
+            this.dataGridView_payWay.AllowUserToResizeRows = false;
             this.dataGridView_payWay.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView_payWay.BackgroundColor = System.Drawing.SystemColors.WindowText;
             this.dataGridView_payWay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView_payWay.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dataGridView_payWay.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column8,
-            this.Column9});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column8,
+            this.Column9});
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridView_payWay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_payWay.Enabled = false;
             this.dataGridView_payWay.EnableHeadersVisualStyles = false;
@@ -606,6 +614,14 @@
             this.dataGridView_payWay.MultiSelect = false;
             this.dataGridView_payWay.Name = "dataGridView_payWay";
             this.dataGridView_payWay.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payWay.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridView_payWay.RowHeadersVisible = false;
             this.dataGridView_payWay.RowTemplate.Height = 23;
             this.dataGridView_payWay.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -615,11 +631,15 @@
             // 
             // Column8
             // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Column8.DefaultCellStyle = dataGridViewCellStyle8;
             this.Column8.HeaderText = "付款方式";
             this.Column8.Name = "Column8";
             // 
             // Column9
             // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Column9.DefaultCellStyle = dataGridViewCellStyle9;
             this.Column9.HeaderText = "付款金额";
             this.Column9.Name = "Column9";
             // 
@@ -667,9 +687,17 @@
             this.dataGridView_productList.MultiSelect = false;
             this.dataGridView_productList.Name = "dataGridView_productList";
             this.dataGridView_productList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_productList.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_productList.RowHeadersVisible = false;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.dataGridView_productList.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.dataGridView_productList.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView_productList.RowTemplate.Height = 23;
             this.dataGridView_productList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridView_productList.Size = new System.Drawing.Size(784, 395);
@@ -829,6 +857,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ProductListWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "收银台";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProductListWindow_FormClosing);
@@ -868,8 +897,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView dataGridView_productList;
         private System.Windows.Forms.DataGridView dataGridView_payWay;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label_discount_amount;
@@ -907,5 +934,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnRemark;
         private System.Windows.Forms.DataGridViewTextBoxColumn ProductID;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
     }
 }

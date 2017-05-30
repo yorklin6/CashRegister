@@ -38,10 +38,10 @@ namespace CashRegisterApplication.window
                 leftMoney = 0;
             }
             CommUiltl.Log("leftMoney:"+ leftMoney);
-            this.textBox_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
+            this.lable_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
             //其他订单信息
-            this.textBox_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            this.textBox_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.lable_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
+            this.lable_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
             //默认不选中
             this.dataGridView_payTypeList.ClearSelection();
             this.dataGridView_payTypeList.CurrentCell = null;
@@ -51,7 +51,12 @@ namespace CashRegisterApplication.window
         {
             CommUiltl.Log("已支付列表");
             this.Show();
-            string strPaidInfo="已支付列表：\n";
+            string strPaidInfo = "";
+            if (CenterContral.oStockOutDTO.checkouts.Count == 0)
+            {
+                 strPaidInfo = "空";
+            }
+        
             foreach (var item in CenterContral.oStockOutDTO.checkouts)
             {
                 if (item.payType== PayWay.PAY_TYPE_CASH)
@@ -67,7 +72,7 @@ namespace CashRegisterApplication.window
                     strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
                 }
             }
-            this.labelPaidMsg.Text = strPaidInfo;
+            this.label_RecieveFee.Text = strPaidInfo;
             ShowByProductListWindow();
         }
 
@@ -288,6 +293,35 @@ namespace CashRegisterApplication.window
             returnPreventWindows();
             CenterContral.Window_RecieveMoney = new RecieveMoneyWindow();
         }
-       
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label_LeftFee_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_payTypeList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_payWay_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

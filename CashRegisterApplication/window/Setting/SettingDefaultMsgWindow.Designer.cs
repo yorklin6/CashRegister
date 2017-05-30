@@ -208,6 +208,7 @@
             this.Controls.Add(this.comboBox_StoreShop);
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "SettingDefaultMsgWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SettingDefaultMsg";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingDefaultMsgWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingDefaultMsg_Load);

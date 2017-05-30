@@ -130,6 +130,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoginWindows";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "收银机登录";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.LoginWindows_Shown);

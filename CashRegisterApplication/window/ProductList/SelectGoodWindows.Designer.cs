@@ -58,9 +58,8 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75.99062F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(779, 600);
             this.tableLayoutPanel1.TabIndex = 40;
@@ -113,7 +112,7 @@
             this.dataGridView_productList.RowHeadersVisible = false;
             this.dataGridView_productList.RowTemplate.Height = 23;
             this.dataGridView_productList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_productList.Size = new System.Drawing.Size(779, 566);
+            this.dataGridView_productList.Size = new System.Drawing.Size(779, 600);
             this.dataGridView_productList.TabIndex = 1;
             this.dataGridView_productList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_productList_CellContentClick);
             this.dataGridView_productList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_productList_CellDoubleClick);
@@ -208,6 +207,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "SelectGoodWindows";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "选择商品";
             this.Load += new System.EventHandler(this.SelectGoods_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
