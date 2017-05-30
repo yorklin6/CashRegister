@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProductListWindow));
@@ -109,7 +110,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label26, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label30, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(206, 408);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(206, 395);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 3;
@@ -117,7 +118,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.57143F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(165, 128);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(165, 141);
             this.tableLayoutPanel6.TabIndex = 42;
             // 
             // label_receiveFee
@@ -125,10 +126,10 @@
             this.label_receiveFee.AutoSize = true;
             this.label_receiveFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_receiveFee.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_receiveFee.Location = new System.Drawing.Point(83, 42);
+            this.label_receiveFee.Location = new System.Drawing.Point(83, 48);
             this.label_receiveFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_receiveFee.Name = "label_receiveFee";
-            this.label_receiveFee.Size = new System.Drawing.Size(81, 46);
+            this.label_receiveFee.Size = new System.Drawing.Size(81, 53);
             this.label_receiveFee.TabIndex = 6;
             this.label_receiveFee.Text = "0.00";
             this.label_receiveFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -141,7 +142,7 @@
             this.label_orderFee.Location = new System.Drawing.Point(83, 1);
             this.label_orderFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_orderFee.Name = "label_orderFee";
-            this.label_orderFee.Size = new System.Drawing.Size(81, 40);
+            this.label_orderFee.Size = new System.Drawing.Size(81, 46);
             this.label_orderFee.TabIndex = 5;
             this.label_orderFee.Text = "0.00";
             this.label_orderFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -151,7 +152,7 @@
             this.label28.AutoSize = true;
             this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label28.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label28.Location = new System.Drawing.Point(1, 89);
+            this.label28.Location = new System.Drawing.Point(1, 102);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(81, 38);
@@ -165,7 +166,7 @@
             this.label_changeFee.AutoSize = true;
             this.label_changeFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_changeFee.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_changeFee.Location = new System.Drawing.Point(83, 89);
+            this.label_changeFee.Location = new System.Drawing.Point(83, 102);
             this.label_changeFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_changeFee.Name = "label_changeFee";
             this.label_changeFee.Size = new System.Drawing.Size(81, 38);
@@ -181,7 +182,7 @@
             this.label26.Location = new System.Drawing.Point(1, 1);
             this.label26.Margin = new System.Windows.Forms.Padding(0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(81, 40);
+            this.label26.Size = new System.Drawing.Size(81, 46);
             this.label26.TabIndex = 1;
             this.label26.Text = "总计应收";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -191,10 +192,10 @@
             this.label30.AutoSize = true;
             this.label30.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label30.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label30.Location = new System.Drawing.Point(1, 42);
+            this.label30.Location = new System.Drawing.Point(1, 48);
             this.label30.Margin = new System.Windows.Forms.Padding(0);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(81, 46);
+            this.label30.Size = new System.Drawing.Size(81, 53);
             this.label30.TabIndex = 4;
             this.label30.Text = "实际已收";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -239,6 +240,7 @@
             this.label_serial_number.Size = new System.Drawing.Size(225, 24);
             this.label_serial_number.TabIndex = 5;
             this.label_serial_number.Text = "xxxxxx";
+            this.label_serial_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label22
             // 
@@ -250,7 +252,7 @@
             this.label22.Size = new System.Drawing.Size(66, 24);
             this.label22.TabIndex = 4;
             this.label22.Text = "流水号";
-            this.label22.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label_defaultUser
             // 
@@ -262,6 +264,7 @@
             this.label_defaultUser.Size = new System.Drawing.Size(66, 24);
             this.label_defaultUser.TabIndex = 3;
             this.label_defaultUser.Text = "0";
+            this.label_defaultUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_defaultUser.Click += new System.EventHandler(this.label_defaultUser_Click);
             // 
             // label20
@@ -274,7 +277,7 @@
             this.label20.Size = new System.Drawing.Size(66, 24);
             this.label20.TabIndex = 2;
             this.label20.Text = "收银员";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label_postId
             // 
@@ -286,6 +289,7 @@
             this.label_postId.Size = new System.Drawing.Size(66, 24);
             this.label_postId.TabIndex = 1;
             this.label_postId.Text = "-1";
+            this.label_postId.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label18
             // 
@@ -297,7 +301,7 @@
             this.label18.Size = new System.Drawing.Size(66, 24);
             this.label18.TabIndex = 0;
             this.label18.Text = "POS机号";
-            this.label18.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label_connectStatus
             // 
@@ -309,7 +313,7 @@
             this.label_connectStatus.Size = new System.Drawing.Size(66, 24);
             this.label_connectStatus.TabIndex = 6;
             this.label_connectStatus.Text = "联网";
-            this.label_connectStatus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label_connectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label_connectStatus.Click += new System.EventHandler(this.label_connectStatus_Click);
             // 
             // label25
@@ -322,7 +326,7 @@
             this.label25.Size = new System.Drawing.Size(154, 24);
             this.label25.TabIndex = 7;
             this.label25.Text = "2017.03.02 10:12";
-            this.label25.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label25.Click += new System.EventHandler(this.label25_Click);
             // 
             // tableLayoutPanel2
@@ -333,7 +337,7 @@
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 161F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 166F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.label_member_balance, 1, 5);
             this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
@@ -346,7 +350,7 @@
             this.tableLayoutPanel2.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(371, 408);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(371, 395);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 6;
@@ -357,7 +361,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(206, 128);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(206, 141);
             this.tableLayoutPanel2.TabIndex = 40;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -368,28 +372,28 @@
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.21739F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.78261F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
             this.tableLayoutPanel4.Controls.Add(this.label_discount_amount, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label16, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label_discount_rate, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(44, 45);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(39, 55);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(161, 17);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(166, 21);
             this.tableLayoutPanel4.TabIndex = 13;
             // 
             // label_discount_amount
             // 
             this.label_discount_amount.AutoSize = true;
             this.label_discount_amount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_amount.Location = new System.Drawing.Point(78, 1);
+            this.label_discount_amount.Location = new System.Drawing.Point(73, 1);
             this.label_discount_amount.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_amount.Name = "label_discount_amount";
-            this.label_discount_amount.Size = new System.Drawing.Size(82, 15);
+            this.label_discount_amount.Size = new System.Drawing.Size(92, 19);
             this.label_discount_amount.TabIndex = 4;
             this.label_discount_amount.Text = "0";
             this.label_discount_amount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -399,10 +403,10 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(32, 1);
+            this.label16.Location = new System.Drawing.Point(30, 1);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(45, 15);
+            this.label16.Size = new System.Drawing.Size(42, 19);
             this.label16.TabIndex = 3;
             this.label16.Text = "折扣额";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -414,7 +418,7 @@
             this.label_discount_rate.Location = new System.Drawing.Point(1, 1);
             this.label_discount_rate.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_rate.Name = "label_discount_rate";
-            this.label_discount_rate.Size = new System.Drawing.Size(30, 15);
+            this.label_discount_rate.Size = new System.Drawing.Size(28, 19);
             this.label_discount_rate.TabIndex = 2;
             this.label_discount_rate.Text = "100";
             this.label_discount_rate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -423,10 +427,10 @@
             // 
             this.label_member_balance.AutoSize = true;
             this.label_member_balance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_balance.Location = new System.Drawing.Point(44, 105);
+            this.label_member_balance.Location = new System.Drawing.Point(39, 119);
             this.label_member_balance.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_balance.Name = "label_member_balance";
-            this.label_member_balance.Size = new System.Drawing.Size(161, 22);
+            this.label_member_balance.Size = new System.Drawing.Size(166, 21);
             this.label_member_balance.TabIndex = 11;
             this.label_member_balance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -434,10 +438,10 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label12.Location = new System.Drawing.Point(1, 105);
+            this.label12.Location = new System.Drawing.Point(1, 119);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(42, 22);
+            this.label12.Size = new System.Drawing.Size(37, 21);
             this.label12.TabIndex = 10;
             this.label12.Text = "余额";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -446,10 +450,10 @@
             // 
             this.label_member_point.AutoSize = true;
             this.label_member_point.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_point.Location = new System.Drawing.Point(44, 84);
+            this.label_member_point.Location = new System.Drawing.Point(39, 98);
             this.label_member_point.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_point.Name = "label_member_point";
-            this.label_member_point.Size = new System.Drawing.Size(161, 20);
+            this.label_member_point.Size = new System.Drawing.Size(166, 20);
             this.label_member_point.TabIndex = 9;
             this.label_member_point.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -457,10 +461,10 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Location = new System.Drawing.Point(1, 84);
+            this.label10.Location = new System.Drawing.Point(1, 98);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(42, 20);
+            this.label10.Size = new System.Drawing.Size(37, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "积分";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -469,10 +473,10 @@
             // 
             this.label_member_account.AutoSize = true;
             this.label_member_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_account.Location = new System.Drawing.Point(44, 63);
+            this.label_member_account.Location = new System.Drawing.Point(39, 77);
             this.label_member_account.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_account.Name = "label_member_account";
-            this.label_member_account.Size = new System.Drawing.Size(161, 20);
+            this.label_member_account.Size = new System.Drawing.Size(166, 20);
             this.label_member_account.TabIndex = 7;
             this.label_member_account.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_member_account.Click += new System.EventHandler(this.label9_Click);
@@ -481,10 +485,10 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(1, 63);
+            this.label8.Location = new System.Drawing.Point(1, 77);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(42, 20);
+            this.label8.Size = new System.Drawing.Size(37, 20);
             this.label8.TabIndex = 6;
             this.label8.Text = "会员卡";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -493,10 +497,10 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(1, 45);
+            this.label5.Location = new System.Drawing.Point(1, 55);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(42, 17);
+            this.label5.Size = new System.Drawing.Size(37, 21);
             this.label5.TabIndex = 4;
             this.label5.Text = "折扣率";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -505,10 +509,10 @@
             // 
             this.label31.AutoSize = true;
             this.label31.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label31.Location = new System.Drawing.Point(1, 23);
+            this.label31.Location = new System.Drawing.Point(1, 28);
             this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(42, 21);
+            this.label31.Size = new System.Drawing.Size(37, 26);
             this.label31.TabIndex = 2;
             this.label31.Text = "挂单";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -517,10 +521,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(44, 1);
+            this.label2.Location = new System.Drawing.Point(39, 1);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(161, 21);
+            this.label2.Size = new System.Drawing.Size(166, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "输入商品";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -532,7 +536,7 @@
             this.label1.Location = new System.Drawing.Point(1, 1);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 21);
+            this.label1.Size = new System.Drawing.Size(37, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "状态";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -545,13 +549,13 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.13044F));
             this.tableLayoutPanel3.Controls.Add(this.label_local_save_stock_number, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(44, 23);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(39, 28);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(161, 21);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(166, 26);
             this.tableLayoutPanel3.TabIndex = 12;
             // 
             // label_local_save_stock_number
@@ -561,7 +565,7 @@
             this.label_local_save_stock_number.Location = new System.Drawing.Point(1, 1);
             this.label_local_save_stock_number.Margin = new System.Windows.Forms.Padding(0);
             this.label_local_save_stock_number.Name = "label_local_save_stock_number";
-            this.label_local_save_stock_number.Size = new System.Drawing.Size(159, 19);
+            this.label_local_save_stock_number.Size = new System.Drawing.Size(164, 24);
             this.label_local_save_stock_number.TabIndex = 2;
             this.label_local_save_stock_number.Text = "0";
             this.label_local_save_stock_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -573,31 +577,31 @@
             this.dataGridView_payWay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView_payWay.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.dataGridView_payWay.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column8,
-            this.Column9});
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle6.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column8,
+            this.Column9});
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView_payWay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView_payWay.Enabled = false;
             this.dataGridView_payWay.EnableHeadersVisualStyles = false;
             this.dataGridView_payWay.GridColor = System.Drawing.SystemColors.Window;
-            this.dataGridView_payWay.Location = new System.Drawing.Point(0, 408);
+            this.dataGridView_payWay.Location = new System.Drawing.Point(0, 395);
             this.dataGridView_payWay.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView_payWay.MultiSelect = false;
             this.dataGridView_payWay.Name = "dataGridView_payWay";
@@ -605,7 +609,7 @@
             this.dataGridView_payWay.RowHeadersVisible = false;
             this.dataGridView_payWay.RowTemplate.Height = 23;
             this.dataGridView_payWay.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView_payWay.Size = new System.Drawing.Size(206, 128);
+            this.dataGridView_payWay.Size = new System.Drawing.Size(206, 141);
             this.dataGridView_payWay.TabIndex = 2;
             this.dataGridView_payWay.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payWay_CellContentClick);
             // 
@@ -650,7 +654,7 @@
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_productList.DefaultCellStyle = dataGridViewCellStyle4;
@@ -664,8 +668,11 @@
             this.dataGridView_productList.Name = "dataGridView_productList";
             this.dataGridView_productList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView_productList.RowHeadersVisible = false;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.dataGridView_productList.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_productList.RowTemplate.Height = 23;
-            this.dataGridView_productList.Size = new System.Drawing.Size(784, 408);
+            this.dataGridView_productList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView_productList.Size = new System.Drawing.Size(784, 395);
             this.dataGridView_productList.TabIndex = 1;
             this.dataGridView_productList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellContentClick);
             this.dataGridView_productList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellEndEdit);
@@ -761,8 +768,8 @@
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 75.99062F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.00938F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 73.69403F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.30597F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 562);
@@ -777,12 +784,12 @@
             this.tableLayoutPanel7.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(577, 408);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(577, 395);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(207, 128);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(207, 141);
             this.tableLayoutPanel7.TabIndex = 43;
             // 
             // label3
@@ -793,7 +800,7 @@
             this.label3.Location = new System.Drawing.Point(111, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 128);
+            this.label3.Size = new System.Drawing.Size(96, 141);
             this.label3.TabIndex = 8;
             this.label3.Text = "Pg Up:输入柜台号\r\n";
             // 
@@ -805,7 +812,7 @@
             this.label7.Location = new System.Drawing.Point(0, 0);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(111, 128);
+            this.label7.Size = new System.Drawing.Size(111, 141);
             this.label7.TabIndex = 7;
             this.label7.Text = "HOME:选择支付\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复\r\nEND:基本信息设置\r\nIns:整单打折";
             // 
@@ -818,13 +825,16 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ForeColor = System.Drawing.SystemColors.Window;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ProductListWindow";
             this.Text = "收银台";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProductListWindow_FormClosing);
             this.Load += new System.EventHandler(this.ProductListWindow_Load);
             this.Shown += new System.EventHandler(this.ProductListWindow_Shown);
+            this.SizeChanged += new System.EventHandler(this.ProductListWindow_SizeChanged);
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);

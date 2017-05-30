@@ -15,11 +15,11 @@ namespace CashRegiterApplication
 {
 
 
-    public partial class LoginWindows : Form
+    public partial class UserLoginWindow : Form
     {
 
         public ProductListWindow gProductListWindow;
-        public LoginWindows()
+        public UserLoginWindow()
         {
             InitializeComponent();
             gProductListWindow = new ProductListWindow();
@@ -30,7 +30,11 @@ namespace CashRegiterApplication
          
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            CenterContral.InitWindows();
+            if (0 != CenterContral.oStoreWhouse.storeWhouseId)
+            {
+                textBox_Shop.Text = CenterContral.oStoreWhouse.name;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,16 +58,6 @@ namespace CashRegiterApplication
         private void label1_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void LoginWindows_Shown(object sender, EventArgs e)
-        {
-            CenterContral.InitWindows();
-            
-            if (0 != CenterContral.oStoreWhouse.storeWhouseId)
-            {
-                textBox_Shop.Text = CenterContral.oStoreWhouse.name;
-            }
         }
     }
 }

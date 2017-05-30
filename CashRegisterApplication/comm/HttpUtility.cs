@@ -266,21 +266,21 @@ namespace CashRegiterApplication
         }
 
         /***************************************拉取商品***************************************/
-        public static bool GetProductByBarcode(string productCode, ref ProductPricingInfoResp oHttpRespone)
+        public static bool GetProductByKeyWord(string productCode, ref ProductPricingInfoResp oHttpRespone)
         {
             lastErrorMsg = "";
             for (int i = 0; i < 1; ++i)
             {
-                if (_GetProductByBarcode(productCode,ref oHttpRespone))
+                if (_GetProductByKeyWord(productCode,ref oHttpRespone))
                 {
                     return true;
                 }
             }
             return false;
         }
-        public static bool _GetProductByBarcode(string productCode,ref ProductPricingInfoResp oHttpRespone)
+        public static bool _GetProductByKeyWord(string productCode,ref ProductPricingInfoResp oHttpRespone)
         {
-            string funcUrl = ProductCodeFunc + "?page=1&pageSize=1&barcode=" + productCode;
+            string funcUrl = ProductCodeFunc + "?page=1&pageSize=200&keyword=" + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);
             if (!Get<ProductPricingInfoResp>(funcUrl, ref oHttpRespone))
             {

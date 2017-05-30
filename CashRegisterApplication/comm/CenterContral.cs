@@ -3,6 +3,7 @@ using CashRegisterApplication.window;
 using CashRegisterApplication.window.member;
 using CashRegisterApplication.window.Member;
 using CashRegisterApplication.window.productList;
+using CashRegisterApplication.window.ProductList;
 using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
@@ -32,6 +33,7 @@ namespace CashRegisterApplication.comm
 
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
+        public static SelectGoodWindows Window_SelectGood;
 
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
@@ -94,7 +96,7 @@ namespace CashRegisterApplication.comm
         public const int STORE_HOUSE_SELETED = 1;
         public const int STOCK_OUT_BASE_TYPE = 21;
 
-        public static void Init()
+        public static void InitWindows()
         {
             if (initFlag == true)
             {
@@ -121,13 +123,33 @@ namespace CashRegisterApplication.comm
             initFlag = true;
 
             oLocalSaveStock = new LocalSaveStock();
+
+            Window_SelectGood = new SelectGoodWindows();
             oPayTypeList = new PayTypeData();
             //先默认登陆，取可信任的登陆态
-           // CenterContral.InitDefaultLogin();
+            // CenterContral.InitDefaultLogin();
+            if (Dao.IsInit())
+            {
+                Dao.Init();
+                CenterContral.GetDefaultMsgFromDb();
+                return ;
+            }
+            CenterContral.GetDefaultMsgFromDb();
+        }
+        public static bool CheckIsInit()
+        {
+            
             Dao.ConnecSql();
             GetDbMsgToCenterConalMsg();//设置默认数据
-  
+            return true;
         }
+        public static void GetDefaultMsgFromDb()
+        {
+            Dao.ConnecSql();
+            GetDbMsgToCenterConalMsg();//设置默认数据
+        }
+
+
         public static void GetDbMsgToCenterConalMsg()
         {
             _InitDbLocalMsg();
@@ -421,6 +443,15 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - CenterContral.oStockOutDTO.Base.orderAmount;
             CenterContral.Window_ProductList.UpdateDiscount();
         }
+
+        internal static void CallWindowsSelectGooodByProudctList(List<ProductPricing> list)
+        {
+            Window_SelectGood.ShowByProductList(list);
+        }
+        internal static void CallBackBySelectGoodWindow(ProductPricing productPricing)
+        {
+            CenterContral.Window_ProductList.CallBackBySelectGoodWindow(productPricing);
+        }
         public static long GetMoneyAmountByDiscountRate(long discountRate)
         {
             //CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount本来是4位长度
@@ -535,43 +566,38 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-        internal static ProductPricing GetGoodsByProductCode(string barcode)
+        internal static bool GetGoodsByGoodsKey(string goodsKey, ref ProductPricingInfoResp oStockOutDetailInfoResp  )
         {
-            ProductPricingInfoResp oStockOutDetailInfoResp = new ProductPricingInfoResp();
-            ProductPricing productInfo =null;
-            if (!HttpUtility.GetProductByBarcode(barcode, ref oStockOutDetailInfoResp))
+          
+            if (!HttpUtility.GetProductByKeyWord(goodsKey, ref oStockOutDetailInfoResp))
             {
                 //网络出现错误，要访问本地
-                string strJson = "";
-                if (! Dao.GetProductByBarcode(barcode, ref strJson))
+                List<String> strListJson = new List<string>();
+                if (! Dao.GetProductByBarcode(goodsKey, ref strListJson))
                 {
                     MessageBox.Show("本地未找到商品资料");
-                    return productInfo;
+                    return false;
                 }
-                CommUiltl.Log("local strJson:" + strJson);
-                if (strJson == "" )
+                oStockOutDetailInfoResp.data = new ProductPricingData();
+                oStockOutDetailInfoResp.data.list = new List<ProductPricing>();
+                for (int i=0;i< strListJson.Count; ++i)
                 {
-                    MessageBox.Show("本地未找到商品资料");
-                    return productInfo;
+                    ProductPricing productInfo = JsonConvert.DeserializeObject<ProductPricing>(strListJson[i]);
+                    CommUiltl.Log("GetGoodsByProductCode get goods ok:" + productInfo.barcode);
+                    oStockOutDetailInfoResp.data.list.Add(productInfo);
                 }
-                productInfo = JsonConvert.DeserializeObject<ProductPricing>(strJson);
-                CommUiltl.Log("GetGoodsByProductCode get goods ok:"+ productInfo.barcode);
                 MessageBox.Show("网络不稳定，使用本地商品信息");
-                return productInfo;
+                oStockOutDetailInfoResp.errorCode = 0;
+                return true;
             }
             if (oStockOutDetailInfoResp.errorCode != 0 )
             {
                 MessageBox.Show("后台返回错误:"+HttpUtility.lastErrorMsg);
-                return productInfo;
+                return false;
             }
-            if (oStockOutDetailInfoResp.data.list.Count == 0)
-            {
-                MessageBox.Show("未找到商品资料");
-                return productInfo;
-            }
-            productInfo = oStockOutDetailInfoResp.data.list[0];
-            CommUiltl.Log("http GetGoodsByProductCode get goods ok:" + productInfo.barcode);
-            return productInfo;
+            
+            CommUiltl.Log("http GetGoodsByProductCode get goods ok:" + goodsKey);
+            return true;
         }
 
         //************************挂单***********************

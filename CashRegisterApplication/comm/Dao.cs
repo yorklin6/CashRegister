@@ -30,6 +30,21 @@ namespace CashRegisterApplication.comm
         public const int STOCK_BASE_SAVE_FLAG_CLOSE = 2;//挂单关单
 
         public const int DELETE_FLAG =1;
+        /*********************初始化*********************/
+        internal static bool IsInit()
+        {
+            ConnecSql();
+            //int iCount=iTableExist();
+            //if ()
+            //{
+
+            //}
+            return true;
+        }
+        internal static void Init()
+        {
+            ConnecSql();
+        }
         public static void  ConnecSql()
         {
             if (initDbFalg)
@@ -42,7 +57,7 @@ namespace CashRegisterApplication.comm
             sqlite_conn.Open();
             initDbFalg = true;
         }
-        /*********************下单单*********************/
+        /*********************下单*********************/
         public static bool GenerateOrder(StockOutDTO oStockOutDTO)
         {
             ConnecSql();
@@ -141,7 +156,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-
+       
 
         internal static bool UpdateOrderCloudState(StockOutDTO oStockOutDTO)
         {
@@ -790,8 +805,10 @@ namespace CashRegisterApplication.comm
             {
                 item.json= JsonConvert.SerializeObject(item);
                 strSql = "INSERT INTO tb_local_goods ";
-                strSql += " (goodsId,barcode,data_json,old_data_flag,product_update_time) VALUES (";
+                strSql += " (goodsId,goods_name,abbreviation,barcode,data_json,old_data_flag,product_update_time) VALUES (";
                 strSql += " '" + item.goodsId + "',";
+                strSql += " '" + item.goodsName + "',";
+                strSql += " '" + item.abbreviation + "',";
                 strSql += " '" + item.barcode + "',";
                 strSql += " '" + item.json + "',";
                 strSql += "'" + 0 + "',";
@@ -931,12 +948,15 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("UpdateAllGoodsToDelelete ok");
             return true;
         }
-        internal static bool GetProductByBarcode(string barcode, ref string strJson)
+        internal static bool GetProductByBarcode(string barcode, ref List<String> strListJson )
         {
             string strSql = "";
             strSql += "select  data_json from tb_local_goods  ";
-            strSql += "where barcode='"+barcode+"' ";
-            strSql += "limit 1 ";
+            strSql += "where ";
+            strSql += " barcode  like '%" + barcode + "%' ";
+            strSql += " or abbreviation like '%" + barcode + "%' ";
+            strSql += " or goods_name like  '%" + barcode + "%' ";
+            strSql += "   ";
 
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
@@ -958,7 +978,8 @@ namespace CashRegisterApplication.comm
                     CommUiltl.Log("IsDBNull");
                     return false;
                 }
-                strJson = sqlite_datareader.GetString(0);
+                string strJson = sqlite_datareader.GetString(0);
+                strListJson.Add(strJson);
             }
             return true;
         }

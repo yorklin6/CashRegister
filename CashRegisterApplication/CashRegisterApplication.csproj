@@ -101,11 +101,17 @@
     <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\productList\DiscountWindows.cs">
+    <Compile Include="window\ProductList\DiscountWindows.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\productList\DiscountWindows.Designer.cs">
+    <Compile Include="window\ProductList\DiscountWindows.Designer.cs">
       <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\ProductList\SelectGoodWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\ProductList\SelectGoodWindows.Designer.cs">
+      <DependentUpon>SelectGoodWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.cs">
       <SubType>Form</SubType>
@@ -125,10 +131,10 @@
     <Compile Include="window\ReceveMoney\RecieveMoneyWindow.Designer.cs">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\productList\ProductListWindow.cs">
+    <Compile Include="window\ProductList\ProductListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\productList\ProductListWindow.Designer.cs">
+    <Compile Include="window\ProductList\ProductListWindow.Designer.cs">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="comm\HttpUtility.cs" />
@@ -147,14 +153,23 @@
     <Compile Include="window\Setting\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\System\UserLoginWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\System\UserLoginWindow.Designer.cs">
+      <DependentUpon>UserLoginWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="window\Member\MemberInfoWindows.resx">
       <DependentUpon>MemberInfoWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Member\RechargeMoneyForMember.resx">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\productList\DiscountWindows.resx">
+    <EmbeddedResource Include="window\ProductList\DiscountWindows.resx">
       <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\ProductList\SelectGoodWindows.resx">
+      <DependentUpon>SelectGoodWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.resx">
       <DependentUpon>ReceiveMoneyByMemberWindow.cs</DependentUpon>
@@ -165,7 +180,7 @@
     <EmbeddedResource Include="window\ReceveMoney\RecieveMoneyWindow.resx">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\productList\ProductListWindow.resx">
+    <EmbeddedResource Include="window\ProductList\ProductListWindow.resx">
       <DependentUpon>ProductListWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Login\LoginWindow.resx">
@@ -178,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="window\Setting\SettingDefaultMsgWindow.resx">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\System\UserLoginWindow.resx">
+      <DependentUpon>UserLoginWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

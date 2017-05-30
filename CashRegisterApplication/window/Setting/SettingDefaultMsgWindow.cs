@@ -17,7 +17,7 @@ namespace CashRegisterApplication.window.Setting
         public SettingDefaultMsgWindow()
         {
             InitializeComponent();
-            CenterContral.Init();
+            CenterContral.InitWindows();
         }
 
        

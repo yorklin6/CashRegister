@@ -1,6 +1,6 @@
 ﻿namespace CashRegiterApplication
 {
-    partial class LoginWindows
+    partial class UserLoginWindow
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginWindows));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserLoginWindow));
             this.button_loggin = new System.Windows.Forms.Button();
             this.textBox_userName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -106,7 +106,7 @@
             this.textBox_Shop.TabIndex = 7;
             this.textBox_Shop.Text = " ";
             // 
-            // LoginWindows
+            // UserLoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,10 +121,9 @@
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "LoginWindows";
+            this.Name = "UserLoginWindow";
             this.Text = "收银机登录";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Shown += new System.EventHandler(this.LoginWindows_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
