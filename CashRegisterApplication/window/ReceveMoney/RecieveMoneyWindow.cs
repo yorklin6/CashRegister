@@ -88,7 +88,7 @@ namespace CashRegisterApplication.window
                 this.dataGridView_payTypeList.Rows[iRowIndex].Cells[PAY_TYPE_COLUMN].Value = CenterContral.oPayTypeList.list[i].payTypeId;
                 if (i > 9)
                 {
-                    this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "双击下单";
+                    this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "双击选择支付";
                 }
             }
             this.dataGridView_payTypeList.Rows[iRowIndex].Cells[DESCRIPTION_COLUMN].Value ="返回上一层";

@@ -46,6 +46,8 @@
             // 
             // comboBox_StoreShop
             // 
+            this.comboBox_StoreShop.BackColor = System.Drawing.SystemColors.WindowText;
+            this.comboBox_StoreShop.ForeColor = System.Drawing.SystemColors.Window;
             this.comboBox_StoreShop.FormattingEnabled = true;
             this.comboBox_StoreShop.Location = new System.Drawing.Point(281, 66);
             this.comboBox_StoreShop.Name = "comboBox_StoreShop";
@@ -63,6 +65,8 @@
             // 
             // textBox_PostID
             // 
+            this.textBox_PostID.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_PostID.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_PostID.Location = new System.Drawing.Point(281, 155);
             this.textBox_PostID.Name = "textBox_PostID";
             this.textBox_PostID.Size = new System.Drawing.Size(126, 21);
@@ -84,11 +88,13 @@
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
             this.button1.Text = "保存";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox_Mac
             // 
+            this.textBox_Mac.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_Mac.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_Mac.Location = new System.Drawing.Point(281, 199);
             this.textBox_Mac.Name = "textBox_Mac";
             this.textBox_Mac.ReadOnly = true;
@@ -106,6 +112,8 @@
             // 
             // textBox_user
             // 
+            this.textBox_user.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_user.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_user.Location = new System.Drawing.Point(281, 31);
             this.textBox_user.Name = "textBox_user";
             this.textBox_user.Size = new System.Drawing.Size(126, 21);
@@ -123,27 +131,33 @@
             // 
             // button2
             // 
+            this.button2.BackColor = System.Drawing.SystemColors.WindowText;
+            this.button2.ForeColor = System.Drawing.SystemColors.Window;
             this.button2.Location = new System.Drawing.Point(426, 153);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(121, 23);
             this.button2.TabIndex = 15;
             this.button2.Text = "3.后台生成Post机ID";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
+            this.button3.BackColor = System.Drawing.SystemColors.WindowText;
+            this.button3.ForeColor = System.Drawing.SystemColors.Window;
             this.button3.Location = new System.Drawing.Point(426, 63);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(121, 23);
             this.button3.TabIndex = 16;
             this.button3.Text = "1.后台拉取门店";
             this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // textBox_userPassword
             // 
+            this.textBox_userPassword.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_userPassword.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_userPassword.Location = new System.Drawing.Point(281, 106);
             this.textBox_userPassword.Name = "textBox_userPassword";
             this.textBox_userPassword.PasswordChar = '*';
@@ -161,19 +175,22 @@
             // 
             // button4
             // 
+            this.button4.BackColor = System.Drawing.SystemColors.WindowText;
+            this.button4.ForeColor = System.Drawing.SystemColors.Window;
             this.button4.Location = new System.Drawing.Point(426, 104);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(121, 23);
             this.button4.TabIndex = 19;
             this.button4.Text = "2.系统用户登录";
             this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // SettingDefaultMsgWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(687, 295);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label5);
@@ -189,6 +206,7 @@
             this.Controls.Add(this.textBox_PostID);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox_StoreShop);
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "SettingDefaultMsgWindow";
             this.Text = "SettingDefaultMsg";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingDefaultMsgWindow_FormClosing);
