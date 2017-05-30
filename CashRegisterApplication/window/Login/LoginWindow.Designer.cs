@@ -47,11 +47,13 @@
             this.button_loggin.Size = new System.Drawing.Size(87, 33);
             this.button_loggin.TabIndex = 0;
             this.button_loggin.Text = "登录";
-            this.button_loggin.UseVisualStyleBackColor = true;
+            this.button_loggin.UseVisualStyleBackColor = false;
             this.button_loggin.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox_userName
             // 
+            this.textBox_userName.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_userName.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_userName.Location = new System.Drawing.Point(280, 104);
             this.textBox_userName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_userName.Name = "textBox_userName";
@@ -80,6 +82,8 @@
             // 
             // textBox_password
             // 
+            this.textBox_password.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_password.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_password.Location = new System.Drawing.Point(280, 137);
             this.textBox_password.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_password.Name = "textBox_password";
@@ -98,6 +102,8 @@
             // 
             // textBox_Shop
             // 
+            this.textBox_Shop.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_Shop.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_Shop.Location = new System.Drawing.Point(279, 70);
             this.textBox_Shop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_Shop.Name = "textBox_Shop";
@@ -110,6 +116,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(616, 268);
             this.Controls.Add(this.textBox_Shop);
             this.Controls.Add(this.label3);
@@ -119,6 +126,7 @@
             this.Controls.Add(this.textBox_userName);
             this.Controls.Add(this.button_loggin);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoginWindows";

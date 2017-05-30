@@ -8,11 +8,11 @@ namespace CashRegisterApplication.model
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public PostIdData data;
+        public PosIdData data;
     }
-    public class PostIdData
+    public class PosIdData
     {
-        public int postId { get; set; }
+        public int posId { get; set; }
     }
     
 }

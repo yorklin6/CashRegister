@@ -16,6 +16,14 @@ namespace CashRegisterApplication.model
         public List<StoreWhouse> list;
         public int selectStockIndex { get; set; }
     }
+    public class StoreListWithUser
+    {
+        public int errorCode { get; set; }
+        public string msg { get; set; }
+        public List<StoreWhouse> data;
+        public int selectStockIndex { get; set; }
+    }
+
     public class StoreWhouse
     {
         public long memberId { get; set; }

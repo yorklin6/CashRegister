@@ -153,12 +153,6 @@
     <Compile Include="window\Setting\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\System\UserLoginWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="window\System\UserLoginWindow.Designer.cs">
-      <DependentUpon>UserLoginWindow.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="window\Member\MemberInfoWindows.resx">
       <DependentUpon>MemberInfoWindows.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,9 +188,6 @@
     <EmbeddedResource Include="window\Setting\SettingDefaultMsgWindow.resx">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\System\UserLoginWindow.resx">
-      <DependentUpon>UserLoginWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -227,7 +218,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="window\System\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

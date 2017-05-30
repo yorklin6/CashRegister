@@ -31,20 +31,25 @@ namespace CashRegisterApplication.comm
 
         public const int DELETE_FLAG =1;
         /*********************初始化*********************/
-        internal static bool IsInit()
+        internal static bool CheckIsInit(ref int iCount)
         {
             ConnecSql();
-            //int iCount=iTableExist();
-            //if ()
-            //{
-
-            //}
+            if (!GetTableCount(ref iCount))
+            {
+                MessageBox.Show("db 失败，系统出现异常");
+                return false;
+            }
+        
+           
             return true;
         }
-        internal static void Init()
+        internal static void CreateTables()
         {
             ConnecSql();
+            //丢掉表，然后再创建表
+            CreateTableIfIsNotExist();
         }
+
         public static void  ConnecSql()
         {
             if (initDbFalg)
@@ -57,6 +62,79 @@ namespace CashRegisterApplication.comm
             sqlite_conn.Open();
             initDbFalg = true;
         }
+        /******创建表*******************/
+        internal static bool GetTableCount(ref int count)
+        {
+            string strSql = "";
+            strSql += "select count(*) from sqlite_master where type='table' and name='tb_local_msg'  ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+            while (sqlite_datareader.Read())
+            {
+                if (sqlite_datareader.IsDBNull(0))
+                {
+                    CommUiltl.Log("IsDBNull: " + strSql);
+                    return false;
+                }
+                count=sqlite_datareader.GetInt32(0);
+                CommUiltl.Log("count: " + count);
+                return true;
+            }
+            return false;
+        }
+        internal static bool CreateTableIfIsNotExist()
+        {
+            string strSql = "";
+            //丢掉之前的数据
+            strSql += "DROP TABLE IF EXISTS[tb_checkout]; ";
+            strSql += "DROP TABLE IF EXISTS[tb_local_goods]; ";
+            strSql += "DROP TABLE IF EXISTS[tb_local_msg]; ";
+            strSql += "DROP TABLE IF EXISTS[tb_member_recharge]; ";
+            strSql += "DROP TABLE IF EXISTS[tb_stock_out_base]; ";
+            strSql += "DROP TABLE IF EXISTS[tb_stock_out_detail]; ";
+
+            //创建表
+            strSql += "CREATE TABLE [tb_checkout](  [id] INT(10) NOT NULL, [store_id] INT(10) NOT NULL, [pos_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [pay_type] TINYINT(3) NOT NULL, [pay_amount] BIGINT(20) NOT NULL, [is_deleted] TINYINT(3) NOT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME, [serial_number] VARCHAR(50), [PayCode] VARCHAR(20), [CloudState] INT, [check_out_data_json] TEXT, [CashRegisterPayOrderNumber] VARCHAR(50), [payStatus] INT, [reqMemberZfJson] TEXT ); ";
+            strSql += "CREATE TABLE [tb_local_goods]( [goodsId] INT(20), [barcode] VARCHAR(100), [goods_name] VARCHAR2(100), [abbreviation] VARCHAR2, [data_json] TEXT, [old_data_flag] INT, [product_update_time] DATE); ";
+            strSql += "CREATE TABLE [tb_member_recharge]( [member_id] INT, [name] VARCHAR(30), [member_account] VARCHAR(50), [berfore_balance] INT, [after_balance] INT, [create_time] DATETIME, [cloud_state] INT, [reqRechargeJson] TEXT);";
+            strSql += "CREATE TABLE [tb_stock_out_base]( [stock_out_id] INT(10) NOT NULL, [serial_number] VARCHAR(50) PRIMARY KEY NOT NULL, [type] TINYINT(3) NOT NULL, [store_id] INT(10) NOT NULL, [whouse_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [client_id] INT(10) NOT NULL DEFAULT '0', [pos_id] INT(10) NOT NULL, [cashier_id] INT(10) NOT NULL, [order_amount] BIGINT(20) DEFAULT NULL, [creator] VARCHAR(20) DEFAULT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME DEFAULT NULL, [stock_out_time] DATETIME DEFAULT NULL, [status] TINYINT(3) NOT NULL DEFAULT '0', [remark] VARCHAR(255) DEFAULT NULL, [recieve_fee] INT(20), [change_fee] INT(20), [cloud_state] INT(10), [base_data_json]  TEXT, [cloud_add_flag] INT(10) DEFAULT 0, [cloud_update_flag] INT(10) DEFAULT 0, [cloud_close_flag]  INT DEFAULT 0, [cloud_delete_flag] INT(0), [local_save_flag] INT(10));";
+            strSql += "CREATE TABLE [tb_stock_out_detail]( [id] INT(10) NOT NULL, [stock_out_id] INT(10) NOT NULL, [goods_id] INT(10) NOT NULL, [goods_name] VARCHAR(50) NOT NULL, [barcode] VARCHAR(50) NOT NULL, [specification] VARCHAR(20) NOT NULL, [unit] VARCHAR(10) NOT NULL, [produce_time] DATETIME DEFAULT NULL, [expire_time] DATETIME DEFAULT NULL, [order_count] INT(10) NOT NULL, [actual_count] INT(10) DEFAULT NULL, [actual_difference] INT(11) DEFAULT NULL, [unit_price] BIGINT(20) DEFAULT NULL, [subtotal] BIGINT(20)  DEFAULT NULL, [remark] VARCHAR(255) DEFAULT NULL, [serial_number] VARBINARY(50), [cloud_state_add] INT(10), [cloud_state_update] INT(10), [cloud_state_delete] INT(10),[delete_flag] INT(10), [cloud_state] INT(10), [detail_data_json] TEXT);";
+
+            strSql += "CREATE TABLE [tb_local_msg]( [store_whouse_default] TEXT, [pay_type_list] TEXT, [last_all_good_data_uinx_time] INT DEFAULT 0, [post_id] INT);";
+
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("取出默认信息异常:" + ex.ToString());
+                return false;
+            }
+            while (sqlite_datareader.Read())
+            {
+                
+                return true;
+            }
+            return false;
+        }
+        
         /*********************下单*********************/
         public static bool GenerateOrder(StockOutDTO oStockOutDTO)
         {
@@ -688,7 +766,7 @@ namespace CashRegisterApplication.comm
         }
 
         //取出默认数据行数
-        internal static bool GetLocalMsgDefaultCount(out int iCount)
+        internal static bool GetLocalMsgDefaultCount(ref int iCount)
         {
             iCount = 0;
             string strSql = "";

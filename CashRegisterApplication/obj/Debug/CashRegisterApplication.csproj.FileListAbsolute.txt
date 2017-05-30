@@ -135,5 +135,4 @@ C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplicatio
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.ReceiveMoneyByMember.resources
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Setting.SettingDefaultMsgWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.productList.DiscountWindows.resources
-D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegiterApplication.UserLoginWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ProductList.SelectGoodWindows.resources

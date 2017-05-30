@@ -1,5 +1,6 @@
 ﻿using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
+using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,17 @@ namespace CashRegisterApplication.window.Setting
         public SettingDefaultMsgWindow()
         {
             InitializeComponent();
-            CenterContral.InitWindows();
         }
 
-       
+        internal void ShowByLogin()
+        {
+            this.Show();
+            this.textBox_user.Text = "york";
+            this.textBox_userPassword.Text = "york";
+        }
 
         private void SettingDefaultMsg_Load(object sender, EventArgs e)
         {
-            //拉出门店信息
-            _GetStoreList();
             //获取mac地址
             _GetMac();
             //获取postID
@@ -47,18 +50,18 @@ namespace CashRegisterApplication.window.Setting
 
         private void _GetStoreList()
         {
-            CenterContral.GetStoreMsg();
+            CenterContral.GetStoreMsg(this.textBox_user.Text);
             List<ComboxItem> oListItem = new List<ComboxItem>();
-            if (CenterContral.oStoreWhouseData.list.Count == 0)
+            if (CenterContral.oStoreListWithUser.data.Count == 0)
             {
                 MessageBox.Show("系统异常，未能拉出门店信息:");
                 return;
             }
 
             int selectIndex = 0;
-            for (int i = 0; i < CenterContral.oStoreWhouseData.list.Count; ++i)
+            for (int i = 0; i < CenterContral.oStoreListWithUser.data.Count; ++i)
             {
-                StoreWhouse item = CenterContral.oStoreWhouseData.list[i];
+                StoreWhouse item = CenterContral.oStoreListWithUser.data[i];
                 ComboxItem oTmp = new ComboxItem(item.name, item.storeWhouseId.ToString());
                 if (item.storeWhouseId == CenterContral.oStoreWhouse.storeWhouseId)
                 {
@@ -77,46 +80,29 @@ namespace CashRegisterApplication.window.Setting
             int storeWhouseId = 0;
             CommUiltl.Log("SelectedItem:" + ((ComboxItem)comboBox_StoreShop.SelectedItem).Values);
             CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values, out storeWhouseId);
-            for (int i = 0; i < CenterContral.oStoreWhouseData.list.Count; ++i)
+            for (int i = 0; i < CenterContral.oStoreListWithUser.data.Count; ++i)
             {
-                if (storeWhouseId == CenterContral.oStoreWhouseData.list[i].storeWhouseId)
+                if (storeWhouseId == CenterContral.oStoreListWithUser.data[i].storeWhouseId)
                 {
-                    CenterContral.oStoreWhouse = CenterContral.oStoreWhouseData.list[i];
-                    CenterContral.oStoreWhouseData.selectStockIndex = i;
+                    CenterContral.oStoreWhouse = CenterContral.oStoreListWithUser.data[i];
+                    CenterContral.oStoreListWithUser.selectStockIndex = i;
                 }
             }
             //更新默认门店信息
             string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
             CenterContral.UpdateStoreWhouseDefault(strStoreWhouseDefult);
 
-         
-            //更新postid
-            if (CenterContral.iPostId == -1)
+
+            int iPostId = 0;
+            if (!CommUiltl.CoverStrToInt(textBox_PostID.Text, out iPostId))
             {
-                //说明mac从来都没有注册过，于是自动生成
-                if (_ConfirmRegisterPostId())
-                {
-                    if (CenterContral.GeneratePostId())
-                    {
-                        textBox_PostID.Text = CenterContral.iPostId.ToString();
-                    }
-                }
+                MessageBox.Show("错误PostId");
+                return;
             }
-            else if (textBox_PostID.Text != CenterContral.iPostId.ToString())
-            {
-                int iPostId = 0;
-                if (CommUiltl.CoverStrToInt(textBox_PostID.Text,out iPostId))
-                {
-                    //说明更新post机id
-                    if (_ConfirmUpdatePostId())
-                    {
-                        CenterContral.iPostId = iPostId;
-                        CenterContral.SetPostIdFromDb();
-                    }
-                }
-            }
-            MessageBox.Show("更新成功");
-            CenterContral.Window_ProductList.CallShowBySettingWindows();
+            CenterContral.iPostId = iPostId;
+            CenterContral.SetPostIdFromDb();
+            MessageBox.Show("保存成功");
+            CenterContral.Windows_Login.UpdateSetttingDefaultMsg();
             this.Hide();
         }
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
@@ -147,6 +133,10 @@ namespace CashRegisterApplication.window.Setting
             }
             return true;
         }
+
+
+        //  Dao.InitCreateTable();
+
         private bool _ConfirmUpdatePostId()
         {
 
@@ -164,7 +154,7 @@ namespace CashRegisterApplication.window.Setting
         }
         private void returnPreventWindows()
         {
-            CenterContral.Window_ProductList.CallShowBySettingWindows();
+            //CenterContral.Window_ProductList.CallShowBySettingWindows();
             this.Hide();
         }
 
@@ -173,7 +163,58 @@ namespace CashRegisterApplication.window.Setting
             e.Cancel = false;
             returnPreventWindows();
         }
-        
+
+        private void textBox_user_TextChanged(object sender, EventArgs e)
+        {
+            //拉出门店信息
+            _GetStoreList();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //拉出门店信息
+            _GetStoreList();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (comboBox_StoreShop.Text == "")
+            {
+                MessageBox.Show("请选择门店", "门店确认");
+                return;
+            }
+            int storeWhouseId = 0;
+            CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values, out storeWhouseId);
+            //更新postid
+            string strMac = textBox_Mac.Text;
+            if (!CenterContral.GeneratePostId(storeWhouseId, strMac))
+            {
+                MessageBox.Show("生成post机ID失败:" + HttpUtility.lastErrorMsg);
+                return;
+            }
+            MessageBox.Show("生成Post机ID成功:");
+            textBox_PostID.Text = CenterContral.iPostId.ToString();
+            return;
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (comboBox_StoreShop.Text == "")
+            {
+                MessageBox.Show("请选择门店", "门店确认");
+                return;
+            }
+            int storeWhouseId = 0;
+            CommUiltl.CoverStrToInt(((ComboxItem)comboBox_StoreShop.SelectedItem).Values, out storeWhouseId);
+
+            if ( !CenterContral.LoginByUser(textBox_user.Text, textBox_userPassword.Text, storeWhouseId))
+            {
+                MessageBox.Show("登录失败");
+                return;
+            }
+            MessageBox.Show("登录成功");
+        }
     }
 
 }

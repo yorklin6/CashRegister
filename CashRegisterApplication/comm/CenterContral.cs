@@ -4,6 +4,7 @@ using CashRegisterApplication.window.member;
 using CashRegisterApplication.window.Member;
 using CashRegisterApplication.window.productList;
 using CashRegisterApplication.window.ProductList;
+using CashRegisterApplication.window.Setting;
 using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
@@ -23,7 +24,7 @@ namespace CashRegisterApplication.comm
         public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
         public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//会员收款窗口
 
-
+        public static SettingDefaultMsgWindow Windows_SettingDefaultMsgWindow ;
 
         public static RechargeMoneyForMember Window_RechargeMoneyForMember;//充值会员窗口
 
@@ -46,7 +47,7 @@ namespace CashRegisterApplication.comm
         public static PayType oCurrentPayType;// 支付类型全局
 
         public static UserLogin oLoginer;//登录用户
-
+        public static LoginWindows Windows_Login;
 
         public const int PAY_STATE_INIT = 0;
         public const int PAY_STATE_SUCCESS = 1;
@@ -88,7 +89,7 @@ namespace CashRegisterApplication.comm
         public static StoreWhouse oStoreWhouse;
         public static int iPostId = 0;
         public static int store_house_selete_flag;
-        public static StoreWhouseData oStoreWhouseData;
+        public static StoreListWithUser oStoreListWithUser;
         public static int store_whouse_id = 0;
         public const int CLOUD_SATE_PAY_UPDATE_FAILED = 4;
 
@@ -98,6 +99,7 @@ namespace CashRegisterApplication.comm
 
         public static void InitWindows()
         {
+            CommUiltl.Log("InitWindows "+ initFlag);
             if (initFlag == true)
             {
                 return;
@@ -117,8 +119,10 @@ namespace CashRegisterApplication.comm
             oPayWay = new PayWay();
             oStoreWhouse = new StoreWhouse();
             store_house_selete_flag = STORE_HOUSE_UNSET_SELETED;
-            oStoreWhouseData = new StoreWhouseData();
+            oStoreListWithUser = new StoreListWithUser();
             oLoginer = new UserLogin();
+            Windows_SettingDefaultMsgWindow = new SettingDefaultMsgWindow();
+            CenterContral.Window_ProductList = new ProductListWindow();
 
             initFlag = true;
 
@@ -128,19 +132,44 @@ namespace CashRegisterApplication.comm
             oPayTypeList = new PayTypeData();
             //先默认登陆，取可信任的登陆态
             // CenterContral.InitDefaultLogin();
-            if (Dao.IsInit())
+            CommUiltl.Log("CheckIsInit ");
+            if (!CheckIsInit())
             {
-                Dao.Init();
-                CenterContral.GetDefaultMsgFromDb();
-                return ;
+                CommUiltl.Log("CheckIsInit false");
+                Windows_SettingDefaultMsgWindow.ShowByLogin();
+                return;
+              
             }
             CenterContral.GetDefaultMsgFromDb();
         }
+        
         public static bool CheckIsInit()
         {
-            
-            Dao.ConnecSql();
-            GetDbMsgToCenterConalMsg();//设置默认数据
+            CommUiltl.Log("CheckIsInit ");
+            int iCount = 0;
+            if (!Dao.CheckIsInit(ref iCount))
+            {
+                CommUiltl.Log("CheckIsInit Dao.CheckIsInit");
+                return false;
+            }
+            if (iCount == 0)
+            {
+                Dao.CreateTables();
+                Dao.InsertLocalMsgDefault();
+                return false;
+            }
+            CommUiltl.Log("Dao.CheckIsInit:"+ iCount);
+            int postId = 0;
+            if (!Dao.GetPostId(ref postId))
+            {
+                CommUiltl.Log("CheckIsInit Dao.GetPostId ");
+                return false;
+            }
+            if (-1 == postId)
+            {
+                CommUiltl.Log("-1 == postId");
+                return false;
+            }
             return true;
         }
         public static void GetDefaultMsgFromDb()
@@ -152,7 +181,7 @@ namespace CashRegisterApplication.comm
 
         public static void GetDbMsgToCenterConalMsg()
         {
-            _InitDbLocalMsg();
+            //_InitDbLocalMsg();
             _GetSaveStock();//挂单数据
             //门店信息
             GetStoreMsgFromDb();
@@ -196,9 +225,9 @@ namespace CashRegisterApplication.comm
         }
 
         /******************门店信息******************/
-        internal static void GetStoreMsg()
+        internal static void GetStoreMsg(string strUserName)
         {
-            if (!HttpUtility.GetStoreMsg(ref CenterContral.oStoreWhouseData))
+            if (!HttpUtility.GetStoreMsgByUserName( strUserName,ref CenterContral.oStoreListWithUser))
             {
                 return;
             }
@@ -221,14 +250,22 @@ namespace CashRegisterApplication.comm
         /******************登陆**********************/
         internal static bool Login(string userName, string password, long storeId)
         {
-            if (!HttpUtility.Login(userName, password,  storeId))
+            if (!HttpUtility.LoginBoss(userName, password,  storeId))
             {
                 return false;
             }
 
             return true;
         }
+        internal static bool LoginByUser(string userName, string password, long storeId)
+        {
+            if (!HttpUtility.LoginByUser(userName, password, storeId))
+            {
+                return false;
+            }
 
+            return true;
+        }
         //****************************会员收款和充值
         //显示会员收款
         internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
@@ -372,11 +409,11 @@ namespace CashRegisterApplication.comm
             }
         }
 
-        internal static bool GeneratePostId()
+        internal static bool GeneratePostId(int storeWhouseId,string strMac)
         {
-            if (!HttpUtility.GeneratePostId(CenterContral.oStoreWhouse.storeWhouseId, CommUiltl.GetMacInfo(), ref CenterContral.iPostId))
+            if (!HttpUtility.GeneratePostId(storeWhouseId, strMac, ref CenterContral.iPostId))
             {
-                MessageBox.Show("生成post机ID失败:" + HttpUtility.lastErrorMsg);
+               
                 return false;
             }
             return true;
@@ -419,7 +456,7 @@ namespace CashRegisterApplication.comm
             //收款折扣
             CenterContral.oStockOutDTO.Base.discountRate = 100;
             CenterContral.oStockOutDTO.Base.discountAmount =0;
-
+            
             CenterContral.Window_ProductList.UpdateDiscount();
             //*收银台界面
             CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
@@ -748,21 +785,7 @@ namespace CashRegisterApplication.comm
             return false;
         }
         //************************支付类型***********************
-       
-        internal static void _InitDbLocalMsg()
-        {
-            int iCount = 0;
-            if (!Dao.GetLocalMsgDefaultCount(out iCount))
-            {
-                MessageBox.Show("初始化默认数据失败");
-            }
-
-            if (0 == iCount)
-            {
-                MessageBox.Show("第一次注册，请记得登陆完成后进行系统设置");
-                Dao.InsertLocalMsgDefault();
-            }
-        }
+              
         internal static bool _GetPayTypeList()
         {
             string json = "";

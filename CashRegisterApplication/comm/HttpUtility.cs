@@ -47,7 +47,7 @@ namespace CashRegiterApplication
         private static readonly string userPayFunc = "retail/checkout?";
         private static readonly string rechargeMember = "member/balance_recharge/";
         private static readonly string paymentMember = "member/payment/";
-        private static readonly string storeFunc = "store/?";
+        private static readonly string getStoreListBysUserName = "user/store/";
         private static readonly string payTypeFunc = "payType?";
 
 
@@ -61,14 +61,27 @@ namespace CashRegiterApplication
 
         
         /***************************************登陆***************************************/
-        public static bool Login(string user, string password,long storeId)
+        public static bool LoginBoss(string user, string password,long storeId)
+        {
+            if (LoginByUser(user, password,storeId))
+            {
+                return true;
+            }
+            //登录异常
+            if (DefaultUser == user && DefaultPassword == password)//
+            {
+                MessageBox.Show("使用临时用户登录");
+                return true;
+            }
+            return false;
+        }
+        public static bool LoginByUser(string user, string password, long storeId)
         {
             gUserName = user;
             gPassword = password;
             gCookies = null;
             CenterContral.oLoginer = new UserLogin();
             string loginUrl = LoginFunc;
-            // "account=" + gUserName + "&password=" + CommUiltl.HEX_MD5(gPassword);
             UserLoginMsg oUserLoginMsg = new UserLoginMsg();
             oUserLoginMsg.account = gUserName;
             oUserLoginMsg.password = CommUiltl.HEX_MD5(gPassword);
@@ -76,21 +89,15 @@ namespace CashRegiterApplication
 
             string loginJson = JsonConvert.SerializeObject(oUserLoginMsg);
             loginJson = "rememberMe=true&account=" + gUserName;
-            loginJson +="&password="+ CommUiltl.HEX_MD5(gPassword);
-            loginJson +="&storeId=" + storeId;
-            
+            loginJson += "&password=" + CommUiltl.HEX_MD5(gPassword);
+            loginJson += "&storeId=" + storeId;
+
             Console.WriteLine("Debug loginUrl:" + loginUrl);
             Console.WriteLine("Debug loginJson:" + loginJson);
             if (!PostUrlencoded<UserLogin>(loginUrl, loginJson, ref CenterContral.oLoginer))
             {
                 Console.WriteLine("ERR:Get failed");
                 MessageBox.Show("登录异常:请检查网络");
-                //登录异常
-                if (DefaultUser == user && DefaultPassword == password)//
-                {
-                    MessageBox.Show("使用临时用户登录");
-                    return true;
-                }
                 return false;
             }
             if (0 != CenterContral.oLoginer.errorCode)
@@ -108,13 +115,13 @@ namespace CashRegiterApplication
         public static bool LoginDefault()
         {
             CommUiltl.Log("LoginDefault by DefaultUser:" + DefaultUser + " DefaultPassword:" + DefaultPassword);
-            return Login(DefaultUser, DefaultPassword, DefaultStoreId);
+            return LoginBoss(DefaultUser, DefaultPassword, DefaultStoreId);
         }
         public static bool _LoginBySaveUser()
         {
             //当登陆态失效的时候，重新用老的用户登录
             CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + DefaultUser + " DefaultPassword:"+ DefaultPassword);
-            return Login(DefaultUser, DefaultPassword, DefaultStoreId);
+            return LoginBoss(DefaultUser, DefaultPassword, DefaultStoreId);
         }
        
         // MessageBox.Show();
@@ -351,6 +358,7 @@ namespace CashRegiterApplication
                 lastErrorMsg = "返回异常:"+oHttpRespone.msg;
                 return false;
             }
+            iPostId=oHttpRespone.data.posId;
             return true;
         }
 
@@ -501,13 +509,13 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //门店信息
-        internal static bool GetStoreMsg(ref StoreWhouseData oData)
+        internal static bool GetStoreMsgByUserName(string strUserName,ref StoreListWithUser oData)
         {
             bool iResult = true;
             lastErrorMsg = "";
             for (int i = 0; i < 3; ++i)
             {
-                iResult = _GetStoreMsg(ref oData);
+                iResult = _GetStoreMsgByUserName(strUserName,ref oData);
                 if (true == iResult)
                 {
                     return iResult;
@@ -515,11 +523,10 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static bool _GetStoreMsg(ref StoreWhouseData oData)
+        internal static bool _GetStoreMsgByUserName(string strUserName, ref StoreListWithUser oHttpRespone)
         {
-            string funcUrl = storeFunc + "page=1&pageSize=100&type=1";
-            StoreWhouseRespone oHttpRespone = new StoreWhouseRespone();
-            if (!Get<StoreWhouseRespone>(funcUrl, ref oHttpRespone))
+            string funcUrl = getStoreListBysUserName + "?account="+ strUserName;
+            if (!Get<StoreListWithUser>(funcUrl, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GetStoreMsg failed");
                 lastErrorMsg = "门店信息异常：请检查网络";
@@ -532,8 +539,7 @@ namespace CashRegiterApplication
                 lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
                 return false;
             }
-            oData= oHttpRespone.data;
-            CommUiltl.Log("list .size ="+ oData.list.Count);
+            CommUiltl.Log("list .size ="+ oHttpRespone.data.Count);
             return true;
         }
         /***************************************付款方式查询***************************************/

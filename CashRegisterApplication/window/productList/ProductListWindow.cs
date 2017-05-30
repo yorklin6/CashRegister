@@ -30,7 +30,6 @@ namespace CashRegiterApplication
 
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
-            CenterContral.InitWindows();
             SetTimerTask();
             CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
@@ -706,9 +705,7 @@ namespace CashRegiterApplication
                     }
                 case System.Windows.Forms.Keys.End:
                     {
-                        SettingDefaultMsgWindow oSettingDefaultMsgWindow = new SettingDefaultMsgWindow();
-                        oSettingDefaultMsgWindow.Show();
-                        this.Hide();
+                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByLogin();
                         return true;
                     }
                 case System.Windows.Forms.Keys.Insert:
@@ -986,7 +983,7 @@ namespace CashRegiterApplication
         {
 
         }
-        FormWindowState LastWindowState = FormWindowState.Minimized;
+        //FormWindowState LastWindowState = FormWindowState.Minimized;
         private void ProductListWindow_SizeChanged(object sender, EventArgs e)
         {
             // When window state changes
