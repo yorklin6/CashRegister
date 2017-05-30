@@ -45,7 +45,7 @@
             this.dataGridView_payTypeList = new System.Windows.Forms.DataGridView();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_payType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payTypeList)).BeginInit();
@@ -189,7 +189,7 @@
             this.dataGridView_payTypeList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9,
-            this.Column1});
+            this.Column_payType});
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -220,6 +220,7 @@
             this.dataGridView_payTypeList.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridView_payTypeList.Size = new System.Drawing.Size(339, 652);
             this.dataGridView_payTypeList.TabIndex = 3;
+            this.dataGridView_payTypeList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payTypeList_CellContentClick_1);
             // 
             // Column8
             // 
@@ -235,11 +236,11 @@
             this.Column9.HeaderText = "付款金额";
             this.Column9.Name = "Column9";
             // 
-            // Column1
+            // Column_payType
             // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.Name = "Column1";
-            this.Column1.Visible = false;
+            this.Column_payType.HeaderText = "实际付款类型ID";
+            this.Column_payType.Name = "Column_payType";
+            this.Column_payType.Visible = false;
             // 
             // RecieveMoneyWindow
             // 
@@ -279,6 +280,6 @@
         private System.Windows.Forms.DataGridView dataGridView_payTypeList;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_payType;
     }
 }

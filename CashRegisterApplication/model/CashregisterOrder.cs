@@ -95,6 +95,9 @@ namespace CashRegisterApplication.model
         public int isDeleted { get; set; }
 
         public string reqMemberZfJson { get; set; }
+
+        public string  payTypeDesc { get; set; }
+
         public PayWay()
         {
             id = 0;

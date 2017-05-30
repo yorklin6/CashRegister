@@ -43,8 +43,9 @@ namespace CashRegisterApplication.window
             this.lable_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
             this.lable_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
             //默认不选中
-            this.dataGridView_payTypeList.ClearSelection();
+         
             this.dataGridView_payTypeList.CurrentCell = null;
+            this.dataGridView_payTypeList.ClearSelection();
         }
 
         public void ShowPaidMsg()
@@ -54,23 +55,12 @@ namespace CashRegisterApplication.window
             string strPaidInfo = "";
             if (CenterContral.oStockOutDTO.checkouts.Count == 0)
             {
-                 strPaidInfo = "空";
+                 strPaidInfo = "0.00";
             }
         
             foreach (var item in CenterContral.oStockOutDTO.checkouts)
             {
-                if (item.payType== PayWay.PAY_TYPE_CASH)
-                {
-                    strPaidInfo += PayWay.PAY_TYPE_CASH_DESC+":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount)+"元\n";
-                }
-                else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
-                {
-                    strPaidInfo += PayWay.PAY_TYPE_WEIXIN_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
-                }
-                else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
-                {
-                    strPaidInfo += PayWay.PAY_TYPE_ZHIFUBAO_DESC + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
-                }
+                strPaidInfo += item.payTypeDesc + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
             }
             this.label_RecieveFee.Text = strPaidInfo;
             ShowByProductListWindow();
@@ -315,6 +305,11 @@ namespace CashRegisterApplication.window
         }
 
         private void dataGridView_payTypeList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_payTypeList_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
         }

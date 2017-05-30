@@ -346,6 +346,7 @@ namespace CashRegisterApplication.comm
                     CenterContral.oCurrentPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
                     CenterContral.oPayWay.payType = CenterContral.oCurrentPayType.payTypeId;
+                    CenterContral.oPayWay.payTypeDesc = CenterContral.oCurrentPayType.description;
                     CenterContral.oPayWay.generatePayOrderNumber();
                     CenterContral.oPayWay.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
                     CenterContral.oPayWay.payStatus = CenterContral.PAY_STATE_SUCCESS;
