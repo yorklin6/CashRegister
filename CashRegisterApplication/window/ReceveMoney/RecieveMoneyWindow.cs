@@ -318,10 +318,5 @@ namespace CashRegisterApplication.window
         {
 
         }
-
-        private void dataGridView_payWay_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
 }
