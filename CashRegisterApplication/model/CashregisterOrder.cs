@@ -27,7 +27,7 @@ namespace CashRegisterApplication.model
     {
         public StockOutBase Base;
         public List<StockOutDetail> details;
-        public List<PayWay> checkouts;
+        public List<Checkout> checkouts;
 
         public Member oMember;
         
@@ -35,11 +35,11 @@ namespace CashRegisterApplication.model
         {
             Base = new StockOutBase();
             details = new List<StockOutDetail>();
-            checkouts = new List<PayWay>();
+            checkouts = new List<Checkout>();
             oMember = new Member();
         }
 
-        internal void addPayWay(PayWay oPayWay)
+        internal void addChecout(Checkout oPayWay)
         {
             CommUiltl.Log("RecieveFee before:" + Base.RecieveFee);
             Base.RecieveFee += oPayWay.payAmount;
@@ -59,16 +59,16 @@ namespace CashRegisterApplication.model
 
         public int tradeTime { get; set; }
 
-        public List<PayWay> list;
+        public List<Checkout> list;
         public PayWayHttpRequet()
         {
             memberId = 0;
             tradeTime = 0;
-            list = new List<PayWay>();
+            list = new List<Checkout>();
         }
     }
 
-    public class PayWay
+    public class Checkout
     {
         public const int PAY_TYPE_CASH = 1;
         public const string PAY_TYPE_CASH_DESC = "现金";
@@ -98,7 +98,7 @@ namespace CashRegisterApplication.model
 
         public string  payTypeDesc { get; set; }
 
-        public PayWay()
+        public Checkout()
         {
             id = 0;
             payType = 0;

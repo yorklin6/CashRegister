@@ -73,7 +73,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label_local_save_stock_number = new System.Windows.Forms.Label();
-            this.dataGridView_payWay = new System.Windows.Forms.DataGridView();
+            this.dataGridView_checkout = new System.Windows.Forms.DataGridView();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_productList = new System.Windows.Forms.DataGridView();
@@ -95,7 +95,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_checkout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -576,15 +576,15 @@
             // 
             // dataGridView_payWay
             // 
-            this.dataGridView_payWay.AllowUserToAddRows = false;
-            this.dataGridView_payWay.AllowUserToDeleteRows = false;
-            this.dataGridView_payWay.AllowUserToResizeColumns = false;
-            this.dataGridView_payWay.AllowUserToResizeRows = false;
-            this.dataGridView_payWay.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView_payWay.BackgroundColor = System.Drawing.SystemColors.WindowText;
-            this.dataGridView_payWay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridView_payWay.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridView_payWay.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView_checkout.AllowUserToAddRows = false;
+            this.dataGridView_checkout.AllowUserToDeleteRows = false;
+            this.dataGridView_checkout.AllowUserToResizeColumns = false;
+            this.dataGridView_checkout.AllowUserToResizeRows = false;
+            this.dataGridView_checkout.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView_checkout.BackgroundColor = System.Drawing.SystemColors.WindowText;
+            this.dataGridView_checkout.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView_checkout.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridView_checkout.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -592,9 +592,9 @@
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWay.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
-            this.dataGridView_payWay.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_payWay.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_checkout.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dataGridView_checkout.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_checkout.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column8,
             this.Column9});
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
@@ -604,16 +604,16 @@
             dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_payWay.DefaultCellStyle = dataGridViewCellStyle10;
-            this.dataGridView_payWay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView_payWay.Enabled = false;
-            this.dataGridView_payWay.EnableHeadersVisualStyles = false;
-            this.dataGridView_payWay.GridColor = System.Drawing.SystemColors.Window;
-            this.dataGridView_payWay.Location = new System.Drawing.Point(0, 395);
-            this.dataGridView_payWay.Margin = new System.Windows.Forms.Padding(0);
-            this.dataGridView_payWay.MultiSelect = false;
-            this.dataGridView_payWay.Name = "dataGridView_payWay";
-            this.dataGridView_payWay.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dataGridView_checkout.DefaultCellStyle = dataGridViewCellStyle10;
+            this.dataGridView_checkout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView_checkout.Enabled = false;
+            this.dataGridView_checkout.EnableHeadersVisualStyles = false;
+            this.dataGridView_checkout.GridColor = System.Drawing.SystemColors.Window;
+            this.dataGridView_checkout.Location = new System.Drawing.Point(0, 395);
+            this.dataGridView_checkout.Margin = new System.Windows.Forms.Padding(0);
+            this.dataGridView_checkout.MultiSelect = false;
+            this.dataGridView_checkout.Name = "dataGridView_payWay";
+            this.dataGridView_checkout.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle11.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -621,13 +621,13 @@
             dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_payWay.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
-            this.dataGridView_payWay.RowHeadersVisible = false;
-            this.dataGridView_payWay.RowTemplate.Height = 23;
-            this.dataGridView_payWay.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView_payWay.Size = new System.Drawing.Size(206, 141);
-            this.dataGridView_payWay.TabIndex = 2;
-            this.dataGridView_payWay.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payWay_CellContentClick);
+            this.dataGridView_checkout.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            this.dataGridView_checkout.RowHeadersVisible = false;
+            this.dataGridView_checkout.RowTemplate.Height = 23;
+            this.dataGridView_checkout.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dataGridView_checkout.Size = new System.Drawing.Size(206, 141);
+            this.dataGridView_checkout.TabIndex = 2;
+            this.dataGridView_checkout.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payWay_CellContentClick);
             // 
             // Column8
             // 
@@ -786,7 +786,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.31579F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.31579F));
             this.tableLayoutPanel1.Controls.Add(this.dataGridView_productList, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dataGridView_payWay, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dataGridView_checkout, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 1, 1);
@@ -874,7 +874,7 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_payWay)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_checkout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -896,7 +896,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView dataGridView_productList;
-        private System.Windows.Forms.DataGridView dataGridView_payWay;
+        private System.Windows.Forms.DataGridView dataGridView_checkout;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label_discount_amount;

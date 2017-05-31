@@ -41,7 +41,10 @@ namespace CashRegisterApplication.window
             this.lable_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
             //其他订单信息
             this.lable_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            this.lable_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            if (CenterContral.oStockOutDTO.Base.RecieveFee== 0)
+            {
+                this.lable_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            }
             //默认不选中
          
             this.dataGridView_payTypeList.CurrentCell = null;
@@ -53,16 +56,21 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("已支付列表");
             this.Show();
             string strPaidInfo = "";
+            
+            for(int i=0;i< CenterContral.oStockOutDTO.checkouts.Count;++i)
+            {
+                var item = CenterContral.oStockOutDTO.checkouts[i];
+                strPaidInfo += item.payTypeDesc + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "\n";
+            }
             if (CenterContral.oStockOutDTO.checkouts.Count == 0)
             {
-                 strPaidInfo = "0.00";
+                strPaidInfo = "0.00";
             }
-        
-            foreach (var item in CenterContral.oStockOutDTO.checkouts)
+            else 
             {
-                strPaidInfo += item.payTypeDesc + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "元\n";
+                strPaidInfo += "小计:" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
             }
-            this.label_RecieveFee.Text = strPaidInfo;
+            this.lable_RecieveFee.Text = strPaidInfo;
             ShowByProductListWindow();
         }
 
@@ -310,6 +318,11 @@ namespace CashRegisterApplication.window
         }
 
         private void dataGridView_payTypeList_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void lable_RecieveFee_Click(object sender, EventArgs e)
         {
 
         }

@@ -30,7 +30,7 @@ namespace CashRegisterApplication.window
         public void ShowByReceiveMoneyWindow()
         {
             this.Show();
-            this.buttonConfirm.Text = CenterContral.oCurrentPayType.description;
+            this.buttonConfirm.Text = CenterContral.oCheckout.payTypeDesc;
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);

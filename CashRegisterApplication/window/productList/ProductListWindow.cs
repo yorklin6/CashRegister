@@ -196,16 +196,16 @@ namespace CashRegiterApplication
         {
             this.Show();
             this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
-            _SetPayWayGrid();
+            _SetCheckoutGrid();
             _SetDataGridViewOrderFee();
         }
         internal void CloseOrderByControlWindow()
         {
             this.Show();
-            _SetPayWayGrid();
+            _SetCheckoutGrid();
             _SetDataGridViewOrderFee();
          
-            this.dataGridView_payWay.CurrentCell = null;
+            this.dataGridView_checkout.CurrentCell = null;
             this.dataGridView_productList.CurrentCell = null;
             _ShowPayTipsInProductListAndSaveOrderMsg();
 
@@ -237,14 +237,17 @@ namespace CashRegiterApplication
             this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
         }
 
-        private void _SetPayWayGrid()
+        private void _SetCheckoutGrid()
         {
+            this.dataGridView_checkout.Rows.Clear();
             foreach (var item in CenterContral.oStockOutDTO.checkouts)
             {
-                int i = this.dataGridView_payWay.Rows.Add();
-                this.dataGridView_payWay.Rows[i].Cells[0].Value = item.payTypeDesc;
-                this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
+                int i = this.dataGridView_checkout.Rows.Add();
+                this.dataGridView_checkout.Rows[i].Cells[0].Value = item.payTypeDesc;
+                this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
             }
+            this.dataGridView_checkout.CurrentCell = null;
+            this.dataGridView_checkout.ClearSelection();
         }
 
 
@@ -255,8 +258,8 @@ namespace CashRegiterApplication
         }
         private void _GoProductList()
         {
-            this.dataGridView_payWay.CurrentCell = null;
-            this.dataGridView_payWay.ClearSelection();
+            this.dataGridView_checkout.CurrentCell = null;
+            this.dataGridView_checkout.ClearSelection();
             //默认最后一行正在编辑中
             this.dataGridView_productList.Focus();
             this.dataGridView_productList.Select();
@@ -804,21 +807,21 @@ namespace CashRegiterApplication
         {
             foreach (var item in CenterContral.oStockOutDTO.checkouts)
             {
-                int i = this.dataGridView_payWay.Rows.Add();
-                if (item.payType == PayWay.PAY_TYPE_CASH)
+                int i = this.dataGridView_checkout.Rows.Add();
+                if (item.payType == Checkout.PAY_TYPE_CASH)
                 {
-                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
+                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_CASH_DESC;
+                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
-                else if (item.payType == PayWay.PAY_TYPE_WEIXIN)
+                else if (item.payType == Checkout.PAY_TYPE_WEIXIN)
                 {
-                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
+                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_WEIXIN_DESC;
+                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
-                else if (item.payType == PayWay.PAY_TYPE_ZHIFUBAO)
+                else if (item.payType == Checkout.PAY_TYPE_ZHIFUBAO)
                 {
-                    this.dataGridView_payWay.Rows[i].Cells[0].Value = PayWay.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_payWay.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
+                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_ZHIFUBAO_DESC;
+                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
                 }
             }
         }
@@ -867,7 +870,7 @@ namespace CashRegiterApplication
             //使用clear事件，会触发行修改事件
 
             this.dataGridView_productList.Rows.Clear();
-            this.dataGridView_payWay.Rows.Clear();
+            this.dataGridView_checkout.Rows.Clear();
             CenterContral.Clean();
             _InitOrderMsg();
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];

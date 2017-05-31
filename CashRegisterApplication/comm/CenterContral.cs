@@ -45,8 +45,8 @@ namespace CashRegisterApplication.comm
 
         public static PayTypeData oPayTypeList;
 
-        public static PayWay oPayWay;//支付信息
-        public static PayType oCurrentPayType;// 支付类型全局
+        public static Checkout oCheckout;//支付信息
+        //public static PayType oCurrentPayType;// 支付类型全局
 
         public static UserLogin oLoginer;//登录用户
         public static LoginWindows Windows_Login;
@@ -118,7 +118,7 @@ namespace CashRegisterApplication.comm
 
             oStockOutDToRespond = new StockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
-            oPayWay = new PayWay();
+            oCheckout = new Checkout();
             oStoreWhouse = new StoreWhouse();
             store_house_selete_flag = STORE_HOUSE_UNSET_SELETED;
             oStoreListWithUser = new StoreListWithUser();
@@ -343,14 +343,15 @@ namespace CashRegisterApplication.comm
             {
                if( CenterContral.oPayTypeList.list[index].payTypeId == payTypeId)
                 {
-                    CenterContral.oCurrentPayType = CenterContral.oPayTypeList.list[index];
+                    var oPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
-                    CenterContral.oPayWay.payType = CenterContral.oCurrentPayType.payTypeId;
-                    CenterContral.oPayWay.payTypeDesc = CenterContral.oCurrentPayType.description;
-                    CenterContral.oPayWay.generatePayOrderNumber();
-                    CenterContral.oPayWay.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
-                    CenterContral.oPayWay.payStatus = CenterContral.PAY_STATE_SUCCESS;
-                    CenterContral.oPayWay.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
+                    CenterContral.oCheckout = new Checkout();
+                    CenterContral.oCheckout.payType = oPayType.payTypeId;
+                    CenterContral.oCheckout.payTypeDesc = oPayType.description;
+                    CenterContral.oCheckout.generatePayOrderNumber();
+                    CenterContral.oCheckout.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
+                    CenterContral.oCheckout.payStatus = CenterContral.PAY_STATE_SUCCESS;
+                    CenterContral.oCheckout.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
              
                     return true;
                 }
@@ -708,20 +709,20 @@ namespace CashRegisterApplication.comm
         }
         internal static bool PayOrder(long recieveFee)
         {
-            oPayWay.payAmount = recieveFee;
-            if (!Dao.GeneratePay(CenterContral.oPayWay))
+            oCheckout.payAmount = recieveFee;
+            if (!Dao.GeneratePay(CenterContral.oCheckout))
             {
                 return false;
             }
             //修改环境变量，表示这笔单支付成功
-            CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
+            CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
         }
         internal static bool PayOrderByMember(long recieveFee)
         {
-            oPayWay.payAmount = recieveFee;
+            oCheckout.payAmount = recieveFee;
 
             WalletHistory oRecharge = new WalletHistory();
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
@@ -734,12 +735,12 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //本地记录支付信息
-            oPayWay.reqMemberZfJson = JsonConvert.SerializeObject(oRecharge);
-            if (!Dao.GeneratePay(oPayWay))
+            oCheckout.reqMemberZfJson = JsonConvert.SerializeObject(oRecharge);
+            if (!Dao.GeneratePay(oCheckout))
             {
                 return false;
             }
-            CenterContral.oStockOutDTO.addPayWay(CenterContral.oPayWay);
+            CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
 
             //重新拉会员信息
             CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
