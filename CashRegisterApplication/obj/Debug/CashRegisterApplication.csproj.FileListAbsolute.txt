@@ -124,7 +124,6 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\bin\Debug\System.Data.SQLite.xml
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByCashWindow.resources
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyWindow.resources
-D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByCashWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.RecieveMoneyWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.ReceiveMoneyByMember.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.member.MemberInfoWindows.resources
@@ -136,3 +135,4 @@ C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplicatio
 C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Setting.SettingDefaultMsgWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.productList.DiscountWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ProductList.SelectGoodWindows.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByPayTypeWindow.resources

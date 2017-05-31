@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace CashRegisterApplication.window
 {
-    public partial class ReceiveMoneyByCashWindow : Form
+    public partial class ReceiveMoneyByPayTypeWindow : Form
     {
-        public ReceiveMoneyByCashWindow()
+        public ReceiveMoneyByPayTypeWindow()
         {
             InitializeComponent();
            
@@ -63,6 +63,8 @@ namespace CashRegisterApplication.window
                         returnPreventWindows();
                         break;
                     }
+
+                   
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -178,7 +180,7 @@ namespace CashRegisterApplication.window
         {
             e.Cancel = false;
             returnPreventWindows();
-            CenterContral.Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();
+            CenterContral.Window_ReceiveMoneyByPayType = new ReceiveMoneyByPayTypeWindow();
         }
 
     }

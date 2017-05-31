@@ -233,7 +233,8 @@ namespace CashRegiterApplication
         private void _SetDataGridViewOrderFee()
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
-            this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
+            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
             this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
         }
 

@@ -21,7 +21,7 @@ namespace CashRegisterApplication.comm
         public static bool initFlag = false;
         public static ProductListWindow Window_ProductList;//全局窗口
         public static RecieveMoneyWindow Window_RecieveMoney;//收款窗口
-        public static ReceiveMoneyByCashWindow Window_ReceiveMoneyByCash;//现金收款窗口
+        public static ReceiveMoneyByPayTypeWindow Window_ReceiveMoneyByPayType;//现金收款窗口
         public static ReceiveMoneyByMember Window_ReceiveMoneyByMember;//会员收款窗口
 
         public static SettingDefaultMsgWindow Windows_SettingDefaultMsgWindow ;
@@ -108,7 +108,7 @@ namespace CashRegisterApplication.comm
             }
             //Window_ProductList = new ProductListWindow();//全局窗口
             Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
-            Window_ReceiveMoneyByCash = new ReceiveMoneyByCashWindow();//现金收款窗口
+            Window_ReceiveMoneyByPayType = new ReceiveMoneyByPayTypeWindow();//现金收款窗口
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
 

@@ -81,7 +81,7 @@ namespace CashRegisterApplication.window.member
                 str += "未参加会员价的商品:\n";
                 str += CenterContral.oStockOutDTO.oMember.goodsStringWithoutMemberPrice;
             }
-            this.lable_goodsStringWithoutMemberPrice.Text = str;
+            //this.lable_goodsStringWithoutMemberPrice.Text = str;
         }
         private void ReceiveMoneyByCashWindow_Enter(object sender, EventArgs e)
         {
@@ -103,6 +103,13 @@ namespace CashRegisterApplication.window.member
                         returnPreventWindows();
                         break;
                     }
+                case System.Windows.Forms.Keys.F12:
+                    {
+                        //重新输入会员卡信息
+                        CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
+                        break;
+                    }
+
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

@@ -129,5 +129,10 @@ namespace CashRegisterApplication.window.member
             returnPreventWindows();
             CenterContral.Window_MemberInfoWindows = new MemberInfoWindows();
         }
+
+        private void textBox_name_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

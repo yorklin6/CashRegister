@@ -119,11 +119,11 @@
     <Compile Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.Designer.cs">
       <DependentUpon>ReceiveMoneyByMemberWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\ReceveMoney\ReceiveMoneyByCashWindow.cs">
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByPayTypeWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\ReceveMoney\ReceiveMoneyByCashWindow.Designer.cs">
-      <DependentUpon>ReceiveMoneyByCashWindow.cs</DependentUpon>
+    <Compile Include="window\ReceveMoney\ReceiveMoneyByPayTypeWindow.Designer.cs">
+      <DependentUpon>ReceiveMoneyByPayTypeWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ReceveMoney\RecieveMoneyWindow.cs">
       <SubType>Form</SubType>
@@ -168,8 +168,8 @@
     <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByMemberWindow.resx">
       <DependentUpon>ReceiveMoneyByMemberWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByCashWindow.resx">
-      <DependentUpon>ReceiveMoneyByCashWindow.cs</DependentUpon>
+    <EmbeddedResource Include="window\ReceveMoney\ReceiveMoneyByPayTypeWindow.resx">
+      <DependentUpon>ReceiveMoneyByPayTypeWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ReceveMoney\RecieveMoneyWindow.resx">
       <DependentUpon>RecieveMoneyWindow.cs</DependentUpon>

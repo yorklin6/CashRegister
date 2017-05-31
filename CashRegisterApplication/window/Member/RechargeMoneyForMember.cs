@@ -77,6 +77,12 @@ namespace CashRegisterApplication.window.Member
                         returnPreventWindows();
                         break;
                     }
+                case System.Windows.Forms.Keys.F12:
+                    {
+                        //重新输入会员卡信息
+                        CenterContral.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
+                        break;
+                    }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -141,6 +147,11 @@ namespace CashRegisterApplication.window.Member
             e.Cancel = false;
             returnPreventWindows();
             CenterContral.Window_RechargeMoneyForMember = new RechargeMoneyForMember();
+        }
+
+        private void textBox_memberBalance_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

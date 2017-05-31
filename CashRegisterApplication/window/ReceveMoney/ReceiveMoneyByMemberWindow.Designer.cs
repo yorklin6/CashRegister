@@ -38,17 +38,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox_ReceiveFee = new System.Windows.Forms.TextBox();
-            this.lable_goodsStringWithoutMemberPrice = new System.Windows.Forms.Label();
             this.textBox_SupportFee = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox_ChangeFee = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.buttonConfirm = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_phone
             // 
+            this.textBox_phone.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_phone.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_phone.Location = new System.Drawing.Point(297, 116);
             this.textBox_phone.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_phone.Name = "textBox_phone";
@@ -69,6 +69,8 @@
             // 
             // textBox_name
             // 
+            this.textBox_name.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_name.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_name.Location = new System.Drawing.Point(297, 87);
             this.textBox_name.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_name.Name = "textBox_name";
@@ -99,6 +101,8 @@
             // 
             // textBox_memberAccount
             // 
+            this.textBox_memberAccount.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_memberAccount.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_memberAccount.Location = new System.Drawing.Point(297, 54);
             this.textBox_memberAccount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_memberAccount.Name = "textBox_memberAccount";
@@ -109,6 +113,8 @@
             // 
             // textBox_memberBalance
             // 
+            this.textBox_memberBalance.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_memberBalance.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_memberBalance.Location = new System.Drawing.Point(297, 145);
             this.textBox_memberBalance.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_memberBalance.Name = "textBox_memberBalance";
@@ -139,6 +145,8 @@
             // 
             // textBox_ReceiveFee
             // 
+            this.textBox_ReceiveFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_ReceiveFee.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_ReceiveFee.Location = new System.Drawing.Point(297, 231);
             this.textBox_ReceiveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_ReceiveFee.Name = "textBox_ReceiveFee";
@@ -147,17 +155,10 @@
             this.textBox_ReceiveFee.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.textBox_ReceiveFee.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_ReceiveFee_KeyPress);
             // 
-            // lable_goodsStringWithoutMemberPrice
-            // 
-            this.lable_goodsStringWithoutMemberPrice.AutoSize = true;
-            this.lable_goodsStringWithoutMemberPrice.Location = new System.Drawing.Point(429, 54);
-            this.lable_goodsStringWithoutMemberPrice.Name = "lable_goodsStringWithoutMemberPrice";
-            this.lable_goodsStringWithoutMemberPrice.Size = new System.Drawing.Size(263, 12);
-            this.lable_goodsStringWithoutMemberPrice.TabIndex = 37;
-            this.lable_goodsStringWithoutMemberPrice.Text = "因为收银员进行价格修改，未参加会员价的商品:\r\n";
-            // 
             // textBox_SupportFee
             // 
+            this.textBox_SupportFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_SupportFee.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_SupportFee.Location = new System.Drawing.Point(297, 173);
             this.textBox_SupportFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_SupportFee.Name = "textBox_SupportFee";
@@ -176,6 +177,8 @@
             // 
             // textBox_ChangeFee
             // 
+            this.textBox_ChangeFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_ChangeFee.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_ChangeFee.Location = new System.Drawing.Point(297, 202);
             this.textBox_ChangeFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_ChangeFee.Name = "textBox_ChangeFee";
@@ -194,38 +197,28 @@
             // 
             // buttonConfirm
             // 
-            this.buttonConfirm.BackgroundImage = global::CashRegisterApplication.Properties.Resources.credit_card_180_93559322034px_1207324_easyicon_net;
             this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(297, 292);
+            this.buttonConfirm.Location = new System.Drawing.Point(297, 298);
             this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonConfirm.Name = "buttonConfirm";
-            this.buttonConfirm.Size = new System.Drawing.Size(121, 105);
+            this.buttonConfirm.Size = new System.Drawing.Size(121, 80);
             this.buttonConfirm.TabIndex = 40;
-            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.Text = "会员-储值卡支付";
+            this.buttonConfirm.UseVisualStyleBackColor = false;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(339, 410);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 12);
-            this.label5.TabIndex = 43;
-            this.label5.Text = "ENTER";
             // 
             // ReceiveMoneyByMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(767, 441);
-            this.Controls.Add(this.label5);
+            this.BackColor = System.Drawing.SystemColors.WindowText;
+            this.ClientSize = new System.Drawing.Size(685, 441);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox_ChangeFee);
             this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.textBox_SupportFee);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.lable_goodsStringWithoutMemberPrice);
             this.Controls.Add(this.textBox_ReceiveFee);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_memberBalance);
@@ -236,6 +229,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_memberAccount);
+            this.ForeColor = System.Drawing.SystemColors.Window;
             this.Name = "ReceiveMoneyByMember";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "会员支付";
@@ -258,12 +252,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox_ReceiveFee;
-        private System.Windows.Forms.Label lable_goodsStringWithoutMemberPrice;
         private System.Windows.Forms.TextBox textBox_SupportFee;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonConfirm;
         private System.Windows.Forms.TextBox textBox_ChangeFee;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label5;
     }
 }

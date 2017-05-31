@@ -1,6 +1,6 @@
 ﻿namespace CashRegisterApplication.window
 {
-    partial class ReceiveMoneyByCashWindow
+    partial class ReceiveMoneyByPayTypeWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,9 @@
             // 
             // textBox_ChangeFee
             // 
-            this.textBox_ChangeFee.Location = new System.Drawing.Point(313, 152);
+            this.textBox_ChangeFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_ChangeFee.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_ChangeFee.Location = new System.Drawing.Point(222, 152);
             this.textBox_ChangeFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_ChangeFee.Name = "textBox_ChangeFee";
             this.textBox_ChangeFee.ReadOnly = true;
@@ -49,7 +51,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(262, 152);
+            this.label3.Location = new System.Drawing.Point(171, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 11;
@@ -57,7 +59,9 @@
             // 
             // textBox_SupportFee
             // 
-            this.textBox_SupportFee.Location = new System.Drawing.Point(313, 123);
+            this.textBox_SupportFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_SupportFee.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_SupportFee.Location = new System.Drawing.Point(222, 123);
             this.textBox_SupportFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_SupportFee.Name = "textBox_SupportFee";
             this.textBox_SupportFee.ReadOnly = true;
@@ -67,7 +71,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(262, 123);
+            this.label2.Location = new System.Drawing.Point(171, 123);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 12;
@@ -77,18 +81,18 @@
             // 
             this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(313, 224);
+            this.buttonConfirm.Location = new System.Drawing.Point(222, 216);
             this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.buttonConfirm.Name = "buttonConfirm";
             this.buttonConfirm.Size = new System.Drawing.Size(121, 53);
             this.buttonConfirm.TabIndex = 17;
-            this.buttonConfirm.UseVisualStyleBackColor = true;
+            this.buttonConfirm.UseVisualStyleBackColor = false;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(262, 93);
+            this.label1.Location = new System.Drawing.Point(171, 93);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 10;
@@ -96,7 +100,9 @@
             // 
             // textBox_ReceiveFee
             // 
-            this.textBox_ReceiveFee.Location = new System.Drawing.Point(313, 90);
+            this.textBox_ReceiveFee.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_ReceiveFee.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_ReceiveFee.Location = new System.Drawing.Point(222, 90);
             this.textBox_ReceiveFee.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_ReceiveFee.Name = "textBox_ReceiveFee";
             this.textBox_ReceiveFee.Size = new System.Drawing.Size(126, 21);
@@ -104,11 +110,12 @@
             this.textBox_ReceiveFee.TextChanged += new System.EventHandler(this.textBox_ReceiveFee_TextChanged);
             this.textBox_ReceiveFee.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_ReceiveFee_KeyPress);
             // 
-            // ReceiveMoneyByCashWindow
+            // ReceiveMoneyByPayTypeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 380);
+            this.BackColor = System.Drawing.SystemColors.WindowText;
+            this.ClientSize = new System.Drawing.Size(566, 380);
             this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.textBox_ChangeFee);
             this.Controls.Add(this.label3);
@@ -116,7 +123,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_ReceiveFee);
-            this.Name = "ReceiveMoneyByCashWindow";
+            this.ForeColor = System.Drawing.SystemColors.Window;
+            this.Name = "ReceiveMoneyByPayTypeWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "收银-现金";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceiveMoneyByCashWindow_FormClosing);

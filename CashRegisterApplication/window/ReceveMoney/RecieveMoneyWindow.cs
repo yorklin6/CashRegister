@@ -233,14 +233,14 @@ namespace CashRegisterApplication.window
                 this.Hide();
                 return;
             }
-            CenterContral.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
+            CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
             this.Hide();
             return;
         }
         private void buttonCash_Click(object sender, EventArgs e)
         {
             _CheckFee();
-            CenterContral.Window_ReceiveMoneyByCash.ShowByReceiveMoneyWindow();
+            CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
             this.Hide();
         }
 
