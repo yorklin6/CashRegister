@@ -195,7 +195,7 @@ namespace CashRegisterApplication.comm
             foreach (var item in oStockOutDTO.details)
             {
                 strSql = "INSERT INTO tb_stock_out_detail ";
-                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,cloud_state,specification,unit,order_count,detail_data_json,unit_price) VALUES (";
+                strSql += " (id,stock_out_id,serial_number,goods_id,goods_name,barcode,actual_count,cloud_state,specification,unit,order_count,unit_price) VALUES (";
                 strSql += " " + item .id + ",";
                 strSql += " " + item.stockOutId + ",";
                 strSql += " '" + oStockOutDTO.Base.serialNumber + "',";
@@ -207,7 +207,6 @@ namespace CashRegisterApplication.comm
                 strSql += "'" + item.specification + "',";
                 strSql += "'" + item.unit + "',";
                 strSql += "" + item.orderCount + ",";
-                strSql += "'" + item.detailDataJson + "',";
                 strSql += "" + item.unitPrice + " ";
                 strSql += ")";
                 sqlite_cmd = sqlite_conn.CreateCommand();

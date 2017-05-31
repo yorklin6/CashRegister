@@ -65,7 +65,6 @@ namespace CashRegisterApplication.window.ProductList
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
             detail.cloudProductPricing = productInfo;
-            detail.detailDataJson = JsonConvert.SerializeObject(productInfo);
 
         }
 

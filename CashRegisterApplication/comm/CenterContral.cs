@@ -179,8 +179,23 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.GetPayTypeList();
             CenterContral.Window_ProductList.Show();
+            SetTimerTask();
             return;
         }
+        public static void SetTimerTask()
+        {
+            CommUiltl.Log("SetTimerTask ");
+            //先执行一把
+            MyTimerTask oMyTime = new MyTimerTask();
+            oMyTime.MyTimer_Tick(null,null);
+            //再执行异步数据
+            Timer MyTimer = new Timer();
+            MyTimer.Interval = (5 * 60 * 1000); // 1 mins
+            
+            MyTimer.Tick += new EventHandler(oMyTime.MyTimer_Tick);
+            MyTimer.Start();
+        }
+       
         public static void GetDefaultMsgFromDb()
         {
             GetDbMsgToCenterConalMsg();//设置默认数据
@@ -339,9 +354,9 @@ namespace CashRegisterApplication.comm
         internal static bool SetCurrentPayTypeById(int payTypeId)
         {
             //找出支付类型为paytypid元素
-            for(int index=0; index < CenterContral.oPayTypeList.list.Count;++index)
+            for(int index=0; index < CenterContral.oPayTypeList.list.Count; ++index)
             {
-               if( CenterContral.oPayTypeList.list[index].payTypeId == payTypeId)
+                if (CenterContral.oPayTypeList.list[index].payTypeId == payTypeId)
                 {
                     var oPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
@@ -434,14 +449,13 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDToRespond = new StockOutDTORespone();
 
             CenterContral.oStockOutDTO.Base.generateSeariseNumber();
-            CenterContral.oStockOutDTO.Base.stockOutId = 0;
             CenterContral.oStockOutDTO.Base.RecieveFee = 0;
             CenterContral.oStockOutDTO.Base.orderAmount = 0;
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
             CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = 0;
 
             CenterContral.oStockOutDTO.Base.type = CenterContral.STOCK_OUT_BASE_TYPE;
-            CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
+            CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
@@ -524,10 +538,10 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
-
-            //关单请求
+            CenterContral.oStockOutDTO.Base.baseDataJson = "";//请求之前先把这个字段清空，减少请求空间
+            //关单请求                                                  
             CenterContral.oStockOutDTO.Base.cloudCloseFlag
-                = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
+                           = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
 
             CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
@@ -598,7 +612,7 @@ namespace CashRegisterApplication.comm
             {
                 CommUiltl.Log(" strProductList is modify [" + CenterContral.oStockOutDTO.Base.ProductList + "] -> [" + strProductList + "]");
                 CenterContral.oStockOutDTO.Base.ProductList = strProductList;
-                CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
+                //先去掉，只有结算的时候，向后台请求下单 CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(CenterContral.oStockOutDTO, ref CenterContral.oStockOutDToRespond);
 
                 CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
                 if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))

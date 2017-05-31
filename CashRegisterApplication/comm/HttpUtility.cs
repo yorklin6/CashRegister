@@ -169,7 +169,22 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
+            {
+                iResult = _RetailSettlement(oReq, ref oRespond);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+        internal static int RetailSettlementByTask(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            //异步同步，只重试一次
+            for (int i = 0; i < 1; ++i)
             {
                 iResult = _RetailSettlement(oReq, ref oRespond);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -181,9 +196,14 @@ namespace CashRegiterApplication
         }
         internal static int _RetailSettlement(StockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
-            string funcUrl = RetailSettlementFunc;
-            String json = JsonConvert.SerializeObject(oReq);
+            StockOutDTO oReqoTmp = new StockOutDTO();
+            oReqoTmp.Base = oReq.Base;
+            oReqoTmp.checkouts = oReq.checkouts;
+            oReqoTmp.details = oReq.details;
 
+            string funcUrl = RetailSettlementFunc;
+            String json = JsonConvert.SerializeObject(oReqoTmp);
+            CommUiltl.Log("**********:" + json);
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
@@ -205,7 +225,7 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _UpdateOrder(oReq, ref oRespond);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -241,7 +261,7 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _PayOrder(oPayWay);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -300,7 +320,7 @@ namespace CashRegiterApplication
         public static bool GetAllProduct(int page,int pageSize, ref ProductPricingInfoResp oHttpRespone)
         {
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 if (_GetAllProduct(page, pageSize, ref oHttpRespone))
                 {
@@ -332,7 +352,7 @@ namespace CashRegiterApplication
         {
             bool iResult = true;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _GeneratePostId( storeId,  mac, ref  iPostId);
                 if (true == iResult)
@@ -365,7 +385,7 @@ namespace CashRegiterApplication
         internal static bool GetGoodsLastUpdate(string strLastUpdateTime,ref List<ProductPricing> list)
         {
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 if (_GetGoodslastUpdate(strLastUpdateTime, ref list))
                 {
@@ -402,7 +422,7 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _GetMemberByMemberAccount(strMemberAccount,ref oMember);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -441,7 +461,7 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _memberRecharge( oReq);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -477,7 +497,7 @@ namespace CashRegiterApplication
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _MemberPay(oReq);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
@@ -513,7 +533,7 @@ namespace CashRegiterApplication
         {
             bool iResult = true;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _GetStoreMsgByUserName(strUserName,ref oData);
                 if (true == iResult)
@@ -547,7 +567,7 @@ namespace CashRegiterApplication
         {
             bool iResult = true;
             lastErrorMsg = "";
-            for (int i = 0; i < 3; ++i)
+            for (int i = 0; i < 2; ++i)
             {
                 iResult = _GetPayType(ref oData);
                 if (true == iResult)

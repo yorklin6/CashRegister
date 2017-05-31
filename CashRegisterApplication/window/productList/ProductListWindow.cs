@@ -30,7 +30,7 @@ namespace CashRegiterApplication
 
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
-            SetTimerTask();
+      
             CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
             SetLocalSaveDataNumber();
@@ -74,19 +74,7 @@ namespace CashRegiterApplication
             this.label_discount_rate.Text = CenterContral.oStockOutDTO.Base.discountRate.ToString();
         }
 
-        private void SetTimerTask()
-        {
-            CommUiltl.Log("SetTimerTask ");
-            Timer MyTimer = new Timer();
-            MyTimer.Interval = (1 * 60 * 1000); // 1 mins
-            MyTimer.Tick += new EventHandler(MyTimer_Tick);
-            MyTimer.Start();
-        }
-        private void MyTimer_Tick(object sender, EventArgs e)
-        {
-            CommUiltl.Log("SetTimerTask ");
-            MyTimerTask.Run();
-        }
+
 
         public System.Windows.Forms.DataGridView GetDataGridViewProduct()
         {
@@ -180,7 +168,6 @@ namespace CashRegiterApplication
                 CommUiltl.Log(" Main.oStockOutDTO.details.Count:" + CenterContral.oStockOutDTO.details.Count);
                 CommUiltl.Log(" index:" + index);
                 CenterContral.oStockOutDTO.details[index].actualCount = RetailDetailCount;
-                CenterContral.oStockOutDTO.details[index].barcode = this.dataGridView_productList.Rows[index].Cells[CELL_INDEX.GOODS_KEYWORD].Value.ToString();
                 CenterContral.oStockOutDTO.details[index].unitPrice = price;
                 CenterContral.oStockOutDTO.details[index].subtotal = subtotal;
             }
@@ -449,12 +436,10 @@ namespace CashRegiterApplication
             detail.specification = productInfo.specification;
             detail.categoryId = productInfo.categoryId;
             detail.unit = productInfo.baseUnit;
-   
+           
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
             detail.cloudProductPricing = productInfo;
-            detail.detailDataJson = JsonConvert.SerializeObject(productInfo);
-
         }
 
         

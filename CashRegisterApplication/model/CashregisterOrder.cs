@@ -184,8 +184,6 @@ namespace CashRegisterApplication.model
         public long unitPrice { get; set; }
         public long subtotal { get; set; }
         public String remark { get; set; }
-
-
         public   int status { get; set; }
         internal int cloudState { get; set; }
 
@@ -193,8 +191,6 @@ namespace CashRegisterApplication.model
 
         public long spaceId;
 
-
-        public string detailDataJson { get; set; }
         public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
 

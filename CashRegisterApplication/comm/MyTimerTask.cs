@@ -10,6 +10,11 @@ namespace CashRegisterApplication.comm
     //异步处理数据库
     class MyTimerTask
     {
+        public void MyTimer_Tick(object sender, EventArgs e)
+        {
+            CommUiltl.Log("SetTimerTask ");
+            MyTimerTask.Run();
+        }
         public static void Run()
         {
             CommUiltl.Log("UpdateLocalGoodsMsg ");
@@ -125,11 +130,10 @@ namespace CashRegisterApplication.comm
                 HttpBaseRespone oRespond = new HttpBaseRespone();
                 string strDataJson = oStock.Base.baseDataJson;
                 oStock.Base.baseDataJson = "";
-                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlement(oStock, ref oRespond);
-
+                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlementByTask(oStock, ref oRespond);
                 if (oStock.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
-                    oStock.Base.baseDataJson = strDataJson;
+                    oStock.Base.baseDataJson = JsonConvert.SerializeObject(oStock);
                     Dao.UpdateOrderCloudState(oStock);
                 }
                 else
