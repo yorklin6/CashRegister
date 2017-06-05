@@ -101,6 +101,18 @@
     <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\Printer\Cash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Printer\Cash.designer.cs">
+      <DependentUpon>Cash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\Printer\Test.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Printer\Test.Designer.cs">
+      <DependentUpon>Test.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\ProductList\DiscountWindows.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,6 +170,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="window\Member\RechargeMoneyForMember.resx">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\Printer\Cash.resx">
+      <DependentUpon>Cash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\Printer\Test.resx">
+      <DependentUpon>Test.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ProductList\DiscountWindows.resx">
       <DependentUpon>DiscountWindows.cs</DependentUpon>

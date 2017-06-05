@@ -136,3 +136,5 @@ C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplicatio
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.productList.DiscountWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ProductList.SelectGoodWindows.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReceiveMoneyByPayTypeWindow.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\SuperMarket.Cash.resources
+D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Printer.Test.resources
