@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.Collections;
 using System.Data.SqlClient;
+using CashRegisterApplication.comm;
+
 namespace SuperMarket
 {
     public partial class Cash : Form
@@ -217,6 +219,7 @@ namespace SuperMarket
             StreamWriter sw = new StreamWriter(path, true);
             string day = DateTime.Now.ToString("yyyyMMdd");
             string time = DateTime.Now.ToString();
+            CommUiltl.Log("day"+ day);
             #region 小票 基本格式图
             //***************小票的格式如下************************  //
             //                   新一佳超市                         //
@@ -304,15 +307,15 @@ namespace SuperMarket
             System.Windows.Forms.PrintDialog PrintDialog1 = new PrintDialog();
             PrintDialog1.AllowSomePages = true;
             PrintDialog1.ShowHelp = true;
-
+            CommUiltl.Log("PrintDialog1" );
             // 把PrintDialog的Document属性设为上面配置好的PrintDocument的实例 
             PrintDialog1.Document = docToPrint;//这是工具箱中打印的一个 组件名称
             this.docToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(docToPrint_PrintPage);
-
+            CommUiltl.Log(" this.docToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(docToPrint_PrintPage)");
             // 调用PrintDialog的ShowDialog函数显示打印对话框 
             DialogResult result = PrintDialog1.ShowDialog();
 
-            if (result == DialogResult.OK)// 弹出设置打印机，如果不需要设置，第三部可简写为   docToPrint.Print(); 则开始进行打印了
+            //if (result == DialogResult.OK)// 弹出设置打印机，如果不需要设置，第三部可简写为   docToPrint.Print(); 则开始进行打印了
             {
                 // 开始打印 
                 docToPrint.Print();
@@ -380,7 +383,7 @@ namespace SuperMarket
 
             //信息其他部分 
             text = text.Substring(40, (text.Length - 40));
-
+            CommUiltl.Log("text:"+ text);
             // 设置信息打印格式 
             e.Graphics.DrawString(strTou, printFont1, System.Drawing.Brushes.Black, 5, 5);
             e.Graphics.DrawString(text, printFont, System.Drawing.Brushes.Black, 10, 5);

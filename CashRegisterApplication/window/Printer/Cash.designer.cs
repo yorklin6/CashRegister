@@ -214,6 +214,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(134, 21);
             this.textBox1.TabIndex = 13;
+            this.textBox1.Text = "55.26";
             // 
             // textBox2
             // 
@@ -222,6 +223,7 @@
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(134, 21);
             this.textBox2.TabIndex = 14;
+            this.textBox2.Text = "55.26";
             // 
             // textBox3
             // 
@@ -230,7 +232,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(134, 21);
             this.textBox3.TabIndex = 17;
-            this.textBox3.Text = "100";
+            this.textBox3.Text = "55.26";
             this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             // 
@@ -241,6 +243,7 @@
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(134, 21);
             this.textBox4.TabIndex = 18;
+            this.textBox4.Text = "55.26";
             // 
             // button2
             // 
