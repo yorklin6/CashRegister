@@ -28,7 +28,7 @@ namespace CashRegiterApplication
 
       
 
-        private static readonly string CashRegistHost = "https://120.24.210.161:8686/jweb_sugu/";
+        private static readonly string CashRegistHost = "https://120.24.210.161:8686/branch/";
         private static CookieContainer gCookies = null;//全局登录态cookie
         public static string  DefaultUser = "york";
         public static string  DefaultPassword = "york";
