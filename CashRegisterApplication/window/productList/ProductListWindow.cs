@@ -37,7 +37,7 @@ namespace CashRegiterApplication
             
             System.Windows.Forms.Clipboard.SetText("9556247516480");
             System.Windows.Forms.Clipboard.SetText("倍乐");
-            this.label_defaultUser.Text = HttpUtility.DefaultUser;
+            this.label_defaultUser.Text = CenterContral.DefaultUserName;
             this.label_postId.Text = CenterContral.iPostId.ToString();
         }
         public void SetMemberInfo()

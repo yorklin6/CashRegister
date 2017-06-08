@@ -249,14 +249,14 @@ namespace SuperMarket
             //**************************************************//
             #endregion
             #region 拼出小票格式
-            sw.WriteLine("                 新一佳超市            \t\t");
-            sw.WriteLine("                                           \t\t");
-            sw.WriteLine("               欢迎光临新一佳超市      \t\t");
-            sw.WriteLine("                                                ");
-            sw.WriteLine("                                                ");
-            sw.WriteLine("                                                ");
-            sw.WriteLine("   物品               数量                  单价(￥)");
-            sw.WriteLine("-----------------------------------------------------");
+            sw.WriteLine("欢迎光临速顾优先选鲜食材馆！");
+            sw.WriteLine(DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss"));
+            sw.WriteLine("POST机号:"+CenterContral.iPostId);
+            sw.WriteLine("单号:"+ CenterContral.oStockOutDTO.Base.serialNumber);
+            sw.WriteLine("收银员:"+ CenterContral.DefaultUserId);
+ 
+            sw.WriteLine("==============销售==============");
+            sw.WriteLine("名称/条码    单价   数量   金额");
             int nums = 20;
             int prices = 12;
 
@@ -292,12 +292,18 @@ namespace SuperMarket
             newmoney = oldmoney;
 
 
-            sw.WriteLine("           合计：                  " + newmoney.ToString());//合计金额
-            sw.WriteLine("           现金：                  " + textBox3.Text.Trim());//实收现金
-            sw.WriteLine("           找赎：                  " + textBox4.Text.Trim());//实收现金
-            sw.WriteLine("                                         \t\t");
-            sw.WriteLine("                                         \t\t");
-            sw.WriteLine("日期/时间 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            sw.WriteLine("总件数" + "");//合计金额
+            sw.WriteLine("应收:" + textBox3.Text.Trim());//实收现金
+            sw.WriteLine("已优惠:" + textBox4.Text.Trim());//实收现金
+            sw.WriteLine("找零:");
+            if (CenterContral.oStockOutDTO.oMember.memberId > 0)
+            {
+                sw.WriteLine("会员卡号:");
+                sw.WriteLine("本单交易积分:");
+                sw.WriteLine("会员卡余额:");
+            }
+            sw.WriteLine("会员卡号:");
+            sw.WriteLine("本单 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
             sw.WriteLine("                                                ");
             sw.WriteLine("服务热线:0755-12435682");
             sw.Close();
@@ -370,23 +376,14 @@ namespace SuperMarket
             
             string text = null;
             // 信息头 
-            string strTou = string.Empty;
             System.Drawing.Font printFont = new System.Drawing.Font
-            ("Arial", 8, System.Drawing.FontStyle.Regular);
-            System.Drawing.Font printFont1 = new System.Drawing.Font
-            ("Arial", 11, System.Drawing.FontStyle.Regular);            
+            ("Arial", 8, System.Drawing.FontStyle.Regular);            
            
             text = GetTicketInfo();//获取本次购物清单数据
-         
-            // 获取信息头 
-            strTou = text.Substring(0, 40);
-
-            //信息其他部分 
-            text = text.Substring(40, (text.Length - 40));
+   
             CommUiltl.Log("text:"+ text);
             // 设置信息打印格式 
-            e.Graphics.DrawString(strTou, printFont1, System.Drawing.Brushes.Black, 5, 5);
-            e.Graphics.DrawString(text, printFont, System.Drawing.Brushes.Black, 10, 5);
+            e.Graphics.DrawString(text, printFont, System.Drawing.Brushes.Black, 0, 5);
         }
         #endregion
 

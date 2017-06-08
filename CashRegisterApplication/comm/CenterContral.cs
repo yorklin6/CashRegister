@@ -99,6 +99,12 @@ namespace CashRegisterApplication.comm
         public const int STORE_HOUSE_SELETED = 1;
         public const int STOCK_OUT_BASE_TYPE = 21;
 
+        //登录使用
+        public static string DefaultUserName = "york";
+        public static long   DefaultUserId = 28;
+        public static string DefaultPassword = "york";
+        public static long DefaultStoreId = 5;//临时分配门店
+
         public static void InitWindows()
         {
             CommUiltl.Log("InitWindows "+ initFlag);

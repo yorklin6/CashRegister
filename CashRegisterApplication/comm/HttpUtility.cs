@@ -30,9 +30,7 @@ namespace CashRegiterApplication
 
         private static readonly string CashRegistHost = "https://120.24.210.161:8686/branch/";
         private static CookieContainer gCookies = null;//全局登录态cookie
-        public static string  DefaultUser = "york";
-        public static string  DefaultPassword = "york";
-        public static long    DefaultStoreId = 5;//临时分配门店
+
         private static int timeOutDefault = 10000;//1秒超时
         private static string gUserName;
         private static string gPassword;
@@ -68,7 +66,7 @@ namespace CashRegiterApplication
                 return true;
             }
             //登录异常
-            if (DefaultUser == user && DefaultPassword == password)//
+            if (CenterContral.DefaultUserName == user && CenterContral.DefaultPassword == password)//
             {
                 MessageBox.Show("使用临时用户登录");
                 return true;
@@ -106,22 +104,23 @@ namespace CashRegiterApplication
                 MessageBox.Show("帐号密码不对");
                 return false;
             }
-            DefaultUser = user;
-            DefaultPassword = password;
-            DefaultStoreId = storeId;
+            CenterContral.DefaultUserName = user;
+            CenterContral.DefaultPassword = password;
+            CenterContral.DefaultUserId = CenterContral.oLoginer.data.id;
+            CenterContral.DefaultStoreId = storeId;
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + CenterContral.oLoginer.errorCode);
             return true;
         }
         public static bool LoginDefault()
         {
-            CommUiltl.Log("LoginDefault by DefaultUser:" + DefaultUser + " DefaultPassword:" + DefaultPassword);
-            return LoginBoss(DefaultUser, DefaultPassword, DefaultStoreId);
+            CommUiltl.Log("LoginDefault by DefaultUser:" + CenterContral.DefaultUserName + " DefaultPassword:" + CenterContral.DefaultPassword);
+            return LoginBoss(CenterContral.DefaultUserName, CenterContral.DefaultPassword, CenterContral.DefaultStoreId);
         }
         public static bool _LoginBySaveUser()
         {
             //当登陆态失效的时候，重新用老的用户登录
-            CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + DefaultUser + " DefaultPassword:"+ DefaultPassword);
-            return LoginBoss(DefaultUser, DefaultPassword, DefaultStoreId);
+            CommUiltl.Log("_LoginBySaveUser by DefaultUser:" + CenterContral.DefaultUserName + " DefaultPassword:"+ CenterContral.DefaultPassword);
+            return LoginBoss(CenterContral.DefaultUserName, CenterContral.DefaultPassword, CenterContral.DefaultStoreId);
         }
        
         // MessageBox.Show();
