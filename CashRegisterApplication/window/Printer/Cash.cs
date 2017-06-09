@@ -24,10 +24,11 @@ namespace SuperMarket
         private void Cash_Load(object sender, EventArgs e)
         {
             dataGridView1.Rows.Add("0001", "C#数据结构", "222", "55.26", "55.26", "露天其");
-           //dataGridView1.Rows.Add("0002", "联想笔记本电脑送鼠标", "3333", "1111.23", "1111.23", "露天其");
-           // dataGridView1.Rows.Add("0003", "联想台式电脑玩家", "111", "333.23", "333.23", "露天其");
-           // dataGridView1.Rows.Add("0004", "我的读书郎", "1", "555.33", "55555.33", "露天其");
-           // dataGridView1.Rows.Add("0005", "新一佳超市购物小票", "222222", "1.33", "1.33", "露天其");
+            //dataGridView1.Rows.Add("0002", "联想笔记本电脑送鼠标", "3333", "1111.23", "1111.23", "露天其");
+            // dataGridView1.Rows.Add("0003", "联想台式电脑玩家", "111", "333.23", "333.23", "露天其");
+            // dataGridView1.Rows.Add("0004", "我的读书郎", "1", "555.33", "55555.33", "露天其");
+            // dataGridView1.Rows.Add("0005", "新一佳超市购物小票", "222222", "1.33", "1.33", "露天其");
+            CenterContral.InitWindows();
         }
        
         bool isEnter = false;
@@ -217,37 +218,7 @@ namespace SuperMarket
 
             #region 第二步，把这位顾客的购物单，按格式生成一个txt文件，方便第三步打印
             StreamWriter sw = new StreamWriter(path, true);
-            string day = DateTime.Now.ToString("yyyyMMdd");
-            string time = DateTime.Now.ToString();
-            CommUiltl.Log("day"+ day);
-            #region 小票 基本格式图
-            //***************小票的格式如下************************  //
-            //                   新一佳超市                         //
-            //                欢迎光临新一佳超市                   //
-            //                                                     //
-            //                                                     //  
-            // 物品                        数量       单价(￥)    //
-            //---------------------------------------------------//
-            //系列红山茶硬盒                 3         45.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //哆啦A梦相架小礼包              5         25.8      //
-            //--------------------------------------------------//
-            //           总数：              35                 // 
-            //           合计：              350                //
-            //           现金：              355.9              //
-            //           找赎：              15                 //
-            //                                                  //
-            //                                                  //
-            //                                                 //
-            //  日期/时间       2009/10/25 14:25:15           //
-            //          服务热线：0755-25145252               //
-            //**************************************************//
-            #endregion
+    
             #region 拼出小票格式
             sw.WriteLine("欢迎光临速顾优先选鲜食材馆！");
             sw.WriteLine(DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss"));
@@ -279,12 +250,12 @@ namespace SuperMarket
                     price = AddSpace(price, prices - pricelength);
                 }
                 sw.WriteLine(name);
-                sw.WriteLine("                         " + num + "        " + price);
+                sw.WriteLine("12134                    " + num + "        " + price);
 
             }
             #endregion
             sw.WriteLine("-----------------------------------------------------");
-            sw.WriteLine("           总数：                  " + lbnum.Text.ToString());
+            sw.WriteLine("总数：                  " + lbnum.Text.ToString());
             //计算合计金额：
             decimal oldmoney = Convert.ToDecimal(textBox1.Text);
             decimal newmoney = 0;
@@ -304,8 +275,7 @@ namespace SuperMarket
             }
             sw.WriteLine("会员卡号:");
             sw.WriteLine("本单 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-            sw.WriteLine("                                                ");
-            sw.WriteLine("服务热线:0755-12435682");
+            sw.WriteLine(CenterContral.CloseMoneyBox);//关闭钱箱
             sw.Close();
             #endregion
             #endregion

@@ -107,6 +107,12 @@
     <Compile Include="window\Printer\Cash.designer.cs">
       <DependentUpon>Cash.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\Printer\RawPrinterHelper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Printer\RawPrinterHelper.Designer.cs">
+      <DependentUpon>RawPrinterHelper.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\Printer\Test.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="window\Printer\Cash.resx">
       <DependentUpon>Cash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\Printer\RawPrinterHelper.resx">
+      <DependentUpon>RawPrinterHelper.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Printer\Test.resx">
       <DependentUpon>Test.cs</DependentUpon>

@@ -51,6 +51,8 @@ namespace CashRegisterApplication.comm
         public static UserLogin oLoginer;//登录用户
         public static LoginWindows Windows_Login;
 
+        public static string CloseMoneyBox = "ESC p 0  10  100 ";//钱箱关闭命令
+
         public const int PAY_STATE_INIT = 0;
         public const int PAY_STATE_SUCCESS = 1;
         public const int PAY_TYPE_CASH = 1;
@@ -698,7 +700,7 @@ namespace CashRegisterApplication.comm
         }
         public static int CurrentStockIndex = -1;
 
-
+       
 
         internal static void GetSaveOrderToCurrentMsg()
         {
