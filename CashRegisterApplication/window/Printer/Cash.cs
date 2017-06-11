@@ -10,6 +10,8 @@ using System.IO;
 using System.Collections;
 using System.Data.SqlClient;
 using CashRegisterApplication.comm;
+using CashRegisterApplication.window.Printer;
+using System.Drawing.Printing;
 
 namespace SuperMarket
 {
@@ -65,12 +67,10 @@ namespace SuperMarket
         {
             //第一步 查询该编码的商品信息
             SqlParameter parm = new SqlParameter("@ProBianma", probianma);
-            string SQL = "select top 1 * from T_Product where ProBianma=@ProBianma";
             //SqlDataReader dr = SqlHelper.ExecuteReader(CommandType.Text, SQL, parm);
             string proname = "", realbm = "";
             int num = 0;//数量 每次都是1，如果在文本框多次输入统一编码的商品，则DataGridView中，统一编码的数量改变，其余不必
             string price = "0";//单价是多少
-            decimal jine = 0;//金额
             string shouyinyuan = "露天其";//收银员的名字，这个可以改写登录后 获取登录者的名称即可
             bool input = false;//输入的产品编码是否有误，如果有误，则查询不出信息，则不会执行下面的填写数据到DataGridView
 //             if (dr.Read())
@@ -199,7 +199,6 @@ namespace SuperMarket
             }
             //收银打印
 
-            string operuser = "露天其";//收银员的名称，实际修改时，应该成登录者的名字即可
 
             #region 第一步，首先把这项订单写入数据库的表中
              //写入数据库比较简单，
@@ -275,7 +274,6 @@ namespace SuperMarket
             }
             sw.WriteLine("会员卡号:");
             sw.WriteLine("本单 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
-            sw.WriteLine(CenterContral.CloseMoneyBox);//关闭钱箱
             sw.Close();
             #endregion
             #endregion
@@ -283,10 +281,11 @@ namespace SuperMarket
             System.Windows.Forms.PrintDialog PrintDialog1 = new PrintDialog();
             PrintDialog1.AllowSomePages = true;
             PrintDialog1.ShowHelp = true;
-            CommUiltl.Log("PrintDialog1" );
+            CommUiltl.Log("PrintDialog1");
             // 把PrintDialog的Document属性设为上面配置好的PrintDocument的实例 
             PrintDialog1.Document = docToPrint;//这是工具箱中打印的一个 组件名称
             this.docToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(docToPrint_PrintPage);
+            this.docToPrint.EndPrint += new System.Drawing.Printing.PrintEventHandler(afterPrint);
             CommUiltl.Log(" this.docToPrint.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(docToPrint_PrintPage)");
             // 调用PrintDialog的ShowDialog函数显示打印对话框 
             DialogResult result = PrintDialog1.ShowDialog();
@@ -303,6 +302,8 @@ namespace SuperMarket
                 File.Delete(path);
             }
         }
+
+      
         #endregion
         #region 读取文本文件 打印完成后 重新删除该文件
         private string GetTicketInfo()
@@ -350,13 +351,17 @@ namespace SuperMarket
             ("Arial", 8, System.Drawing.FontStyle.Regular);            
            
             text = GetTicketInfo();//获取本次购物清单数据
-   
-            CommUiltl.Log("text:"+ text);
             // 设置信息打印格式 
             e.Graphics.DrawString(text, printFont, System.Drawing.Brushes.Black, 0, 5);
         }
         #endregion
-
+        #region 打印结束后
+        private void afterPrint(object sender, PrintEventArgs e)
+        {
+            //关闭钱箱
+            CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
+        }
+        #endregion
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)13)

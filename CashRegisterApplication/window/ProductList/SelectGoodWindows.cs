@@ -32,7 +32,7 @@ namespace CashRegisterApplication.window.ProductList
         internal void ShowByProductList(List<ProductPricing> list)
         {
             this.Show();
-            this.dataGridView_productList.DataSource = null;
+            this.dataGridView_productList.Rows.Clear();
             gAllSelectList = list;
             int rowIndex;
             for (int i = 0; i < list.Count; ++i)
@@ -61,7 +61,7 @@ namespace CashRegisterApplication.window.ProductList
             detail.specification = productInfo.specification;
             detail.categoryId = productInfo.categoryId;
             detail.unit = productInfo.baseUnit;
-
+            detail.actualCount = 1;
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
             detail.cloudProductPricing = productInfo;
@@ -80,7 +80,7 @@ namespace CashRegisterApplication.window.ProductList
             string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(detail.unitPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
             currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = RetailPrice;
-            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = 1;
+            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = detail.actualCount;
             currentRow.Cells[CELL_INDEX.PRODUCT_REMARK].Value = detail.remark;
             currentRow.Cells[CELL_INDEX.PRODUCT_JSON].Value = JsonConvert.SerializeObject(detail);
         }

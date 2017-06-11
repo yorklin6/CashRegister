@@ -29,6 +29,8 @@ namespace CashRegiterApplication
 
     public class ProductPricing
     {
+       
+
         //public long goodsId { get; set; }
         //public String Barcode { get; set; }
 
@@ -45,7 +47,7 @@ namespace CashRegiterApplication
 
         //public String bigUnit { get; set; }
         //public String baseUnit { get; set; }
-        
+
         //public String goodsName { get; set; }
 
         //public long RetailDetailCount { get; set; }
@@ -87,6 +89,7 @@ namespace CashRegiterApplication
         public String updateTime { get; set; }
 
         public String json { get; set; }
+        public String keyWord { get; set; }//keyword
         //        barcode: "9556247516480",
         //baseUnit: "盒",
         //bigUnit: "箱",

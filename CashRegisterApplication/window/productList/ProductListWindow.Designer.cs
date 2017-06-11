@@ -1,4 +1,8 @@
-﻿namespace CashRegiterApplication
+﻿using System;
+using System.Drawing.Printing;
+using System.Windows.Forms;
+
+namespace CashRegiterApplication
 {
     partial class ProductListWindow
     {
@@ -61,7 +65,6 @@
             this.label_discount_amount = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label_discount_rate = new System.Windows.Forms.Label();
-            this.label_member_balance = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label_member_point = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -73,6 +76,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label_local_save_stock_number = new System.Windows.Forms.Label();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.label_member_balance = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label_total_product_count = new System.Windows.Forms.Label();
             this.dataGridView_checkout = new System.Windows.Forms.DataGridView();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -90,11 +97,13 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.printDocument = new System.Drawing.Printing.PrintDocument();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_checkout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -114,7 +123,7 @@
             this.tableLayoutPanel6.Controls.Add(this.label26, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.label30, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(206, 395);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(207, 394);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 3;
@@ -122,7 +131,7 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 53.57143F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(165, 141);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(163, 140);
             this.tableLayoutPanel6.TabIndex = 42;
             // 
             // label_receiveFee
@@ -130,10 +139,10 @@
             this.label_receiveFee.AutoSize = true;
             this.label_receiveFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_receiveFee.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_receiveFee.Location = new System.Drawing.Point(83, 48);
+            this.label_receiveFee.Location = new System.Drawing.Point(82, 47);
             this.label_receiveFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_receiveFee.Name = "label_receiveFee";
-            this.label_receiveFee.Size = new System.Drawing.Size(81, 53);
+            this.label_receiveFee.Size = new System.Drawing.Size(80, 53);
             this.label_receiveFee.TabIndex = 6;
             this.label_receiveFee.Text = "0.00";
             this.label_receiveFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -143,10 +152,10 @@
             this.label_orderFee.AutoSize = true;
             this.label_orderFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_orderFee.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_orderFee.Location = new System.Drawing.Point(83, 1);
+            this.label_orderFee.Location = new System.Drawing.Point(82, 1);
             this.label_orderFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_orderFee.Name = "label_orderFee";
-            this.label_orderFee.Size = new System.Drawing.Size(81, 46);
+            this.label_orderFee.Size = new System.Drawing.Size(80, 45);
             this.label_orderFee.TabIndex = 5;
             this.label_orderFee.Text = "0.00";
             this.label_orderFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -156,10 +165,10 @@
             this.label28.AutoSize = true;
             this.label28.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label28.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label28.Location = new System.Drawing.Point(1, 102);
+            this.label28.Location = new System.Drawing.Point(1, 101);
             this.label28.Margin = new System.Windows.Forms.Padding(0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(81, 38);
+            this.label28.Size = new System.Drawing.Size(80, 38);
             this.label28.TabIndex = 3;
             this.label28.Text = "应找零头";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -170,10 +179,10 @@
             this.label_changeFee.AutoSize = true;
             this.label_changeFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_changeFee.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_changeFee.Location = new System.Drawing.Point(83, 102);
+            this.label_changeFee.Location = new System.Drawing.Point(82, 101);
             this.label_changeFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_changeFee.Name = "label_changeFee";
-            this.label_changeFee.Size = new System.Drawing.Size(81, 38);
+            this.label_changeFee.Size = new System.Drawing.Size(80, 38);
             this.label_changeFee.TabIndex = 2;
             this.label_changeFee.Text = "0.00";
             this.label_changeFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -186,7 +195,7 @@
             this.label26.Location = new System.Drawing.Point(1, 1);
             this.label26.Margin = new System.Windows.Forms.Padding(0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(81, 46);
+            this.label26.Size = new System.Drawing.Size(80, 45);
             this.label26.TabIndex = 1;
             this.label26.Text = "总计应收";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -196,10 +205,10 @@
             this.label30.AutoSize = true;
             this.label30.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label30.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label30.Location = new System.Drawing.Point(1, 48);
+            this.label30.Location = new System.Drawing.Point(1, 47);
             this.label30.Margin = new System.Windows.Forms.Padding(0);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(81, 53);
+            this.label30.Size = new System.Drawing.Size(80, 53);
             this.label30.TabIndex = 4;
             this.label30.Text = "实际已收";
             this.label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -226,12 +235,12 @@
             this.tableLayoutPanel5.Controls.Add(this.label_connectStatus, 6, 0);
             this.tableLayoutPanel5.Controls.Add(this.label25, 7, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 536);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 535);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(784, 26);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(782, 26);
             this.tableLayoutPanel5.TabIndex = 41;
             // 
             // label_serial_number
@@ -241,7 +250,7 @@
             this.label_serial_number.Location = new System.Drawing.Point(336, 1);
             this.label_serial_number.Margin = new System.Windows.Forms.Padding(0);
             this.label_serial_number.Name = "label_serial_number";
-            this.label_serial_number.Size = new System.Drawing.Size(225, 24);
+            this.label_serial_number.Size = new System.Drawing.Size(224, 24);
             this.label_serial_number.TabIndex = 5;
             this.label_serial_number.Text = "xxxxxx";
             this.label_serial_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -311,7 +320,7 @@
             // 
             this.label_connectStatus.AutoSize = true;
             this.label_connectStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_connectStatus.Location = new System.Drawing.Point(562, 1);
+            this.label_connectStatus.Location = new System.Drawing.Point(561, 1);
             this.label_connectStatus.Margin = new System.Windows.Forms.Padding(0);
             this.label_connectStatus.Name = "label_connectStatus";
             this.label_connectStatus.Size = new System.Drawing.Size(66, 24);
@@ -324,10 +333,10 @@
             // 
             this.label25.AutoSize = true;
             this.label25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label25.Location = new System.Drawing.Point(629, 1);
+            this.label25.Location = new System.Drawing.Point(628, 1);
             this.label25.Margin = new System.Windows.Forms.Padding(0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(154, 24);
+            this.label25.Size = new System.Drawing.Size(153, 24);
             this.label25.TabIndex = 7;
             this.label25.Text = "2017.03.02 10:12";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -341,9 +350,8 @@
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 168F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 158F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.label_member_balance, 1, 5);
             this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.label_member_point, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.label10, 0, 4);
@@ -354,7 +362,8 @@
             this.tableLayoutPanel2.Controls.Add(this.label2, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 1, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(371, 395);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel8, 1, 5);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(371, 394);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 6;
@@ -365,7 +374,8 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(206, 141);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(205, 140);
             this.tableLayoutPanel2.TabIndex = 40;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -374,30 +384,30 @@
             this.tableLayoutPanel4.AutoSize = true;
             this.tableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel4.ColumnCount = 3;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.21739F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.78261F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 95F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.74074F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.25926F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.tableLayoutPanel4.Controls.Add(this.label_discount_amount, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label16, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label_discount_rate, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(37, 55);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(46, 55);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(168, 21);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(158, 20);
             this.tableLayoutPanel4.TabIndex = 13;
             // 
             // label_discount_amount
             // 
             this.label_discount_amount.AutoSize = true;
             this.label_discount_amount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_amount.Location = new System.Drawing.Point(71, 1);
+            this.label_discount_amount.Location = new System.Drawing.Point(85, 1);
             this.label_discount_amount.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_amount.Name = "label_discount_amount";
-            this.label_discount_amount.Size = new System.Drawing.Size(96, 19);
+            this.label_discount_amount.Size = new System.Drawing.Size(72, 18);
             this.label_discount_amount.TabIndex = 4;
             this.label_discount_amount.Text = "0";
             this.label_discount_amount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -407,10 +417,10 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(29, 1);
+            this.label16.Location = new System.Drawing.Point(35, 1);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 19);
+            this.label16.Size = new System.Drawing.Size(49, 18);
             this.label16.TabIndex = 3;
             this.label16.Text = "折扣额";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -422,30 +432,19 @@
             this.label_discount_rate.Location = new System.Drawing.Point(1, 1);
             this.label_discount_rate.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_rate.Name = "label_discount_rate";
-            this.label_discount_rate.Size = new System.Drawing.Size(27, 19);
+            this.label_discount_rate.Size = new System.Drawing.Size(33, 18);
             this.label_discount_rate.TabIndex = 2;
             this.label_discount_rate.Text = "100";
             this.label_discount_rate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label_member_balance
-            // 
-            this.label_member_balance.AutoSize = true;
-            this.label_member_balance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_balance.Location = new System.Drawing.Point(37, 119);
-            this.label_member_balance.Margin = new System.Windows.Forms.Padding(0);
-            this.label_member_balance.Name = "label_member_balance";
-            this.label_member_balance.Size = new System.Drawing.Size(168, 21);
-            this.label_member_balance.TabIndex = 11;
-            this.label_member_balance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label12.Location = new System.Drawing.Point(1, 119);
+            this.label12.Location = new System.Drawing.Point(1, 118);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(35, 21);
+            this.label12.Size = new System.Drawing.Size(44, 21);
             this.label12.TabIndex = 10;
             this.label12.Text = "余额";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -454,10 +453,10 @@
             // 
             this.label_member_point.AutoSize = true;
             this.label_member_point.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_point.Location = new System.Drawing.Point(37, 98);
+            this.label_member_point.Location = new System.Drawing.Point(46, 97);
             this.label_member_point.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_point.Name = "label_member_point";
-            this.label_member_point.Size = new System.Drawing.Size(168, 20);
+            this.label_member_point.Size = new System.Drawing.Size(158, 20);
             this.label_member_point.TabIndex = 9;
             this.label_member_point.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -465,10 +464,10 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label10.Location = new System.Drawing.Point(1, 98);
+            this.label10.Location = new System.Drawing.Point(1, 97);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(35, 20);
+            this.label10.Size = new System.Drawing.Size(44, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "积分";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -477,10 +476,10 @@
             // 
             this.label_member_account.AutoSize = true;
             this.label_member_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_account.Location = new System.Drawing.Point(37, 77);
+            this.label_member_account.Location = new System.Drawing.Point(46, 76);
             this.label_member_account.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_account.Name = "label_member_account";
-            this.label_member_account.Size = new System.Drawing.Size(168, 20);
+            this.label_member_account.Size = new System.Drawing.Size(158, 20);
             this.label_member_account.TabIndex = 7;
             this.label_member_account.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_member_account.Click += new System.EventHandler(this.label9_Click);
@@ -489,10 +488,10 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(1, 77);
+            this.label8.Location = new System.Drawing.Point(1, 76);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(35, 20);
+            this.label8.Size = new System.Drawing.Size(44, 20);
             this.label8.TabIndex = 6;
             this.label8.Text = "会员卡";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -504,7 +503,7 @@
             this.label5.Location = new System.Drawing.Point(1, 55);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 21);
+            this.label5.Size = new System.Drawing.Size(44, 20);
             this.label5.TabIndex = 4;
             this.label5.Text = "折扣率";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -516,7 +515,7 @@
             this.label31.Location = new System.Drawing.Point(1, 28);
             this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(35, 26);
+            this.label31.Size = new System.Drawing.Size(44, 26);
             this.label31.TabIndex = 2;
             this.label31.Text = "挂单";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -525,10 +524,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(37, 1);
+            this.label2.Location = new System.Drawing.Point(46, 1);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(168, 26);
+            this.label2.Size = new System.Drawing.Size(158, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "输入商品";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -540,7 +539,7 @@
             this.label1.Location = new System.Drawing.Point(1, 1);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 26);
+            this.label1.Size = new System.Drawing.Size(44, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "状态";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -553,13 +552,13 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.13044F));
             this.tableLayoutPanel3.Controls.Add(this.label_local_save_stock_number, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(37, 28);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(46, 28);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(168, 26);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(158, 26);
             this.tableLayoutPanel3.TabIndex = 12;
             // 
             // label_local_save_stock_number
@@ -569,12 +568,67 @@
             this.label_local_save_stock_number.Location = new System.Drawing.Point(1, 1);
             this.label_local_save_stock_number.Margin = new System.Windows.Forms.Padding(0);
             this.label_local_save_stock_number.Name = "label_local_save_stock_number";
-            this.label_local_save_stock_number.Size = new System.Drawing.Size(166, 24);
+            this.label_local_save_stock_number.Size = new System.Drawing.Size(156, 24);
             this.label_local_save_stock_number.TabIndex = 2;
             this.label_local_save_stock_number.Text = "0";
             this.label_local_save_stock_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // dataGridView_payWay
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.94118F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.05882F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel8.Controls.Add(this.label_member_balance, 0, 2);
+            this.tableLayoutPanel8.Controls.Add(this.label4, 1, 2);
+            this.tableLayoutPanel8.Controls.Add(this.label_total_product_count, 2, 2);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(46, 118);
+            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 3;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(158, 21);
+            this.tableLayoutPanel8.TabIndex = 14;
+            this.tableLayoutPanel8.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel8_Paint);
+            // 
+            // label_member_balance
+            // 
+            this.label_member_balance.AutoSize = true;
+            this.label_member_balance.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_member_balance.Location = new System.Drawing.Point(1, 1);
+            this.label_member_balance.Margin = new System.Windows.Forms.Padding(0);
+            this.label_member_balance.Name = "label_member_balance";
+            this.label_member_balance.Size = new System.Drawing.Size(56, 20);
+            this.label_member_balance.TabIndex = 12;
+            this.label_member_balance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label4.Location = new System.Drawing.Point(58, 1);
+            this.label4.Margin = new System.Windows.Forms.Padding(0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 20);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "总件数";
+            // 
+            // label_total_product_count
+            // 
+            this.label_total_product_count.AutoSize = true;
+            this.label_total_product_count.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_total_product_count.Location = new System.Drawing.Point(108, 1);
+            this.label_total_product_count.Margin = new System.Windows.Forms.Padding(0);
+            this.label_total_product_count.Name = "label_total_product_count";
+            this.label_total_product_count.Size = new System.Drawing.Size(49, 20);
+            this.label_total_product_count.TabIndex = 14;
+            this.label_total_product_count.Text = "0";
+            // 
+            // dataGridView_checkout
             // 
             this.dataGridView_checkout.AllowUserToAddRows = false;
             this.dataGridView_checkout.AllowUserToDeleteRows = false;
@@ -609,10 +663,10 @@
             this.dataGridView_checkout.Enabled = false;
             this.dataGridView_checkout.EnableHeadersVisualStyles = false;
             this.dataGridView_checkout.GridColor = System.Drawing.SystemColors.Window;
-            this.dataGridView_checkout.Location = new System.Drawing.Point(0, 395);
+            this.dataGridView_checkout.Location = new System.Drawing.Point(1, 394);
             this.dataGridView_checkout.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView_checkout.MultiSelect = false;
-            this.dataGridView_checkout.Name = "dataGridView_payWay";
+            this.dataGridView_checkout.Name = "dataGridView_checkout";
             this.dataGridView_checkout.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
@@ -625,7 +679,7 @@
             this.dataGridView_checkout.RowHeadersVisible = false;
             this.dataGridView_checkout.RowTemplate.Height = 23;
             this.dataGridView_checkout.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView_checkout.Size = new System.Drawing.Size(206, 141);
+            this.dataGridView_checkout.Size = new System.Drawing.Size(205, 140);
             this.dataGridView_checkout.TabIndex = 2;
             this.dataGridView_checkout.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_payWay_CellContentClick);
             // 
@@ -682,7 +736,7 @@
             this.dataGridView_productList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dataGridView_productList.EnableHeadersVisualStyles = false;
             this.dataGridView_productList.GridColor = System.Drawing.SystemColors.Window;
-            this.dataGridView_productList.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView_productList.Location = new System.Drawing.Point(1, 1);
             this.dataGridView_productList.Margin = new System.Windows.Forms.Padding(0);
             this.dataGridView_productList.MultiSelect = false;
             this.dataGridView_productList.Name = "dataGridView_productList";
@@ -700,7 +754,7 @@
             this.dataGridView_productList.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView_productList.RowTemplate.Height = 23;
             this.dataGridView_productList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView_productList.Size = new System.Drawing.Size(784, 395);
+            this.dataGridView_productList.Size = new System.Drawing.Size(782, 392);
             this.dataGridView_productList.TabIndex = 1;
             this.dataGridView_productList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellContentClick);
             this.dataGridView_productList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.productListDataGridView_CellEndEdit);
@@ -780,6 +834,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.31579F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.05263F));
@@ -812,23 +867,24 @@
             this.tableLayoutPanel7.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.label7, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(577, 395);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(577, 394);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(207, 141);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(206, 140);
             this.tableLayoutPanel7.TabIndex = 43;
+            this.tableLayoutPanel7.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel7_Paint);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Location = new System.Drawing.Point(111, 0);
+            this.label3.Location = new System.Drawing.Point(110, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 141);
+            this.label3.Size = new System.Drawing.Size(96, 140);
             this.label3.TabIndex = 8;
             this.label3.Text = "END:系统设置";
             // 
@@ -840,9 +896,14 @@
             this.label7.Location = new System.Drawing.Point(0, 0);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(111, 141);
+            this.label7.Size = new System.Drawing.Size(110, 140);
             this.label7.TabIndex = 7;
-            this.label7.Text = "HOME:选择支付\r\nDELETE:删除商品\r\nF9:会员充值\r\nF4:挂单\r\nF5:挂单恢复\r\nIns:整单打折";
+            this.label7.Text = "HOME:选择支付\r\nDELETE:删除商品\r\nF1:重打小票\r\nF3:整单打折\r\nF4:挂单\r\nF5:挂单恢复\r\nF9:会员充值\r\nIns:取消订单\r\n";
+            // 
+            // printDocument
+            // 
+            this.printDocument.EndPrint += new System.Drawing.Printing.PrintEventHandler(this.printDocument_EndPrint);
+            this.printDocument.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument_PrintPage);
             // 
             // ProductListWindow
             // 
@@ -874,6 +935,8 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_checkout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -884,6 +947,10 @@
             this.PerformLayout();
 
         }
+
+ 
+
+
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
@@ -902,7 +969,6 @@
         private System.Windows.Forms.Label label_discount_amount;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label_discount_rate;
-        private System.Windows.Forms.Label label_member_balance;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label_member_point;
         private System.Windows.Forms.Label label10;
@@ -936,5 +1002,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Drawing.Printing.PrintDocument printDocument;
+        private TableLayoutPanel tableLayoutPanel8;
+        private Label label_member_balance;
+        private Label label4;
+        private Label label_total_product_count;
     }
 }

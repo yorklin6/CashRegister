@@ -43,6 +43,7 @@
             this.textBox_ChangeFee = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.buttonConfirm = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_phone
@@ -208,12 +209,23 @@
             this.buttonConfirm.UseVisualStyleBackColor = false;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(523, 326);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(139, 80);
+            this.label5.TabIndex = 47;
+            this.label5.Text = "快捷键:\r\nEnter:回车确认\r\nF1:重新输入会员信息\r\nESC:返回上一个界面";
+            // 
             // ReceiveMoneyByMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(685, 441);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBox_ChangeFee);
             this.Controls.Add(this.buttonConfirm);
@@ -257,5 +269,6 @@
         private System.Windows.Forms.Button buttonConfirm;
         private System.Windows.Forms.TextBox textBox_ChangeFee;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label5;
     }
 }

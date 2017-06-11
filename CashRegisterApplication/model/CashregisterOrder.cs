@@ -139,10 +139,10 @@ namespace CashRegisterApplication.model
 
         //************本地缓存数据
         public long RecieveFee { get; set; }
-        public String ProductList { get; set; }
+        public String ProductList { get; set; }//辅助变量，帮助查看商品列表是否有修改
         public long ChangeFee { get; set; }
+        public long totalProductCount { get; set; }//总件数
 
-   
         public String baseDataJson { get; set; }
         public int cloudAddFlag { get; set; }
         public int cloudCloseFlag { get; set; }
@@ -152,7 +152,9 @@ namespace CashRegisterApplication.model
 
       
         public int dbGenerateFlag { get; set; }
-        public int localSaveFlag { get; set; }
+        public int localSaveFlag { get; set; }//挂单字段
+
+        public int cancaelFlag { get; set; }
 
         // 折扣
         public long discountAmount { get; set; }
@@ -194,7 +196,7 @@ namespace CashRegisterApplication.model
         public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
 
-
+        public String keyWord { get; set; }
     }
 
 

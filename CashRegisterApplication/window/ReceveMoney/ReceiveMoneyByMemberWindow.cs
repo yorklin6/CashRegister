@@ -103,7 +103,7 @@ namespace CashRegisterApplication.window.member
                         returnPreventWindows();
                         break;
                     }
-                case System.Windows.Forms.Keys.F12:
+                case System.Windows.Forms.Keys.F1:
                     {
                         //重新输入会员卡信息
                         CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();

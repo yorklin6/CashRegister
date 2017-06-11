@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using System.IO;
+using CashRegisterApplication.comm;
 
 namespace CashRegisterApplication.window.Printer
 {
@@ -37,15 +38,15 @@ namespace CashRegisterApplication.window.Printer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string s = "---------------------------------Hello"; // device-dependent string, need a FormFeed?
+            
+            SendRawMsgToPrinter(CenterContral.CloseMoneyBoxComm);
+        }
 
-            // Allow the user to select a printer.
+        public static void  SendRawMsgToPrinter(String strRaw)
+        {
             PrintDialog pd = new PrintDialog();
             pd.PrinterSettings = new PrinterSettings();
-            {
-                // Send a printer-specific to the printer.
-                RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, s);
-            }
+            RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, strRaw);
         }
         // Structure and API declarions:
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -159,5 +160,25 @@ namespace CashRegisterApplication.window.Printer
             Marshal.FreeCoTaskMem(pBytes);
             return true;
         }
+        //byte[] byteA = new byte[] { 0x1B, 0x70, 0x00, 0x80, 0xFF }是代表关闭钱箱命令
+        public static bool CloseMoneyBox(string szPrinterName)
+        {
+            // Dim an array of bytes big enough to hold the file's contents.
+            byte[] byteA = new byte[] { 0x1B, 0x70, 0x00, 0x80, 0xFF };
+            bool bSuccess = false;
+            // Your unmanaged pointer.
+            IntPtr pUnmanagedBytes = new IntPtr(0);
+            // Read the contents of the file into the array.
+            // Allocate some unmanaged memory for those bytes.
+            pUnmanagedBytes = Marshal.AllocCoTaskMem(byteA.Length);
+            // Copy the managed byte array into the unmanaged array.
+            Marshal.Copy(byteA, 0, pUnmanagedBytes, byteA.Length);
+            // Send the unmanaged bytes to the printer.
+            bSuccess = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, byteA.Length);
+            // Free the unmanaged memory that you allocated earlier.
+            Marshal.FreeCoTaskMem(pUnmanagedBytes);
+            return bSuccess;
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using CashRegisterApplication.window;
 using CashRegisterApplication.window.member;
 using CashRegisterApplication.window.Member;
+using CashRegisterApplication.window.Printer;
 using CashRegisterApplication.window.productList;
 using CashRegisterApplication.window.ProductList;
 using CashRegisterApplication.window.Setting;
@@ -9,6 +10,7 @@ using CashRegiterApplication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -51,7 +53,7 @@ namespace CashRegisterApplication.comm
         public static UserLogin oLoginer;//登录用户
         public static LoginWindows Windows_Login;
 
-        public static string CloseMoneyBox = "ESC p 0  10  100 ";//钱箱关闭命令
+        public static string CloseMoneyBoxComm = "ESC p 0  10  100 ";//钱箱关闭命令
 
         public const int PAY_STATE_INIT = 0;
         public const int PAY_STATE_SUCCESS = 1;
@@ -106,6 +108,8 @@ namespace CashRegisterApplication.comm
         public static long   DefaultUserId = 28;
         public static string DefaultPassword = "york";
         public static long DefaultStoreId = 5;//临时分配门店
+
+        public static string strPrintFilePath = Application.StartupPath.ToString() + "\\print_order.txt";//exe程序所在的路径
 
         public static void InitWindows()
         {
@@ -330,34 +334,34 @@ namespace CashRegisterApplication.comm
                 return;
             }
         }
-        //更新会员价
-        internal static void UpdateStockOrderByMemberInfo()
-        {
-            //StockOutDTO
-            _CaculateMemberPrice();
-            CenterContral.GetGoodsStringWithoutMemberPrice();
-            return;
-        }
-        internal static void _CaculateMemberPrice()
-        {
-            long totalPrice = 0;
-            for (var i = 0; i < CenterContral.oStockOutDTO.details.Count; ++i)
-            {
-                //设置会员价
-                if (CenterContral.oStockOutDTO.details[i].unitPrice == CenterContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
-                {
-                    CenterContral.oStockOutDTO.details[i].unitPrice = CenterContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice;
-                }
-                totalPrice += CenterContral.oStockOutDTO.details[i].unitPrice;
-            }
-            CenterContral.oStockOutDTO.Base.orderAmount = totalPrice;
-            CenterContral.Window_ProductList.SetProductListWindowByStockOut(CenterContral.oStockOutDTO);
-            //更新数据库里面订单信息
-            if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
-            {
-                return;
-            }
-        }
+        //更新会员价(废弃，因为会员价暂时定位整单折扣)
+        //internal static void UpdateStockOrderByMemberInfo()
+        //{
+        //    //StockOutDTO
+        //    _CaculateMemberPrice();
+        //    CenterContral.GetGoodsStringWithoutMemberPrice();
+        //    return;
+        //}
+        //internal static void _CaculateMemberPrice()
+        //{
+        //    long totalPrice = 0;
+        //    for (var i = 0; i < CenterContral.oStockOutDTO.details.Count; ++i)
+        //    {
+        //        //设置会员价
+        //        if (CenterContral.oStockOutDTO.details[i].unitPrice == CenterContral.oStockOutDTO.details[i].cloudProductPricing.retailPrice)
+        //        {
+        //            CenterContral.oStockOutDTO.details[i].unitPrice = CenterContral.oStockOutDTO.details[i].cloudProductPricing.memberPrice;
+        //        }
+        //        totalPrice += CenterContral.oStockOutDTO.details[i].unitPrice;
+        //    }
+        //    CenterContral.oStockOutDTO.Base.orderAmount = totalPrice;
+        //    CenterContral.Window_ProductList.SetProductListWindowByStockOut(CenterContral.oStockOutDTO);
+        //    //更新数据库里面订单信息
+        //    if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
+        //    {
+        //        return;
+        //    }
+        //}
 
         internal static bool SetCurrentPayTypeById(int payTypeId)
         {
@@ -385,6 +389,9 @@ namespace CashRegisterApplication.comm
         {
             return CenterContral.oPayTypeList.list[index];
         }
+
+
+
         internal static void GetGoodsStringWithoutMemberPrice()
         {
             string strTmp = "";
@@ -482,20 +489,23 @@ namespace CashRegisterApplication.comm
 
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
             CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
-
+            CenterContral.oStockOutDTO.Base.cancaelFlag = Dao.STOCK_BASE_CANCEL_FLAG_INI;
 
             //收款折扣
             CenterContral.oStockOutDTO.Base.discountRate = 100;
             CenterContral.oStockOutDTO.Base.discountAmount =0;
             
             CenterContral.Window_ProductList.UpdateDiscount();
-            //*收银台界面
+            //**********收银台界面*****
             CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
             CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
 
             //会员信息清空
             CenterContral.oStockOutDTO.oMember = new Member();
             CenterContral.Window_ProductList.SetMemberInfo();
+
+            //挂单数据情况
+            CenterContral.Window_ProductList.SetLocalSaveDataNumber();
         }
 
        public static void updateOrderAmount(long orderPrice)
@@ -539,6 +549,9 @@ namespace CashRegisterApplication.comm
             {
                 return;
             }
+            //打印小票
+            //打印本单
+            Window_ProductList.PrintOrder(CenterContral.oStockOutDTO);
             Window_ProductList.CloseOrderByControlWindow();
         }
         //***********************************关闭订单***************************
@@ -583,6 +596,26 @@ namespace CashRegisterApplication.comm
                 CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_CLOSE;
             }
         }
+        //***********************************取消当前订单***************************
+        internal static bool CanCelOrder(string strProductList)
+        {
+            if (CenterContral.oStockOutDTO.Base.RecieveFee == 0 && CenterContral.oStockOutDTO.Base.orderAmount==0)
+            {
+                CommUiltl.Log("Main.oStockOutDTO.details.Count == 0]");
+                return true;
+            }
+            //挂单的要变成关单
+            SetSaveFlag();
+            RemoveSaveStock();
+            //取消标记位
+            CenterContral.oStockOutDTO.Base.cancaelFlag = Dao.STOCK_BASE_CANCEL_FLAG_TRUE;
+            CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
+            if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
+            {
+                return false;
+            }
+            return true;
+        }
         //***********************************生成订单***************************
         internal static bool IsCurrentOrderInit()
         {
@@ -591,9 +624,9 @@ namespace CashRegisterApplication.comm
 
         internal static bool GenerateOrder(string strProductList)
         {
-            if (CenterContral.oStockOutDTO.details.Count == 0)
+            if (CenterContral.oStockOutDTO.Base.RecieveFee == 0 && CenterContral.oStockOutDTO.Base.orderAmount == 0)
             {
-                CommUiltl.Log("Main.oStockOutDTO.details.Count == 0]");
+                CommUiltl.Log("Main.oStockOutDTO.details.Count == 0");
                 return true;
             }
             CommUiltl.Log("CenterContral.oStockOutDTO.Base.dbGenerateFlag:"+CenterContral.oStockOutDTO.Base.dbGenerateFlag);
@@ -864,12 +897,114 @@ namespace CashRegisterApplication.comm
         }
 
 
-
+        //打印
         internal static void UpdateStoreWhouseDefault(string strStoreWhouseDefult)
         {
             Dao.UpdateStoreWhouseDefault(strStoreWhouseDefult);
         }
 
+        internal static void CloseMoneyBox(string closeMoneyBoxComm)
+        {
+            PrintDialog pd = new PrintDialog();
+            bool bResult = RawPrinterHelper.CloseMoneyBox(pd.PrinterSettings.PrinterName);
+            CommUiltl.Log("RawPrinterHelper bResult:" + bResult);
+        }
+
+        internal static void printOrderMsgToFile(StockOutDTO oStockOutDTO)
+        {
+            //#region 按格式生成一个txt文件，方便第三步打印
+            StreamWriter sw = new StreamWriter(CenterContral.strPrintFilePath, true);
+
+            //#region 拼出小票格式
+            sw.WriteLine("欢迎光临速顾优先选鲜食材馆！");
+            sw.WriteLine(DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss"));
+            sw.WriteLine("POST机号:" + CenterContral.iPostId);
+            sw.WriteLine("单号:" + oStockOutDTO.Base.serialNumber);
+            sw.WriteLine("收银员:" + CenterContral.DefaultUserId);
+
+            sw.WriteLine("==============销售==============");
+            sw.WriteLine("名称/条码    单价   数量   金额");
+            int nums = 20;
+            int prices = 12;
+
+            List<StockOutDetail> list = oStockOutDTO.details;
+            for (int i = 0; i < list.Count; i++)
+            {
+                string name = list[i].goodsName.Trim();//获取该行的物品名称
+                string num = list[i].actualCount.ToString().Trim();//数量
+                string price = list[i].unitPrice.ToString().Trim();//单价
+
+                int numlength = System.Text.Encoding.Default.GetBytes(num).Length;
+                if (numlength < nums)
+                {
+                    num = AddSpace(num, nums - numlength);
+                }
+
+                int pricelength = System.Text.Encoding.Default.GetBytes(price).Length;
+                if (pricelength < prices)
+                {
+                    price = AddSpace(price, prices - pricelength);
+                }
+                sw.WriteLine(name);
+                sw.WriteLine("12134                    " + num + "        " + price);
+
+            }
+
+            sw.WriteLine("-----------------------------------------------------");
+            //计算合计金额：
+            sw.WriteLine("总件数" + "");//合计金额
+            sw.WriteLine("应收:" + CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.RecieveFee));//实收现金
+            sw.WriteLine("已优惠:" + CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount));
+            sw.WriteLine("找零:" + CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.ChangeFee));
+            if (oStockOutDTO.oMember.memberId > 0)
+            {
+                sw.WriteLine("会员卡号:");
+                sw.WriteLine("本单交易积分:");
+                sw.WriteLine("会员卡余额:");
+            }
+            sw.WriteLine("会员卡号:");
+            sw.WriteLine("本单 " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+            sw.Close();
+            //第三部，进行打印
+           
+            // 开始打印 
+            //this.printDocument.Print();
+        }
+        //#region 该函数动态添加空格，对齐小票
+        public static string AddSpace(string text, int length)
+        {
+            text = text.PadRight(length, ' ');
+            return text;
+        }
+
+        public static string GetTicketInfo()
+        {
+            string val = "";
+
+            try
+            {
+                FileStream fsFile = new FileStream(CenterContral.strPrintFilePath, FileMode.Open);
+
+                /* 
+                 * 讀取數據最簡單的方法是Read()。此方法將流的下一個字符作為正整數值返回， 
+                 * 如果達到了流的結尾處，則返回-1。 
+                 */
+                StreamReader srReader = new StreamReader(fsFile);
+                int iChar;
+                iChar = srReader.Read();
+                while (iChar != -1)
+                {
+                    val += (Convert.ToChar(iChar));
+                    iChar = srReader.Read();
+                }
+                srReader.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return val;
+        }
     }
 
 }

@@ -77,7 +77,7 @@ namespace CashRegisterApplication.window.Member
                         returnPreventWindows();
                         break;
                     }
-                case System.Windows.Forms.Keys.F12:
+                case System.Windows.Forms.Keys.F1:
                     {
                         //重新输入会员卡信息
                         CenterContral.Show_MemberInfoWindow_By_RechargeMoeneyByMember();
@@ -150,6 +150,11 @@ namespace CashRegisterApplication.window.Member
         }
 
         private void textBox_memberBalance_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
         {
 
         }

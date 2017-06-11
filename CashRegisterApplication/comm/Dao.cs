@@ -29,6 +29,9 @@ namespace CashRegisterApplication.comm
         public const int STOCK_BASE_SAVE_FLAG_SAVING = 1;//挂单状态
         public const int STOCK_BASE_SAVE_FLAG_CLOSE = 2;//挂单关单
 
+        public const int STOCK_BASE_CANCEL_FLAG_INI = 0;//未取消订单
+        public const int STOCK_BASE_CANCEL_FLAG_TRUE = 1;//取消订单
+
         public const int DELETE_FLAG =1;
         /*********************初始化*********************/
         internal static bool CheckIsInit(ref int iCount)
@@ -147,7 +150,7 @@ namespace CashRegisterApplication.comm
             strSql += "related_order,client_id,pos_id,cashier_id,order_amount,";
             strSql += "recieve_fee,change_fee,create_time,";
             strSql += "base_data_json,cloud_add_flag,cloud_update_flag,cloud_close_flag,cloud_delete_flag,";
-            strSql += "local_save_flag,";
+            strSql += "local_save_flag,cancael_flag,";
             strSql += "remark,status) VALUES (";
             strSql += "'" + oStockOutDTO.Base.stockOutId + "',";
             strSql += "'"+ oStockOutDTO.Base.serialNumber+"',";
@@ -169,6 +172,8 @@ namespace CashRegisterApplication.comm
             strSql += "" + oStockOutDTO.Base.cloudDeleteFlag + ",";
 
             strSql += "" + oStockOutDTO.Base.localSaveFlag + ",";
+            strSql += "" + oStockOutDTO.Base.cancaelFlag+ ",";
+            
             strSql += "'" + oStockOutDTO.Base.remark + "',";
             strSql += "" + oStockOutDTO.Base.status + " ";
             strSql += ")";
@@ -300,6 +305,8 @@ namespace CashRegisterApplication.comm
             strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
             strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
             strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + ",";
+            strSql += " cancael_flag=" + oStockOutDTO.Base.cancaelFlag + ",";
+            strSql += " local_save_flag=" + oStockOutDTO.Base.localSaveFlag + ",";
             strSql += " status=" + oStockOutDTO.Base.status + " ";
             strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
