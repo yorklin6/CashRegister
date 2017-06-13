@@ -111,7 +111,7 @@ namespace CashRegisterApplication.comm
 
         public static string strPrintFilePath = Application.StartupPath.ToString() + "\\print_order.txt";//exe程序所在的路径
 
-        public static void InitWindows()
+        public static void Init()
         {
             CommUiltl.Log("InitWindows "+ initFlag);
             if (initFlag == true)
@@ -189,9 +189,10 @@ namespace CashRegisterApplication.comm
         }
         internal static void LoginSuccess()
         {
+            CenterContral.Init();
             CenterContral.GetPayTypeList();
-            CenterContral.Window_ProductList.Show();
             SetTimerTask();
+            CenterContral.Window_ProductList.Show();
             return;
         }
         public static void SetTimerTask()
@@ -529,6 +530,10 @@ namespace CashRegisterApplication.comm
         internal static void CallBackBySelectGoodWindow(ProductPricing productPricing)
         {
             CenterContral.Window_ProductList.CallBackBySelectGoodWindow(productPricing);
+        }
+        internal static void EecBySelectGoodWindow()
+        {
+            CenterContral.Window_ProductList.EecBySelectGoodWindow();
         }
         public static long GetMoneyAmountByDiscountRate(long discountRate)
         {

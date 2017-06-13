@@ -15,6 +15,7 @@ using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
 using CashRegisterApplication.window.Setting;
 using System.Drawing.Printing;
+using System.Diagnostics;
 
 namespace CashRegiterApplication
 {
@@ -377,6 +378,15 @@ namespace CashRegiterApplication
             _AddProducntInfoToDataGridViewProductList(currentRow,productInfo);
             //将光标移动到数量里面
             this.dataGridView_productList.CurrentCell = currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount];
+            this.dataGridView_productList.BeginEdit(true);
+        }
+        public void EecBySelectGoodWindow()
+        {
+            //选中商品后回调这里
+            this.Show();
+            DataGridViewRow currentRow = this.dataGridView_productList.CurrentRow;
+            //将光标移动到数量里面
+            this.dataGridView_productList.CurrentCell = currentRow.Cells[CELL_INDEX.GOODS_KEYWORD];
             this.dataGridView_productList.BeginEdit(true);
         }
         public void _AddProducntInfoToDataGridViewProductList(DataGridViewRow currentRow, ProductPricing productInfo)
@@ -950,7 +960,9 @@ namespace CashRegiterApplication
 
         private void ProductListWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-           
+            this.dataGridView_productList.Rows.Clear();
+            //Process.GetCurrentProcess().CloseMainWindow();
+            CenterContral.Windows_Login.Close();
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)

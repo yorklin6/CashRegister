@@ -111,10 +111,29 @@ namespace CashRegisterApplication.window.ProductList
                         {
                             SelectRow(this.dataGridView_productList.CurrentCell.RowIndex);
                         }
+                        return true;
+                    }
+                    break;
+                case System.Windows.Forms.Keys.Escape:
+                    {
+                        returnPreventWindows();
                     }
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void SelectGoodWindows_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+            returnPreventWindows();
+            CenterContral.Window_SelectGood = new SelectGoodWindows();
+        }
+
+        private void returnPreventWindows()
+        {
+            CenterContral.EecBySelectGoodWindow();
+            this.Hide();
         }
     }
 
