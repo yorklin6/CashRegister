@@ -30,7 +30,7 @@ namespace SuperMarket
             // dataGridView1.Rows.Add("0003", "联想台式电脑玩家", "111", "333.23", "333.23", "露天其");
             // dataGridView1.Rows.Add("0004", "我的读书郎", "1", "555.33", "55555.33", "露天其");
             // dataGridView1.Rows.Add("0005", "新一佳超市购物小票", "222222", "1.33", "1.33", "露天其");
-            CenterContral.InitWindows();
+            CenterContral.Init();
         }
        
         bool isEnter = false;

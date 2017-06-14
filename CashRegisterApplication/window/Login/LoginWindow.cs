@@ -35,15 +35,17 @@ namespace CashRegiterApplication
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.label_tips.Text = "正在登录....";
             //登陆
             if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text,CenterContral.oStoreWhouse.storeWhouseId))
             {
+                this.label_tips.Text = "登陆成功，正在初始化";
                 CenterContral.LoginSuccess();
-          
                 this.Hide();
             }
+            this.label_tips.Text = "登陆失败";
         }
-
+       
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -57,7 +59,7 @@ namespace CashRegiterApplication
         private void LoginWindows_Shown(object sender, EventArgs e)
         {
             CommUiltl.Log("LoginWindows_Shown ");
-            CenterContral.InitWindows();
+            CenterContral.Init();
   
             if (0 != CenterContral.oStoreWhouse.storeWhouseId)
             {
@@ -67,7 +69,7 @@ namespace CashRegiterApplication
         public void UpdateSetttingDefaultMsg()
         {
             textBox_Shop.Text = CenterContral.oStoreWhouse.name;
-            CenterContral.InitWindows();
+            CenterContral.Init();
         }
     }
 }
