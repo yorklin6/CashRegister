@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace CashRegisterApplication.comm
@@ -569,6 +570,18 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.cloudCloseFlag
                            = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
 
+            if (CenterContral.oStockOutDTO.Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                var confirmPayApartResult = MessageBox.Show("后台下单失败，系统需要自动重试",
+                                  "提示",
+                                  MessageBoxButtons.YesNo);
+
+                if (confirmPayApartResult != DialogResult.Yes)
+                {
+                    return false;
+                }
+
+            }
             CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
             if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
@@ -671,15 +684,20 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log(" not modify strProductList:" + strProductList);
             return true;
         }
-
-        internal static bool GetGoodsByGoodsKey(string goodsKey, ref ProductPricingInfoResp oStockOutDetailInfoResp  )
+        
+        internal static bool GetGoodsByGoodsKey(string strGoodsKeyWord, ref ProductPricingInfoResp oStockOutDetailInfoResp  )
         {
-          
-            if (!HttpUtility.GetProductByKeyWord(goodsKey, ref oStockOutDetailInfoResp))
+            //先判断是否是记重类商品
+            string strKeyWord = strGoodsKeyWord;//真正请求后台和商品的信息
+            long subTotalPrice = 0;
+            bool isWeight= _ConverKeywordIfIsWeight(strGoodsKeyWord, out strKeyWord , out subTotalPrice);
+
+            //请求后台取出商户商品信息
+            if (!HttpUtility.GetGoodsByKeyWord(strKeyWord, ref oStockOutDetailInfoResp))
             {
                 //网络出现错误，要访问本地
                 List<String> strListJson = new List<string>();
-                if (! Dao.GetProductByBarcode(goodsKey, ref strListJson))
+                if (! Dao.GetGoodsByBarcode(strKeyWord, ref strListJson))
                 {
                     MessageBox.Show("本地未找到商品资料");
                     return false;
@@ -694,6 +712,8 @@ namespace CashRegisterApplication.comm
                 }
                 MessageBox.Show("网络不稳定，使用本地商品信息");
                 oStockOutDetailInfoResp.errorCode = 0;
+                //处理下返回信息
+                _HandleGoodsRespone(isWeight, strKeyWord, ref oStockOutDetailInfoResp);
                 return true;
             }
             if (oStockOutDetailInfoResp.errorCode != 0 )
@@ -701,10 +721,62 @@ namespace CashRegisterApplication.comm
                 MessageBox.Show("后台返回错误:"+HttpUtility.lastErrorMsg);
                 return false;
             }
-            
-            CommUiltl.Log("http GetGoodsByProductCode get goods ok:" + goodsKey);
+            //处理下返回信息
+            _HandleGoodsRespone(isWeight, strKeyWord, ref oStockOutDetailInfoResp);
+            CommUiltl.Log("http GetGoodsByProductCode get goods ok:" + strKeyWord);
             return true;
         }
+
+        private static void _HandleGoodsRespone(bool isWeight, string strKeyWord, ref ProductPricingInfoResp oStockOutDetailInfoResp)
+        {
+            //处理返回信息
+            //原因：计重类的商品，字符串太短了，比如正常条码13位，计重类的条码才6位，怕出现模糊匹配，所以就把计重类的商品条码重新fix下
+            var goodList = oStockOutDetailInfoResp.data.list;
+            for (int i=0;i< goodList.Count; ++i)
+            {
+                if (strKeyWord== goodList[i].barcode)
+                {
+                  
+                }
+               
+            }
+        }
+
+        private static bool _ConverKeywordIfIsWeight(string strGoodsKeyWord, out string strKeyWord, out long subTotalPrice)
+        {
+            strKeyWord = strGoodsKeyWord;
+            subTotalPrice = 0;
+            //计重商品满足下面特点
+            //1.长度13位
+            //2.是数字
+            //3.开头是2
+            if (strGoodsKeyWord.Length != 13 || !Regex.IsMatch(strGoodsKeyWord, @"^\d+$") || strGoodsKeyWord.Substring(0,1) != "2")
+            {
+                CommUiltl.Log("strGoodsKeyWord is not weight:" + strGoodsKeyWord + "  strGoodsKeyWord.Substring:"+ strGoodsKeyWord.Substring(0, 1));
+                //不满足情况
+                return false;
+            }
+
+            string strKeyWordMsg = strGoodsKeyWord.Substring(1, strGoodsKeyWord.Length-1);
+            //除去第一位是2,前面6位是商品号
+            strKeyWord = strGoodsKeyWord.Substring(1, 6);
+            CommUiltl.Log("strKeyWord:" + strKeyWord);
+            //后面6位是：5位金额+1位校验码
+            string strSubTotalPrice = strGoodsKeyWord.Substring(7, 5);
+            CommUiltl.Log("strSubTotalPrice:" + strSubTotalPrice);
+            //金额要去掉前面的0？
+            if (!CommUiltl.ConverStrBardCodeTolong(strSubTotalPrice, out subTotalPrice))
+            {
+                MessageBox.Show("条码金额错误");
+                return false;
+            }
+            subTotalPrice = subTotalPrice * 100;//计重的总金额是保留小数点后2位
+
+            CommUiltl.Log("strGoodsKeyWord is not weight:" + strGoodsKeyWord);
+            return true;
+        }
+
+        //计重类商品
 
         //************************挂单***********************
         internal static bool SaveStock(string strProductList)
@@ -841,7 +913,7 @@ namespace CashRegisterApplication.comm
             int iMemberRet = HttpUtility.GetMemberByMemberAccount(strMemberAccount, ref oMember);
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                CenterContral.oStockOutDTO.oMember = oMember.data.list[0];
+                CenterContral.oStockOutDTO.oMember = oMember.data;
                 return true;
             }
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_FAILD)

@@ -37,6 +37,7 @@ namespace CashRegiterApplication
             CenterContral.Clean();
             
             
+            System.Windows.Forms.Clipboard.SetText("2100507005701");
             System.Windows.Forms.Clipboard.SetText("9556247516480");
             System.Windows.Forms.Clipboard.SetText("倍乐");
             this.label_defaultUser.Text = CenterContral.DefaultUserName;
@@ -351,7 +352,7 @@ namespace CashRegiterApplication
                 return;
             }
             ProductPricing  productInfo=oStockOutDetailInfoResp.data.list[0];
-            productInfo.keyWord = strKeyWord;
+            productInfo.postKeyWord = strKeyWord;
             //单个商品
             _AddProducntInfoToDataGridViewProductList(currentRow,productInfo);
             //将光标移动到数量里面
@@ -374,7 +375,7 @@ namespace CashRegiterApplication
                 //已经有商品
                 return;
             }
-            productInfo.keyWord = currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value.ToString().Trim();
+            productInfo.postKeyWord = currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value.ToString().Trim();
             _AddProducntInfoToDataGridViewProductList(currentRow,productInfo);
             //将光标移动到数量里面
             this.dataGridView_productList.CurrentCell = currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount];
@@ -430,7 +431,7 @@ namespace CashRegiterApplication
             detail.actualCount = 1;
             detail.subtotal = detail.actualCount * detail.unitPrice;
             detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
-            detail.keyWord = productInfo.keyWord;
+            detail.keyWord = productInfo.postKeyWord;
             CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
             detail.cloudProductPricing = productInfo;
         }
@@ -732,7 +733,7 @@ namespace CashRegiterApplication
                     {
                         DataGridViewRow oCurrentRow=this.dataGridView_productList.CurrentRow;
                         
-                        if (oCurrentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value.ToString() != "")
+                        if (!CommUiltl.IsObjEmpty( oCurrentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value ))
                         {
                             this.dataGridView_productList.Rows.RemoveAt(this.dataGridView_productList.CurrentRow.Index);
                             CenterContral.oStockOutDTO.details.RemoveAt(this.dataGridView_productList.CurrentRow.Index);
@@ -741,7 +742,6 @@ namespace CashRegiterApplication
                         }
                         //关键词为空，删除当前行即可
                         this.dataGridView_productList.Rows.RemoveAt(this.dataGridView_productList.CurrentRow.Index);
-
 
                     }
 
@@ -1109,6 +1109,11 @@ namespace CashRegiterApplication
         }
 
         private void tableLayoutPanel8_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

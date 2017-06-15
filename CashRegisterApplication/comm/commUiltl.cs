@@ -126,7 +126,27 @@ namespace CashRegisterApplication.comm
             if (decimalNumber > 100000) return false;
             number = Convert.ToInt32(decimalNumber * 10000);
             return true;
+        }
+        public static string CoverUnionTo3rd(long money)
+        {
+            //保留小数点后三位
+            return Convert.ToDecimal((double)money / 10000).ToString("0.000");
+        }
 
+        //条码
+        public static bool ConverStrBardCodeTolong(object value, out long number)
+        {
+            number = 0;
+            if (CommUiltl.IsObjEmpty(value))
+            {
+                return false;
+            }
+            decimal decimalNumber = 0;
+            bool isNumber = decimal.TryParse(value.ToString(), out decimalNumber);
+            if (!isNumber) return false;
+            if (decimalNumber > 100000) return false;
+            number = Convert.ToInt32(decimalNumber * 100);
+            return true;
         }
 
         public static bool CoverStrToLong(object value, out long number)
@@ -149,11 +169,7 @@ namespace CashRegisterApplication.comm
         }
         
 
-        public static string CoverMoneyUnionToStrYuan(long money)
-        {
-            //保留小数点后两位
-            return Convert.ToDecimal((double)money / 10000).ToString("0.00");
-        }
+
 
         public static void Log(string message,
                      [CallerFilePath] string file = null,

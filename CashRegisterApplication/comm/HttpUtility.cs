@@ -38,7 +38,7 @@ namespace CashRegiterApplication
         private static readonly string ProductCodeFunc = "goods";
         private static readonly string GeneratePostIdFunc = "pos/";
         private static readonly string GoodsLastUpdateFunc = "goods/latest";
-        private static readonly string QueryMemberInfoFunc = "member?page=1&pageSize=1&memberAccount=";
+        private static readonly string QueryMemberInfoFunc = "/member/account?account=";
         private static readonly string GenerateOrderFunc = "stockOut?";
         private static readonly string RetailSettlementFunc = "retail/settlement";
         private static readonly string updateOrderFunc = "stockOut/retail/";
@@ -292,7 +292,7 @@ namespace CashRegiterApplication
         }
 
         /***************************************拉取商品***************************************/
-        public static bool GetProductByKeyWord(string productCode, ref ProductPricingInfoResp oHttpRespone)
+        public static bool GetGoodsByKeyWord(string productCode, ref ProductPricingInfoResp oHttpRespone)
         {
             lastErrorMsg = "";
             for (int i = 0; i < 1; ++i)
@@ -448,11 +448,7 @@ namespace CashRegiterApplication
                 lastErrorMsg = "返回异常:errorCode:" + oHttpRespone.errorCode + " msg:" + oHttpRespone.msg;
                 return CLOUD_SATE_BUSSINESS_FAILD;
             }
-            if (oHttpRespone.data.list.Count != 1)
-            {
-                CommUiltl.LogObj("oHttpRespone.data.list.Count != 1 oHttpRespone:", oHttpRespone);
-                return CLOUD_SATE_HTTP_SUCESS;
-            }
+           
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //会员充值
