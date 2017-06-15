@@ -125,14 +125,20 @@ namespace CashRegisterApplication.window.member
 
         private void MemberInfoWindows_FormClosing(object sender, FormClosingEventArgs e)
         {
+            CenterContral.Window_MemberInfoWindows = new MemberInfoWindows();
             e.Cancel = false;
             returnPreventWindows();
-            CenterContral.Window_MemberInfoWindows = new MemberInfoWindows();
+
         }
 
         private void textBox_name_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            enterEvent();
         }
     }
 }

@@ -58,7 +58,7 @@ namespace CashRegisterApplication.window.Member
                 this.Hide();
                 return;
             }
-
+            _SetMemberInfo();
             this.textBox_ReceiveFee.Focus();
         }
 

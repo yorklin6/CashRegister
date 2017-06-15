@@ -39,7 +39,7 @@ namespace CashRegiterApplication
             //登陆
             if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text,CenterContral.oStoreWhouse.storeWhouseId))
             {
-                this.label_tips.Text = "登陆成功，正在初始化";
+                this.label_tips.Text = "初始化中...";
                 CenterContral.LoginSuccess();
                 this.Hide();
             }

@@ -160,6 +160,7 @@ namespace CashRegisterApplication.window.Setting
 
         private void SettingDefaultMsgWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+            CenterContral.Windows_SettingDefaultMsgWindow = new SettingDefaultMsgWindow();
             e.Cancel = false;
             returnPreventWindows();
         }

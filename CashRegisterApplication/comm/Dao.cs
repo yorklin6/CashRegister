@@ -1032,7 +1032,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("UpdateAllGoodsToDelelete ok");
             return true;
         }
-        internal static bool GetProductByBarcode(string barcode, ref List<String> strListJson )
+        internal static bool GetGoodsByBarcode(string barcode, ref List<String> strListJson )
         {
             string strSql = "";
             strSql += "select  data_json from tb_local_goods  ";

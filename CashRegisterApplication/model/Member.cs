@@ -9,7 +9,7 @@ namespace CashRegisterApplication.model
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public MemberData data;
+        public Member data;
     }
     public class MemberData
     {

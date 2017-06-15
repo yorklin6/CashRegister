@@ -37,8 +37,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_Shop = new System.Windows.Forms.TextBox();
             this.label_tips = new System.Windows.Forms.Label();
-            this.tableLayoutPanel_tips = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel_tips.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_loggin
@@ -118,26 +116,12 @@
             // label_tips
             // 
             this.label_tips.AutoSize = true;
-            this.label_tips.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_tips.Font = new System.Drawing.Font("微软雅黑", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_tips.Location = new System.Drawing.Point(3, 0);
+            this.label_tips.Location = new System.Drawing.Point(259, 18);
             this.label_tips.Name = "label_tips";
-            this.label_tips.Size = new System.Drawing.Size(379, 66);
+            this.label_tips.Size = new System.Drawing.Size(0, 38);
             this.label_tips.TabIndex = 8;
-            this.label_tips.Text = "欢迎";
             this.label_tips.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel_tips
-            // 
-            this.tableLayoutPanel_tips.ColumnCount = 1;
-            this.tableLayoutPanel_tips.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel_tips.Controls.Add(this.label_tips, 0, 0);
-            this.tableLayoutPanel_tips.Location = new System.Drawing.Point(149, 0);
-            this.tableLayoutPanel_tips.Name = "tableLayoutPanel_tips";
-            this.tableLayoutPanel_tips.RowCount = 1;
-            this.tableLayoutPanel_tips.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel_tips.Size = new System.Drawing.Size(385, 66);
-            this.tableLayoutPanel_tips.TabIndex = 9;
             // 
             // LoginWindows
             // 
@@ -145,7 +129,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(616, 268);
-            this.Controls.Add(this.tableLayoutPanel_tips);
+            this.Controls.Add(this.label_tips);
             this.Controls.Add(this.textBox_Shop);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_password);
@@ -162,8 +146,6 @@
             this.Text = "收银机登录";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.LoginWindows_Shown);
-            this.tableLayoutPanel_tips.ResumeLayout(false);
-            this.tableLayoutPanel_tips.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,7 +161,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_Shop;
         private System.Windows.Forms.Label label_tips;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_tips;
     }
 }
 

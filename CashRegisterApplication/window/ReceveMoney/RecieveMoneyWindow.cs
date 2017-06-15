@@ -287,9 +287,9 @@ namespace CashRegisterApplication.window
 
         private void RecieveMoneyWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = false;
-            returnPreventWindows();
             CenterContral.Window_RecieveMoney = new RecieveMoneyWindow();
+            e.Cancel = false;
+            escapeToPreWindows();
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
