@@ -110,6 +110,9 @@ namespace CashRegisterApplication.comm
         public static string DefaultPassword = "york";
         public static long DefaultStoreId = 5;//临时分配门店
 
+        public static int NOT_BARCODE_MOENY_GOODS = 0;//
+        public static int IS_BARCODE_MOENY_GOODS = 1;//条码中自带价格商品
+
         public static string strPrintFilePath = Application.StartupPath.ToString() + "\\print_order.txt";//exe程序所在的路径
 
         public static void Init()
@@ -146,9 +149,11 @@ namespace CashRegisterApplication.comm
             Window_SelectGood = new SelectGoodWindows();
             oPayTypeList = new PayTypeData();
             oPayTypeList.list = new List<PayType>();
-            //先默认登陆，取可信任的登陆态
-            // CenterContral.InitDefaultLogin();
-            CommUiltl.Log("CheckIsInit ");
+
+    
+        //先默认登陆，取可信任的登陆态
+        // CenterContral.InitDefaultLogin();
+        CommUiltl.Log("CheckIsInit ");
             if (!CheckIsInit())
             {
                 CommUiltl.Log("CheckIsInit false");
@@ -510,7 +515,8 @@ namespace CashRegisterApplication.comm
             CenterContral.Window_ProductList.SetLocalSaveDataNumber();
         }
 
-       public static void updateOrderAmount(long orderPrice)
+
+        public static void updateOrderAmount(long orderPrice)
         {
             CommUiltl.Log(" updateOrderAmount:" + orderPrice);
             CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = orderPrice;
@@ -713,7 +719,7 @@ namespace CashRegisterApplication.comm
                 MessageBox.Show("网络不稳定，使用本地商品信息");
                 oStockOutDetailInfoResp.errorCode = 0;
                 //处理下返回信息
-                _HandleGoodsRespone(isWeight, strKeyWord, ref oStockOutDetailInfoResp);
+                _HandleGoodsRespone(isWeight,  subTotalPrice , strKeyWord, ref oStockOutDetailInfoResp);
                 return true;
             }
             if (oStockOutDetailInfoResp.errorCode != 0 )
@@ -722,13 +728,17 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             //处理下返回信息
-            _HandleGoodsRespone(isWeight, strKeyWord, ref oStockOutDetailInfoResp);
+            _HandleGoodsRespone(isWeight, subTotalPrice,strKeyWord, ref oStockOutDetailInfoResp);
             CommUiltl.Log("http GetGoodsByProductCode get goods ok:" + strKeyWord);
             return true;
         }
 
-        private static void _HandleGoodsRespone(bool isWeight, string strKeyWord, ref ProductPricingInfoResp oStockOutDetailInfoResp)
+        private static void _HandleGoodsRespone(bool isWeight, long subTotalPrice ,string strKeyWord, ref ProductPricingInfoResp oStockOutDetailInfoResp)
         {
+            if (!isWeight)
+            {
+                return;
+            }
             //处理返回信息
             //原因：计重类的商品，字符串太短了，比如正常条码13位，计重类的条码才6位，怕出现模糊匹配，所以就把计重类的商品条码重新fix下
             var goodList = oStockOutDetailInfoResp.data.list;
@@ -736,7 +746,10 @@ namespace CashRegisterApplication.comm
             {
                 if (strKeyWord== goodList[i].barcode)
                 {
-                  
+                    //找到
+                    goodList[i].isBarCodeMoneyGoods = CenterContral.IS_BARCODE_MOENY_GOODS;
+                    goodList[i].barcodeSubTotalMoney = subTotalPrice;
+                    goodList[i].barcodeCount = CommUiltl.CaculateBarCodeCount(goodList[i].barcodeSubTotalMoney, goodList[i].retailPrice);
                 }
                
             }
@@ -770,13 +783,53 @@ namespace CashRegisterApplication.comm
                 MessageBox.Show("条码金额错误");
                 return false;
             }
-            subTotalPrice = subTotalPrice * 100;//计重的总金额是保留小数点后2位
 
-            CommUiltl.Log("strGoodsKeyWord is not weight:" + strGoodsKeyWord);
+            CommUiltl.Log("strGoodsKeyWord is  weight:" + strGoodsKeyWord+ " subTotalPrice:" + subTotalPrice);
             return true;
         }
 
-        //计重类商品
+        internal static void ProductTostockDetail(ProductPricing productInfo, ref StockOutDetail detail)
+        {
+            detail.barcode = productInfo.barcode;
+            detail.goodsName = productInfo.goodsName;
+            detail.unitPrice = (productInfo.retailPrice);
+            detail.remark = productInfo.remark;
+            detail.specification = productInfo.specification;
+            detail.categoryId = productInfo.categoryId;
+            detail.unit = productInfo.baseUnit;
+
+            detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
+            detail.postKeyWord = productInfo.postKeyWord;
+
+            detail.reqKeyWord = productInfo.reqKeyWord;
+            detail.postKeyWord = productInfo.postKeyWord;
+
+            detail.isBarCodeMoneyGoods = productInfo.isBarCodeMoneyGoods;
+            detail.barcodeSubTotalMoney = productInfo.barcodeSubTotalMoney;
+
+            detail.actualCount = 1;
+            detail.subtotal = detail.actualCount * detail.unitPrice;
+
+            if (detail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+            {
+                //计重类,总价
+                detail.subtotal = productInfo.barcodeSubTotalMoney;
+                detail.barcodeCount = productInfo.barcodeCount;
+            }
+
+            CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
+            detail.cloudProductPricing = productInfo;
+        }
+        internal static string  GetGoodsCount(StockOutDetail detail)
+        {
+            if (detail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+            {
+                //条码带有金额的商品,数量=总价/单价
+                return CommUiltl.CoverUnionTo3rd(detail.barcodeCount);
+            }
+            return detail.actualCount.ToString();
+        }
+
 
         //************************挂单***********************
         internal static bool SaveStock(string strProductList)
@@ -810,7 +863,7 @@ namespace CashRegisterApplication.comm
         }
         public static int CurrentStockIndex = -1;
 
-       
+  
 
         internal static void GetSaveOrderToCurrentMsg()
         {

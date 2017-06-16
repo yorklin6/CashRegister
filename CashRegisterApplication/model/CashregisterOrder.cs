@@ -196,7 +196,12 @@ namespace CashRegisterApplication.model
         public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
 
-        public String keyWord { get; set; }
+        public String postKeyWord { get; set; }//postKeyWord，用户输入的关键词
+        public String reqKeyWord { get; set; }//searchKeyWord向后台或者本地请求，输入的关键词
+
+        public int isBarCodeMoneyGoods { get; set; }//是否是条码带金额类商品，默认0不是,1是代表是扫码商品
+        public long barcodeSubTotalMoney { get; set; }//条码中自带的金额数，当isBarCodeMoneyGoods字段为1时候生效
+        public long barcodeCount { get; set; }//条码中自带的金额数,需要重新计算计重数
     }
 
 

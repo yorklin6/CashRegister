@@ -127,13 +127,46 @@ namespace CashRegisterApplication.comm
             number = Convert.ToInt32(decimalNumber * 10000);
             return true;
         }
-        public static string CoverUnionTo3rd(long money)
+
+        public static string CoverMoneyUnionToStrYuan(long money)
+        {
+            //保留小数点后两位位
+            return Convert.ToDecimal((double)money / 10000).ToString("0.00");
+        }
+        //**********计重类
+        internal static long CaculateBarCodeCount(long barcodeSubTotalMoney, long unitPrice)
+        {
+            //计算计重数
+            return (long)(( (double)barcodeSubTotalMoney / unitPrice ) * 10000 );
+        }
+        internal static long CaculateBarCodeTotalMoney(long barcodeCount, long unitPrice)
+        {
+            //计算计重数
+            return (long)(((double)barcodeCount/10000 * unitPrice) );
+        }
+        public static string CoverUnionTo3rd(long union)
         {
             //保留小数点后三位
-            return Convert.ToDecimal((double)money / 10000).ToString("0.000");
+            return Convert.ToDecimal((double)union / 10000).ToString("0.000");
+        }
+        //条码商品转换成金额 :金额是保留小数点后2位
+        public static bool ConverStrBardCode3rdTolong(object value, out long number)
+        {
+            number = 0;
+            if (CommUiltl.IsObjEmpty(value))
+            {
+                return false;
+            }
+            decimal decimalNumber = 0;
+            bool isNumber = decimal.TryParse(value.ToString(), out decimalNumber);
+            if (!isNumber) return false;
+            if (decimalNumber > 100000) return false;
+            number = Convert.ToInt32(decimalNumber * 10000);
+            return true;
         }
 
-        //条码
+
+        //条码商品转换成金额 :金额是保留小数点后2位
         public static bool ConverStrBardCodeTolong(object value, out long number)
         {
             number = 0;
@@ -203,6 +236,8 @@ namespace CashRegisterApplication.comm
             int card = rnd.Next(100, 999);
             return card.ToString();
         }
+
+
     }
    
 }

@@ -38,11 +38,12 @@ namespace CashRegiterApplication
             
             
             System.Windows.Forms.Clipboard.SetText("2100507005701");
-            System.Windows.Forms.Clipboard.SetText("9556247516480");
-            System.Windows.Forms.Clipboard.SetText("倍乐");
+           // System.Windows.Forms.Clipboard.SetText("9556247516480");
+            //System.Windows.Forms.Clipboard.SetText("倍乐");
             this.label_defaultUser.Text = CenterContral.DefaultUserName;
             this.label_postId.Text = CenterContral.iPostId.ToString();
         }
+
         public void SetMemberInfo()
         {
             CommUiltl.Log("this.label_member_account.Text:"+ this.label_member_account.Text);
@@ -50,6 +51,7 @@ namespace CashRegiterApplication
             this.label_member_point.Text = CenterContral.oStockOutDTO.oMember.point.ToString();
             this.label_member_balance.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.oMember.balance).ToString();
         }
+
         public void SetLocalSaveDataNumber()
         {
             //挂单数量
@@ -250,7 +252,7 @@ namespace CashRegiterApplication
                 //价钱为空，就停止
                 return false;
             }
-            long amout = 0, price = 0;
+            long actualCount = 0, unitPrice = 0;
 
             if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_KEYWORD].Value))
             {
@@ -259,8 +261,16 @@ namespace CashRegiterApplication
                 MessageBox.Show("错误条码" );
                 return false;
             }
-
-            if (!CommUiltl.CoverStrToLong(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value, out amout))
+            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value))
+            {
+                //_SetCurrentPointToRetailDetailCount(e.RowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
+                _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+                //_SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount]);
+                MessageBox.Show("数量错误,不能为空");
+                return false;
+            }
+            string strRetailCount = this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value.ToString();
+            if (!_CheckRetailAccount(CenterContral.oStockOutDTO.details[rowIndex],strRetailCount,ref actualCount))
             {
                 //_SetCurrentPointToRetailDetailCount(e.RowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
                 _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
@@ -269,7 +279,7 @@ namespace CashRegiterApplication
                 return false;
             }
           
-            if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out price))
+            if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out unitPrice))
             {
                 _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
                 //_SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE]);
@@ -277,18 +287,40 @@ namespace CashRegiterApplication
                 return false;
             }
 
-            long orderPrice = amout * price;
-            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(orderPrice);
-
-            this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = strOrderPrice;
-            CenterContral.oStockOutDTO.details[rowIndex].subtotal = orderPrice;
-            CenterContral.oStockOutDTO.details[rowIndex].actualCount = amout;
-            CenterContral.oStockOutDTO.details[rowIndex].unitPrice = price;
-
+            _UpdateStockOutDtoDetailMoney(CenterContral.oStockOutDTO.details[rowIndex], strRetailCount, actualCount,unitPrice);
+            this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.details[rowIndex].subtotal);
             _UpdateStockBaseMsg();
             return true;
         }
 
+        private void _UpdateStockOutDtoDetailMoney(StockOutDetail stockOutDetail,string strRetailCount, long actualCount, long unitPrice)
+        {
+            if (stockOutDetail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+            {
+                //计重类数量
+                long barcodeCount = 0;
+                CommUiltl.ConverStrYuanToUnion(strRetailCount, out barcodeCount);
+                stockOutDetail.barcodeCount = barcodeCount;
+                stockOutDetail.actualCount = stockOutDetail.actualCount;//实际数量不变
+                stockOutDetail.subtotal = CommUiltl.CaculateBarCodeTotalMoney(stockOutDetail.barcodeCount, stockOutDetail.unitPrice);
+                return;
+            }
+
+            stockOutDetail.actualCount = actualCount;
+            stockOutDetail.subtotal = stockOutDetail.actualCount* stockOutDetail.unitPrice;
+        }
+
+        private bool _CheckRetailAccount(StockOutDetail oStockOutDetail,string strRetailCount,ref long actualCount )
+        {
+            if (oStockOutDetail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+            {
+                //计重类数量   
+                long barcodeCount = 0;
+                return CommUiltl.ConverStrYuanToUnion(strRetailCount, out barcodeCount);
+
+            }
+            return CommUiltl.CoverStrToLong(strRetailCount, out actualCount);
+        }
 
         private void _UpdateStockBaseMsg()
         {
@@ -394,7 +426,7 @@ namespace CashRegiterApplication
         {
             //单个商品
             StockOutDetail detail = new StockOutDetail();
-            _ProductTostockDetail(productInfo, ref detail);
+            CenterContral.ProductTostockDetail(productInfo, ref detail);
             //设置行里面商品信息
             SetRowsByStockOutDetail(currentRow, detail);
             CenterContral.oStockOutDTO.details.Add(detail);
@@ -406,35 +438,22 @@ namespace CashRegiterApplication
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
-           currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.keyWord;
+           currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.postKeyWord;
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = detail.goodsName;
             CommUiltl.Log("detail.goodsShowSpecification:"+ detail.goodsShowSpecification);
             currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.goodsShowSpecification;
 
             string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(detail.unitPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
-            currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = RetailPrice;
-            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = 1;
+
             currentRow.Cells[CELL_INDEX.PRODUCT_REMARK].Value = detail.remark;
-            currentRow.Cells[CELL_INDEX.PRODUCT_JSON].Value = JsonConvert.SerializeObject(detail);
+            //currentRow.Cells[CELL_INDEX.PRODUCT_JSON].Value = JsonConvert.SerializeObject(detail);
+            //总价和数量
+            currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value =   CommUiltl.CoverMoneyUnionToStrYuan(detail.subtotal);
+            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.GetGoodsCount(detail);
         }
 
-        private void _ProductTostockDetail(ProductPricing productInfo, ref StockOutDetail detail)
-        {
-            detail.barcode= productInfo.barcode;
-            detail.goodsName = productInfo.goodsName;
-            detail.unitPrice = (productInfo.retailPrice);
-            detail.remark = productInfo.remark;
-            detail.specification = productInfo.specification;
-            detail.categoryId = productInfo.categoryId;
-            detail.unit = productInfo.baseUnit;
-            detail.actualCount = 1;
-            detail.subtotal = detail.actualCount * detail.unitPrice;
-            detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
-            detail.keyWord = productInfo.postKeyWord;
-            CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
-            detail.cloudProductPricing = productInfo;
-        }
+
 
         
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -1128,7 +1147,7 @@ namespace CashRegiterApplication
         public static int PRODUCT_RetailDetailCount = 4;
         public static int PRODUCT_NORMAL_PRICE = 5;
 
-        public static int PRODUCT_MONEY = 6;
+        public static int PRODUCT_MONEY = 6;//总价
         public static int PRODUCT_REMARK = 7;
         public static int PRODUCT_JSON = 8;
 

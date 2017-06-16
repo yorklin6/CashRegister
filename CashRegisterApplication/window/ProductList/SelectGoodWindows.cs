@@ -42,7 +42,7 @@ namespace CashRegisterApplication.window.ProductList
                 CommUiltl.Log("i " + i);
                 CommUiltl.Log("oStockOutDTO.details[i] " + list[i]);
                 StockOutDetail detail = new StockOutDetail();
-                _ProductTostockDetail(list[i], ref detail);
+                CenterContral.ProductTostockDetail(list[i], ref detail);
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], detail);
 
             }
@@ -52,21 +52,7 @@ namespace CashRegisterApplication.window.ProductList
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
             this.dataGridView_productList.BeginEdit(true);
         }
-        private void _ProductTostockDetail(ProductPricing productInfo, ref StockOutDetail detail)
-        {
-            detail.barcode = productInfo.barcode;
-            detail.goodsName = productInfo.goodsName;
-            detail.unitPrice = (productInfo.retailPrice);
-            detail.remark = productInfo.remark;
-            detail.specification = productInfo.specification;
-            detail.categoryId = productInfo.categoryId;
-            detail.unit = productInfo.baseUnit;
-            detail.actualCount = 1;
-            detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
-            CommUiltl.Log("_ProductTostockDetail   detail.goodsShowSpecification :" + detail.goodsShowSpecification);
-            detail.cloudProductPricing = productInfo;
-
-        }
+      
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
         {
@@ -79,10 +65,12 @@ namespace CashRegisterApplication.window.ProductList
 
             string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(detail.unitPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
-            currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = RetailPrice;
-            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = detail.actualCount;
             currentRow.Cells[CELL_INDEX.PRODUCT_REMARK].Value = detail.remark;
             currentRow.Cells[CELL_INDEX.PRODUCT_JSON].Value = JsonConvert.SerializeObject(detail);
+            //总价和数量
+            currentRow.Cells[CELL_INDEX.PRODUCT_MONEY].Value = CommUiltl.CoverMoneyUnionToStrYuan(detail.subtotal);
+            currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.GetGoodsCount(detail);
+
         }
 
         private void dataGridView_productList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
