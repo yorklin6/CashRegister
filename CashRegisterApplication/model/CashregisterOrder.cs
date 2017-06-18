@@ -133,7 +133,7 @@ namespace CashRegisterApplication.model
         public String creator { get; set; }
         public long createTime { get; set; }
         public long updateTime { get; set; }
-        public long stockOutTime { get; set; }
+        public String stockOutTime { get; set; }
         public Byte status { get; set; }
         public String remark { get; set; }
 

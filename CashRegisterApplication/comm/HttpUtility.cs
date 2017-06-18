@@ -28,7 +28,6 @@ namespace CashRegiterApplication
 
       
 
-        private static readonly string CashRegistHost = "https://120.24.210.161:8686/branch/";
         private static CookieContainer gCookies = null;//全局登录态cookie
 
         private static int timeOutDefault = 10000;//1秒超时
@@ -53,8 +52,8 @@ namespace CashRegiterApplication
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
         public const int CLOUD_SATE_HTTP_FAILD = 1;
         public const int CLOUD_SATE_BUSSINESS_FAILD = 2;
+        public const int CLOUD_SATE_HTTP_INIT = 3;
 
-    
         public static string lastErrorMsg;
 
         
@@ -618,12 +617,12 @@ namespace CashRegiterApplication
         public static bool PostUrlencoded<T>(string funcUrl, string json, ref T returnObj)
         {
             //https
-            string url = CashRegistHost + funcUrl;
+            string url = CenterContral.IpHostAddress + funcUrl;
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
             request.ProtocolVersion = HttpVersion.Version10;
 
-            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            // HttpWebRequest request = WebRequest.Create(CenterContral.CashRegistHost + funcUrl) as HttpWebRequest;
             CommUiltl.Log("url:" + url);
             request.Method = "POST";
             request.UserAgent = DefaultUserAgent;
@@ -663,12 +662,12 @@ namespace CashRegiterApplication
         public static bool Post<T>(string funcUrl,string json, ref T returnObj)
         {
             //https
-            string url = CashRegistHost + funcUrl;
+            string url = CenterContral.IpHostAddress + funcUrl;
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
             request.ProtocolVersion = HttpVersion.Version10;
 
-            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            // HttpWebRequest request = WebRequest.Create(CenterContral.CashRegistHost + funcUrl) as HttpWebRequest;
             CommUiltl.Log("url:" + url);
             request.Method = "POST";
             request.UserAgent = DefaultUserAgent;
@@ -707,12 +706,12 @@ namespace CashRegiterApplication
         /***************************************PUT信息***************************************/
         public static bool Put<T>(string funcUrl, string json, ref T returnObj)
         {
-            string url = CashRegistHost + funcUrl;
+            string url = CenterContral.IpHostAddress + funcUrl;
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
             request.ProtocolVersion = HttpVersion.Version10;
 
-            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            // HttpWebRequest request = WebRequest.Create(CenterContral.CashRegistHost + funcUrl) as HttpWebRequest;
             CommUiltl.Log("url:" + url);
             CommUiltl.Log("req json:" + json);
             request.Method = "PUT";
@@ -751,12 +750,12 @@ namespace CashRegiterApplication
         }
         public static bool Get<T>(string funcUrl, ref T returnObj)
         {
-            string url = CashRegistHost + funcUrl;
+            string url = CenterContral.IpHostAddress + funcUrl;
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
             HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
             request.ProtocolVersion = HttpVersion.Version10;
 
-            // HttpWebRequest request = WebRequest.Create(CashRegistHost + funcUrl) as HttpWebRequest;
+            // HttpWebRequest request = WebRequest.Create(CenterContral.CashRegistHost + funcUrl) as HttpWebRequest;
             CommUiltl.Log("url:" + url);
             request.Method = "GET";
             request.UserAgent = DefaultUserAgent;

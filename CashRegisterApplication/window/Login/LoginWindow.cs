@@ -68,8 +68,10 @@ namespace CashRegiterApplication
         }
         public void UpdateSetttingDefaultMsg()
         {
+            this.Show();
             textBox_Shop.Text = CenterContral.oStoreWhouse.name;
             CenterContral.Init();
+          
         }
     }
 }

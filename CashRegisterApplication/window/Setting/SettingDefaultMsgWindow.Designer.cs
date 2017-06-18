@@ -42,6 +42,8 @@
             this.textBox_userPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+            this.textBox_IpHostAddress = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBox_StoreShop
@@ -83,7 +85,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(281, 245);
+            this.button1.Location = new System.Drawing.Point(310, 298);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -186,12 +188,32 @@
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // textBox_IpHostAddress
+            // 
+            this.textBox_IpHostAddress.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_IpHostAddress.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_IpHostAddress.Location = new System.Drawing.Point(281, 246);
+            this.textBox_IpHostAddress.Name = "textBox_IpHostAddress";
+            this.textBox_IpHostAddress.Size = new System.Drawing.Size(266, 21);
+            this.textBox_IpHostAddress.TabIndex = 20;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(162, 249);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(113, 12);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "后台ip地址根路径：";
+            // 
             // SettingDefaultMsgWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
-            this.ClientSize = new System.Drawing.Size(687, 295);
+            this.ClientSize = new System.Drawing.Size(687, 430);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.textBox_IpHostAddress);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox_userPassword);
@@ -234,5 +256,7 @@
         private System.Windows.Forms.TextBox textBox_userPassword;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox_IpHostAddress;
+        private System.Windows.Forms.Label label6;
     }
 }

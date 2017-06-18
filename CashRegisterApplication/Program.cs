@@ -1,7 +1,9 @@
 ﻿using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
 using CashRegisterApplication.window;
+using CashRegisterApplication.window.History;
 using CashRegisterApplication.window.Printer;
+using CashRegisterApplication.window.ProductList;
 using CashRegisterApplication.window.Setting;
 using CashRegiterApplication;
 using SuperMarket;
@@ -23,11 +25,15 @@ namespace CashRegiterApplication
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-          // Application.Run(new Cash());
+
+            //Application.Run(new LoginWindows());
+            Application.Run(new HistoryWindow());
+
+
+            // Application.Run(new Cash());
             //Application.Run(new RawPrinterHelper());
-            
-        Application.Run(new LoginWindows());
+
+            //       Application.Run(new Printer_Hostory_Select_Windows());
             // Application.Run(new SettingDefaultMsgWindow());
             //Application.Run(new ProductListWindow());
             // Application.Run(new RecieveMoneyWindow());

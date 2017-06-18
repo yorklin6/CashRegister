@@ -23,9 +23,17 @@ namespace CashRegisterApplication.window.Setting
         internal void ShowByLogin()
         {
             this.Show();
-            this.textBox_user.Text = "york";
-            this.textBox_userPassword.Text = "york";
+            this.textBox_user.Text = CenterContral.DefaultUserName;
+            this.textBox_userPassword.Text = CenterContral.DefaultPassword;
         }
+
+        internal void ShowByProrductList()
+        {
+            this.Show();
+            this.textBox_user.Text = CenterContral.DefaultUserName;
+            this.textBox_userPassword.Text = CenterContral.DefaultPassword;
+        }
+
 
         private void SettingDefaultMsg_Load(object sender, EventArgs e)
         {
@@ -33,6 +41,10 @@ namespace CashRegisterApplication.window.Setting
             _GetMac();
             //获取postID
             _GetPostId();
+
+            CenterContral.GetIpHostAddressFromDb();
+            textBox_IpHostAddress.Text = CenterContral.IpHostAddress;
+
         }
         private void SettingDefaultMsgWindow_Shown(object sender, EventArgs e)
         {
@@ -92,7 +104,6 @@ namespace CashRegisterApplication.window.Setting
             string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
             CenterContral.UpdateStoreWhouseDefault(strStoreWhouseDefult);
 
-
             int iPostId = 0;
             if (!CommUiltl.CoverStrToInt(textBox_PostID.Text, out iPostId))
             {
@@ -101,8 +112,12 @@ namespace CashRegisterApplication.window.Setting
             }
             CenterContral.iPostId = iPostId;
             CenterContral.SetPostIdFromDb();
+
+            CenterContral.IpHostAddress=textBox_IpHostAddress.Text ;
+            CenterContral.SetIpHostAddressToDb();
+
             MessageBox.Show("保存成功");
-            CenterContral.Windows_Login.UpdateSetttingDefaultMsg();
+            CenterContral.CallWindowsBySettingDefaulMsgWindow();
             this.Hide();
         }
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)

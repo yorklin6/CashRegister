@@ -112,10 +112,10 @@ namespace CashRegisterApplication.comm
             strSql += "CREATE TABLE [tb_checkout](  [id] INT(10) NOT NULL, [store_id] INT(10) NOT NULL, [pos_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [pay_type] TINYINT(3) NOT NULL, [pay_amount] BIGINT(20) NOT NULL, [is_deleted] TINYINT(3) NOT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME, [serial_number] VARCHAR(50), [PayCode] VARCHAR(20), [CloudState] INT, [check_out_data_json] TEXT, [CashRegisterPayOrderNumber] VARCHAR(50), [payStatus] INT, [reqMemberZfJson] TEXT ); ";
             strSql += "CREATE TABLE [tb_local_goods]( [goodsId] INT(20), [barcode] VARCHAR(100), [goods_name] VARCHAR2(100), [abbreviation] VARCHAR2, [data_json] TEXT, [old_data_flag] INT, [product_update_time] DATE); ";
             strSql += "CREATE TABLE [tb_member_recharge]( [member_id] INT, [name] VARCHAR(30), [member_account] VARCHAR(50), [berfore_balance] INT, [after_balance] INT, [create_time] DATETIME, [cloud_state] INT, [reqRechargeJson] TEXT);";
-            strSql += "CREATE TABLE [tb_stock_out_base]( [stock_out_id] INT(10) NOT NULL, [serial_number] VARCHAR(50) PRIMARY KEY NOT NULL, [type] TINYINT(3) NOT NULL, [store_id] INT(10) NOT NULL, [whouse_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [client_id] INT(10) NOT NULL DEFAULT '0', [pos_id] INT(10) NOT NULL, [cashier_id] INT(10) NOT NULL, [order_amount] BIGINT(20) DEFAULT NULL, [creator] VARCHAR(20) DEFAULT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME DEFAULT NULL, [stock_out_time] DATETIME DEFAULT NULL, [status] TINYINT(3) NOT NULL DEFAULT '0', [remark] VARCHAR(255) DEFAULT NULL, [recieve_fee] INT(20), [change_fee] INT(20), [cloud_state] INT(10), [base_data_json]  TEXT, [cloud_add_flag] INT(10) DEFAULT 0, [cloud_update_flag] INT(10) DEFAULT 0, [cloud_close_flag]  INT DEFAULT 0, [cloud_delete_flag] INT(0), [local_save_flag] INT(10));";
+            strSql += "CREATE TABLE [tb_stock_out_base]( [stock_out_id] INT(10) NOT NULL, [serial_number] VARCHAR(50) PRIMARY KEY NOT NULL, [type] TINYINT(3) NOT NULL, [store_id] INT(10) NOT NULL, [whouse_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [client_id] INT(10) NOT NULL DEFAULT '0', [pos_id] INT(10) NOT NULL, [cashier_id] INT(10) NOT NULL, [order_amount] BIGINT(20) DEFAULT NULL, [creator] VARCHAR(20) DEFAULT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME DEFAULT NULL, [stock_out_time] DATETIME DEFAULT NULL, [status] TINYINT(3) NOT NULL DEFAULT '0', [remark] VARCHAR(255) DEFAULT NULL, [recieve_fee] INT(20), [change_fee] INT(20), [cloud_state] INT(10), [base_data_json]  TEXT, [cloud_add_flag] INT(10) DEFAULT 0, [cloud_update_flag] INT(10) DEFAULT 0, [cloud_close_flag]  INT DEFAULT 0, [cloud_delete_flag] INT(0), [local_save_flag] INT(10) , [cancael_flag] INT(10) );";
             strSql += "CREATE TABLE [tb_stock_out_detail]( [id] INT(10) NOT NULL, [stock_out_id] INT(10) NOT NULL, [goods_id] INT(10) NOT NULL, [goods_name] VARCHAR(50) NOT NULL, [barcode] VARCHAR(50) NOT NULL, [specification] VARCHAR(20) NOT NULL, [unit] VARCHAR(10) NOT NULL, [produce_time] DATETIME DEFAULT NULL, [expire_time] DATETIME DEFAULT NULL, [order_count] INT(10) NOT NULL, [actual_count] INT(10) DEFAULT NULL, [actual_difference] INT(11) DEFAULT NULL, [unit_price] BIGINT(20) DEFAULT NULL, [subtotal] BIGINT(20)  DEFAULT NULL, [remark] VARCHAR(255) DEFAULT NULL, [serial_number] VARBINARY(50), [cloud_state_add] INT(10), [cloud_state_update] INT(10), [cloud_state_delete] INT(10),[delete_flag] INT(10), [cloud_state] INT(10), [detail_data_json] TEXT);";
 
-            strSql += "CREATE TABLE [tb_local_msg]( [store_whouse_default] TEXT, [pay_type_list] TEXT, [last_all_good_data_uinx_time] INT DEFAULT 0, [post_id] INT);";
+            strSql += "CREATE TABLE [tb_local_msg]( [store_whouse_default] TEXT, [pay_type_list] TEXT, [last_all_good_data_uinx_time] INT DEFAULT 0, [post_id] INT  , [ip_host_address] VARCHAR(100) );";
 
 
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -164,7 +164,7 @@ namespace CashRegisterApplication.comm
             strSql += "" + oStockOutDTO.Base.orderAmount + ",";
             strSql += "" + oStockOutDTO.Base.RecieveFee + ",";
             strSql += "" + oStockOutDTO.Base.ChangeFee + ",";
-            strSql += "datetime('now'),";
+            strSql += "'" + oStockOutDTO.Base.stockOutTime + "',";//以同步给后台的时间为主
             strSql += "'" + oStockOutDTO.Base.baseDataJson + "',";
             strSql += "" + oStockOutDTO.Base.cloudAddFlag + ",";
             strSql += "" + oStockOutDTO.Base.cloudUpdateFlag + ",";
@@ -238,7 +238,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-       
+
 
         internal static bool UpdateOrderCloudState(StockOutDTO oStockOutDTO)
         {
@@ -492,7 +492,73 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-       
+        //取出云同步失败的订单
+        internal static bool GetStockOutMsgByDate(DateTime oDate, ref List<StockOutDTO> oJsonList)
+        {
+            string strSql = "";
+            strSql += "select stock_out_id,serial_number,base_data_json from tb_stock_out_base ";
+            strSql += "where 1=1 ";
+            strSql += " and  create_time ";
+            strSql += "BETWEEN '"+oDate.ToString("yyyy-MM-dd")+"' AND '"+ oDate.AddDays(1).ToString("yyyy-MM-dd")+"'";
+            strSql += " order by create_time desc ";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                //MessageBox.Show("插入本地数据库失败:" + ex.ToString());
+                CommUiltl.Log("查询本地数据库失败:" + ex.ToString());
+                return false;
+            }
+
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                CommUiltl.Log("sqlite_datareader:" );
+                StockOutDTO oStockOutDTO = new StockOutDTO();
+                oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
+                oStockOutDTO.Base.serialNumber = sqlite_datareader.GetString(1);
+                oStockOutDTO.Base.baseDataJson = sqlite_datareader.GetString(2);
+                oJsonList.Add(oStockOutDTO);
+            }
+            return true;
+        }
+
+
+        //取出最后一笔订单
+        internal static bool GetLasStockOutOrder(ref StockOutDTO oJson)
+        {
+            string strSql = "";
+            strSql += "select stock_out_id,serial_number,base_data_json from tb_stock_out_base order by create_time desc ";
+            strSql += " limit 1 ";
+           
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                //MessageBox.Show("插入本地数据库失败:" + ex.ToString());
+                CommUiltl.Log("查询本地数据库失败:" + ex.ToString());
+                return false;
+            }
+
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                oJson.Base.stockOutId = sqlite_datareader.GetInt64(0);
+                oJson.Base.serialNumber = sqlite_datareader.GetString(1);
+                oJson.Base.baseDataJson = sqlite_datareader.GetString(2);
+            }
+            return true;
+        }
         /*********************支付单*********************/
         internal static bool GeneratePay(Checkout oPayWay)
         {
@@ -715,6 +781,64 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("UpdateStoreWhouseDefault ok success");
             return true;
         }
+
+        //**********************默认地址
+        internal static bool GetIpHostAddress(ref string strIpHostAddress)
+        {
+            string strSql = "";
+            strSql += "select ip_host_address from tb_local_msg ";
+            strSql += "limit 1 ";
+
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+            }
+            catch (SQLiteException ex)
+            {
+                CommUiltl.Log("ex:" + ex.ToString());
+                return false;
+            }
+
+            // The SQLiteDataReader allows us to run through the result lines:
+            while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
+            {
+                if (sqlite_datareader.IsDBNull(0))
+                {
+                    return false;
+                }
+                strIpHostAddress = sqlite_datareader.GetString(0);
+            }
+            return true;
+        }
+        internal static bool SetIpHostAddress(string strIpHostAddress)
+        {
+            int iRow = 0;
+            //插入订单
+            string strSql = "update tb_local_msg set ip_host_address='" + strIpHostAddress + "'";
+            sqlite_cmd = sqlite_conn.CreateCommand();
+            try
+            {
+                CommUiltl.Log("sql: " + strSql);
+                sqlite_cmd.CommandText = strSql;
+                iRow = sqlite_cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("更新本地数据库失败:" + ex.ToString());
+                return false;
+            }
+            if (0 == iRow)
+            {
+                MessageBox.Show("更新支付本地数据库影响行数=0失败");
+                return false;
+            }
+            CommUiltl.Log("UpdateStoreWhouseDefault ok success");
+            return true;
+        }
+
         /************************门店信息****************************/
         //取出默认门店
         internal static bool GetStoreWhouseDefault(ref string json)
@@ -801,11 +925,12 @@ namespace CashRegisterApplication.comm
         internal static bool InsertLocalMsgDefault()
         {
             string strSql = "insert into tb_local_msg  ";
-            strSql += " (store_whouse_default,pay_type_list,post_id,last_all_good_data_uinx_time) VALUES (";
+            strSql += " (store_whouse_default,pay_type_list,post_id,last_all_good_data_uinx_time,ip_host_address) VALUES (";
             strSql += "'',";
             strSql += "'',";
             strSql += "'-1',";
-            strSql += "0 ";
+            strSql += "0,";
+            strSql += "'"+CenterContral.IpHostAddress+"'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;

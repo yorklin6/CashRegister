@@ -334,7 +334,8 @@ namespace CashRegiterApplication
             CenterContral.updateOrderAmount(orderPrice);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
             this.label_orderFee.Text = strOrderPrice;
-            this.label_total_product_count.Text = subtotalCount.ToString();
+            CenterContral.oStockOutDTO.Base.totalProductCount = subtotalCount;
+            this.label_total_product_count.Text = CenterContral.oStockOutDTO.Base.totalProductCount.ToString();
             return;
         }
 
@@ -722,7 +723,8 @@ namespace CashRegiterApplication
                     }
                 case System.Windows.Forms.Keys.End:
                     {
-                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByLogin();
+                        CenterContral.flagCallSetting = CenterContral.FLAG_PRODUCTlIST_WINDOW;
+                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByProrductList();
                         return true;
                     }
      
@@ -1092,39 +1094,41 @@ namespace CashRegiterApplication
             //打印文件
             this.printDocument.Print();
         }
+         
         //#region 读取文本文件 打印完成后 重新删除该文件
         public void RePrintThisOrder()
         {
-            var confirm = MessageBox.Show("是否要重打小票",
-                                  "重打小票",
-                                  MessageBoxButtons.YesNo);
+            CenterContral.Call_PrinterHistoryWindow();
+            //var confirm = MessageBox.Show("是否要重打小票",
+            //                      "重打小票",
+            //                      MessageBoxButtons.YesNo);
 
-            if (confirm != DialogResult.Yes)
-            {
-                return;
-            }
-            if (0 == CenterContral.oStockOutDTO.Base.RecieveFee)
-            {
-                 confirm = MessageBox.Show("未有收款，确认要打小票",
-                                  "重打小票",
-                                  MessageBoxButtons.YesNo);
-                if (confirm != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
+            //if (confirm != DialogResult.Yes)
+            //{
+            //    return;
+            //}
+            //if (0 == CenterContral.oStockOutDTO.Base.RecieveFee)
+            //{
+            //     confirm = MessageBox.Show("未有收款，确认要打小票",
+            //                      "重打小票",
+            //                      MessageBoxButtons.YesNo);
+            //    if (confirm != DialogResult.Yes)
+            //    {
+            //        return;
+            //    }
+            //}
           
-            if (CenterContral.oStockOutDTO.Base.RecieveFee < CenterContral.oStockOutDTO.Base.orderAmount)
-            {
-                confirm = MessageBox.Show("收款额小于订单金额，确认要打小票",
-                                 "重打小票",
-                                 MessageBoxButtons.YesNo);
-                if (confirm != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
-            this.PrintOrder(CenterContral.oStockOutDTO);
+            //if (CenterContral.oStockOutDTO.Base.RecieveFee < CenterContral.oStockOutDTO.Base.orderAmount)
+            //{
+            //    confirm = MessageBox.Show("收款额小于订单金额，确认要打小票",
+            //                     "重打小票",
+            //                     MessageBoxButtons.YesNo);
+            //    if (confirm != DialogResult.Yes)
+            //    {
+            //        return;
+            //    }
+            //}
+            //this.PrintOrder(CenterContral.oStockOutDTO);
         }
 
         private void tableLayoutPanel8_Paint(object sender, PaintEventArgs e)

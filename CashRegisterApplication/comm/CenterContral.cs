@@ -35,14 +35,20 @@ namespace CashRegisterApplication.comm
         public static MemberInfoWindows Window_MemberInfoWindows;//输入会员弹窗
         public static DiscountWindows Window_DiscountWindows;
 
- 
+        public static Printer_Hostory_Select_Windows Window_Printer_Hostory_Select_Windows;
+
+
 
         public static StockOutDTO oStockOutDTO;//当前单据信息
+
+       
 
         public static SelectGoodWindows Window_SelectGood;
 
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
+
+
 
         public static LocalSaveStock oLocalSaveStock;//挂单信息
 
@@ -71,8 +77,7 @@ namespace CashRegisterApplication.comm
         public const int CLOUD_SATE_PAY_SUCESS = 0;
         public const int CLOUD_SATE_PAY_FAILD = 0;
 
-
-
+    
         public const int STOCK_BASE_DB_GENERATE_INIT = 0;
         public const int STOCK_BASE_DB_GENERATE_DONE = 1;//已经存在DB
 
@@ -83,15 +88,20 @@ namespace CashRegisterApplication.comm
 
         public const int CLOUD_SATE_PAY_UPDATE_SUCCESS = 3;
 
+       
 
-        public static int PRODUCTlIST_WINDOW = 0;//商品列表页
-        public static int MEMBER_RECHAREGE_WINDOWS = 1;//支付页面
-        public static int MEMBER_RECIEVE_MONEY_WINDOWS = 2;//会员收款页面
+        public static int FLAG_PRODUCTlIST_WINDOW = 0;//商品列表页
+        public static int FLAG_MEMBER_RECHAREGE_WINDOWS = 1;//支付页面
+        public static int FLAG_MEMBER_RECIEVE_MONEY_WINDOWS = 2;//会员收款页面
+        public static int FLAG_LOGIN_WINDOW = 3;//登陆
 
+        public static int flagCallShowMember = FLAG_MEMBER_RECIEVE_MONEY_WINDOWS;
 
-        public static int flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
+        public static int flagCallShowRecharge = FLAG_PRODUCTlIST_WINDOW;
 
-        public static int flagCallShowRecharge = PRODUCTlIST_WINDOW;
+        public static int flagCallDefault = FLAG_PRODUCTlIST_WINDOW;
+
+        public static int flagCallSetting = FLAG_LOGIN_WINDOW;
 
         public static StoreWhouse oStoreWhouse;
         public static int iPostId = 0;
@@ -105,9 +115,26 @@ namespace CashRegisterApplication.comm
         public const int STOCK_OUT_BASE_TYPE = 21;
 
         //登录使用
+        public static string IpHostAddress = "https://120.24.210.161:8686/branch/";
         public static string DefaultUserName = "york";
         public static long   DefaultUserId = 28;
         public static string DefaultPassword = "york";
+
+        internal static void CallWindowsBySettingDefaulMsgWindow()
+        {
+            if (CenterContral.flagCallSetting == FLAG_LOGIN_WINDOW)
+            {
+                CenterContral.Windows_Login.UpdateSetttingDefaultMsg();
+                return;
+            }
+            if (CenterContral.flagCallSetting == FLAG_PRODUCTlIST_WINDOW)
+            {
+                CenterContral.Window_ProductList.Show();
+                return;
+            }
+         
+        }
+
         public static long DefaultStoreId = 5;//临时分配门店
 
         public static int NOT_BARCODE_MOENY_GOODS = 0;//
@@ -130,6 +157,9 @@ namespace CashRegisterApplication.comm
 
             Window_MemberInfoWindows = new MemberInfoWindows();
             Window_DiscountWindows = new DiscountWindows();
+
+            Window_Printer_Hostory_Select_Windows = new Printer_Hostory_Select_Windows();
+
             oStockOutDTO = new StockOutDTO();//商品列表
 
             oStockOutDToRespond = new StockOutDTORespone();
@@ -150,20 +180,21 @@ namespace CashRegisterApplication.comm
             oPayTypeList = new PayTypeData();
             oPayTypeList.list = new List<PayType>();
 
-    
-        //先默认登陆，取可信任的登陆态
-        // CenterContral.InitDefaultLogin();
-        CommUiltl.Log("CheckIsInit ");
+
+            //先默认登陆，取可信任的登陆态
+            // CenterContral.InitDefaultLogin();
+            CommUiltl.Log("CheckIsInit ");
             if (!CheckIsInit())
             {
                 CommUiltl.Log("CheckIsInit false");
+                CenterContral.flagCallSetting = FLAG_LOGIN_WINDOW;//默认返回是登陆界面
                 Windows_SettingDefaultMsgWindow.ShowByLogin();
                 return;
-              
+
             }
             CenterContral.GetDefaultMsgFromDb();
         }
-        
+
         public static bool CheckIsInit()
         {
             CommUiltl.Log("CheckIsInit ");
@@ -229,6 +260,8 @@ namespace CashRegisterApplication.comm
             GetStoreMsgFromDb();
             //Post机Id设置
             GetPostIdFromDb();
+
+            GetIpHostAddressFromDb();
         }
 
        
@@ -238,7 +271,6 @@ namespace CashRegisterApplication.comm
             HttpUtility.LoginDefault();
         }
 
-        
         public static void GetSaveStock()
         {
             //查出挂单的单据
@@ -265,7 +297,36 @@ namespace CashRegisterApplication.comm
                 }
             }
         }
-
+        //查询某天历史单据
+        internal static bool GetStockOutMsgByDate(DateTime oDate, ref List<StockOutDTO> listStockOutDTO)
+        {
+            List<StockOutDTO> oJsonList = new List<StockOutDTO>();
+            if (!Dao.GetStockOutMsgByDate( oDate, ref oJsonList) )
+            {
+                return false;
+            }
+       
+            CommUiltl.Log("GetStockOutMsgByDate  oJsonList.Count：" + oJsonList.Count);
+            if (0 == oJsonList.Count)
+            {
+                return true;
+            }
+            foreach (var item in oJsonList)
+            {
+                try
+                {
+                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.Base.baseDataJson);
+                    listStockOutDTO.Add(oTmp);
+                }
+                catch (Exception e)
+                {
+                    CommUiltl.Log("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.baseDataJson);
+                    continue;
+                }
+            }
+            CommUiltl.Log("listStockOutDTO.Count：" + oJsonList.Count);
+            return true;
+        }
         /******************门店信息******************/
         internal static void GetStoreMsg(string strUserName)
         {
@@ -312,7 +373,7 @@ namespace CashRegisterApplication.comm
         //显示会员收款
         internal static void Show_MemberInfoWindow_By_RecieveMoeneyByMember()
         {
-            flagCallShowMember = MEMBER_RECIEVE_MONEY_WINDOWS;
+            flagCallShowMember = FLAG_MEMBER_RECIEVE_MONEY_WINDOWS;
             if (CenterContral.Window_MemberInfoWindows == null)
             {
                 CommUiltl.Log("CenterContral.Window_MemberInfoWindows == null");
@@ -322,7 +383,7 @@ namespace CashRegisterApplication.comm
         }
         internal static void Show_MemberInfoWindow_By_RechargeMoeneyByMember()
         {
-            flagCallShowMember = MEMBER_RECHAREGE_WINDOWS;
+            flagCallShowMember = FLAG_MEMBER_RECHAREGE_WINDOWS;
             CenterContral.Window_MemberInfoWindows.ShowWhithMember();
         }
 
@@ -330,12 +391,12 @@ namespace CashRegisterApplication.comm
         //当获取会员信息成功后进行显示页面
         internal static void ShowWindowWhenGetMemberSuccess()
         {
-            if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
+            if (flagCallShowMember == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
             {
                 CenterContral.Window_ReceiveMoneyByMember.ShowWithMemberInfo();
                 return;
             }
-            if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
+            if (flagCallShowMember == FLAG_MEMBER_RECHAREGE_WINDOWS)
             {
                 CenterContral.Window_RechargeMoneyForMember.ShowWithMemberInfo();
                 return;
@@ -422,18 +483,18 @@ namespace CashRegisterApplication.comm
 
         internal static void ShowWindows_RechargeMoneyForMember()
         {
-            flagCallShowRecharge = PRODUCTlIST_WINDOW;
+            flagCallShowRecharge = FLAG_PRODUCTlIST_WINDOW;
             Window_RechargeMoneyForMember.ShowByProductListWindow();
         }
 
         //充值后返回
         internal static void ControlWindowsAfterRecharge()
         {
-            if (flagCallShowRecharge == PRODUCTlIST_WINDOW)
+            if (flagCallShowRecharge == FLAG_PRODUCTlIST_WINDOW)
             {
                 CenterContral.Window_ProductList.Show();
             }
-            if (flagCallShowRecharge == MEMBER_RECIEVE_MONEY_WINDOWS)
+            if (flagCallShowRecharge == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
             {
                 CenterContral.Window_ProductList.Show();
             }
@@ -443,12 +504,12 @@ namespace CashRegisterApplication.comm
         internal static void ShowWindowWhenMemberInfoCancel()
         {
 
-            if (flagCallShowMember == MEMBER_RECIEVE_MONEY_WINDOWS)
+            if (flagCallShowMember == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
             {
                 CenterContral.Window_RecieveMoney.Show();
                 return;
             }
-            if (flagCallShowMember == MEMBER_RECHAREGE_WINDOWS)
+            if (flagCallShowMember == FLAG_MEMBER_RECHAREGE_WINDOWS)
             {
                 CenterContral.Window_ProductList.Show();
                 return;
@@ -482,17 +543,23 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId = 1;
+            CenterContral.oStockOutDTO.Base.stockOutTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
           //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
-       
-          //  CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
+
+            //  CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
             CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;
             CenterContral.oStockOutDTO.Base.remark = "";
 
+            CenterContral.oStockOutDTO.Base.creator = CenterContral.DefaultUserName;
+            CenterContral.oStockOutDTO.Base.cashierId = CenterContral.DefaultUserId;
+
             CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
-            CenterContral.oStockOutDTO.Base.baseDataJson = "";
-            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+
+            CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_INIT;
             CenterContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+
+            CenterContral.oStockOutDTO.Base.baseDataJson = "";
 
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_INIT;
             CenterContral.oStockOutDTO.Base.dbGenerateFlag = CenterContral.STOCK_BASE_DB_GENERATE_INIT;
@@ -1004,7 +1071,24 @@ namespace CashRegisterApplication.comm
 
             return false;
         }
-      
+        //post 机id
+        internal static void GetIpHostAddressFromDb()
+        {
+            if (!Dao.GetIpHostAddress(ref CenterContral.IpHostAddress))
+            {
+                CommUiltl.Log("Dao.GetPostId err");
+                iPostId = -1;
+                return;
+            }
+        }
+        internal static void SetIpHostAddressToDb()
+        {
+            if (!Dao.SetIpHostAddress(CenterContral.IpHostAddress))
+            {
+                CommUiltl.Log("Dao.SetPostId err");
+                return;
+            }
+        }
 
         //post 机id
         internal static void GetPostIdFromDb()
@@ -1100,6 +1184,12 @@ namespace CashRegisterApplication.comm
             // 开始打印 
             //this.printDocument.Print();
         }
+
+        internal static void Call_PrinterHistoryWindow()
+        {
+            CenterContral.Window_Printer_Hostory_Select_Windows.ShowByCenterContral();
+        }
+
         //#region 该函数动态添加空格，对齐小票
         public static string AddSpace(string text, int length)
         {
@@ -1134,6 +1224,49 @@ namespace CashRegisterApplication.comm
                 throw ex;
             }
             return val;
+        }
+        internal static void CallProductListWindow()
+        {
+            CenterContral.Window_ProductList.Show();
+        }
+        internal static void PrintLastSotckOutOrder()
+        {
+
+            StockOutDTO oJsonList = new StockOutDTO();
+            //取出数据
+            if (!Dao.GetLasStockOutOrder( ref oJsonList))
+            {
+                MessageBox.Show("本地查找失败");
+                return;
+            }
+            StockOutDTO oLastStockmsg = JsonConvert.DeserializeObject<StockOutDTO>(oJsonList.Base.baseDataJson);
+            CenterContral.Window_ProductList.PrintOrder(oLastStockmsg);
+            CommUiltl.Log("PrintLastSotckOutOrder ok 打印结束");
+        }
+
+        internal static void ShowMoreStockMsg()
+        {
+           
+        }
+        internal static string GetStateDscByStockOutBase(StockOutBase oStockOutBase)
+        {
+            if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                return "成功";
+            }
+            if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_FAILD)
+            {
+                return "同步网络失败";
+            }
+            if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_BUSSINESS_FAILD)
+            {
+                return "同步业务失败";
+            }
+            if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_INIT)
+            {
+                return "未同步";
+            }
+            return "失败";
         }
     }
 

@@ -89,6 +89,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="window\HistoryOrder\Hostory_Printer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\HistoryOrder\Hostory_Printer.Designer.cs">
+      <DependentUpon>Hostory_Printer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\History\HistoryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\History\HistoryWindow.Designer.cs">
+      <DependentUpon>HistoryWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\Member\MemberInfoWindows.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,22 +113,22 @@
     <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\Printer\Cash.cs">
+    <Compile Include="window\Printer_Test\Cash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\Printer\Cash.designer.cs">
+    <Compile Include="window\Printer_Test\Cash.designer.cs">
       <DependentUpon>Cash.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\Printer\RawPrinterHelper.cs">
+    <Compile Include="window\Printer_Test\RawPrinterHelper.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\Printer\RawPrinterHelper.Designer.cs">
+    <Compile Include="window\Printer_Test\RawPrinterHelper.Designer.cs">
       <DependentUpon>RawPrinterHelper.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\Printer\Test.cs">
+    <Compile Include="window\Printer_Test\Test.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\Printer\Test.Designer.cs">
+    <Compile Include="window\Printer_Test\Test.Designer.cs">
       <DependentUpon>Test.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ProductList\DiscountWindows.cs">
@@ -124,6 +136,12 @@
     </Compile>
     <Compile Include="window\ProductList\DiscountWindows.Designer.cs">
       <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\ProductList\Printer_Hostory_Select_Windows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\ProductList\Printer_Hostory_Select_Windows.Designer.cs">
+      <DependentUpon>Printer_Hostory_Select_Windows.cs</DependentUpon>
     </Compile>
     <Compile Include="window\ProductList\SelectGoodWindows.cs">
       <SubType>Form</SubType>
@@ -171,23 +189,29 @@
     <Compile Include="window\Setting\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="window\History\HistoryWindow.resx">
+      <DependentUpon>HistoryWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\Member\MemberInfoWindows.resx">
       <DependentUpon>MemberInfoWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Member\RechargeMoneyForMember.resx">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\Printer\Cash.resx">
+    <EmbeddedResource Include="window\Printer_Test\Cash.resx">
       <DependentUpon>Cash.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\Printer\RawPrinterHelper.resx">
+    <EmbeddedResource Include="window\Printer_Test\RawPrinterHelper.resx">
       <DependentUpon>RawPrinterHelper.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\Printer\Test.resx">
+    <EmbeddedResource Include="window\Printer_Test\Test.resx">
       <DependentUpon>Test.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ProductList\DiscountWindows.resx">
       <DependentUpon>DiscountWindows.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\ProductList\Printer_Hostory_Select_Windows.resx">
+      <DependentUpon>Printer_Hostory_Select_Windows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\ProductList\SelectGoodWindows.resx">
       <DependentUpon>SelectGoodWindows.cs</DependentUpon>
@@ -245,9 +269,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="window\System\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
