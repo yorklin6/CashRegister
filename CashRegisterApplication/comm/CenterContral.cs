@@ -1,5 +1,6 @@
 ﻿using CashRegisterApplication.model;
 using CashRegisterApplication.window;
+using CashRegisterApplication.window.History;
 using CashRegisterApplication.window.member;
 using CashRegisterApplication.window.Member;
 using CashRegisterApplication.window.Printer;
@@ -37,7 +38,7 @@ namespace CashRegisterApplication.comm
 
         public static Printer_Hostory_Select_Windows Window_Printer_Hostory_Select_Windows;
 
-
+        public static HistoryWindow Window_HistoryWindow;
 
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
@@ -48,6 +49,7 @@ namespace CashRegisterApplication.comm
         public static StockOutDTORespone oStockOutDToRespond;
         public static HttpBaseRespone oHttpRespone;
 
+ 
 
 
         public static LocalSaveStock oLocalSaveStock;//挂单信息
@@ -159,6 +161,8 @@ namespace CashRegisterApplication.comm
             Window_DiscountWindows = new DiscountWindows();
 
             Window_Printer_Hostory_Select_Windows = new Printer_Hostory_Select_Windows();
+
+            Window_HistoryWindow = new Window_HistoryWindow();
 
             oStockOutDTO = new StockOutDTO();//商品列表
 
@@ -633,6 +637,7 @@ namespace CashRegisterApplication.comm
             Window_ProductList.PrintOrder(CenterContral.oStockOutDTO);
             Window_ProductList.CloseOrderByControlWindow();
         }
+
         //***********************************关闭订单***************************
         internal static bool CloseOrderWhenPayAllFee()
         {
@@ -1239,9 +1244,20 @@ namespace CashRegisterApplication.comm
                 MessageBox.Show("本地查找失败");
                 return;
             }
+            if (oJsonList.Base.baseDataJson == "")
+            {
+                MessageBox.Show("未找到订单");
+                return;
+            }
             StockOutDTO oLastStockmsg = JsonConvert.DeserializeObject<StockOutDTO>(oJsonList.Base.baseDataJson);
-            CenterContral.Window_ProductList.PrintOrder(oLastStockmsg);
+
+            CenterContral.PrintOrder(oLastStockmsg);
             CommUiltl.Log("PrintLastSotckOutOrder ok 打印结束");
+        }
+
+        internal static void PrintOrder(StockOutDTO oStockOutDTO)
+        {
+            CenterContral.Window_ProductList.PrintOrder(oStockOutDTO);
         }
 
         internal static void ShowMoreStockMsg()

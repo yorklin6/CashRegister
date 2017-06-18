@@ -18,6 +18,12 @@ namespace CashRegisterApplication.window.History
             CenterContral.Init();
         }
 
+        public void ShowByCenterControl()
+        {
+            this.Show();
+            RefreshData();
+        }
+
         List<StockOutDTO> listStockOutDTO = new List<StockOutDTO>();
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -34,20 +40,6 @@ namespace CashRegisterApplication.window.History
 
       
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            CommUiltl.Log("row:"+e.RowIndex);
-            ShowDetailWindow(e.RowIndex);
-        }
-
-        private void ShowDetailWindow(int rowIndex)
-        {
-            if (rowIndex < -1 || rowIndex > listStockOutDTO.Count)
-            {
-                return;
-            }
-            
-        }
 
         private void HistoryWindow_Load(object sender, EventArgs e)
         {
@@ -101,7 +93,7 @@ namespace CashRegisterApplication.window.History
         private void SetRowsByStockOutDetail(DataGridViewRow dataGridViewRow, StockOutBase oStockOutBase)
         {
             dataGridViewRow.Cells[CELL_SERIAL_NUMBER].Value = oStockOutBase.serialNumber;
-            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOutBase.stockOutTime ;
+            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOutBase.stockOutTime.Substring(0,19) ;
             dataGridViewRow.Cells[CELL_ORDER_AMOUNT].Value = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutBase.orderAmount);
             dataGridViewRow.Cells[CELL_TOTAL_COUNT].Value = oStockOutBase.totalProductCount;
             dataGridViewRow.Cells[CELL_CREATOR].Value = oStockOutBase.creator;
@@ -110,24 +102,65 @@ namespace CashRegisterApplication.window.History
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.dataGridView_HistoryData.CurrentCell != null)
+            if (this.dataGridView_HistoryData.CurrentCell == null || this.dataGridView_HistoryData.CurrentRow == null)
             {
                 MessageBox.Show("请选中打印的订单");
                 return;
             }
-           
-            //if ()
-            //{
-            //    var confirmPayApartResult = MessageBox.Show("是否要打印前一笔小票",
-            //      showTips,
-            //       MessageBoxButtons.YesNo);
-
-            //    if (confirmPayApartResult != DialogResult.Yes)
-            //    {
-            //        return;
-            //    }
-            //    return;
-            //}
+            PrinteStockoutMsgRow(this.dataGridView_HistoryData.CurrentRow.Index);
         }
+
+        private void PrinteStockoutMsgRow(int rowIndex)
+        {
+            if (rowIndex < -1 || rowIndex > listStockOutDTO.Count)
+            {
+                MessageBox.Show("异常订单");
+                return;
+            }
+            var confirmPayApartResult = MessageBox.Show("是否要打印",
+              "打印确认",
+               MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                return;
+            }
+            CenterContral.PrintOrder(listStockOutDTO[rowIndex]);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            escapeToPreWindows();
+        }
+
+        private void escapeToPreWindows()
+        {
+            CenterContral.Window_ProductList.Show();
+            this.Hide();
+        }
+
+        private void HistoryWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CenterContral.Window_HistoryWindow = new HistoryWindow();
+            e.Cancel = false;
+            escapeToPreWindows();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CommUiltl.Log("row:" + e.RowIndex);
+            ShowDetailWindow(e.RowIndex);
+        }
+
+        private void ShowDetailWindow(int rowIndex)
+        {
+            if (rowIndex < -1 || rowIndex > listStockOutDTO.Count)
+            {
+                return;
+            }
+
+        }
+
+
     }
 }
