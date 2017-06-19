@@ -33,7 +33,6 @@ namespace CashRegiterApplication
         private void ProductListWindow_Load(object sender, EventArgs e)
         {
       
-            CenterContral.Window_ProductList = this;//全局窗口
             CenterContral.Clean();
             
             
@@ -730,7 +729,7 @@ namespace CashRegiterApplication
      
                 case System.Windows.Forms.Keys.Insert:
                     {
-                        //折扣
+                        //取消订单
                         CanCelOrder();
                         return true;
                     }
@@ -784,10 +783,11 @@ namespace CashRegiterApplication
             }
             string strProductList = "";
             _GenerateProductListForOrder(ref strProductList);
-            if (!CenterContral.CanCelOrder(strProductList))
+            if (!CenterContral.CanCelOrder(CenterContral.oStockOutDTO))
             {
                 return;
             }
+    
             MessageBox.Show("取消成功", "取消订单操作");
             _ResetAllData();
 
@@ -982,7 +982,6 @@ namespace CashRegiterApplication
         private void ProductListWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.dataGridView_productList.Rows.Clear();
-            //Process.GetCurrentProcess().CloseMainWindow();
             CenterContral.Windows_Login.Close();
         }
 

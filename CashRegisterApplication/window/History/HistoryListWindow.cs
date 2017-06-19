@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CashRegisterApplication.window.History
 {
-    public partial class HistoryWindow : Form
+    public partial class HistoryListWindow : Form
     {
-        public HistoryWindow()
+        public HistoryListWindow()
         {
             InitializeComponent();
             CenterContral.Init();
@@ -24,61 +24,56 @@ namespace CashRegisterApplication.window.History
             RefreshData();
         }
 
-        List<StockOutDTO> listStockOutDTO = new List<StockOutDTO>();
+        List<StockOutDTO> gListStockOutDTO = new List<StockOutDTO>();
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             RefreshData();
         }
 
-      
-
         private void button_Refresh_Click(object sender, EventArgs e)
         {
             RefreshData();
         }
 
-      
-
-
         private void HistoryWindow_Load(object sender, EventArgs e)
         {
             this.dateTimePicker1.Value = DateTime.Today;
-          
+            this.dataGridView_HistoryData.Focus();
+            this.ActiveControl = this.button1;
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
 
-
         }
 
         private void RefreshData()
         {
-           
-            DateTime oDate= this.dateTimePicker1.Value;
-            listStockOutDTO = new List<StockOutDTO>();
-            if (!CenterContral.GetStockOutMsgByDate(oDate, ref listStockOutDTO))
+            
+            DateTime oDate = this.dateTimePicker1.Value;
+            gListStockOutDTO = new List<StockOutDTO>();
+            if (!CenterContral.GetStockOutMsgByDate(oDate, ref gListStockOutDTO))
             {
                 return;
             }
-            ShowDataGrivewByStoctOutMsg(listStockOutDTO);
+            ShowDataGrivewByStoctOutMsg();
         }
 
-        private void ShowDataGrivewByStoctOutMsg(List<StockOutDTO> listStockOutDTO)
+        private void ShowDataGrivewByStoctOutMsg()
         {
             this.dataGridView_HistoryData.Rows.Clear();
 
-            for (int i=0 ; i< listStockOutDTO.Count ; i++)
+            for (int i=0 ; i< gListStockOutDTO.Count ; i++)
             {
               
                 this.dataGridView_HistoryData.Rows.Add();
-                SetRowsByStockOutDetail(this.dataGridView_HistoryData.Rows[i], listStockOutDTO[i].Base) ;
+                SetRowsByStockOut(this.dataGridView_HistoryData.Rows[i], gListStockOutDTO[i].Base) ;
                 return;
             }
-            label_total_count.Text = "一共有" + listStockOutDTO.Count + "笔交易";
+            label_total_count.Text = "一共有" + gListStockOutDTO.Count + "笔交易";
             //默认选中最后一笔交易
-            if (listStockOutDTO.Count > 0)
+            if (gListStockOutDTO.Count > 0)
             {
                 this.dataGridView_HistoryData.CurrentCell = this.dataGridView_HistoryData.Rows[0].Cells[0];
              }
@@ -90,7 +85,7 @@ namespace CashRegisterApplication.window.History
         private int CELL_TOTAL_COUNT = 3;
         private int CELL_CREATOR = 4;
         private int CELL_STATE = 5;
-        private void SetRowsByStockOutDetail(DataGridViewRow dataGridViewRow, StockOutBase oStockOutBase)
+        private void SetRowsByStockOut(DataGridViewRow dataGridViewRow, StockOutBase oStockOutBase)
         {
             dataGridViewRow.Cells[CELL_SERIAL_NUMBER].Value = oStockOutBase.serialNumber;
             dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOutBase.stockOutTime.Substring(0,19) ;
@@ -112,7 +107,7 @@ namespace CashRegisterApplication.window.History
 
         private void PrinteStockoutMsgRow(int rowIndex)
         {
-            if (rowIndex < -1 || rowIndex > listStockOutDTO.Count)
+            if (rowIndex < -1 || rowIndex > gListStockOutDTO.Count)
             {
                 MessageBox.Show("异常订单");
                 return;
@@ -125,11 +120,12 @@ namespace CashRegisterApplication.window.History
             {
                 return;
             }
-            CenterContral.PrintOrder(listStockOutDTO[rowIndex]);
+            CenterContral.PrintOrder(gListStockOutDTO[rowIndex]);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            CenterContral.Window_HistoryListWindow = new HistoryListWindow();
             escapeToPreWindows();
         }
 
@@ -141,7 +137,7 @@ namespace CashRegisterApplication.window.History
 
         private void HistoryWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CenterContral.Window_HistoryWindow = new HistoryWindow();
+            CenterContral.Window_HistoryListWindow = new HistoryListWindow();
             e.Cancel = false;
             escapeToPreWindows();
         }
@@ -154,13 +150,23 @@ namespace CashRegisterApplication.window.History
 
         private void ShowDetailWindow(int rowIndex)
         {
-            if (rowIndex < -1 || rowIndex > listStockOutDTO.Count)
+            if (rowIndex < -1 || rowIndex > gListStockOutDTO.Count)
             {
+                MessageBox.Show("未知行");
                 return;
             }
-
+            StockOutDTO oStock = gListStockOutDTO[rowIndex];
+            CenterContral.Window_HistoryDetailWindow.ShowDetailStockOut(oStock);
         }
 
-
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (this.dataGridView_HistoryData.CurrentCell == null || this.dataGridView_HistoryData.CurrentRow == null)
+            {
+                MessageBox.Show("请选中订单");
+                return;
+            }
+            ShowDetailWindow(this.dataGridView_HistoryData.CurrentRow.Index );
+        }
     }
 }

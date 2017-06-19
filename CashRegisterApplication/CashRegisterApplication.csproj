@@ -75,6 +75,9 @@
     <Compile Include="comm\CommUiltl.cs" />
     <Compile Include="comm\Dao.cs" />
     <Compile Include="comm\MyTimerTask.cs" />
+    <Compile Include="comm\Window_HistoryWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="model\HttpBaseRespone.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
     <Compile Include="comm\CenterContral.cs" />
@@ -95,11 +98,17 @@
     <Compile Include="window\HistoryOrder\Hostory_Printer.Designer.cs">
       <DependentUpon>Hostory_Printer.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\History\HistoryWindow.cs">
+    <Compile Include="window\History\HistoryListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\History\HistoryWindow.Designer.cs">
-      <DependentUpon>HistoryWindow.cs</DependentUpon>
+    <Compile Include="window\History\HistoryListWindow.Designer.cs">
+      <DependentUpon>HistoryListWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="window\History\HistoryDetailWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\History\HistoryDetailWindow.Designer.cs">
+      <DependentUpon>HistoryDetailWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="window\Member\MemberInfoWindows.cs">
       <SubType>Form</SubType>
@@ -189,8 +198,11 @@
     <Compile Include="window\Setting\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="window\History\HistoryWindow.resx">
-      <DependentUpon>HistoryWindow.cs</DependentUpon>
+    <EmbeddedResource Include="window\History\HistoryListWindow.resx">
+      <DependentUpon>HistoryListWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\History\HistoryDetailWindow.resx">
+      <DependentUpon>HistoryDetailWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Member\MemberInfoWindows.resx">
       <DependentUpon>MemberInfoWindows.cs</DependentUpon>

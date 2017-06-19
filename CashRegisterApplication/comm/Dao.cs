@@ -32,6 +32,8 @@ namespace CashRegisterApplication.comm
         public const int STOCK_BASE_CANCEL_FLAG_INI = 0;//未取消订单
         public const int STOCK_BASE_CANCEL_FLAG_TRUE = 1;//取消订单
 
+        public const int STOCK_BASE_DELETE_INI = 0;//未删除
+        public const int STOCK_BASE_DELETE_TRUE = 99;//删除订单
         public const int DELETE_FLAG =1;
         /*********************初始化*********************/
         internal static bool CheckIsInit(ref int iCount)

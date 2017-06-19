@@ -38,8 +38,9 @@ namespace CashRegisterApplication.comm
 
         public static Printer_Hostory_Select_Windows Window_Printer_Hostory_Select_Windows;
 
-        public static HistoryWindow Window_HistoryWindow;
+        public static HistoryListWindow Window_HistoryListWindow;
 
+        public static HistoryDetailWindow Window_HistoryDetailWindow;
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
        
@@ -151,7 +152,10 @@ namespace CashRegisterApplication.comm
             {
                 return;
             }
+            initFlag = true;
             //Window_ProductList = new ProductListWindow();//全局窗口
+            Windows_Login = new LoginWindows();
+            Window_ProductList = new ProductListWindow();
             Window_RecieveMoney = new RecieveMoneyWindow();//收款窗口
             Window_ReceiveMoneyByPayType = new ReceiveMoneyByPayTypeWindow();//现金收款窗口
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
@@ -162,7 +166,8 @@ namespace CashRegisterApplication.comm
 
             Window_Printer_Hostory_Select_Windows = new Printer_Hostory_Select_Windows();
 
-            Window_HistoryWindow = new Window_HistoryWindow();
+            Window_HistoryListWindow = new Window_HistoryWindow();
+            Window_HistoryDetailWindow = new HistoryDetailWindow();
 
             oStockOutDTO = new StockOutDTO();//商品列表
 
@@ -176,7 +181,6 @@ namespace CashRegisterApplication.comm
             Windows_SettingDefaultMsgWindow = new SettingDefaultMsgWindow();
             CenterContral.Window_ProductList = new ProductListWindow();
 
-            initFlag = true;
 
             oLocalSaveStock = new LocalSaveStock();
 
@@ -561,7 +565,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
             CenterContral.oStockOutDTO.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_INIT;
-            CenterContral.oStockOutDTO.Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            CenterContral.oStockOutDTO.Base.cloudDeleteFlag = Dao.STOCK_BASE_DELETE_INI;
 
             CenterContral.oStockOutDTO.Base.baseDataJson = "";
 
@@ -693,9 +697,9 @@ namespace CashRegisterApplication.comm
             }
         }
         //***********************************取消当前订单***************************
-        internal static bool CanCelOrder(string strProductList)
+        internal static bool CanCelOrder(StockOutDTO oStockOutDTO)
         {
-            if (CenterContral.oStockOutDTO.Base.RecieveFee == 0 && CenterContral.oStockOutDTO.Base.orderAmount==0)
+            if (oStockOutDTO.Base.RecieveFee == 0 && oStockOutDTO.Base.orderAmount==0 )
             {
                 CommUiltl.Log("Main.oStockOutDTO.details.Count == 0]");
                 return true;
@@ -703,9 +707,29 @@ namespace CashRegisterApplication.comm
             //挂单的要变成关单
             SetSaveFlag();
             RemoveSaveStock();
+       
+            //关单标记位
+            oStockOutDTO.Base.cloudCloseFlag = Dao.STOCK_BASE_DELETE_TRUE;
             //取消标记位
-            CenterContral.oStockOutDTO.Base.cancaelFlag = Dao.STOCK_BASE_CANCEL_FLAG_TRUE;
-            CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
+            oStockOutDTO.Base.cancaelFlag = Dao.STOCK_BASE_CANCEL_FLAG_TRUE;
+            oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(oStockOutDTO);
+            if (!Dao.updateRetailStock(oStockOutDTO))
+            {
+                return false;
+            }
+            return true;
+        }
+        //***********************************删除当前订单***************************
+        internal static bool DeleteOrder(StockOutDTO oStockOutDTO)
+        {
+          
+            //挂单的要变成关单
+            SetSaveFlag();
+            RemoveSaveStock();
+            //取消标记位
+            oStockOutDTO.Base.cloudCloseFlag = Dao.STOCK_BASE_DELETE_TRUE;
+            oStockOutDTO.Base.cloudDeleteFlag = Dao.STOCK_BASE_DELETE_TRUE;
+            oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
             if (!Dao.updateRetailStock(CenterContral.oStockOutDTO))
             {
                 return false;
@@ -1254,7 +1278,7 @@ namespace CashRegisterApplication.comm
             CenterContral.PrintOrder(oLastStockmsg);
             CommUiltl.Log("PrintLastSotckOutOrder ok 打印结束");
         }
-
+       
         internal static void PrintOrder(StockOutDTO oStockOutDTO)
         {
             CenterContral.Window_ProductList.PrintOrder(oStockOutDTO);
@@ -1281,6 +1305,10 @@ namespace CashRegisterApplication.comm
             if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_INIT)
             {
                 return "未同步";
+            }
+            if (oStockOutBase.cloudCloseFlag == Dao.STOCK_BASE_DELETE_TRUE)
+            {
+                return "已经删除";
             }
             return "失败";
         }

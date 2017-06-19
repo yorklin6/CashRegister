@@ -2,7 +2,7 @@
 
 namespace CashRegisterApplication.comm
 {
-    internal class Window_HistoryWindow : HistoryWindow
+    internal class Window_HistoryWindow : HistoryListWindow
     {
     }
 }

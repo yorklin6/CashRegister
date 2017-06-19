@@ -30,7 +30,7 @@ namespace CashRegiterApplication
          
         private void Form1_Load(object sender, EventArgs e)
         {
-            CenterContral.Windows_Login = this;
+           
         }
 
         private void button1_Click(object sender, EventArgs e)
