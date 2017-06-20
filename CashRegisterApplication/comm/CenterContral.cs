@@ -504,7 +504,7 @@ namespace CashRegisterApplication.comm
             }
             if (flagCallShowRecharge == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
             {
-                CenterContral.Window_ProductListSetMemberInfo();
+                CenterContral.Window_ProductList.SetMemberInfo();
                 CenterContral.Window_ProductList.Show();
             }
         }
