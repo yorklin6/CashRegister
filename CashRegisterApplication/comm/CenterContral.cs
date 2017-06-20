@@ -166,7 +166,7 @@ namespace CashRegisterApplication.comm
 
             Window_Printer_Hostory_Select_Windows = new Printer_Hostory_Select_Windows();
 
-            Window_HistoryListWindow = new Window_HistoryWindow();
+            Window_HistoryListWindow = new HistoryListWindow();
             Window_HistoryDetailWindow = new HistoryDetailWindow();
 
             oStockOutDTO = new StockOutDTO();//商品列表
@@ -504,6 +504,7 @@ namespace CashRegisterApplication.comm
             }
             if (flagCallShowRecharge == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
             {
+                CenterContral.Window_ProductListSetMemberInfo();
                 CenterContral.Window_ProductList.Show();
             }
         }
@@ -1062,6 +1063,11 @@ namespace CashRegisterApplication.comm
             int iMemberRet = HttpUtility.GetMemberByMemberAccount(strMemberAccount, ref oMember);
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
+                if (oMember.data== null)
+                {
+                    MessageBox.Show("未找到会员信息");
+                    return false;
+                }
                 CenterContral.oStockOutDTO.oMember = oMember.data;
                 return true;
             }
@@ -1070,6 +1076,7 @@ namespace CashRegisterApplication.comm
                 MessageBox.Show(HttpUtility.lastErrorMsg);
                 return false;
             }
+           
             MessageBox.Show("业务错误：" + HttpUtility.lastErrorMsg);
            
             return false;
@@ -1286,7 +1293,8 @@ namespace CashRegisterApplication.comm
 
         internal static void ShowMoreStockMsg()
         {
-           
+            CenterContral.Window_HistoryListWindow.ShowByCenterControl();
+            
         }
         internal static string GetStateDscByStockOutBase(StockOutBase oStockOutBase)
         {

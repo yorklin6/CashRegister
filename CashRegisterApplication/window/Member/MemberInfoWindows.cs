@@ -80,9 +80,6 @@ namespace CashRegisterApplication.window.member
                     this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
                     return;
                 }
-
-              
-   
                 //查成功
                 this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
                 this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));

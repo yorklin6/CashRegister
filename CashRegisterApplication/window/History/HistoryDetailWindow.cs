@@ -31,13 +31,16 @@ namespace CashRegisterApplication.window.History
         private void escapeToPreWindows()
         {
             CenterContral.Window_HistoryListWindow.Show();
+            this.Hide();
         }
         StockOutDTO gStockOutDTO;
         public void ShowDetailStockOut(StockOutDTO oStockOutDTO)
         {
             gStockOutDTO = oStockOutDTO;
             this.Show();
+            this.ActiveControl = this.button1;
             this.dataGridView_productList.Rows.Clear();
+          
 
             this.label_searisenumber.Text = "交易明细账(流水号:" + oStockOutDTO.Base.serialNumber + ")";
 
@@ -61,6 +64,9 @@ namespace CashRegisterApplication.window.History
                 CommUiltl.Log("oStockOutDTO.details[i] " + oStockOutDTO.details[i]);
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], oStockOutDTO.details[i]);
             }
+
+            this.dataGridView_productList.CurrentCell = null;//去掉焦点
+            
         }
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
@@ -85,6 +91,15 @@ namespace CashRegisterApplication.window.History
         private void button1_Click(object sender, EventArgs e)
         {
             //打印
+            string showTips = "确认打印";
+            var confirmPayApartResult = MessageBox.Show("是否要打印当前小票",
+                                 showTips,
+                                  MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                return;
+            }
             CenterContral.PrintOrder(gStockOutDTO);
         }
 
@@ -106,6 +121,20 @@ namespace CashRegisterApplication.window.History
                 return;
             }
             MessageBox.Show("取消成功", "取消订单操作");
+        }
+
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
+        {
+            CommUiltl.Log("Keys:" + keyData);
+            switch (keyData)
+            {
+                case System.Windows.Forms.Keys.Escape:
+                    {
+                        escapeToPreWindows();
+                    }
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
     public static class CELL_INDEX

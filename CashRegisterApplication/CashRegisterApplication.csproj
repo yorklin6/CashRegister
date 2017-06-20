@@ -75,9 +75,6 @@
     <Compile Include="comm\CommUiltl.cs" />
     <Compile Include="comm\Dao.cs" />
     <Compile Include="comm\MyTimerTask.cs" />
-    <Compile Include="comm\Window_HistoryWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="model\HttpBaseRespone.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
     <Compile Include="comm\CenterContral.cs" />

@@ -983,6 +983,7 @@ namespace CashRegiterApplication
         {
             this.dataGridView_productList.Rows.Clear();
             CenterContral.Windows_Login.Close();
+            Environment.Exit(1);
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)

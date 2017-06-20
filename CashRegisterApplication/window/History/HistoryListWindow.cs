@@ -168,5 +168,40 @@ namespace CashRegisterApplication.window.History
             }
             ShowDetailWindow(this.dataGridView_HistoryData.CurrentRow.Index );
         }
+
+        protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
+        {
+            CommUiltl.Log("Keys:" + keyData);
+            switch (keyData)
+            {
+                case System.Windows.Forms.Keys.Enter:
+                case System.Windows.Forms.Keys.D1:
+                case System.Windows.Forms.Keys.NumPad1:
+                case System.Windows.Forms.Keys.Oem1:
+                    {
+                        RefreshData();
+                        break;
+                    }
+                case System.Windows.Forms.Keys.D2:
+                case System.Windows.Forms.Keys.NumPad2:
+                case System.Windows.Forms.Keys.Oem2:
+                    {
+                        if (this.dataGridView_HistoryData.CurrentCell == null || this.dataGridView_HistoryData.CurrentRow == null)
+                        {
+                            MessageBox.Show("请选中订单");
+                            return true;
+                        }
+                        ShowDetailWindow(this.dataGridView_HistoryData.CurrentRow.Index);
+                        break;
+                    }
+
+                case System.Windows.Forms.Keys.Escape:
+                    {
+                        escapeToPreWindows();
+                    }
+                    break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }

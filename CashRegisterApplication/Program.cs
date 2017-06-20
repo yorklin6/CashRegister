@@ -26,7 +26,7 @@ namespace CashRegiterApplication
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-           Application.Run(new LoginWindows());
+            Application.Run(new LoginWindows());
            // Application.Run(new HistoryListWindow());
 
 
