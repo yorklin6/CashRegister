@@ -21,6 +21,7 @@ namespace CashRegisterApplication.window
       
         private void RecieveMoneyWindows_Shown(object sender, EventArgs e)
         {
+    
             //注意，正常流程下面，这个窗体只有未收款的时候显示。
             CommUiltl.Log("RecieveMoneyWindows_Shown");
             //this.ActiveControl = this.buttonCash;
@@ -38,17 +39,7 @@ namespace CashRegisterApplication.window
                 leftMoney = 0;
             }
             CommUiltl.Log("leftMoney:"+ leftMoney);
-            this.lable_LeftFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(leftMoney);
-            //其他订单信息
-            this.lable_OrderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            if (CenterContral.oStockOutDTO.Base.RecieveFee== 0)
-            {
-                this.lable_RecieveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
-            }
-            //默认不选中
-         
-            this.dataGridView_payTypeList.CurrentCell = null;
-            this.dataGridView_payTypeList.ClearSelection();
+           
         }
 
         public void CallHide()
@@ -59,49 +50,156 @@ namespace CashRegisterApplication.window
         {
             CommUiltl.Log("已支付列表");
             this.Show();
-            string strPaidInfo = "";
-            
-            for(int i=0;i< CenterContral.oStockOutDTO.checkouts.Count;++i)
-            {
-                var item = CenterContral.oStockOutDTO.checkouts[i];
-                strPaidInfo += item.payTypeDesc + ":" + CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount) + "\n";
-            }
-            if (CenterContral.oStockOutDTO.checkouts.Count == 0)
-            {
-                strPaidInfo = "0.00";
-            }
-            else 
-            {
-                strPaidInfo += "小计:" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
-            }
-            this.lable_RecieveFee.Text = strPaidInfo;
+           
             ShowByProductListWindow();
         }
 
-        int DESCRIPTION_COLUMN = 0;
-        int QUCK_KEY_COLUMN = 1;
-        int PAY_TYPE_COLUMN = 2;
+        List<Button> listButton = new List<Button>();
+
         private void RecieveMoneyWindows_Load(object sender, EventArgs e)
         {
-            CommUiltl.Log("RecieveMoneyWindows_Load");
-            int iRowIndex=0;
-            //不支持大于10的快捷键
-            int i = 0;
-            for (;i < CenterContral.oPayTypeList.list.Count ; ++i)
+    
+            this.tableLayoutPanel_Show.Controls.Remove(this.buttonBasePay); 
+
+            if (CenterContral.oPayTypeList.list.Count ==0)
             {
-                iRowIndex=this.dataGridView_payTypeList.Rows.Add();
-                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[DESCRIPTION_COLUMN].Value= CenterContral.oPayTypeList.list[i].description;
-                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = i;
-                this.dataGridView_payTypeList.Rows[iRowIndex].Cells[PAY_TYPE_COLUMN].Value = CenterContral.oPayTypeList.list[i].payTypeId;
-                if (i > 9)
+                return;
+            }
+            int iRowCount = CenterContral.oPayTypeList.list.Count / 3;
+            CommUiltl.Log("iRowCount:" + iRowCount);
+            if (CenterContral.oPayTypeList.list.Count % 3 != 0)
+            {
+                ++iRowCount;
+                CommUiltl.Log(" ++iRowCount:" + iRowCount);
+            }
+
+           _GenerateTablePane(iRowCount);//重新绘制layout
+         
+            int i = 0;
+            for (int row = 0; row < iRowCount && i < CenterContral.oPayTypeList.list.Count; ++row)
+            {
+                for (int colum=0; colum < 3 && i < CenterContral.oPayTypeList.list.Count; ++colum)
                 {
-                    this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "双击选择支付";
+                    Button button = new Button();
+                    setButtonShadow(button);//
+                    button.Tag = i;
+                    button.Dock = System.Windows.Forms.DockStyle.Fill;
+                    button.FlatAppearance.BorderColor = System.Drawing.SystemColors.MenuHighlight;
+                    button.FlatAppearance.BorderSize = 10;
+                    button.ForeColor = System.Drawing.SystemColors.WindowText;
+                    button.Location = new System.Drawing.Point(10, 10);
+                    button.Margin = new System.Windows.Forms.Padding(10);
+                    button.Name = "button_"+i;
+                    button.Size = new System.Drawing.Size(174, 72);
+                    button.TabIndex = 5 + i;
+                  
+                    button.Text =  CenterContral.oPayTypeList.list[i].description;
+                    if (i < 10)
+                    {
+                        button.Text += "(" + i + ")";
+                    }
+                    button.UseVisualStyleBackColor = false;
+                    button.Enter += new System.EventHandler(this.buttonBasePay_Enter);
+                    button.Leave += new System.EventHandler(this.buttonBasePay_Leave);
+                    button.Click += new System.EventHandler(this.buttonBasePay_Click_1);
+                    listButton.Add(button);
+                    this.tableLayoutPanel_Show.Controls.Add(button, colum,  row);
+                    ++i;
+                }
+              
+            }
+
+            this.ActiveControl = listButton[0];
+            setButtonLignt(listButton[0]);//高亮
+        }
+
+        private void _GenerateTablePane(int iRowCount)
+        {
+            //模仿页面，动态生成平铺
+            this.tableLayoutPanel_Show.ColumnCount = iRowCount;
+           this.tableLayoutPanel_Show.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Show.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel_Show.Name = "tableLayoutPanel_Show";
+            this.tableLayoutPanel_Show.RowCount = 6;
+            this.tableLayoutPanel_Show.RowStyles.Clear();
+            for (int i = 0; i < iRowCount; ++i)
+            {
+                this.tableLayoutPanel_Show.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            }
+            this.tableLayoutPanel_Show.Size = new System.Drawing.Size(584, 462);
+            this.tableLayoutPanel_Show.TabIndex = 1;
+        }
+        private void _MoveToActiveButton(Keys keyData)
+        {
+            //动态计算要移动到哪个按钮
+            CommUiltl.Log("_MoveToActiveButton Keys:" + keyData);
+           // for (int i=0;i< listButton.Count;++i)
+            {
+                Button button = (Button)this.ActiveControl;
+               // if (button == this.ActiveControl)
+                {
+                    CommUiltl.Log("button is ActiveControl :" + button.Text);
+                  
+                    int iSource=(int)button.Tag;
+                    CommUiltl.Log("button is iSource :" + iSource);
+                    if (keyData ==System.Windows.Forms.Keys.Up)
+                    {
+                        //向上其实是退格3个
+                        iSource = iSource - 3;
+                        if (iSource < 0)
+                        {
+                            return;
+                        }
+                        SetActiByTag(iSource);
+                        return;
+                    }
+                    if (keyData == System.Windows.Forms.Keys.Left)
+                    {
+                        //向上其实是退格1个
+                        iSource = iSource - 1;
+                        if (iSource < 0)
+                        {
+                            return;
+                        }
+                        SetActiByTag(iSource);
+                        return;
+                    }
+                    if (keyData == System.Windows.Forms.Keys.Down)
+                    {
+                        //向上其实是进3个
+                        iSource = iSource + 3;
+                        if (iSource > listButton.Count -1)
+                        {
+                            return;
+                        }
+                        SetActiByTag(iSource);
+                        return;
+                    }
+                    if (keyData == System.Windows.Forms.Keys.Right)
+                    {
+                        //向上其实是退格1个
+                        iSource = iSource +1;
+                        if (iSource > listButton.Count - 1)
+                        {
+                            return;
+                        }
+                        SetActiByTag(iSource);
+                        return;
+                    }
                 }
             }
-            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[DESCRIPTION_COLUMN].Value ="返回上一层";
-            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[QUCK_KEY_COLUMN].Value = "Esc";
-            this.dataGridView_payTypeList.Rows[iRowIndex].Cells[PAY_TYPE_COLUMN].Value = "escKey";
-           
+          
+        }
+
+        private void SetActiByTag(int iTag)
+        {
+            CommUiltl.Log("button is iTag :" + iTag+ "  listButton.Count:" + listButton.Count);
+            if (iTag<0 || iTag > listButton.Count - 1)
+            {
+                CommUiltl.Log("ERR : button is iTag :" + iTag);
+                return;
+            }
+            this.ActiveControl = listButton[iTag];
         }
 
         private void button_Confirm_Click(object sender, EventArgs e)
@@ -129,6 +227,14 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("Keys:"+ keyData);
             switch (keyData)
             {
+                case System.Windows.Forms.Keys.Up:
+                case System.Windows.Forms.Keys.Down:
+                case System.Windows.Forms.Keys.Left:
+                case System.Windows.Forms.Keys.Right:
+                    {
+                        _MoveToActiveButton(keyData);
+                        return true;
+                    }
 
                 case System.Windows.Forms.Keys.Enter:
                     {
@@ -211,6 +317,9 @@ namespace CashRegisterApplication.window
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+      
+
         private void escapeToPreWindows()
         {
             CenterContral.Window_ProductList.EscapeShowByRecieveWindows();
@@ -250,23 +359,23 @@ namespace CashRegisterApplication.window
 
         private void dataGridView_payTypeList_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            string strPayType=this.dataGridView_payTypeList.Rows[e.RowIndex].Cells[PAY_TYPE_COLUMN].Value.ToString();
-            if(strPayType== "" || strPayType == null)
-            {
-                return;
-            }
-            if ( strPayType== "escKey")
-            {
-                escapeToPreWindows();
-                return;
-            }
-            int payType = 0;
-            if (!CommUiltl.CoverStrToInt(strPayType, out payType))
-            {
-                MessageBox.Show("错误支付类型:" + strPayType);
-                return;
-            }
-            callPayWindowsBayPayTypeId(payType);
+            //string strPayType=this.dataGridView_payTypeList.Rows[e.RowIndex].Cells[PAY_TYPE_COLUMN].Value.ToString();
+            //if(strPayType== "" || strPayType == null)
+            //{
+            //    return;
+            //}
+            //if ( strPayType== "escKey")
+            //{
+            //    escapeToPreWindows();
+            //    return;
+            //}
+            //int payType = 0;
+            //if (!CommUiltl.CoverStrToInt(strPayType, out payType))
+            //{
+            //    MessageBox.Show("错误支付类型:" + strPayType);
+            //    return;
+            //}
+            //callPayWindowsBayPayTypeId(payType);
             return;
         }
 
@@ -311,6 +420,65 @@ namespace CashRegisterApplication.window
         private void lable_RecieveFee_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel_Show_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void buttonBasePay_Click(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            CommUiltl.Log("button.Tag:"+ button.Tag);
+        }
+
+        private void buttonBasePay_Enter(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            setButtonLignt(button);
+  
+            CommUiltl.Log("buttonBasePay_Enter button.Tag:" + button.Tag + " buttonName:" + button.Name + " buttonName:" + button.Text);
+        }
+
+        private void buttonBasePay_CursorChanged(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            CommUiltl.Log("buttonBasePay_CursorChanged button.Tag:" + button.Tag);
+        }
+
+        private void buttonBasePay_DragEnter(object sender, DragEventArgs e)
+        {
+            Button button = sender as Button;
+            CommUiltl.Log("buttonBasePay_DragEnter button.Tag:" + button.Tag +" buttonName:"+ button.Name+" buttonName:" + button.Text);
+        }
+
+        private void buttonBasePay_Leave(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            setButtonShadow(button);
+            CommUiltl.Log("buttonBasePay_Leave button.Tag:" + button.Tag);
+        }
+
+        private void buttonBasePay_Click_1(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            callPayWindowsBayQuickKey((int)button.Tag);
+            CommUiltl.Log("buttonBasePay_Click_1 button.Tag:" + button.Tag + " buttonName:" + button.Name + " buttonName:" + button.Text);
+        }
+
+        private void setButtonLignt(Button button)
+        {
+            button.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+        }
+        private void setButtonShadow(Button button)
+        {
+            button.BackColor = System.Drawing.SystemColors.ButtonShadow;
         }
     }
 }

@@ -99,10 +99,9 @@ namespace CashRegisterApplication.window
                 return;
             }
             long change = recieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
-            if (change >0 )
-            {
-                this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
-            }
+
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
+
 
         }
 

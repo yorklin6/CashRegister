@@ -101,7 +101,6 @@ namespace CashRegisterApplication.window.ProductList
                         }
                         return true;
                     }
-                    break;
                 case System.Windows.Forms.Keys.Escape:
                     {
                         returnPreventWindows();
