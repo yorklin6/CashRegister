@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingDefaultMsgWindow));
             this.comboBox_StoreShop = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_PostID = new System.Windows.Forms.TextBox();
@@ -229,6 +230,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox_StoreShop);
             this.ForeColor = System.Drawing.SystemColors.Window;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SettingDefaultMsgWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SettingDefaultMsg";
