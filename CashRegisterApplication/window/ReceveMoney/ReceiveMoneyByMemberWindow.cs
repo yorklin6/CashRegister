@@ -57,6 +57,8 @@ namespace CashRegisterApplication.window.member
             _ShowGoodsMemberInfo();
         }
         public void  UpdateMemberInfor(){
+            this.Text = "收银-" + CenterContral.oCheckout.payTypeDesc;
+            this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
             this.textBox_memberAccount.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
             this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance));
@@ -65,6 +67,7 @@ namespace CashRegisterApplication.window.member
         }
         private void _SelectRecieve()
         {
+
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
@@ -210,8 +213,10 @@ namespace CashRegisterApplication.window.member
             this.UpdateMemberInfor();
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
-            CenterContral.ControlWindowsAfterPay();
+
+            CenterContral.Window_ProductList.CallShow();
             this.Hide();
+            CenterContral.ControlWindowsAfterPay();
             return;
         }
 

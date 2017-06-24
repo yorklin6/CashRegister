@@ -47,17 +47,23 @@ namespace CashRegisterApplication.window.member
 
         internal void ShowWhithMember()
         {
-            
+            this.Show();
+            if (CenterContral.oStockOutDTO.oMember.memberAccount == null || CenterContral.oStockOutDTO.oMember.memberAccount=="")
+            {
+                this.textBox_memberAccount.Text ="123456";
+                this.textBox_name.Text = "";
+                this.textBox_memberBalance.Text = "";
+                this.textBox_phone.Text ="";
+                this.textBox_memberAccount.Focus();
+                this.textBox_memberAccount.SelectionStart = 0;
+                this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
+                return;
+            }
             this.textBox_memberAccount.Text= CenterContral.oStockOutDTO.oMember.memberAccount;
             this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
             this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
             this.textBox_memberAccount.Focus();
-
-            this.textBox_memberAccount.Text = "123456";
-            this.textBox_memberAccount.SelectionStart = 0;
-            this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
-            this.Show();
             return;
         }
 

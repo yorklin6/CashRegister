@@ -30,7 +30,8 @@ namespace CashRegisterApplication.window
         public void ShowByReceiveMoneyWindow()
         {
             this.Show();
-            this.buttonConfirm.Text = CenterContral.oCheckout.payTypeDesc;
+            this.Text= "收银-"+CenterContral.oCheckout.payTypeDesc;
+            this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
             this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
@@ -136,20 +137,19 @@ namespace CashRegisterApplication.window
                 return;
             }
             long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
-            string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
+            string showTips = "确认" + CenterContral.oCheckout.payTypeDesc + " 收" + this.textBox_ReceiveFee.Text + "元";
             if (change < 0)
             {
                 long leftFee = 0 - change;
-                showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
+                showTips +="\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
+
             }else if (change >0 )
             {
-                showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
+                showTips += "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
             }
 
             var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "现金确认",
+                                  "支付确认",
                                   MessageBoxButtons.YesNo);
 
             if (confirmPayApartResult != DialogResult.Yes)
@@ -166,8 +166,9 @@ namespace CashRegisterApplication.window
             {
                 return;
             }
-            CenterContral.ControlWindowsAfterPay();
+            CenterContral.Window_ProductList.CallShow();
             this.Hide();
+            CenterContral.ControlWindowsAfterPay();
             return;
         }
         private void returnPreventWindows()

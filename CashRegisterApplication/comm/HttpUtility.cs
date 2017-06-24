@@ -305,7 +305,7 @@ namespace CashRegiterApplication
         }
         public static bool _GetProductByKeyWord(string productCode,ref ProductPricingInfoResp oHttpRespone)
         {
-            string funcUrl = ProductCodeFunc + "?page=1&pageSize=200&keyword=" + productCode;
+            string funcUrl = ProductCodeFunc + "?page=1&pageSize=50&keyword=" + productCode;
             CommUiltl.Log("funcUrl:"+ funcUrl);
             if (!Get<ProductPricingInfoResp>(funcUrl, ref oHttpRespone))
             {

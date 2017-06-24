@@ -245,7 +245,7 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("SetTimerTask ");
             //先执行一把
             MyTimerTask oMyTime = new MyTimerTask();
-            oMyTime.MyTimer_Tick(null,null);
+           // oMyTime.MyTimer_Tick(null,null);
             //再执行异步数据
             Timer MyTimer = new Timer();
             MyTimer.Interval = (5 * 60 * 1000); // 1 mins
@@ -601,6 +601,7 @@ namespace CashRegisterApplication.comm
         public static void UpdateDiscountRate(long discountRate)
         {
             CenterContral.oStockOutDTO.Base.orderAmount = GetMoneyAmountByDiscountRate(discountRate);
+            CenterContral.oStockOutDTO.Base.ChangeFee = CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
             CenterContral.oStockOutDTO.Base.discountRate = discountRate;
             CenterContral.oStockOutDTO.Base.discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - CenterContral.oStockOutDTO.Base.orderAmount;
             CenterContral.Window_ProductList.UpdateDiscount();
@@ -639,6 +640,8 @@ namespace CashRegisterApplication.comm
             }
             //打印小票
             //打印本单
+            Window_ProductList.CallShow();
+            Window_RecieveMoney.CallHide();
             Window_ProductList.PrintOrder(CenterContral.oStockOutDTO);
             Window_ProductList.CloseOrderByControlWindow();
         }
@@ -895,9 +898,10 @@ namespace CashRegisterApplication.comm
             detail.categoryId = productInfo.categoryId;
             detail.unit = productInfo.baseUnit;
 
-            detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
-            detail.postKeyWord = productInfo.postKeyWord;
+            // detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
+            detail.goodsShowSpecification = productInfo.baseUnit;
 
+            detail.postKeyWord = productInfo.postKeyWord;
             detail.reqKeyWord = productInfo.reqKeyWord;
             detail.postKeyWord = productInfo.postKeyWord;
 
@@ -998,6 +1002,7 @@ namespace CashRegisterApplication.comm
             }
             //修改环境变量，表示这笔单支付成功
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
+            CenterContral.Window_ProductList.UpdateProductListWindowsMoneyLabel();
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
             MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
             return true;
@@ -1023,7 +1028,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
-
+            CenterContral.Window_ProductList.UpdateProductListWindowsMoneyLabel();
             //重新拉会员信息
             CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
             CenterContral.Window_ProductList.SetMemberInfo();

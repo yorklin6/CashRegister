@@ -51,6 +51,10 @@ namespace CashRegisterApplication.window
             this.dataGridView_payTypeList.ClearSelection();
         }
 
+        public void CallHide()
+        {
+            this.Hide();
+        }
         public void ShowPaidMsg()
         {
             CommUiltl.Log("已支付列表");
@@ -230,29 +234,15 @@ namespace CashRegisterApplication.window
             if (payTypeId == CenterContral.MEMBER_PAY_TYPE)
             {
                 CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
-                this.Hide();
+                //this.Hide();
                 return;
             }
             CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
-            this.Hide();
+            //this.Hide();
             return;
         }
-        private void buttonCash_Click(object sender, EventArgs e)
-        {
-            _CheckFee();
-            CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
-            this.Hide();
-        }
-
-
-
-        private void buttonMember_Click(object sender, EventArgs e)
-        {
-            _CheckFee();
-            CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
-            this.Hide();
-        }
-
+     
+        
         private void dataGridView_payTypeList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
@@ -279,11 +269,7 @@ namespace CashRegisterApplication.window
             callPayWindowsBayPayTypeId(payType);
             return;
         }
-        private void returnPreventWindows()
-        {
-            CenterContral.Window_RecieveMoney.Show();
-            this.Hide();
-        }
+
 
         private void RecieveMoneyWindow_FormClosing(object sender, FormClosingEventArgs e)
         {

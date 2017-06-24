@@ -78,7 +78,7 @@ namespace CashRegisterApplication.comm
         public static void _UpdateAllGoods()
         {
             //拉出全量商品数据
-            int page = 1, pageSize=50;
+            int page = 1, pageSize=100;
             List<ProductPricing> list = new List<ProductPricing>();
             for (; page<10000; ++page)
             {

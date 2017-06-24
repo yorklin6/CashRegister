@@ -44,11 +44,11 @@ namespace CashRegisterApplication.model
             CommUiltl.Log("RecieveFee before:" + Base.RecieveFee);
             Base.RecieveFee += oPayWay.payAmount;
             CommUiltl.Log("RecieveFee after:" + Base.RecieveFee);
-            if (Base.RecieveFee > Base.orderAmount)
-            {
+           
                 Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
-            }
+    
             checkouts.Add(oPayWay);
+          
         }
     }
 
