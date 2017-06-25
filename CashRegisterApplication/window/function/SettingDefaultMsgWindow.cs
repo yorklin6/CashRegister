@@ -27,12 +27,13 @@ namespace CashRegisterApplication.window.Setting
             this.textBox_userPassword.Text = CenterContral.DefaultPassword;
         }
 
-        internal void ShowByProrductList()
+        internal void ShowByCenter()
         {
             this.Show();
             this.textBox_user.Text = CenterContral.DefaultUserName;
             this.textBox_userPassword.Text = CenterContral.DefaultPassword;
         }
+
 
 
         private void SettingDefaultMsg_Load(object sender, EventArgs e)
@@ -42,8 +43,10 @@ namespace CashRegisterApplication.window.Setting
             //获取postID
             _GetPostId();
 
-            CenterContral.GetIpHostAddressFromDb();
-            textBox_IpHostAddress.Text = CenterContral.IpHostAddress;
+            CenterContral.GetSystemInfoFromDb();
+            comm.CommUiltl.Log("CenterContral.oSystem:" + CenterContral.oSystem.IpHostAddress);
+            textBox_IpHostAddress.Text = CenterContral.oSystem.IpHostAddress;
+            textBox_ClouWebAddress.Text = CenterContral.oSystem.ClouWebAddress;
 
         }
         private void SettingDefaultMsgWindow_Shown(object sender, EventArgs e)
@@ -88,6 +91,17 @@ namespace CashRegisterApplication.window.Setting
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int iPostId = 0;
+            if (!CommUiltl.CoverStrToInt(textBox_PostID.Text, out iPostId))
+            {
+                MessageBox.Show("错误PostId");
+                return;
+            }
+            if (-1 == iPostId)
+            {
+                MessageBox.Show("错误PostId,不能为-1");
+                return;
+            }
             //取得下拉框门店id信息
             int storeWhouseId = 0;
             CommUiltl.Log("SelectedItem:" + ((ComboxItem)comboBox_StoreShop.SelectedItem).Values);
@@ -104,17 +118,13 @@ namespace CashRegisterApplication.window.Setting
             string strStoreWhouseDefult = JsonConvert.SerializeObject(CenterContral.oStoreWhouse);
             CenterContral.UpdateStoreWhouseDefault(strStoreWhouseDefult);
 
-            int iPostId = 0;
-            if (!CommUiltl.CoverStrToInt(textBox_PostID.Text, out iPostId))
-            {
-                MessageBox.Show("错误PostId");
-                return;
-            }
+           
             CenterContral.iPostId = iPostId;
             CenterContral.SetPostIdFromDb();
 
-            CenterContral.IpHostAddress=textBox_IpHostAddress.Text ;
-            CenterContral.SetIpHostAddressToDb();
+            CenterContral.oSystem.IpHostAddress = textBox_IpHostAddress.Text;
+            CenterContral.oSystem.ClouWebAddress = textBox_ClouWebAddress.Text;
+            CenterContral.SetSystemInfoToDb();
 
             MessageBox.Show("保存成功");
             CenterContral.CallWindowsBySettingDefaulMsgWindow();

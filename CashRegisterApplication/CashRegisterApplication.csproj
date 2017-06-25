@@ -78,6 +78,7 @@
     <Compile Include="model\HttpBaseRespone.cs" />
     <Compile Include="model\CashregisterOrder.cs" />
     <Compile Include="comm\CenterContral.cs" />
+    <Compile Include="model\LocalSystemInfo.cs" />
     <Compile Include="model\Member.cs" />
     <Compile Include="model\PayOrder.cs" />
     <Compile Include="model\PayType.cs" />
@@ -88,6 +89,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="window\function\FunctionMenuWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\function\FunctionMenuWindows.Designer.cs">
+      <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="window\HistoryOrder\Hostory_Printer.cs">
       <SubType>Form</SubType>
@@ -189,12 +196,15 @@
     <Compile Include="model\ProductPricing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="window\Setting\SettingDefaultMsgWindow.cs">
+    <Compile Include="window\function\SettingDefaultMsgWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="window\Setting\SettingDefaultMsgWindow.Designer.cs">
+    <Compile Include="window\function\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="window\function\FunctionMenuWindows.resx">
+      <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\History\HistoryListWindow.resx">
       <DependentUpon>HistoryListWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -245,7 +255,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="window\Setting\SettingDefaultMsgWindow.resx">
+    <EmbeddedResource Include="window\function\SettingDefaultMsgWindow.resx">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

@@ -47,6 +47,9 @@ namespace CashRegiterApplication
         public void CallShow()
         {
             this.Show();
+            SetMemberInfo();
+            SetLocalSaveDataNumber();
+            UpdateDiscount();
         }
 
         public void SetMemberInfo()
@@ -54,6 +57,10 @@ namespace CashRegiterApplication
             CommUiltl.Log("this.label_member_account.Text:"+ this.label_member_account.Text);
             this.label_member_account.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
             this.label_member_balance.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.oMember.balance).ToString();
+            if (this.label_member_account.Text == "")
+            {
+                this.label_member_balance.Text = "";//避免出现0.00
+            }
             this.label_member_point.Text = CenterContral.oStockOutDTO.oMember.point.ToString();
         }
 
@@ -675,12 +682,7 @@ namespace CashRegiterApplication
                         _Windows_ShowRecieveMoeny();
                         return true;
                     }
-                case System.Windows.Forms.Keys.F9:
-                    {
-                        CenterContral.ShowWindows_RechargeMoneyForMember();
-                        //this.Hide();
-                        return true;
-                    }
+              
                 case System.Windows.Forms.Keys.Tab:
                     {
                         //tabl的操作被禁止
@@ -724,14 +726,26 @@ namespace CashRegiterApplication
                     }
                 case System.Windows.Forms.Keys.F6:
                     {
-                        //挂单恢复
+                        //开钱箱
                         CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
+                        return true;
+                    }
+                case System.Windows.Forms.Keys.F9:
+                    {
+                        CenterContral.Show_MemberInfoWindow_By_ProductList();
+                        //this.Hide();
+                        return true;
+                    }
+                case System.Windows.Forms.Keys.F10:
+                    {
+                        //功能菜单
+                        CenterContral.CallFunctionMenuWindow();
                         return true;
                     }
                 case System.Windows.Forms.Keys.End:
                     {
                         CenterContral.flagCallSetting = CenterContral.FLAG_PRODUCTlIST_WINDOW;
-                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByProrductList();
+                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByCenter();
                         return true;
                     }
      
@@ -1122,6 +1136,8 @@ namespace CashRegiterApplication
             CommUiltl.Log("RawPrinterHelper PrintOrder");
             //把当前单据写入文件
             CenterContral.printOrderMsgToFile(oStockOutDTO);
+            //PrintController printController = new StandardPrintController();
+            //this.printDocument.PrintController = printController;
             //打印文件
             this.printDocument.Print();
         }

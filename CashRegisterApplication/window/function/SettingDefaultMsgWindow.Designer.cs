@@ -45,6 +45,8 @@
             this.button4 = new System.Windows.Forms.Button();
             this.textBox_IpHostAddress = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.textBox_ClouWebAddress = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBox_StoreShop
@@ -86,7 +88,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(310, 298);
+            this.button1.Location = new System.Drawing.Point(309, 335);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -100,7 +102,6 @@
             this.textBox_Mac.ForeColor = System.Drawing.SystemColors.Window;
             this.textBox_Mac.Location = new System.Drawing.Point(281, 199);
             this.textBox_Mac.Name = "textBox_Mac";
-            this.textBox_Mac.ReadOnly = true;
             this.textBox_Mac.Size = new System.Drawing.Size(126, 21);
             this.textBox_Mac.TabIndex = 11;
             // 
@@ -201,11 +202,29 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(162, 249);
+            this.label6.Location = new System.Drawing.Point(186, 249);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(113, 12);
+            this.label6.Size = new System.Drawing.Size(89, 12);
             this.label6.TabIndex = 21;
-            this.label6.Text = "后台ip地址根路径：";
+            this.label6.Text = "后台请求地址：";
+            // 
+            // textBox_ClouWebAddress
+            // 
+            this.textBox_ClouWebAddress.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_ClouWebAddress.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_ClouWebAddress.Location = new System.Drawing.Point(281, 290);
+            this.textBox_ClouWebAddress.Name = "textBox_ClouWebAddress";
+            this.textBox_ClouWebAddress.Size = new System.Drawing.Size(266, 21);
+            this.textBox_ClouWebAddress.TabIndex = 22;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(126, 293);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(149, 12);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "功能菜单打开云系统地址：";
             // 
             // SettingDefaultMsgWindow
             // 
@@ -213,6 +232,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(687, 430);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textBox_ClouWebAddress);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.textBox_IpHostAddress);
             this.Controls.Add(this.button4);
@@ -260,5 +281,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.TextBox textBox_IpHostAddress;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox_ClouWebAddress;
+        private System.Windows.Forms.Label label7;
     }
 }

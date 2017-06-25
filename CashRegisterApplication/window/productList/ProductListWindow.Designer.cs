@@ -350,7 +350,7 @@ namespace CashRegiterApplication
             this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 163F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 165F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.label12, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.label_member_balance, 1, 4);
@@ -386,28 +386,28 @@ namespace CashRegiterApplication
             this.tableLayoutPanel4.ColumnCount = 3;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.74074F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.25926F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
             this.tableLayoutPanel4.Controls.Add(this.label_discount_amount, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label16, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.label_discount_rate, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(41, 55);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(39, 55);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 19F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(163, 20);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(165, 20);
             this.tableLayoutPanel4.TabIndex = 13;
             // 
             // label_discount_amount
             // 
             this.label_discount_amount.AutoSize = true;
             this.label_discount_amount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_amount.Location = new System.Drawing.Point(80, 1);
+            this.label_discount_amount.Location = new System.Drawing.Point(78, 1);
             this.label_discount_amount.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_amount.Name = "label_discount_amount";
-            this.label_discount_amount.Size = new System.Drawing.Size(82, 18);
+            this.label_discount_amount.Size = new System.Drawing.Size(86, 18);
             this.label_discount_amount.TabIndex = 4;
             this.label_discount_amount.Text = "0";
             this.label_discount_amount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -417,10 +417,10 @@ namespace CashRegiterApplication
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(33, 1);
+            this.label16.Location = new System.Drawing.Point(32, 1);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(46, 18);
+            this.label16.Size = new System.Drawing.Size(45, 18);
             this.label16.TabIndex = 3;
             this.label16.Text = "折扣额";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -432,7 +432,7 @@ namespace CashRegiterApplication
             this.label_discount_rate.Location = new System.Drawing.Point(1, 1);
             this.label_discount_rate.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_rate.Name = "label_discount_rate";
-            this.label_discount_rate.Size = new System.Drawing.Size(31, 18);
+            this.label_discount_rate.Size = new System.Drawing.Size(30, 18);
             this.label_discount_rate.TabIndex = 2;
             this.label_discount_rate.Text = "100";
             this.label_discount_rate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -444,7 +444,7 @@ namespace CashRegiterApplication
             this.label12.Location = new System.Drawing.Point(1, 118);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(39, 21);
+            this.label12.Size = new System.Drawing.Size(37, 21);
             this.label12.TabIndex = 10;
             this.label12.Text = "积分";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -453,10 +453,10 @@ namespace CashRegiterApplication
             // 
             this.label_member_balance.AutoSize = true;
             this.label_member_balance.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_balance.Location = new System.Drawing.Point(41, 97);
+            this.label_member_balance.Location = new System.Drawing.Point(39, 97);
             this.label_member_balance.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_balance.Name = "label_member_balance";
-            this.label_member_balance.Size = new System.Drawing.Size(163, 20);
+            this.label_member_balance.Size = new System.Drawing.Size(165, 20);
             this.label_member_balance.TabIndex = 9;
             this.label_member_balance.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -467,7 +467,7 @@ namespace CashRegiterApplication
             this.label10.Location = new System.Drawing.Point(1, 97);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(39, 20);
+            this.label10.Size = new System.Drawing.Size(37, 20);
             this.label10.TabIndex = 8;
             this.label10.Text = "余额";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -476,10 +476,10 @@ namespace CashRegiterApplication
             // 
             this.label_member_account.AutoSize = true;
             this.label_member_account.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_account.Location = new System.Drawing.Point(41, 76);
+            this.label_member_account.Location = new System.Drawing.Point(39, 76);
             this.label_member_account.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_account.Name = "label_member_account";
-            this.label_member_account.Size = new System.Drawing.Size(163, 20);
+            this.label_member_account.Size = new System.Drawing.Size(165, 20);
             this.label_member_account.TabIndex = 7;
             this.label_member_account.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_member_account.Click += new System.EventHandler(this.label9_Click);
@@ -491,7 +491,7 @@ namespace CashRegiterApplication
             this.label8.Location = new System.Drawing.Point(1, 76);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(39, 20);
+            this.label8.Size = new System.Drawing.Size(37, 20);
             this.label8.TabIndex = 6;
             this.label8.Text = "会员卡";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -503,7 +503,7 @@ namespace CashRegiterApplication
             this.label5.Location = new System.Drawing.Point(1, 55);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(39, 20);
+            this.label5.Size = new System.Drawing.Size(37, 20);
             this.label5.TabIndex = 4;
             this.label5.Text = "折扣率";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -515,7 +515,7 @@ namespace CashRegiterApplication
             this.label31.Location = new System.Drawing.Point(1, 28);
             this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(39, 26);
+            this.label31.Size = new System.Drawing.Size(37, 26);
             this.label31.TabIndex = 2;
             this.label31.Text = "挂单";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -524,10 +524,10 @@ namespace CashRegiterApplication
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(41, 1);
+            this.label2.Location = new System.Drawing.Point(39, 1);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(163, 26);
+            this.label2.Size = new System.Drawing.Size(165, 26);
             this.label2.TabIndex = 1;
             this.label2.Text = "输入商品";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -539,7 +539,7 @@ namespace CashRegiterApplication
             this.label1.Location = new System.Drawing.Point(1, 1);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 26);
+            this.label1.Size = new System.Drawing.Size(37, 26);
             this.label1.TabIndex = 0;
             this.label1.Text = "状态";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -552,13 +552,13 @@ namespace CashRegiterApplication
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.13044F));
             this.tableLayoutPanel3.Controls.Add(this.label_local_save_stock_number, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(41, 28);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(39, 28);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(163, 26);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(165, 26);
             this.tableLayoutPanel3.TabIndex = 12;
             // 
             // label_local_save_stock_number
@@ -568,7 +568,7 @@ namespace CashRegiterApplication
             this.label_local_save_stock_number.Location = new System.Drawing.Point(1, 1);
             this.label_local_save_stock_number.Margin = new System.Windows.Forms.Padding(0);
             this.label_local_save_stock_number.Name = "label_local_save_stock_number";
-            this.label_local_save_stock_number.Size = new System.Drawing.Size(161, 24);
+            this.label_local_save_stock_number.Size = new System.Drawing.Size(163, 24);
             this.label_local_save_stock_number.TabIndex = 2;
             this.label_local_save_stock_number.Text = "0";
             this.label_local_save_stock_number.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -579,19 +579,19 @@ namespace CashRegiterApplication
             this.tableLayoutPanel8.ColumnCount = 3;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.94118F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.05882F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.tableLayoutPanel8.Controls.Add(this.label_member_point, 0, 2);
             this.tableLayoutPanel8.Controls.Add(this.label4, 1, 2);
             this.tableLayoutPanel8.Controls.Add(this.label_total_product_count, 2, 2);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(41, 118);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(39, 118);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 3;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(163, 21);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(165, 21);
             this.tableLayoutPanel8.TabIndex = 14;
             this.tableLayoutPanel8.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel8_Paint);
             // 
@@ -602,7 +602,7 @@ namespace CashRegiterApplication
             this.label_member_point.Location = new System.Drawing.Point(1, 1);
             this.label_member_point.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_point.Name = "label_member_point";
-            this.label_member_point.Size = new System.Drawing.Size(53, 20);
+            this.label_member_point.Size = new System.Drawing.Size(52, 20);
             this.label_member_point.TabIndex = 12;
             this.label_member_point.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -610,10 +610,10 @@ namespace CashRegiterApplication
             // 
             this.label4.AutoSize = true;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label4.Location = new System.Drawing.Point(55, 1);
+            this.label4.Location = new System.Drawing.Point(54, 1);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 20);
+            this.label4.Size = new System.Drawing.Size(46, 20);
             this.label4.TabIndex = 13;
             this.label4.Text = "总件数";
             // 
@@ -621,10 +621,10 @@ namespace CashRegiterApplication
             // 
             this.label_total_product_count.AutoSize = true;
             this.label_total_product_count.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_total_product_count.Location = new System.Drawing.Point(103, 1);
+            this.label_total_product_count.Location = new System.Drawing.Point(101, 1);
             this.label_total_product_count.Margin = new System.Windows.Forms.Padding(0);
             this.label_total_product_count.Name = "label_total_product_count";
-            this.label_total_product_count.Size = new System.Drawing.Size(59, 20);
+            this.label_total_product_count.Size = new System.Drawing.Size(63, 20);
             this.label_total_product_count.TabIndex = 14;
             this.label_total_product_count.Text = "0";
             // 
@@ -885,7 +885,7 @@ namespace CashRegiterApplication
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(103, 140);
             this.label3.TabIndex = 8;
-            this.label3.Text = "INS:取消订单\r\nEND:系统设置";
+            this.label3.Text = "F10:功能菜单\r\nINS:取消订单\r\nEND:系统设置";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label7
@@ -897,7 +897,7 @@ namespace CashRegiterApplication
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(103, 140);
             this.label7.TabIndex = 7;
-            this.label7.Text = "HOME:选择支付\r\nDELETE:删除商品\r\nF1:重打小票\r\nF3:整单打折\r\nF4:挂单\r\nF5:挂单恢复\r\nF6:打开钱箱\r\nF9:会员充值\r\n";
+            this.label7.Text = "HOME:选择支付\r\nDELETE:删除商品\r\nF1:重打小票\r\nF3:整单打折\r\nF4:挂单\r\nF5:挂单恢复\r\nF7:打开钱箱\r\nF9:会员卡\r\n";
             // 
             // printDocument
             // 

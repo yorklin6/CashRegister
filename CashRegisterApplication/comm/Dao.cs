@@ -117,7 +117,7 @@ namespace CashRegisterApplication.comm
             strSql += "CREATE TABLE [tb_stock_out_base]( [stock_out_id] INT(10) NOT NULL, [serial_number] VARCHAR(50) PRIMARY KEY NOT NULL, [type] TINYINT(3) NOT NULL, [store_id] INT(10) NOT NULL, [whouse_id] INT(10) NOT NULL, [related_order] INT(10) NOT NULL, [client_id] INT(10) NOT NULL DEFAULT '0', [pos_id] INT(10) NOT NULL, [cashier_id] INT(10) NOT NULL, [order_amount] BIGINT(20) DEFAULT NULL, [creator] VARCHAR(20) DEFAULT NULL, [create_time] DATETIME NOT NULL, [update_time] DATETIME DEFAULT NULL, [stock_out_time] DATETIME DEFAULT NULL, [status] TINYINT(3) NOT NULL DEFAULT '0', [remark] VARCHAR(255) DEFAULT NULL, [recieve_fee] INT(20), [change_fee] INT(20), [cloud_state] INT(10), [base_data_json]  TEXT, [cloud_add_flag] INT(10) DEFAULT 0, [cloud_update_flag] INT(10) DEFAULT 0, [cloud_close_flag]  INT DEFAULT 0, [cloud_delete_flag] INT(0), [local_save_flag] INT(10) , [cancael_flag] INT(10) );";
             strSql += "CREATE TABLE [tb_stock_out_detail]( [id] INT(10) NOT NULL, [stock_out_id] INT(10) NOT NULL, [goods_id] INT(10) NOT NULL, [goods_name] VARCHAR(50) NOT NULL, [barcode] VARCHAR(50) NOT NULL, [specification] VARCHAR(20) NOT NULL, [unit] VARCHAR(10) NOT NULL, [produce_time] DATETIME DEFAULT NULL, [expire_time] DATETIME DEFAULT NULL, [order_count] INT(10) NOT NULL, [actual_count] INT(10) DEFAULT NULL, [actual_difference] INT(11) DEFAULT NULL, [unit_price] BIGINT(20) DEFAULT NULL, [subtotal] BIGINT(20)  DEFAULT NULL, [remark] VARCHAR(255) DEFAULT NULL, [serial_number] VARBINARY(50), [cloud_state_add] INT(10), [cloud_state_update] INT(10), [cloud_state_delete] INT(10),[delete_flag] INT(10), [cloud_state] INT(10), [detail_data_json] TEXT);";
 
-            strSql += "CREATE TABLE [tb_local_msg]( [store_whouse_default] TEXT, [pay_type_list] TEXT, [last_all_good_data_uinx_time] INT DEFAULT 0, [post_id] INT  , [ip_host_address] VARCHAR(100) );";
+            strSql += "CREATE TABLE [tb_local_msg]( [store_whouse_default] TEXT, [pay_type_list] TEXT, [last_all_good_data_uinx_time] INT DEFAULT 0, [post_id] INT  , [system_info] TEXT );";
 
 
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -785,10 +785,10 @@ namespace CashRegisterApplication.comm
         }
 
         //**********************默认地址
-        internal static bool GetIpHostAddress(ref string strIpHostAddress)
+        internal static bool GetSystemInfo(ref string strSystemInfo)
         {
             string strSql = "";
-            strSql += "select ip_host_address from tb_local_msg ";
+            strSql += "select system_info from tb_local_msg ";
             strSql += "limit 1 ";
 
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -811,15 +811,15 @@ namespace CashRegisterApplication.comm
                 {
                     return false;
                 }
-                strIpHostAddress = sqlite_datareader.GetString(0);
+                strSystemInfo = sqlite_datareader.GetString(0);
             }
             return true;
         }
-        internal static bool SetIpHostAddress(string strIpHostAddress)
+        internal static bool SetSystemInfo(string strSystemInfo)
         {
             int iRow = 0;
             //插入订单
-            string strSql = "update tb_local_msg set ip_host_address='" + strIpHostAddress + "'";
+            string strSql = "update tb_local_msg set system_info='" + strSystemInfo + "'";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
             {
@@ -841,6 +841,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
+        
         /************************门店信息****************************/
         //取出默认门店
         internal static bool GetStoreWhouseDefault(ref string json)
@@ -927,12 +928,12 @@ namespace CashRegisterApplication.comm
         internal static bool InsertLocalMsgDefault()
         {
             string strSql = "insert into tb_local_msg  ";
-            strSql += " (store_whouse_default,pay_type_list,post_id,last_all_good_data_uinx_time,ip_host_address) VALUES (";
+            strSql += " (store_whouse_default,pay_type_list,post_id,last_all_good_data_uinx_time,system_info) VALUES (";
             strSql += "'',";
             strSql += "'',";
             strSql += "'-1',";
             strSql += "0,";
-            strSql += "'"+CenterContral.IpHostAddress+"'";
+            strSql += "'" + JsonConvert.SerializeObject(CenterContral.oSystem) + "'";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
             int iRow = 0;

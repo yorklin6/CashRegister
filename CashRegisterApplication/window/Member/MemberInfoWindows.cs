@@ -90,9 +90,11 @@ namespace CashRegisterApplication.window.member
                 this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
                 this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
                 this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
+                MessageBox.Show("查询会员成功");
             }
             //查成功或者没有修改会员账号
             CenterContral.ShowWindowWhenGetMemberSuccess();
+
             this.Hide();
             return;
 

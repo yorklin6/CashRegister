@@ -446,18 +446,6 @@ namespace CashRegisterApplication.window
             CommUiltl.Log("buttonBasePay_Enter button.Tag:" + button.Tag + " buttonName:" + button.Name + " buttonName:" + button.Text);
         }
 
-        private void buttonBasePay_CursorChanged(object sender, EventArgs e)
-        {
-            Button button = sender as Button;
-            CommUiltl.Log("buttonBasePay_CursorChanged button.Tag:" + button.Tag);
-        }
-
-        private void buttonBasePay_DragEnter(object sender, DragEventArgs e)
-        {
-            Button button = sender as Button;
-            CommUiltl.Log("buttonBasePay_DragEnter button.Tag:" + button.Tag +" buttonName:"+ button.Name+" buttonName:" + button.Text);
-        }
-
         private void buttonBasePay_Leave(object sender, EventArgs e)
         {
             Button button = sender as Button;
