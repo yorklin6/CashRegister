@@ -16,6 +16,7 @@ using CashRegisterApplication.model;
 using CashRegisterApplication.window.Setting;
 using System.Drawing.Printing;
 using System.Diagnostics;
+using System.Threading;
 
 namespace CashRegiterApplication
 {
@@ -42,6 +43,11 @@ namespace CashRegiterApplication
             //System.Windows.Forms.Clipboard.SetText("倍乐");
             this.label_defaultUser.Text = CenterContral.DefaultUserName;
             this.label_postId.Text = CenterContral.iPostId.ToString();
+        }
+
+        internal static void Form1_UIThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            MessageBox.Show("CurrentDomain_UnhandledException:" + e.ToString());
         }
 
         public void CallShow()
@@ -175,9 +181,8 @@ namespace CashRegiterApplication
             _SetCheckoutGrid();
             UpdateProductListWindowsMoneyLabel();
         }
-        internal void CloseOrderByControlWindow()
+        internal void CloseOrderAndPrintOrderByCenter()
         {
-
             this.Show();
             
             _SetCheckoutGrid();
@@ -189,8 +194,7 @@ namespace CashRegiterApplication
 
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
             this.dataGridView_productList.BeginEdit(true);
-            //打印本单
-          
+     
             _ResetAllData();
         }
 
@@ -278,6 +282,9 @@ namespace CashRegiterApplication
                 MessageBox.Show("数量错误,不能为空");
                 return false;
             }
+            CommUiltl.Log("rowIndex:rowIndex" + rowIndex + " GOODS_BARCODE:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_BARCODE].Value.ToString());
+            CommUiltl.Log("detail count:"+ CenterContral.oStockOutDTO.details.Count);
+            
             string strRetailCount = this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value.ToString();
             if (!_CheckRetailAccount(CenterContral.oStockOutDTO.details[rowIndex],strRetailCount,ref actualCount))
             {
@@ -478,7 +485,7 @@ namespace CashRegiterApplication
 
 
         }
-
+        private bool gDeleteEventFlag=false;
         private void productListDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             CommUiltl.Log("begin e.RowIndex："+ e.RowIndex + " ColumnIndex" + e.ColumnIndex);
@@ -486,6 +493,13 @@ namespace CashRegiterApplication
             if (!gConstructEnd)
             {
                 //未初始化行表的时候，这里是空的
+                return;
+            }
+            if (gDeleteEventFlag)
+            {
+                CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " Column");
+                //删除数据的时候，会走到这里，这里面行数已经删除
+                gDeleteEventFlag = false;
                 return;
             }
             CommUiltl.Log("row:" + this.dataGridView_productList.CurrentCell.RowIndex + " Column:" + this.dataGridView_productList.CurrentCell.ColumnIndex);
@@ -786,7 +800,7 @@ namespace CashRegiterApplication
             CommUiltl.Log("Keys.Delete !IsNewRow oCurrentRow.Index:" + oCurrentRow.Index);
             if (!CommUiltl.IsObjEmpty(oCurrentRow.Cells[CELL_INDEX.GOODS_BARCODE].Value))
             {
-                string showTips = "是否要删除当前行 商品货号为:" + oCurrentRow.Cells[CELL_INDEX.GOODS_BARCODE].Value;
+                string showTips = "是否要删除商品:" + oCurrentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value;
                 var confirmPayApartResult = MessageBox.Show(showTips,
                                       "取消订单操作",
                                       MessageBoxButtons.YesNo);
@@ -794,12 +808,19 @@ namespace CashRegiterApplication
                 {
                     return;
                 }
+                if (this.dataGridView_productList.CurrentCell.ColumnIndex== CELL_INDEX.PRODUCT_RetailDetailCount ||
+                    this.dataGridView_productList.CurrentCell.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE
+                    )
+                {
+                    gDeleteEventFlag = true;
+                }
                 //先删除数据
                 CenterContral.oStockOutDTO.details.RemoveAt(oCurrentRow.Index);
                 CommUiltl.Log("oCurrentRow.Index ：" + oCurrentRow.Index);
                 //再删除行
                 this.dataGridView_productList.Rows.RemoveAt(oCurrentRow.Index);
                 CommUiltl.Log("RemoveAt.Index：" + oCurrentRow.Index);
+
                 _UpdateStockBaseMsg();
                 return;
             }
@@ -1133,12 +1154,20 @@ namespace CashRegiterApplication
 
         public void PrintOrder(StockOutDTO oStockOutDTO)
         {
-            CommUiltl.Log("RawPrinterHelper PrintOrder");
+            CommUiltl.Log("RawPrinterHelper PrintOrder :" + this.printDocument.PrinterSettings.IsValid);
+           
+             if (!this.printDocument.PrinterSettings.IsValid)
+            {
+                 MessageBox.Show("找不到打印机",
+                               "打印机异常"
+                             );
+                return;
+            }
             //把当前单据写入文件
             CenterContral.printOrderMsgToFile(oStockOutDTO);
-            //PrintController printController = new StandardPrintController();
-            //this.printDocument.PrintController = printController;
-            //打印文件
+        }
+        public void ExePrint()
+        {
             this.printDocument.Print();
         }
          
@@ -1185,6 +1214,12 @@ namespace CashRegiterApplication
 
         private void label3_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " Column" );
 
         }
     }

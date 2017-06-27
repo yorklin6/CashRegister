@@ -683,8 +683,9 @@ namespace CashRegisterApplication.comm
             //打印本单
             Window_ProductList.CallShow();
             Window_RecieveMoney.CallHide();
-            Window_ProductList.PrintOrder(CenterContral.oStockOutDTO);
-            Window_ProductList.CloseOrderByControlWindow();
+            CenterContral.printOrderMsgToFile(CenterContral.oStockOutDTO);//写入打印文件
+            Window_ProductList.CloseOrderAndPrintOrderByCenter();
+            Window_ProductList.ExePrint();
         }
 
         //***********************************关闭订单***************************

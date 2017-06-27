@@ -28,7 +28,8 @@ namespace CashRegisterApplication.window.member
             {
                 case System.Windows.Forms.Keys.Enter:
                     {
-                        enterEvent();
+                        HandleEnterEvent();
+                       
                         break;
                     }
                 case System.Windows.Forms.Keys.Escape:
@@ -39,6 +40,28 @@ namespace CashRegisterApplication.window.member
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void HandleEnterEvent()
+        {
+            //回车事件
+            if (this.ActiveControl == this.textBox_memberAccount)
+            {
+                //把焦点移动到密码框
+                this.ActiveControl = this.textBox_Password;
+                this.textBox_Password.Focus();
+                this.textBox_Password.SelectionStart = 0;
+                this.textBox_Password.SelectionLength = this.textBox_Password.Text.Length;
+                return;
+            }
+            if (this.ActiveControl == this.textBox_Password)
+            {
+                //提交
+                SubmitEvent();
+                return;
+            }
+            SubmitEvent();
+        }
+
         internal void returnPreventWindows()
         {
             CenterContral.ShowWindowWhenMemberInfoCancel();
@@ -51,24 +74,18 @@ namespace CashRegisterApplication.window.member
             if (CenterContral.oStockOutDTO.oMember.memberAccount == null || CenterContral.oStockOutDTO.oMember.memberAccount=="")
             {
                 this.textBox_memberAccount.Text ="123456";
-                this.textBox_name.Text = "";
-                this.textBox_memberBalance.Text = "";
-                this.textBox_phone.Text ="";
                 this.textBox_memberAccount.Focus();
                 this.textBox_memberAccount.SelectionStart = 0;
                 this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
                 return;
             }
             this.textBox_memberAccount.Text= CenterContral.oStockOutDTO.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
-            this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
             this.textBox_memberAccount.Focus();
             return;
         }
 
         //回车事件
-        private void enterEvent()
+        private void SubmitEvent()
         {
             if (this.textBox_memberAccount.Text == "")
             {
@@ -87,9 +104,6 @@ namespace CashRegisterApplication.window.member
                     return;
                 }
                 //查成功
-                this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
-                this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance ));
-                this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
                 MessageBox.Show("查询会员成功");
             }
             //查成功或者没有修改会员账号
@@ -143,7 +157,7 @@ namespace CashRegisterApplication.window.member
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            enterEvent();
+            SubmitEvent();
         }
     }
 }
