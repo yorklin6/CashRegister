@@ -81,6 +81,11 @@ namespace CashRegisterApplication.window.ProductList
 
         private void SelectRow(int rowIndex)
         {
+            if (rowIndex<0)
+            {
+                System.Windows.Forms.MessageBox.Show("请重新选择");
+                return;
+            }
             //gAllSelectList
             CommUiltl.Log("SelectRow rowIndex " + rowIndex);
             CenterContral.CallBackBySelectGoodWindow(gAllSelectList[rowIndex]);

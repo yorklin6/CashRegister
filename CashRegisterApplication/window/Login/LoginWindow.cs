@@ -11,6 +11,7 @@ using System.Net;
 using CashRegisterApplication.comm;
 using CashRegisterApplication.model;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace CashRegiterApplication
 {
@@ -31,8 +32,33 @@ namespace CashRegiterApplication
          
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+          
         }
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("User32.dll")]
+        private static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            const int WM_NCPAINT = 0x85;
+            if (m.Msg == WM_NCPAINT)
+            {
+                IntPtr hdc = GetWindowDC(m.HWnd);
+                if ((int)hdc != 0)
+                {
+                    Graphics g = Graphics.FromHdc(hdc);
+                    g.FillRectangle(Brushes.Gold, new Rectangle(0, 0, 4800, 23));
+                    g.Flush();
+                    ReleaseDC(m.HWnd, hdc);
+                }
+            }
+        }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {

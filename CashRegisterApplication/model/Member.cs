@@ -103,7 +103,7 @@ namespace CashRegisterApplication.model
         internal void generatePaySerialNamber()
         {
             serialNumber = "ZF-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + 0 + "-" //会员充值支付，未做支付类型
+                + CenterContral.iPostId + "-" //会员充值支付，未做支付类型
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
         }
     }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscountWindows));
             this.textBox_allGoodsMoneyAmount = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox_discountAmount = new System.Windows.Forms.TextBox();
@@ -136,6 +137,7 @@
             this.Controls.Add(this.textBox_discountRate);
             this.Controls.Add(this.button_loggin);
             this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DiscountWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "折扣";

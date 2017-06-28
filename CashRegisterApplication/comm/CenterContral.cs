@@ -570,7 +570,6 @@ namespace CashRegisterApplication.comm
         {
             if (!HttpUtility.GeneratePostId(storeWhouseId, strMac, ref CenterContral.iPostId))
             {
-               
                 return false;
             }
             return true;
@@ -1054,6 +1053,7 @@ namespace CashRegisterApplication.comm
             oCheckout.payAmount = recieveFee;
 
             WalletHistory oRecharge = new WalletHistory();
+            
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.changeValue = recieveFee;
             oRecharge.generatePaySerialNamber();
@@ -1187,6 +1187,7 @@ namespace CashRegisterApplication.comm
                 iPostId = -1;
                 return;
             }
+            CommUiltl.Log("CenterContral.iPostId:"+ CenterContral.iPostId);
         }
         internal static void SetPostIdFromDb()
         {
