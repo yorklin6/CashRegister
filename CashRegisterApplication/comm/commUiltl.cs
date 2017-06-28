@@ -6,6 +6,7 @@ using System.Text;
 using CashRegisterApplication.model;
 using System.Diagnostics;
 using System.IO;
+using System.Net.NetworkInformation;
 
 namespace CashRegisterApplication.comm
 {
@@ -37,8 +38,21 @@ namespace CashRegisterApplication.comm
 
         internal static string GetMacInfo()
         {
-            string macAddress = "02-00-4C-4F-4F-51";
-            return macAddress;
+
+            string macAddresses = string.Empty;
+
+            foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (nic.OperationalStatus == OperationalStatus.Up)
+                {
+                    CommUiltl.Log("mac:"+ nic.GetPhysicalAddress().ToString());
+                    macAddresses += nic.GetPhysicalAddress().ToString();
+                    break;
+                }
+            }
+            CommUiltl.Log("macAddresses Length:" + macAddresses.Length);
+            return macAddresses;
+
             //Process p = null;
             //StreamReader reader = null;
             //try

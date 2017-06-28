@@ -264,12 +264,17 @@ namespace CashRegisterApplication.comm
             CenterContral.Window_ProductList.CallShow();
             return;
         }
+        public static void UpdateAllGoods()
+        {
+            MyTimerTask oMyTime = new MyTimerTask();
+            oMyTime.UpdateAllGoods();
+        }
         public static void SetTimerTask()
         {
             CommUiltl.Log("SetTimerTask ");
             //先执行一把
             MyTimerTask oMyTime = new MyTimerTask();
-           // oMyTime.MyTimer_Tick(null,null);
+           oMyTime.MyTimer_Tick(null,null);
             //再执行异步数据
             Timer MyTimer = new Timer();
             MyTimer.Interval = (5 * 60 * 1000); // 1 mins
@@ -390,7 +395,9 @@ namespace CashRegisterApplication.comm
         /******************登陆**********************/
         internal static bool Login(string userName, string password, long storeId)
         {
-            if (!HttpUtility.LoginBoss(userName, password,  storeId))
+            
+                if (!HttpUtility.LoginByUser(userName, password, storeId))
+             //   if (!HttpUtility.LoginBoss(userName, password,  storeId))
             {
                 return false;
             }
@@ -1141,10 +1148,10 @@ namespace CashRegisterApplication.comm
                     MessageBox.Show("获取支付类型失败：" + HttpUtility.lastErrorMsg);
                     return false;
                 }
-
                 CenterContral.oPayTypeList = JsonConvert.DeserializeObject<PayTypeData>(json);
                 return true;
             }
+
             json = JsonConvert.SerializeObject(CenterContral.oPayTypeList);
             //取网络成功，则更新本地数据库
             if (!Dao.SetPayType(ref json))
@@ -1180,7 +1187,6 @@ namespace CashRegisterApplication.comm
         //post 机id
         internal static void GetPostIdFromDb()
         {
-            string strMac = CommUiltl.GetMacInfo();
             if (!Dao.GetPostId(ref CenterContral.iPostId))
             {
                 CommUiltl.Log("Dao.GetPostId err");

@@ -15,10 +15,17 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("SetTimerTask ");
             MyTimerTask.Run();
         }
+        public void UpdateAllGoods()
+        {
+            long iNow = CommUiltl.GetTimeStamp();
+            _UpdateAllGoods();
+            //记录今天已经更新全量信息
+            Dao.UpdateLocalMsgLastUpdateAllDataGoods(iNow);
+        }
         public static void Run()
         {
             CommUiltl.Log("UpdateLocalGoodsMsg ");
-            _UpdateAllGoodsdate();
+            //_UpdateAllGoodsdate();无需每天更新商品
             _UpdateLastGoodMsg();
             CloseStaockOut();
         }

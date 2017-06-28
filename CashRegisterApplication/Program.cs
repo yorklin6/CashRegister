@@ -24,28 +24,9 @@ namespace CashRegiterApplication
         [STAThread]
         static void Main()
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //try
-            //    {
-            //        Application.Run(new LoginWindows());
-            //    }
-            //    catch (Exception e) // We could be catching anything here
-            //    {
-            //        MessageBox.Show("系统异常:" + e.Message);
-            //        //  Application.Run(new FunctionMenuWindow(
-            //    }
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            // Add the event handler for handling UI thread exceptions to the event.
-            Application.ThreadException += new ThreadExceptionEventHandler(LoginWindows.Form1_UIThreadException);
-
-            // Set the unhandled exception mode to force all Windows Forms errors to go through
-            // our handler.
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-
-            // Add the event handler for handling non-UI thread exceptions to the event. 
-            AppDomain.CurrentDomain.UnhandledException +=
-                new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             Application.Run(new LoginWindows());
             // Runs the application.

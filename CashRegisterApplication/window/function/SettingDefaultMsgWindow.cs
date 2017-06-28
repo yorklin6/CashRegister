@@ -241,6 +241,29 @@ namespace CashRegisterApplication.window.Setting
             }
             MessageBox.Show("登录成功");
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string showTips = "确认更新商品信息，确认后将会耗时很长";
+
+            var confirmPayApartResult = MessageBox.Show(showTips,
+                                  "更新确认方式",
+                                  MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                return ;
+            }
+            CenterContral.UpdateAllGoods();
+            MessageBox.Show("更新成功");
+            return ;
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            _GetMac();
+        }
     }
 
 }
