@@ -1051,7 +1051,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateProductListWindowsMoneyLabel();
             CommUiltl.Log("PayOrderByCash end:" + recieveFee);
-            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
+            MessageBox.Show("操作成功");
             return true;
         }
         internal static bool PayOrderByMember(long recieveFee)
@@ -1066,7 +1066,7 @@ namespace CashRegisterApplication.comm
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             if ( HttpUtility.MemberPay(oRecharge) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                MessageBox.Show("支付失败:" + HttpUtility.lastErrorMsg);
+                MessageBox.Show("云扣款失败:" + HttpUtility.lastErrorMsg);
                 return false;
             }
             //本地记录支付信息

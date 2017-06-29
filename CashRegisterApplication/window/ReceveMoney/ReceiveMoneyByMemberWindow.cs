@@ -59,11 +59,9 @@ namespace CashRegisterApplication.window.member
         public void  UpdateMemberInfor(){
             this.Text = "收银-" + CenterContral.oCheckout.payTypeDesc;
             this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
-            this.textBox_memberAccount.Text = CenterContral.oStockOutDTO.oMember.memberAccount;
-            this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
-            this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance));
-            this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
-
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
+            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
         }
         private void _SelectRecieve()
         {
@@ -106,7 +104,7 @@ namespace CashRegisterApplication.window.member
                         returnPreventWindows();
                         break;
                     }
-                case System.Windows.Forms.Keys.F1:
+                case System.Windows.Forms.Keys.F9:
                     {
                         //重新输入会员卡信息
                         CenterContral.Show_MemberInfoWindow_By_RecieveMoeneyByMember();
@@ -120,10 +118,10 @@ namespace CashRegisterApplication.window.member
         //回车事件
         private void enterEvent()
         {
-            if (this.textBox_ReceiveFee.Focused)
+           // if (this.textBox_ReceiveFee.Focused)
             {
                 //付款
-                buttonConfirm_Click(null, null);
+                buttonConfirm_Click_1(null, null);
             }
         }
 
@@ -163,61 +161,7 @@ namespace CashRegisterApplication.window.member
         }
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
-            long recieveFee = 0;
-            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
-            {
-                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
-                return;
-            }
-            if (recieveFee > CenterContral.oStockOutDTO.oMember.balance )
-            {
-                MessageBox.Show("余额不足" );
-                //跳转到充值页面
-                //hide()
-                return;
-            }
-
-            long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
-            string showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元";
-            if (change < 0)
-            {
-                long leftFee = 0 - change;
-                showTips = "确认只收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
-            }
-            else if (change > 0)
-            {
-                showTips = "确认收现金：" + this.textBox_ReceiveFee.Text + " 元"
-                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
-            }
-
-            var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "现金确认",
-                                  MessageBoxButtons.YesNo);
-
-            if (confirmPayApartResult != DialogResult.Yes)
-            {
-                //确认支付
-                CommUiltl.Log("DialogResult.No recieveFee:" + recieveFee);
-                _SelectRecieve();
-                return;
-            }
-            //下单支付
-            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-
-            if (!CenterContral.PayOrderByMember(recieveFee))
-            {
-                return;
-            }
-
-            this.UpdateMemberInfor();
-            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
-            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
-
-            CenterContral.Window_ProductList.CallShow();
-            this.Hide();
-            CenterContral.ControlWindowsAfterPay();
-            return;
+          
         }
 
         private void textBox_ReceiveFee_KeyPress(object sender, KeyPressEventArgs e)
@@ -298,6 +242,105 @@ namespace CashRegisterApplication.window.member
             e.Cancel = false;
             returnPreventWindows();
             CenterContral.Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
+        }
+
+        private void buttonConfirm_Click_1(object sender, EventArgs e)
+        {
+            long recieveFee = 0;
+            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
+            {
+                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
+                return;
+            }
+            if (recieveFee > CenterContral.oStockOutDTO.oMember.balance)
+            {
+                MessageBox.Show("余额不足");
+                //跳转到充值页面
+                //hide()
+                return;
+            }
+
+            long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
+            string showTips = "确认已收" + CenterContral.oCheckout.payTypeDesc + " " + this.textBox_ReceiveFee.Text + "元";
+            if (change < 0)
+            {
+                long leftFee = 0 - change;
+                showTips = "确认已收：" + CenterContral.oCheckout.payTypeDesc + " "  + this.textBox_ReceiveFee.Text + " 元"
+                 + "\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
+            }
+            else if (change > 0)
+            {
+                showTips = showTips = "确认已收" + CenterContral.oCheckout.payTypeDesc + " " + this.textBox_ReceiveFee.Text + "元"
+                + "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
+            }
+
+            var confirmPayApartResult = MessageBox.Show(showTips,
+                                 CenterContral.oCheckout.payTypeDesc + "确认",
+                                  MessageBoxButtons.YesNo);
+
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                //确认支付
+                CommUiltl.Log("DialogResult.No recieveFee:" + recieveFee);
+                _SelectRecieve();
+                return;
+            }
+            //下单支付
+            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
+
+            if (!CenterContral.PayOrderByMember(recieveFee))
+            {
+                return;
+            }
+
+            this.UpdateMemberInfor();
+            CommUiltl.Log("PayOrderByCash end:" + recieveFee);
+            MessageBox.Show("支付" + CommUiltl.CoverMoneyUnionToStrYuan(recieveFee) + "元现金成功");
+
+            CenterContral.Window_ProductList.CallShow();
+            this.Hide();
+            CenterContral.ControlWindowsAfterPay();
+            return;
+        }
+
+        private void label4_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_payType_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_ChangeFee_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_SupportFee_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_ReceiveFee_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

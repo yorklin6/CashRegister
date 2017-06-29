@@ -136,7 +136,7 @@ namespace CashRegisterApplication.window
                 return;
             }
             long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
-            string showTips = "确认" + CenterContral.oCheckout.payTypeDesc + " 收" + this.textBox_ReceiveFee.Text + "元";
+            string showTips = "确认已收" + CenterContral.oCheckout.payTypeDesc + "" + this.textBox_ReceiveFee.Text + "元";
             if (change < 0)
             {
                 long leftFee = 0 - change;
@@ -148,7 +148,7 @@ namespace CashRegisterApplication.window
             }
 
             var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "支付确认",
+                                  CenterContral.oCheckout.payTypeDesc + "确认",
                                   MessageBoxButtons.YesNo);
 
             if (confirmPayApartResult != DialogResult.Yes)
