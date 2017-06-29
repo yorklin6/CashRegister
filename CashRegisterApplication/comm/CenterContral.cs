@@ -598,7 +598,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
-            CenterContral.oStockOutDTO.Base.clientId = 1;
+            CenterContral.oStockOutDTO.Base.clientId =0;
             CenterContral.oStockOutDTO.Base.stockOutTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
           //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
 
@@ -608,7 +608,6 @@ namespace CashRegisterApplication.comm
 
             CenterContral.oStockOutDTO.Base.creator = CenterContral.DefaultUserName;
             CenterContral.oStockOutDTO.Base.cashierId = CenterContral.DefaultUserId;
-
             CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
@@ -1076,6 +1075,7 @@ namespace CashRegisterApplication.comm
             {
                 return false;
             }
+            CenterContral.oStockOutDTO.Base.clientId = CenterContral.oStockOutDTO.oMember.memberId;//会员支付成功，要记下这笔单未会员id
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateProductListWindowsMoneyLabel();
             //重新拉会员信息
