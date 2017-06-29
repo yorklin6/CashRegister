@@ -38,8 +38,7 @@ namespace CashRegisterApplication.window.Setting
 
         private void SettingDefaultMsg_Load(object sender, EventArgs e)
         {
-            //获取mac地址
-            _GetMac();
+           
             //获取postID
             _GetPostId();
 

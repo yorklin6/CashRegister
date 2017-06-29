@@ -126,9 +126,9 @@ namespace CashRegisterApplication.model
         public long storeId { get; set; }
         public long whouseId { get; set; }
         public long relatedOrder { get; set; }
-        public long clientId { get; set; }
+        public long clientId { get; set; }//会员id
         public long posId { get; set; }
-        public long cashierId { get; set; }
+        public long cashierId { get; set; }//收银员id，也就是登陆者
         public long orderAmount { get; set; }
         public String creator { get; set; }
         public long createTime { get; set; }

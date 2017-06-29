@@ -756,12 +756,12 @@ namespace CashRegiterApplication
                         CenterContral.CallFunctionMenuWindow();
                         return true;
                     }
-                case System.Windows.Forms.Keys.End:
-                    {
-                        CenterContral.flagCallSetting = CenterContral.FLAG_PRODUCTlIST_WINDOW;
-                        CenterContral.Windows_SettingDefaultMsgWindow.ShowByCenter();
-                        return true;
-                    }
+                //case System.Windows.Forms.Keys.End:
+                //    {
+                //        CenterContral.flagCallSetting = CenterContral.FLAG_PRODUCTlIST_WINDOW;
+                //        CenterContral.Windows_SettingDefaultMsgWindow.ShowByCenter();
+                //        return true;
+                //    }
      
                 case System.Windows.Forms.Keys.Insert:
                     {

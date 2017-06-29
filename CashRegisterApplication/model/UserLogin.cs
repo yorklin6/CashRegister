@@ -26,7 +26,7 @@ namespace CashRegisterApplication.model
 
     public class User
     {
-        public int id { get; set; }
+        public int userId { get; set; }
         public String userName { get; set; }
         public String mobile { get; set; }
         public String department { get; set; }
@@ -36,6 +36,8 @@ namespace CashRegisterApplication.model
         public int loginFailNum { get; set; }
         public int loginFailTime { get; set; }
         public String userRight { get; set; }
-    }
+
+        public int storeId{ get; set; }
+}
 
 }

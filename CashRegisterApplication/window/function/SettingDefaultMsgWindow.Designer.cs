@@ -106,6 +106,7 @@
             this.textBox_Mac.Name = "textBox_Mac";
             this.textBox_Mac.Size = new System.Drawing.Size(126, 21);
             this.textBox_Mac.TabIndex = 11;
+            this.textBox_Mac.Text = "02-00-4C-4F-4F-51";
             // 
             // label2
             // 

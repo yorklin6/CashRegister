@@ -103,9 +103,10 @@ namespace CashRegiterApplication
                 MessageBox.Show("帐号密码不对");
                 return false;
             }
+            CommUiltl.Log("CenterContral.DefaultUserId "+ CenterContral.DefaultUserId);
             CenterContral.DefaultUserName = user;
             CenterContral.DefaultPassword = password;
-            CenterContral.DefaultUserId = CenterContral.oLoginer.data.id;
+            CenterContral.DefaultUserId = CenterContral.oLoginer.data.userId;
             CenterContral.DefaultStoreId = storeId;
             Console.WriteLine("ERR:Get OK oLoginer errorCode: " + CenterContral.oLoginer.errorCode);
             return true;
