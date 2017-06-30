@@ -29,6 +29,7 @@ namespace CashRegiterApplication
         {
             InitializeComponent();
             InitData();
+          
         }
 
         private void ProductListWindow_Load(object sender, EventArgs e)
@@ -53,9 +54,7 @@ namespace CashRegiterApplication
         public void CallShow()
         {
             this.Show();
-            SetMemberInfo();
-            SetLocalSaveDataNumber();
-            UpdateDiscount();
+            UpdateTextShow();
         }
 
         public void SetMemberInfo()
@@ -168,25 +167,40 @@ namespace CashRegiterApplication
             }
             return true;
         }
+
+        public void UpdateTextShow()
+        {
+            //列出订单总价
+            UpdateProductListWindowsMoneyLabel();
+
+            //列出支付信息
+            _SetCheckoutGrid();
+
+            //更新会员信息
+            SetMemberInfo();
+            //挂单
+            SetLocalSaveDataNumber();
+            //折扣
+            UpdateDiscount();
+        }
+
         internal void CallShowBySettingWindows()
         {
             this.Show();
             this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
-            UpdateProductListWindowsMoneyLabel();
+            UpdateTextShow();
         }
         internal void EscapeShowByRecieveWindows()
         {
             this.Show();
             this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
-            _SetCheckoutGrid();
-            UpdateProductListWindowsMoneyLabel();
+            UpdateTextShow();
         }
         internal void CloseOrderAndPrintOrderByCenter()
         {
             this.Show();
             
-            _SetCheckoutGrid();
-            UpdateProductListWindowsMoneyLabel();
+ 
          
             this.dataGridView_checkout.CurrentCell = null;
             this.dataGridView_productList.CurrentCell = null;
@@ -196,6 +210,7 @@ namespace CashRegiterApplication
             this.dataGridView_productList.BeginEdit(true);
      
             _ResetAllData();
+            UpdateTextShow();
         }
 
        
@@ -206,13 +221,13 @@ namespace CashRegiterApplication
         }
         private void _ShowPayTipsInProductListAndSaveOrderMsg()
         {
-            if (CenterContral.oStockOutDTO.Base.RecieveFee >= CenterContral.oStockOutDTO.Base.orderAmount && CenterContral.oStockOutDTO.Base.ChangeFee == 0)
+            if (CenterContral.oStockOutDTO.Base.ChangeFee == 0)
             {
-                System.Windows.Forms.MessageBox.Show("付款成功,无需找零");
+                System.Windows.Forms.MessageBox.Show("下单成功,无需找零");
             }
-            else if (CenterContral.oStockOutDTO.Base.RecieveFee > CenterContral.oStockOutDTO.Base.orderAmount && CenterContral.oStockOutDTO.Base.ChangeFee > 0)
+            else if (CenterContral.oStockOutDTO.Base.ChangeFee > 0)
             {
-                System.Windows.Forms.MessageBox.Show("付款成功,需找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee) + " 元");
+                System.Windows.Forms.MessageBox.Show("下单成功,请记得找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee) + " 元");
             }
             else
             {
@@ -224,7 +239,7 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RealRecieveFee);
             this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
             this.label_total_product_count.Text = CenterContral.oStockOutDTO.Base.totalProductCount.ToString();
         }
@@ -351,7 +366,7 @@ namespace CashRegiterApplication
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
        
             CenterContral.oStockOutDTO.Base.totalProductCount = subtotalCount;
-            UpdateProductListWindowsMoneyLabel();
+            UpdateTextShow();
             return;
         }
 
@@ -948,34 +963,11 @@ namespace CashRegiterApplication
                 CommUiltl.Log("oStockOutDTO.details[i] " + oStockOutDTO.details[i]);
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], oStockOutDTO.details[i]);
             }
-            //列出订单总价
-            UpdateProductListWindowsMoneyLabel();
-            //列出支付信息
-            _SetPayWayDataGridView();
+            UpdateTextShow();
+           
         }
 
-        private void _SetPayWayDataGridView()
-        {
-            foreach (var item in CenterContral.oStockOutDTO.checkouts)
-            {
-                int i = this.dataGridView_checkout.Rows.Add();
-                if (item.payType == Checkout.PAY_TYPE_CASH)
-                {
-                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_CASH_DESC;
-                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
-                }
-                else if (item.payType == Checkout.PAY_TYPE_WEIXIN)
-                {
-                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_WEIXIN_DESC;
-                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
-                }
-                else if (item.payType == Checkout.PAY_TYPE_ZHIFUBAO)
-                {
-                    this.dataGridView_checkout.Rows[i].Cells[0].Value = Checkout.PAY_TYPE_ZHIFUBAO_DESC;
-                    this.dataGridView_checkout.Rows[i].Cells[1].Value = CommUiltl.CoverMoneyUnionToStrYuan(item.payAmount);
-                }
-            }
-        }
+
         
 
         private  DataGridViewCell gCurrentCell=null;
@@ -1166,8 +1158,9 @@ namespace CashRegiterApplication
             //把当前单据写入文件
             CenterContral.printOrderMsgToFile(oStockOutDTO);
         }
-        public void ExePrint()
+        public void DoPrint()
         {
+            this.printDocument.PrintController = new StandardPrintController();//使用这个，将会隐藏打印的对话框
             this.printDocument.Print();
         }
          
