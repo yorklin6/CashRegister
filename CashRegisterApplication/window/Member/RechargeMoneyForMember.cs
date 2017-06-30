@@ -95,7 +95,7 @@ namespace CashRegisterApplication.window.Member
             long recieveFee = 0;
             if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
-                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
+                MessageBox.Show("充值金额错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
             string showTips = "确认充值：" + this.textBox_ReceiveFee.Text + " 元";

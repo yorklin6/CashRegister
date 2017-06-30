@@ -39,16 +39,25 @@ namespace CashRegisterApplication.model
             oMember = new Member();
         }
 
-        internal void addChecout(Checkout oPayWay)
+        public void addChecout(Checkout oPayWay)
         {
-            CommUiltl.Log("RecieveFee before:" + Base.RecieveFee);
-            Base.RecieveFee += oPayWay.payAmount;
-            CommUiltl.Log("RecieveFee after:" + Base.RecieveFee);
-           
-                Base.ChangeFee = Base.RecieveFee - Base.orderAmount;
-    
+            CommUiltl.Log("RecieveFee before:" + Base.TotalPayFee);
+            Base.TotalPayFee += oPayWay.payAmount;
+            CommUiltl.Log("RecieveFee after:" + Base.TotalPayFee);
+            CaculateFee();
             checkouts.Add(oPayWay);
           
+        }
+
+        public void CaculateFee()
+        {
+            //计算找零价钱和实收价钱
+            Base.ChangeFee = Base.TotalPayFee - Base.orderAmount;
+            Base.RealRecieveFee = Base.TotalPayFee;
+            if (Base.RealRecieveFee> Base.orderAmount)
+            {
+                Base.RealRecieveFee = Base.orderAmount;
+            }
         }
     }
 
@@ -138,9 +147,11 @@ namespace CashRegisterApplication.model
         public String remark { get; set; }
 
         //************本地缓存数据
-        public long RecieveFee { get; set; }
+        public long TotalPayFee { get; set; }
+        public long RealRecieveFee { get; set; }//实收多少钱
         public String ProductList { get; set; }//辅助变量，帮助查看商品列表是否有修改
         public long ChangeFee { get; set; }
+
         public long totalProductCount { get; set; }//总件数
 
         public String baseDataJson { get; set; }

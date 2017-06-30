@@ -32,7 +32,7 @@ namespace CashRegisterApplication.window
             this.Show();
             this.Text= "收银-"+CenterContral.oCheckout.payTypeDesc;
             this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee);
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan( -CenterContral.oStockOutDTO.Base.ChangeFee);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
             _SelectRecieve();
@@ -135,7 +135,7 @@ namespace CashRegisterApplication.window
                 MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
-            long change = recieveFee + CenterContral.oStockOutDTO.Base.RecieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
+            long change = recieveFee + CenterContral.oStockOutDTO.Base.ChangeFee ;
             string showTips = "确认已收" + CenterContral.oCheckout.payTypeDesc + "" + this.textBox_ReceiveFee.Text + "元";
             if (change < 0)
             {

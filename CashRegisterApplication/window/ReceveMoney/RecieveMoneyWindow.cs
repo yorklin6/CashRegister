@@ -32,13 +32,8 @@ namespace CashRegisterApplication.window
         public void ShowByProductListWindow()
         {
             this.Show();
-            //显示未收款
-            long leftMoney = CenterContral.oStockOutDTO.Base.orderAmount - CenterContral.oStockOutDTO.Base.RecieveFee;
-            if (leftMoney < 0)
-            {
-                leftMoney = 0;
-            }
-            CommUiltl.Log("leftMoney:"+ leftMoney);
+         
+
            
         }
 
@@ -343,11 +338,11 @@ namespace CashRegisterApplication.window
             if (payTypeId == CenterContral.MEMBER_PAY_TYPE)
             {
                 CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
-                //this.Hide();
+                this.Hide();
                 return;
             }
             CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
-            //this.Hide();
+            this.Hide();
             return;
         }
      

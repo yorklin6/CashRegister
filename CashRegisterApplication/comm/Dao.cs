@@ -164,7 +164,7 @@ namespace CashRegisterApplication.comm
             strSql += "'" + oStockOutDTO.Base.posId + "',";
             strSql += "'" + oStockOutDTO.Base.cashierId + "',";
             strSql += "" + oStockOutDTO.Base.orderAmount + ",";
-            strSql += "" + oStockOutDTO.Base.RecieveFee + ",";
+            strSql += "" + oStockOutDTO.Base.TotalPayFee + ",";
             strSql += "" + oStockOutDTO.Base.ChangeFee + ",";
             strSql += "'" + oStockOutDTO.Base.stockOutTime + "',";//以同步给后台的时间为主
             strSql += "'" + oStockOutDTO.Base.baseDataJson + "',";
@@ -299,7 +299,7 @@ namespace CashRegisterApplication.comm
             strSql += " pos_id='" + oStockOutDTO.Base.posId + "',";
             strSql += " cashier_id='" + oStockOutDTO.Base.cashierId + "',";
             strSql += " order_amount=" + oStockOutDTO.Base.orderAmount + ",";
-            strSql += " recieve_fee=" + oStockOutDTO.Base.RecieveFee + ",";
+            strSql += " recieve_fee=" + oStockOutDTO.Base.TotalPayFee + ",";
             strSql += " change_fee=" + oStockOutDTO.Base.ChangeFee + ",";
             strSql += " remark='" + oStockOutDTO.Base.remark + "',";
             strSql += " base_data_json='" + oStockOutDTO.Base.baseDataJson + "',";
