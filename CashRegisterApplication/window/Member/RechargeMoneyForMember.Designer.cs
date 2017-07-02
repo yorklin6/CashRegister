@@ -41,24 +41,26 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBox_ReceiveFee = new System.Windows.Forms.TextBox();
             this.buttonConfirm = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox_payType = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(394, 352);
+            this.label5.Location = new System.Drawing.Point(433, 393);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(139, 80);
+            this.label5.Size = new System.Drawing.Size(139, 60);
             this.label5.TabIndex = 46;
-            this.label5.Text = "快捷键:\r\nEnter:回车确认\r\nF1:重新输入会员信息\r\nESC:返回上一个界面";
+            this.label5.Text = "快捷键:\r\nF1:重新输入会员信息\r\nF2:重新选择充值方式";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // textBox_memberAccount
             // 
             this.textBox_memberAccount.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_memberAccount.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_memberAccount.Location = new System.Drawing.Point(223, 42);
+            this.textBox_memberAccount.Location = new System.Drawing.Point(223, 93);
             this.textBox_memberAccount.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_memberAccount.Name = "textBox_memberAccount";
             this.textBox_memberAccount.ReadOnly = true;
@@ -68,7 +70,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(168, 47);
+            this.label1.Location = new System.Drawing.Point(168, 98);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 17);
             this.label1.TabIndex = 36;
@@ -77,7 +79,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(168, 89);
+            this.label2.Location = new System.Drawing.Point(168, 187);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 17);
             this.label2.TabIndex = 38;
@@ -87,7 +89,7 @@
             // 
             this.textBox_name.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_name.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_name.Location = new System.Drawing.Point(223, 89);
+            this.textBox_name.Location = new System.Drawing.Point(223, 184);
             this.textBox_name.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_name.Name = "textBox_name";
             this.textBox_name.ReadOnly = true;
@@ -97,7 +99,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(168, 135);
+            this.label3.Location = new System.Drawing.Point(168, 145);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 17);
             this.label3.TabIndex = 37;
@@ -107,7 +109,7 @@
             // 
             this.textBox_phone.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_phone.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_phone.Location = new System.Drawing.Point(223, 130);
+            this.textBox_phone.Location = new System.Drawing.Point(223, 139);
             this.textBox_phone.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_phone.Name = "textBox_phone";
             this.textBox_phone.ReadOnly = true;
@@ -117,7 +119,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(112, 174);
+            this.label4.Location = new System.Drawing.Point(112, 225);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 17);
             this.label4.TabIndex = 41;
@@ -127,7 +129,7 @@
             // 
             this.textBox_memberBalance.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_memberBalance.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_memberBalance.Location = new System.Drawing.Point(223, 171);
+            this.textBox_memberBalance.Location = new System.Drawing.Point(223, 222);
             this.textBox_memberBalance.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_memberBalance.Name = "textBox_memberBalance";
             this.textBox_memberBalance.ReadOnly = true;
@@ -138,7 +140,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(124, 218);
+            this.label6.Location = new System.Drawing.Point(124, 269);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(88, 17);
             this.label6.TabIndex = 43;
@@ -148,7 +150,7 @@
             // 
             this.textBox_ReceiveFee.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_ReceiveFee.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_ReceiveFee.Location = new System.Drawing.Point(223, 212);
+            this.textBox_ReceiveFee.Location = new System.Drawing.Point(223, 263);
             this.textBox_ReceiveFee.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_ReceiveFee.Name = "textBox_ReceiveFee";
             this.textBox_ReceiveFee.Size = new System.Drawing.Size(146, 23);
@@ -160,7 +162,7 @@
             this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonConfirm.ForeColor = System.Drawing.SystemColors.Window;
             this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(246, 256);
+            this.buttonConfirm.Location = new System.Drawing.Point(246, 307);
             this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.buttonConfirm.Name = "buttonConfirm";
             this.buttonConfirm.Size = new System.Drawing.Size(100, 51);
@@ -169,12 +171,34 @@
             this.buttonConfirm.UseVisualStyleBackColor = false;
             this.buttonConfirm.Click += new System.EventHandler(this.buttonConfirm_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(144, 58);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 17);
+            this.label7.TabIndex = 48;
+            this.label7.Text = "充值方式：";
+            // 
+            // textBox_payType
+            // 
+            this.textBox_payType.BackColor = System.Drawing.SystemColors.WindowText;
+            this.textBox_payType.ForeColor = System.Drawing.SystemColors.Window;
+            this.textBox_payType.Location = new System.Drawing.Point(223, 55);
+            this.textBox_payType.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+            this.textBox_payType.Name = "textBox_payType";
+            this.textBox_payType.ReadOnly = true;
+            this.textBox_payType.Size = new System.Drawing.Size(146, 23);
+            this.textBox_payType.TabIndex = 49;
+            // 
             // RechargeMoneyForMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(584, 462);
+            this.Controls.Add(this.textBox_payType);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.buttonConfirm);
             this.Controls.Add(this.textBox_ReceiveFee);
@@ -215,5 +239,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox_ReceiveFee;
         private System.Windows.Forms.Button buttonConfirm;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox_payType;
     }
 }

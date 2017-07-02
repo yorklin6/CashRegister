@@ -32,7 +32,7 @@ namespace CashRegisterApplication.comm
         public static SettingDefaultMsgWindow Windows_SettingDefaultMsgWindow ;
 
         public static RechargeMoneyForMember Window_RechargeMoneyForMember;//充值会员窗口
-
+        public static PayTypesForRechargeWindow Window_PayTypesForRechargeWindow;//充值会员
 
         public static MemberInfoWindows Window_MemberInfoWindows;//输入会员弹窗
         public static DiscountWindows Window_DiscountWindows;//折扣
@@ -63,6 +63,8 @@ namespace CashRegisterApplication.comm
 
 
         public static Checkout oCheckout;//支付信息
+
+        public static Checkout oRechargePayType;//充值方式
         //public static PayType oCurrentPayType;// 支付类型全局
 
         public static UserLogin oLoginer;//登录用户
@@ -179,8 +181,9 @@ namespace CashRegisterApplication.comm
             Window_ReceiveMoneyByPayType = new ReceiveMoneyByPayTypeWindow();//现金收款窗口
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
+            Window_PayTypesForRechargeWindow = new PayTypesForRechargeWindow();
 
-            Window_MemberInfoWindows = new MemberInfoWindows();
+           Window_MemberInfoWindows = new MemberInfoWindows();
             Window_DiscountWindows = new DiscountWindows();
 
             Window_FunctionMenuWindow = new FunctionMenuWindow();
@@ -369,6 +372,9 @@ namespace CashRegisterApplication.comm
             CommUiltl.Log("listStockOutDTO.Count：" + oJsonList.Count);
             return true;
         }
+
+        
+
         /******************门店信息******************/
         internal static void GetStoreMsg(string strUserName)
         {
@@ -487,7 +493,7 @@ namespace CashRegisterApplication.comm
         //    }
         //}
 
-        internal static bool SetCurrentPayTypeById(int payTypeId)
+        internal static bool SetCurrentRecievePayTypeById(int payTypeId)
         {
             //找出支付类型为paytypid元素
             for(int index=0; index < CenterContral.oPayTypeList.list.Count; ++index)
@@ -503,7 +509,28 @@ namespace CashRegisterApplication.comm
                     CenterContral.oCheckout.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
                     CenterContral.oCheckout.payStatus = CenterContral.PAY_STATE_SUCCESS;
                     CenterContral.oCheckout.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
-             
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal static bool SetRechagePayTypeById(int payTypeId)
+        {
+            //找出支付类型为paytypid元素
+            for (int index = 0; index < CenterContral.oPayTypeList.list.Count; ++index)
+            {
+                if (CenterContral.oPayTypeList.list[index].payTypeId == payTypeId)
+                {
+                    var oPayType = CenterContral.oPayTypeList.list[index];
+                    //支付信息预设
+                    CenterContral.oRechargePayType = new Checkout();
+                    CenterContral.oRechargePayType.payType = oPayType.payTypeId;
+                    CenterContral.oRechargePayType.payTypeDesc = oPayType.description;
+                    CenterContral.oRechargePayType.generatePayOrderNumber();
+                    CenterContral.oRechargePayType.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
+                    CenterContral.oRechargePayType.payStatus = CenterContral.PAY_STATE_SUCCESS;
+                    CenterContral.oRechargePayType.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
                     return true;
                 }
             }
@@ -539,9 +566,19 @@ namespace CashRegisterApplication.comm
         internal static void ShowWindows_RechargeMoneyForMember()
         {
             flagCallShowRecharge = FLAG_PRODUCTlIST_WINDOW;
+            //1.选择充值支付方式
+            //
+
+            CenterContral.Window_PayTypesForRechargeWindow.ShowByFunctionWindow();
+        }
+        internal static void ShowPayTypesForRechargeWindow()
+        {
+            CenterContral.Window_PayTypesForRechargeWindow.ShowByFunctionWindow();
+        }
+        internal static void CallRechargeWindowByRechargePayTypesWindow()
+        {
             Window_RechargeMoneyForMember.ShowByProductListWindow();
         }
-
         //充值后返回
         internal static void ControlWindowsAfterRecharge()
         {
@@ -1220,6 +1257,12 @@ namespace CashRegisterApplication.comm
 
         internal static void printOrderMsgToFile(StockOutDTO oStockOutDTO)
         {
+            if (!CenterContral.oSystem.bPrinterOpen)
+            {
+                //打印机关闭状态
+                return;
+            }
+
             //#region 按格式生成一个txt文件，方便第三步打印
             StreamWriter sw = new StreamWriter(CenterContral.strPrintFilePath, true);
 
@@ -1231,32 +1274,86 @@ namespace CashRegisterApplication.comm
             sw.WriteLine("收银员:" + CenterContral.DefaultUserId);
 
             sw.WriteLine("==============销售==============");
-            sw.WriteLine("名称/条码    单价   数量   金额");
-            int nums = 20;
-            int prices = 12;
+            sw.WriteLine("名称/条码            单价   数量  金额");
+            
+            int pricesIndex = 14;
+            int numsLength = 7;
+            int countStrLength = 6;
+            int subTotalCountStrLength = 7 ;
 
             List<StockOutDetail> list = oStockOutDTO.details;
             for (int i = 0; i < list.Count; i++)
             {
                 string name = list[i].goodsName.Trim();//获取该行的物品名称
-                string num = list[i].actualCount.ToString().Trim();//数量
-                string price = list[i].unitPrice.ToString().Trim();//单价
-                string bardCode = list[i].barcode;
-                string subtotal = list[i].subtotal.ToString().Trim(); ;
-                int numlength = System.Text.Encoding.Default.GetBytes(num).Length;
-                if (numlength < nums)
+                string bardCode = list[i].barcode;//条码
+
+                string price = CommUiltl.CoverMoneyUnionToStrYuan(list[i].unitPrice);//单价
+                string num = list[i].actualCount.ToString();//数量
+                if (list[i].isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
                 {
-                    num = AddSpace(num, nums - numlength);
+                    //计重类商品
+                    num = CommUiltl.CoverUnionTo3rd(list[i].barcodeCount);
+                }
+                string subtotal = CommUiltl.CoverMoneyUnionToStrYuan(list[i].subtotal)  ;//商品金额
+
+
+                string strPrint = "";
+                string strTmp;
+                CommUiltl.Log("printOrderMsgToFile");
+
+
+             
+                strPrint += bardCode.PadRight(pricesIndex, ' ');
+                
+
+                strTmp = strPrint + price;
+                if (price.Length < numsLength)
+                {
+                    strPrint += price.PadLeft(numsLength, ' ');
+                } else
+                {
+                  
+                    strPrint += " "+price;
+                    CommUiltl.Log( " !!!!! " + strPrint.Length);
+                }
+                CommUiltl.Log(strPrint + " " + strPrint.Length +" leng:"+ System.Text.Encoding.Default.GetBytes(strPrint).Length);
+
+
+                if (num.Length<countStrLength)
+                {
+                    strPrint += num.PadLeft(countStrLength, ' ');
+                }
+                else
+                {
+                    strPrint += " " + num;
+                    CommUiltl.Log(" !!!!! " + strPrint.Length);
                 }
 
-                int pricelength = System.Text.Encoding.Default.GetBytes(price).Length;
-                if (pricelength < prices)
+                CommUiltl.Log(strPrint + " " + strPrint.Length + " leng:" + System.Text.Encoding.Default.GetBytes(strPrint).Length);
+
+                if (subtotal.Length < subTotalCountStrLength)
                 {
-                    price = AddSpace(price, prices - pricelength);
+                    strPrint += subtotal.PadLeft(subTotalCountStrLength, ' ');
+                }else
+                {
+                    strPrint += " "+subtotal;
+                    CommUiltl.Log(" !!!!! " + strPrint.Length);
                 }
+
+                CommUiltl.Log(strPrint + " " + strPrint.Length + " leng:" + System.Text.Encoding.Default.GetBytes(strPrint).Length);
+
 
                 sw.WriteLine(name);
-                sw.WriteLine("                  " + num + "        " + price);
+                if (strPrint.Length <= 34)
+                {
+                    sw.WriteLine(strPrint);
+                } else
+                {
+                    //大32.那么换行吧
+                    sw.WriteLine(strPrint.Substring(0,34));
+                    sw.WriteLine(strPrint.Substring(34));
+                }
+              
 
             }
 
@@ -1281,6 +1378,8 @@ namespace CashRegisterApplication.comm
             //this.printDocument.Print();
         }
 
+
+
         internal static void Call_PrinterHistoryWindow()
         {
             CenterContral.Window_Printer_Hostory_Select_Windows.ShowByCenterContral();
@@ -1289,8 +1388,7 @@ namespace CashRegisterApplication.comm
         //#region 该函数动态添加空格，对齐小票
         public static string AddSpace(string text, int length)
         {
-            text = text.PadRight(length, ' ');
-            return text;
+            return text.PadRight(length, ' ');
         }
 
         public static string GetTicketInfo()

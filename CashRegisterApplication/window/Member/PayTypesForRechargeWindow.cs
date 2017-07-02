@@ -11,30 +11,22 @@ using CashRegisterApplication.model;
 
 namespace CashRegisterApplication.window
 {
-    public partial class RecieveMoneyWindow : Form
+    public partial class PayTypesForRechargeWindow : Form
     {
-        public RecieveMoneyWindow()
+        public PayTypesForRechargeWindow()
         {
             InitializeComponent();
        
         }
       
-        private void RecieveMoneyWindows_Shown(object sender, EventArgs e)
+        private void PayTypesForRecharges_Shown(object sender, EventArgs e)
         {
-    
-            //注意，正常流程下面，这个窗体只有未收款的时候显示。
-            CommUiltl.Log("RecieveMoneyWindows_Shown");
-            //this.ActiveControl = this.buttonCash;
-            ShowByProductListWindow();
-
+            ShowByFunctionWindow();
         }
 
-        public void ShowByProductListWindow()
+        public void ShowByFunctionWindow()
         {
             this.Show();
-         
-
-           
         }
 
         public void CallHide()
@@ -43,26 +35,33 @@ namespace CashRegisterApplication.window
         }
         public void ShowPaidMsg()
         {
-            CommUiltl.Log("已支付列表");
             this.Show();
            
-            ShowByProductListWindow();
+            ShowByFunctionWindow();
         }
 
         List<Button> listButton = new List<Button>();
-
-        private void RecieveMoneyWindows_Load(object sender, EventArgs e)
+        public static PayTypeData oRechargePayTypeList;
+        //
+        private void PayTypesForRecharges_Load(object sender, EventArgs e)
         {
-    
+            oRechargePayTypeList = new PayTypeData();
+            oRechargePayTypeList.list = new List<PayType>();
+            int index = 1;  //index为0，为储值卡，不可能储值卡为储值卡充值
+            for (; index < CenterContral.oPayTypeList.list.Count;++index)
+            {
+                oRechargePayTypeList.list.Add(CenterContral.oPayTypeList.list[index]);
+            }
+        
             this.tableLayoutPanel_Show.Controls.Remove(this.buttonBasePay); 
 
-            if (CenterContral.oPayTypeList.list.Count ==0)
+            if (oRechargePayTypeList.list.Count ==0)
             {
                 return;
             }
-            int iRowCount = CenterContral.oPayTypeList.list.Count / 3;
+            int iRowCount = oRechargePayTypeList.list.Count / 3;
             CommUiltl.Log("iRowCount:" + iRowCount);
-            if (CenterContral.oPayTypeList.list.Count % 3 != 0)
+            if (oRechargePayTypeList.list.Count % 3 != 0)
             {
                 ++iRowCount;
                 CommUiltl.Log(" ++iRowCount:" + iRowCount);
@@ -71,9 +70,9 @@ namespace CashRegisterApplication.window
            _GenerateTablePane(iRowCount);//重新绘制layout
          
             int i = 0;
-            for (int row = 0; row < iRowCount && i < CenterContral.oPayTypeList.list.Count; ++row)
+            for (int row = 0; row < iRowCount && i < oRechargePayTypeList.list.Count; ++row)
             {
-                for (int colum=0; colum < 3 && i < CenterContral.oPayTypeList.list.Count; ++colum)
+                for (int colum=0; colum < 3 && i < oRechargePayTypeList.list.Count; ++colum)
                 {
                     Button button = new Button();
                     setButtonShadow(button);//
@@ -88,7 +87,7 @@ namespace CashRegisterApplication.window
                     button.Size = new System.Drawing.Size(174, 72);
                     button.TabIndex = 5 + i;
                   
-                    button.Text =  CenterContral.oPayTypeList.list[i].description;
+                    button.Text =  oRechargePayTypeList.list[i].description;
                     if (i < 10)
                     {
                         button.Text += "(" + i + ")";
@@ -323,24 +322,19 @@ namespace CashRegisterApplication.window
         private void callPayWindowsBayQuickKey(int indexPay)
         {
             CommUiltl.Log("indexPay:" + indexPay);
-            callPayWindowsBayPayTypeId(CenterContral.oPayTypeList.list[indexPay].payTypeId);
+            callRechargeWindowsBayPayTypeId(oRechargePayTypeList.list[indexPay].payTypeId);
             return;
         }
-        private void callPayWindowsBayPayTypeId(int payTypeId)
+        private void callRechargeWindowsBayPayTypeId(int payTypeId)
         {
             CommUiltl.Log("payTypeId:" + payTypeId);
             _CheckFee();
-            if (!CenterContral.SetCurrentRecievePayTypeById(payTypeId))
+            if (!CenterContral.SetRechagePayTypeById(payTypeId))
             {
                 MessageBox.Show("系统错误，未知支付类型:payTypeId-" + payTypeId);
                 return;
             }
-            if (payTypeId == CenterContral.MEMBER_PAY_TYPE)
-            {
-                CenterContral.Window_ReceiveMoneyByMember.ShowByReceiveMoneyWindows();
-                this.Hide();
-                return;
-            }
+            CenterContral.CallRechargeWindowByRechargePayTypesWindow();
             CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
             this.Hide();
             return;
@@ -375,10 +369,9 @@ namespace CashRegisterApplication.window
         }
 
 
-        private void RecieveMoneyWindow_FormClosing(object sender, FormClosingEventArgs e)
+        private void PayTypesForRecharge_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CenterContral.Window_RecieveMoney = new RecieveMoneyWindow();
-            e.Cancel = false;
+            e.Cancel = true;
             escapeToPreWindows();
         }
 

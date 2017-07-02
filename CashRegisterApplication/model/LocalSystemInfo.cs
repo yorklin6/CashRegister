@@ -11,5 +11,6 @@ namespace CashRegisterApplication.model
 
         public String ClouWebAddress { get; set; }
 
+        public bool bPrinterOpen { get; set; }
     }
 }

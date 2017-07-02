@@ -39,7 +39,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(158, 79);
+            this.label1.Location = new System.Drawing.Point(117, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 17);
             this.label1.TabIndex = 36;
@@ -50,7 +50,7 @@
             this.textBox_memberAccount.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_memberAccount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox_memberAccount.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_memberAccount.Location = new System.Drawing.Point(208, 76);
+            this.textBox_memberAccount.Location = new System.Drawing.Point(167, 76);
             this.textBox_memberAccount.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_memberAccount.Name = "textBox_memberAccount";
             this.textBox_memberAccount.Size = new System.Drawing.Size(146, 23);
@@ -60,7 +60,7 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.WindowText;
             this.button1.ForeColor = System.Drawing.SystemColors.Window;
-            this.button1.Location = new System.Drawing.Point(218, 156);
+            this.button1.Location = new System.Drawing.Point(177, 156);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(126, 36);
@@ -74,7 +74,7 @@
             this.textBox_Password.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_Password.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox_Password.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_Password.Location = new System.Drawing.Point(208, 111);
+            this.textBox_Password.Location = new System.Drawing.Point(167, 111);
             this.textBox_Password.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.textBox_Password.Name = "textBox_Password";
             this.textBox_Password.PasswordChar = '*';
@@ -84,7 +84,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(158, 117);
+            this.label2.Location = new System.Drawing.Point(117, 117);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 17);
             this.label2.TabIndex = 45;
@@ -95,7 +95,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
-            this.ClientSize = new System.Drawing.Size(551, 271);
+            this.ClientSize = new System.Drawing.Size(484, 271);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox_Password);
             this.Controls.Add(this.button1);

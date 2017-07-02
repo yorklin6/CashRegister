@@ -131,6 +131,7 @@ namespace CashRegiterApplication
             this.label_receiveFee.Text = "0.00";
             this.label_changeFee.Text = "0.00";
             this.label_total_product_count.Text = "0";
+           // ShowPrinterFlag();
         }
         private void _GeneraterOrder()
         {
@@ -182,6 +183,18 @@ namespace CashRegiterApplication
             SetLocalSaveDataNumber();
             //折扣
             UpdateDiscount();
+            //显示打印机状态
+            ShowPrinterFlag();
+        }
+        public void ShowPrinterFlag()
+        {
+            if (CenterContral.oSystem.bPrinterOpen )
+            {
+                this.label_Sate.Text = "打印小票";
+                return;
+            }
+            this.label_Sate.Text = "关闭打印";
+            return;
         }
 
         internal void CallShowBySettingWindows()
@@ -490,6 +503,7 @@ namespace CashRegiterApplication
         
         private void productListDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
             CommUiltl.Log("row:" + e.RowIndex + " Column:" + e.ColumnIndex);
         }
 
@@ -736,10 +750,7 @@ namespace CashRegiterApplication
                         Discount();
                         return true;
                     }
-                case System.Windows.Forms.Keys.F12:
-                    {
-                        return true;
-                    }
+              
                 case System.Windows.Forms.Keys.F4:
                     {
                         //交易挂单
@@ -771,13 +782,18 @@ namespace CashRegiterApplication
                         CenterContral.CallFunctionMenuWindow();
                         return true;
                     }
+                case System.Windows.Forms.Keys.F11:
+                    {
+                        ChangePrinterStatus();
+                        return true;
+                    }
                 //case System.Windows.Forms.Keys.End:
                 //    {
                 //        CenterContral.flagCallSetting = CenterContral.FLAG_PRODUCTlIST_WINDOW;
                 //        CenterContral.Windows_SettingDefaultMsgWindow.ShowByCenter();
                 //        return true;
                 //    }
-     
+
                 case System.Windows.Forms.Keys.Insert:
                     {
                         //取消订单
@@ -787,6 +803,33 @@ namespace CashRegiterApplication
               
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+        private void ChangePrinterStatus()
+        {
+            if (CenterContral.oSystem.bPrinterOpen)
+            {
+                var confirmPayApartResult = MessageBox.Show("是否要关闭打印",
+                                     "打印确认",
+                                     MessageBoxButtons.YesNo);
+                if (confirmPayApartResult != DialogResult.Yes)
+                {
+                    return;
+                }
+                CenterContral.oSystem.bPrinterOpen = false;
+            }else
+            {
+                var confirmPayApartResult = MessageBox.Show("是否要开启打印",
+                     "打印确认",
+                     MessageBoxButtons.YesNo);
+                if (confirmPayApartResult != DialogResult.Yes)
+                {
+                    return;
+                }
+                CenterContral.oSystem.bPrinterOpen = true;
+            }
+            CenterContral.SetSystemInfoToDb();
+            UpdateTextShow();
+            return;
         }
         private void _DeleteCurrentRow()
         {
@@ -1121,22 +1164,30 @@ namespace CashRegiterApplication
         //***********打印事件
         private void printDocument_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
+            CommUiltl.Log("CenterContral.oSystem.bPrinterOpen :" + CenterContral.oSystem.bPrinterOpen);
+            if (!CenterContral.oSystem.bPrinterOpen)
+            {
+                //打印机关闭状态
+                return;
+            }
+
             string text = null;
             // 信息头 
             System.Drawing.Font printFont = new System.Drawing.Font
             ("Arial", 8, System.Drawing.FontStyle.Regular);
-           
+
             text = CenterContral.GetTicketInfo();//获取本次购物清单数据
+            CommUiltl.Log("printDocument_PrintPage");
+                  CommUiltl.Log(text);
             // 设置信息打印格式 
             e.Graphics.DrawString(text, printFont, System.Drawing.Brushes.Black, 0, 5);
-            CommUiltl.Log("RawPrinterHelper printDocument_PrintPage end" );
+            CommUiltl.Log("RawPrinterHelper printDocument_PrintPage end");
         }
 
         private void printDocument_EndPrint(object sender, System.Drawing.Printing.PrintEventArgs e)
         {
             //打印结束后
-            //关闭钱箱
-            CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
+         
             //删除文件
             if (File.Exists(CenterContral.strPrintFilePath))
             {
@@ -1146,6 +1197,12 @@ namespace CashRegiterApplication
 
         public void PrintOrder(StockOutDTO oStockOutDTO)
         {
+            if (!CenterContral.oSystem.bPrinterOpen)
+            {
+                //打印机关闭状态
+                return;
+            }
+
             CommUiltl.Log("RawPrinterHelper PrintOrder :" + this.printDocument.PrinterSettings.IsValid);
            
              if (!this.printDocument.PrinterSettings.IsValid)
@@ -1160,6 +1217,14 @@ namespace CashRegiterApplication
         }
         public void DoPrint()
         {
+            //关闭钱箱
+            CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
+
+            if (!CenterContral.oSystem.bPrinterOpen)
+            {
+                //打印机关闭状态
+                return;
+            }
             this.printDocument.PrintController = new StandardPrintController();//使用这个，将会隐藏打印的对话框
             this.printDocument.Print();
         }

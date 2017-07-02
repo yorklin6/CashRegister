@@ -32,6 +32,7 @@ namespace CashRegisterApplication.window.Member
             this.textBox_name.Text = CenterContral.oStockOutDTO.oMember.name;
             this.textBox_memberBalance.Text = CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance));
             this.textBox_phone.Text = CenterContral.oStockOutDTO.oMember.phone;
+            this.textBox_payType.Text = CenterContral.oRechargePayType.payTypeDesc;
         }
 
 
@@ -45,6 +46,10 @@ namespace CashRegisterApplication.window.Member
         }
         
         public void ShowByProductListWindow()
+        {
+            ShowRechargeMoneyWindow();
+        }
+        public void ShowByRechargeWindow()
         {
             ShowRechargeMoneyWindow();
         }

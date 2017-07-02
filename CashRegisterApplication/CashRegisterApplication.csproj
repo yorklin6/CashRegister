@@ -126,6 +126,12 @@
     <Compile Include="window\Member\RechargeMoneyForMember.Designer.cs">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\Member\PayTypesForRechargeWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Member\PayTypesForRechargeWindow.Designer.cs">
+      <DependentUpon>PayTypesForRechargeWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\Printer_Test\Cash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="window\Member\RechargeMoneyForMember.resx">
       <DependentUpon>RechargeMoneyForMember.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\Member\PayTypesForRechargeWindow.resx">
+      <DependentUpon>PayTypesForRechargeWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="window\Printer_Test\Cash.resx">
       <DependentUpon>Cash.cs</DependentUpon>

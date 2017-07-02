@@ -26,9 +26,21 @@ namespace CashRegiterApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-
-            Application.Run(new LoginWindows());
+            //string str;
+            //str = "===============销售===============";
+            //CommUiltl.Log(str+" "+ str.Length);
+            //str = "名称/条码     单价    数量    金额";
+            //CommUiltl.Log(str + " " + str.Length);
+            //str = "名称/条码     ";
+            //CommUiltl.Log(str + " " + str.Length);
+            //str = "名称/条码     单价    数量";
+            //CommUiltl.Log(str + " " + str.Length);
+            //str = "名称/条码       单价      数量      金额";
+            //CommUiltl.Log(str + " " + str.Length);
+            //str = "名称/条码     单价     数量      100.32";
+            //CommUiltl.Log(str + " " + str.Length);
+            //   Application.Run(new FunctionMenuWindow());
+           Application.Run(new LoginWindows());
             // Runs the application.
         }
 

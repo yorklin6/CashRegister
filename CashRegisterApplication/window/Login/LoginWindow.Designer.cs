@@ -43,7 +43,7 @@
             // 
             this.button_loggin.ImageKey = "(无)";
             this.button_loggin.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button_loggin.Location = new System.Drawing.Point(294, 190);
+            this.button_loggin.Location = new System.Drawing.Point(278, 191);
             this.button_loggin.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_loggin.Name = "button_loggin";
             this.button_loggin.Size = new System.Drawing.Size(87, 33);
@@ -56,7 +56,7 @@
             // 
             this.textBox_userName.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_userName.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_userName.Location = new System.Drawing.Point(280, 107);
+            this.textBox_userName.Location = new System.Drawing.Point(264, 108);
             this.textBox_userName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_userName.Name = "textBox_userName";
             this.textBox_userName.Size = new System.Drawing.Size(126, 23);
@@ -67,7 +67,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label1.Location = new System.Drawing.Point(229, 110);
+            this.label1.Location = new System.Drawing.Point(213, 111);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 17);
             this.label1.TabIndex = 2;
@@ -78,7 +78,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label2.Location = new System.Drawing.Point(229, 140);
+            this.label2.Location = new System.Drawing.Point(213, 141);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 17);
             this.label2.TabIndex = 3;
@@ -88,7 +88,7 @@
             // 
             this.textBox_password.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_password.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_password.Location = new System.Drawing.Point(280, 140);
+            this.textBox_password.Location = new System.Drawing.Point(264, 141);
             this.textBox_password.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_password.Name = "textBox_password";
             this.textBox_password.PasswordChar = '*';
@@ -99,7 +99,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(229, 73);
+            this.label3.Location = new System.Drawing.Point(213, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 17);
             this.label3.TabIndex = 6;
@@ -109,7 +109,7 @@
             // 
             this.textBox_Shop.BackColor = System.Drawing.SystemColors.WindowText;
             this.textBox_Shop.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_Shop.Location = new System.Drawing.Point(279, 73);
+            this.textBox_Shop.Location = new System.Drawing.Point(263, 74);
             this.textBox_Shop.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_Shop.Name = "textBox_Shop";
             this.textBox_Shop.ReadOnly = true;
@@ -122,7 +122,7 @@
             this.label_tips.AutoSize = true;
             this.label_tips.Font = new System.Drawing.Font("微软雅黑", 21.75F);
             this.label_tips.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label_tips.Location = new System.Drawing.Point(259, 18);
+            this.label_tips.Location = new System.Drawing.Point(243, 19);
             this.label_tips.Name = "label_tips";
             this.label_tips.Size = new System.Drawing.Size(0, 38);
             this.label_tips.TabIndex = 8;
@@ -146,7 +146,6 @@
             this.ForeColor = System.Drawing.SystemColors.Window;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoginWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
