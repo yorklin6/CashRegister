@@ -46,7 +46,9 @@ namespace CashRegisterApplication.comm
         public static HistoryDetailWindow Window_HistoryDetailWindow;
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
-       
+
+        public static string stMemberrAccount;
+        public static string strMemberPassword;
 
         public static SelectGoodWindows Window_SelectGood;
 
@@ -1116,7 +1118,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateTextShow();
             //重新拉会员信息
-            CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
+            CenterContral.GetMemberByMemberAccount(CenterContral.stMemberrAccount,CenterContral.strMemberPassword);
             CenterContral.Window_ProductList.UpdateTextShow();
             return true;
         }
@@ -1139,7 +1141,7 @@ namespace CashRegisterApplication.comm
             oRecharge.reqRechargeJson = JsonConvert.SerializeObject(oRecharge);
             long beforeMberBalance = CenterContral.oStockOutDTO.oMember.balance ;
             //重新拉会员信息
-            CenterContral.GetMemberByMemberAccount(CenterContral.oStockOutDTO.oMember.memberAccount);
+            CenterContral.GetMemberByMemberAccount(CenterContral.stMemberrAccount, CenterContral.strMemberPassword);
             long afterMemberAccount = CenterContral.oStockOutDTO.oMember.balance ;
             //记录流水
             Dao.memberRecharge(oRecharge, beforeMberBalance, afterMemberAccount, recieveFee, CenterContral.oStockOutDTO.oMember);
@@ -1148,10 +1150,10 @@ namespace CashRegisterApplication.comm
         }
 
         //************************会员信息***********************
-        internal static bool GetMemberByMemberAccount(string strMemberAccount)
+        internal static bool GetMemberByMemberAccount(string strMemberAccount,string strPassword )
         {
             MemberHttpRespone oMember = new MemberHttpRespone();
-            int iMemberRet = HttpUtility.GetMemberByMemberAccount(strMemberAccount, ref oMember);
+            int iMemberRet = HttpUtility.GetMemberByMemberAccount(strMemberAccount, strPassword, ref oMember);
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
                 if (oMember.data== null)
@@ -1160,6 +1162,8 @@ namespace CashRegisterApplication.comm
                     return false;
                 }
                 CenterContral.oStockOutDTO.oMember = oMember.data;
+                CenterContral.stMemberrAccount = strMemberAccount;
+                CenterContral.strMemberPassword = strPassword;
                 return true;
             }
             if (iMemberRet == HttpUtility.CLOUD_SATE_HTTP_FAILD)
@@ -1168,7 +1172,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
            
-            MessageBox.Show("业务错误：" + HttpUtility.lastErrorMsg);
+            MessageBox.Show("错误：" + HttpUtility.lastErrorMsg);
            
             return false;
         }

@@ -96,7 +96,7 @@ namespace CashRegisterApplication.window.member
             if (CenterContral.oStockOutDTO.oMember.memberAccount != this.textBox_memberAccount.Text)
             {
                 //查会员信息
-                if (!CenterContral.GetMemberByMemberAccount(this.textBox_memberAccount.Text))
+                if (!CenterContral.GetMemberByMemberAccount(this.textBox_memberAccount.Text,this.textBox_Password.Text))
                 {
                     this.textBox_memberAccount.Focus();
                     this.textBox_memberAccount.SelectionStart = 0;

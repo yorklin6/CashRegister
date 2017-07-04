@@ -416,13 +416,13 @@ namespace CashRegiterApplication
             return true;
         }
         /***************************************会员信息***************************************/
-        internal static int GetMemberByMemberAccount(string strMemberAccount,ref MemberHttpRespone oMember)
+        internal static int GetMemberByMemberAccount(string strMemberAccount,string strPassword, ref MemberHttpRespone oMember)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
             for (int i = 0; i < 2; ++i)
             {
-                iResult = _GetMemberByMemberAccount(strMemberAccount,ref oMember);
+                iResult = _GetMemberByMemberAccount(strMemberAccount, strPassword, ref oMember);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
                 {
                     return iResult;
@@ -430,9 +430,9 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        public static int _GetMemberByMemberAccount(string strMemberAccount, ref MemberHttpRespone oHttpRespone)
+        public static int _GetMemberByMemberAccount(string strMemberAccount,string strPassword, ref MemberHttpRespone oHttpRespone)
         {
-            string funcUrl = QueryMemberInfoFunc + strMemberAccount;
+            string funcUrl = QueryMemberInfoFunc + strMemberAccount+ "&password=" + CommUiltl.HEX_MD5(gPassword);
             CommUiltl.Log("funcUrl:" + funcUrl);
             if (!Get<MemberHttpRespone>(funcUrl, ref oHttpRespone))
             {

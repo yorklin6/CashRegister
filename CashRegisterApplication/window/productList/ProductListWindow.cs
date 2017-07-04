@@ -37,8 +37,7 @@ namespace CashRegiterApplication
       
             CenterContral.Clean();
 
-            
-                System.Windows.Forms.Clipboard.SetText("8410376009392");
+            System.Windows.Forms.Clipboard.SetText("8410376009392");
             //System.Windows.Forms.Clipboard.SetText("2100507005701");
             // System.Windows.Forms.Clipboard.SetText("9556247516480");
             //System.Windows.Forms.Clipboard.SetText("倍乐");
@@ -148,6 +147,7 @@ namespace CashRegiterApplication
        */
         private void _Windows_ShowRecieveMoeny()
         {
+
             _UpdateStockBaseMsg();
             _GeneraterOrder();
             CenterContral.Window_RecieveMoney.ShowByProductListWindow();
@@ -215,12 +215,10 @@ namespace CashRegiterApplication
             
  
          
-            this.dataGridView_checkout.CurrentCell = null;
-            this.dataGridView_productList.CurrentCell = null;
             _ShowPayTipsInProductListAndSaveOrderMsg();
 
-            this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
-            this.dataGridView_productList.BeginEdit(true);
+            //this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[CELL_INDEX.GOODS_BARCODE];
+            //this.dataGridView_productList.BeginEdit(true);
      
             _ResetAllData();
             UpdateTextShow();
@@ -709,6 +707,12 @@ namespace CashRegiterApplication
                             CommUiltl.Log(" IsCurrentCellInEditMode ");
                             if (CommUiltl.IsObjEmpty(this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.GOODS_BARCODE].Value)&& this.dataGridView_productList.CurrentRow.IsNewRow)
                             {
+                                if ( CenterContral.oStockOutDTO.Base.orderAmount == 0 )
+                                {
+                                    //没有输入商品，不允许拉起支付方式
+                                    return true;
+                                }
+
                                 //唤起收银界面
                                 CommUiltl.Log(" CELL_INDEX.PRODUCT_CODE empty ");
                                 this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = "";
@@ -722,6 +726,11 @@ namespace CashRegiterApplication
                     break;
                 case System.Windows.Forms.Keys.Home:
                     {
+                        if (CenterContral.oStockOutDTO.Base.orderAmount == 0)
+                        {
+                            //没有输入商品，不允许拉起支付方式
+                            return true;
+                        }
                         _Windows_ShowRecieveMoeny();
                         return true;
                     }
@@ -1026,7 +1035,7 @@ namespace CashRegiterApplication
             this.dataGridView_checkout.Rows.Clear();
             CenterContral.Clean();
             _InitOrderMsg();
-            this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
+            this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[CELL_INDEX.GOODS_BARCODE];
             this.dataGridView_productList.BeginEdit(true);
             gConstructEnd = true;
 
