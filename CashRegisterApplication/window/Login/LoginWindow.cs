@@ -35,6 +35,8 @@ namespace CashRegiterApplication
 
         private void button1_Click(object sender, EventArgs e)
         {
+        
+
             this.label_tips.Text = "正在登录....";
             //登陆
             if (CenterContral.Login(this.textBox_userName.Text, this.textBox_password.Text,CenterContral.oStoreWhouse.storeWhouseId))

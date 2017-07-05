@@ -26,25 +26,49 @@ namespace CashRegiterApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //string str;
-            //str = "===============销售===============";
-            //CommUiltl.Log(str+" "+ str.Length);
-            //str = "名称/条码     单价    数量    金额";
-            //CommUiltl.Log(str + " " + str.Length);
-            //str = "名称/条码     ";
-            //CommUiltl.Log(str + " " + str.Length);
-            //str = "名称/条码     单价    数量";
-            //CommUiltl.Log(str + " " + str.Length);
-            //str = "名称/条码       单价      数量      金额";
-            //CommUiltl.Log(str + " " + str.Length);
-            //str = "名称/条码     单价     数量      100.32";
-            //CommUiltl.Log(str + " " + str.Length);
+
             //   Application.Run(new FunctionMenuWindow());
-           Application.Run(new LoginWindows());
-            // Runs the application.
+            Application.ThreadException += new ThreadExceptionEventHandler(Form1_UIThreadException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            AppDomain.CurrentDomain.UnhandledException +=
+    new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            Application.Run(new LoginWindows());
         }
 
 
+        public static void Form1_UIThreadException(object sender, ThreadExceptionEventArgs t)
+        {
+            DialogResult result = DialogResult.Cancel;
+            try
+            {
+                result = ShowThreadExceptionDialog("程序出现错误", t.Exception);
+            }
+            catch
+            {
+                try
+                {
+                    MessageBox.Show("Fatal Windows Forms Error",
+                        "Fatal Windows Forms Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                }
+                finally
+                {
+                    Application.Exit();
+                }
+            }
+
+            // Exits the program when the user clicks Abort.
+            if (result == DialogResult.Abort)
+                Application.Exit();
+        }
+        // Creates the error message and displays it.
+        private static DialogResult ShowThreadExceptionDialog(string title, Exception e)
+        {
+            string errorMsg = "程序出现异常.请截图当前界面全部信息,提交给开发者 " +
+                ":\n\n";
+            errorMsg = errorMsg + e.Message + "\n\n堆栈信息:\n" + e.StackTrace;
+            return MessageBox.Show(errorMsg, title, MessageBoxButtons.AbortRetryIgnore,
+                MessageBoxIcon.Stop);
+        }
         // Handle the UI exceptions by showing a dialog box, and asking the user whether
         // or not they wish to abort execution.
         // NOTE: This exception cannot be kept from terminating the application - it can only 
@@ -83,14 +107,6 @@ namespace CashRegiterApplication
             }
         }
 
-        // Creates the error message and displays it.
-        private static DialogResult ShowThreadExceptionDialog(string title, Exception e)
-        {
-            string errorMsg = "An application error occurred. Please contact the adminstrator " +
-                "with the following information:\n\n";
-            errorMsg = errorMsg + e.Message + "\n\nStack Trace:\n" + e.StackTrace;
-            return MessageBox.Show(errorMsg, title, MessageBoxButtons.AbortRetryIgnore,
-                MessageBoxIcon.Stop);
-        }
+
     }
 }
