@@ -743,7 +743,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.cloudCloseFlag
                            = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);
 
-            if (CenterContral.oStockOutDTO.Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            if (CenterContral.oStockOutDTO.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_FAILD)
             {
                 var confirmPayApartResult = MessageBox.Show("后台下单失败，系统需要自动重试",
                                   "提示",
@@ -754,6 +754,12 @@ namespace CashRegisterApplication.comm
                     return false;
                 }
 
+            }
+            if (CenterContral.oStockOutDTO.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_BUSSINESS_FAILD)
+            {
+                var confirmPayApartResult = MessageBox.Show("下单失败"+HttpUtility.lastErrorMsg,
+                                "提示");
+                return false;
             }
             CenterContral.oStockOutDTO.Base.baseDataJson = JsonConvert.SerializeObject(CenterContral.oStockOutDTO);
 
