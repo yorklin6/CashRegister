@@ -122,7 +122,7 @@ namespace CashRegisterApplication.model
         internal void generatePayOrderNumber()
         {
             serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + CenterContral.iPostId + "-"
+              
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
@@ -143,9 +143,11 @@ namespace CashRegisterApplication.model
         public long createTime { get; set; }
         public long updateTime { get; set; }
         public String stockOutTime { get; set; }
+        public String orderTime { get; set; }
         public Byte status { get; set; }
         public String remark { get; set; }
 
+        public long walletHistoryId { get; set; }
         //************本地缓存数据
         public long TotalPayFee { get; set; }
         public long RealRecieveFee { get; set; }//实收多少钱

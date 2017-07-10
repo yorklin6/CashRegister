@@ -432,7 +432,7 @@ namespace CashRegiterApplication
         }
         public static int _GetMemberByMemberAccount(string strMemberAccount,string strPassword, ref MemberHttpRespone oHttpRespone)
         {
-            string funcUrl = QueryMemberInfoFunc + strMemberAccount+ "&password=" + CommUiltl.HEX_MD5(gPassword);
+            string funcUrl = QueryMemberInfoFunc + strMemberAccount+ "&password=" + CommUiltl.HEX_MD5(strPassword);
             CommUiltl.Log("funcUrl:" + funcUrl);
             if (!Get<MemberHttpRespone>(funcUrl, ref oHttpRespone))
             {

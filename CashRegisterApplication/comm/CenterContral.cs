@@ -632,6 +632,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
             CenterContral.oStockOutDTO.Base.RealRecieveFee = 0;
             CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = 0;
+            CenterContral.oStockOutDTO.Base.walletHistoryId = 0;
 
             CenterContral.oStockOutDTO.Base.type = CenterContral.STOCK_OUT_BASE_TYPE;
             CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeWhouseId;
@@ -640,7 +641,8 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId =0;
             CenterContral.oStockOutDTO.Base.stockOutTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
-          //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
+            CenterContral.oStockOutDTO.Base.orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+            //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
 
             //  CenterContral.oStockOutDTO.Base.creator = CenterContral.oLoginer.data.userName;
             CenterContral.oStockOutDTO.Base.status = CenterContral.STOCK_BASE_STATUS_INIT;

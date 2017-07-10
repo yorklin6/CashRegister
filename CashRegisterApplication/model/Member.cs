@@ -60,7 +60,12 @@ namespace CashRegisterApplication.model
         public String reqRechargeJson { get; set; }
 
     }
-
+    public class HttpBaseResponeWalletHistory
+    {
+        public int errorCode { get; set; }
+        public string msg { get; set; }
+        public WalletHistory data;
+    }
     public class WalletHistory
     {
         public long id { get; set; }
