@@ -74,6 +74,7 @@ namespace CashRegisterApplication.window.member
             if (CenterContral.oStockOutDTO.oMember.memberAccount == null || CenterContral.oStockOutDTO.oMember.memberAccount=="")
             {
                 this.textBox_memberAccount.Text ="123456";
+                this.textBox_Password.Text = "123456";
                 this.textBox_memberAccount.Focus();
                 this.textBox_memberAccount.SelectionStart = 0;
                 this.textBox_memberAccount.SelectionLength = this.textBox_memberAccount.Text.Length;
