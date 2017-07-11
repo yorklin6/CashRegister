@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CashRegisterApplication.window.History
 {
-    public partial class HistoryDetailWindow : Form
+    public partial class ReturnDetailWindow : Form
     {
-        public HistoryDetailWindow()
+        public ReturnDetailWindow()
         {
             InitializeComponent();
         }
@@ -23,8 +23,7 @@ namespace CashRegisterApplication.window.History
 
         private void HitoryDetailWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CenterContral.Window_HistoryDetailWindow = new HistoryDetailWindow();
-            e.Cancel = false;
+            e.Cancel = true;
             escapeToPreWindows();
         }
 
@@ -40,10 +39,8 @@ namespace CashRegisterApplication.window.History
             this.Show();
             this.ActiveControl = this.button1;
             this.dataGridView_productList.Rows.Clear();
-          
 
-            this.label_searisenumber.Text = "交易明细账(流水号:" + oStockOutDTO.Base.serialNumber + ")";
-
+            this.label_searisenumber.Text = "退货单(流水号:" + oStockOutDTO.Base.serialNumber + ")";
             this.label_member_account.Text = oStockOutDTO.oMember.memberAccount;
 
             //折扣额度
@@ -105,8 +102,6 @@ namespace CashRegisterApplication.window.History
 
         private void button2_Click(object sender, EventArgs e)
         {
-            escapeToPreWindows();
-            return;
             //取消订单
             string showTips = "是否要删除订单";
             var confirmPayApartResult = MessageBox.Show(showTips,

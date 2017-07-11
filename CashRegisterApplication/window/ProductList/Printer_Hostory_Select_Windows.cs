@@ -69,7 +69,7 @@ namespace CashRegisterApplication.window.ProductList
             CommUiltl.Log("Keys:" + keyData);
             switch (keyData)
             {
-                case System.Windows.Forms.Keys.Enter:
+  
                 case System.Windows.Forms.Keys.D1:
                 case System.Windows.Forms.Keys.NumPad1:
                 case System.Windows.Forms.Keys.Oem1:

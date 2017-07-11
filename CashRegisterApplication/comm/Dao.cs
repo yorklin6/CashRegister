@@ -494,7 +494,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
 
-        //取出云同步失败的订单
+        //取出某日订单
         internal static bool GetStockOutMsgByDate(DateTime oDate, ref List<StockOutDTO> oJsonList)
         {
             string strSql = "";

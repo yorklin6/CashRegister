@@ -177,7 +177,7 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LSCK-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
+            CenterContral.oStockOutDTO.Base.serialNumber = "LS-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
         }
     }

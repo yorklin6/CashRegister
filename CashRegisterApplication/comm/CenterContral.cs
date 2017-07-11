@@ -1472,6 +1472,7 @@ namespace CashRegisterApplication.comm
             {
                 return "成功";
             }
+           
             if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_FAILD)
             {
                 return "同步网络失败";
@@ -1480,8 +1481,17 @@ namespace CashRegisterApplication.comm
             {
                 return "同步业务失败";
             }
+            if (oStockOutBase.RealRecieveFee == 0)
+            {
+                return "未收钱";
+            }
+            if (oStockOutBase.ChangeFee < 0)
+            {
+                return "钱未收完";
+            }
             if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_INIT)
             {
+               
                 return "未同步";
             }
             if (oStockOutBase.cloudCloseFlag == Dao.STOCK_BASE_DELETE_TRUE)
