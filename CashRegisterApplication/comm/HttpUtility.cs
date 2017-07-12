@@ -487,13 +487,14 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //会员扣款
-        internal static int MemberPay(WalletHistory oReq)
+        internal static int MemberPay(WalletHistory oReq,ref HttpBaseResponeWalletHistory oHttpRespone)
         {
+           
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
             for (int i = 0; i < 2; ++i)
             {
-                iResult = _MemberPay(oReq);
+                iResult = _MemberPay(oReq,ref oHttpRespone);
                 if (CLOUD_SATE_HTTP_SUCESS == iResult)
                 {
                     return iResult;
@@ -501,13 +502,13 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _MemberPay(WalletHistory oReq)
+        internal static int _MemberPay(WalletHistory oReq, ref HttpBaseResponeWalletHistory oHttpRespone)
         {
             string funcUrl = paymentMember + oReq.memberId.ToString();
-            HttpBaseRespone oHttpRespone = new HttpBaseRespone();
+          
             String json = JsonConvert.SerializeObject(oReq);
 
-            if (!Put<HttpBaseRespone>(funcUrl, json, ref oHttpRespone))
+            if (!Put<HttpBaseResponeWalletHistory>(funcUrl, json, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "支付异常：请检查网络";

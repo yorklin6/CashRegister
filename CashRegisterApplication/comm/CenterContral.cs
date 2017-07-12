@@ -1111,11 +1111,13 @@ namespace CashRegisterApplication.comm
             oRecharge.changeValue = recieveFee;
             oRecharge.generatePaySerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
-            if ( HttpUtility.MemberPay(oRecharge) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            HttpBaseResponeWalletHistory oHttpRespone = new HttpBaseResponeWalletHistory();
+            if ( HttpUtility.MemberPay(oRecharge,ref oHttpRespone) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
                 MessageBox.Show("云扣款 失败:" + HttpUtility.lastErrorMsg);
                 return false;
             }
+            CenterContral.oStockOutDTO.Base.walletHistoryId = oHttpRespone.data;
             //本地记录支付信息
             oCheckout.reqMemberZfJson = JsonConvert.SerializeObject(oRecharge);
             if (!Dao.GeneratePay(oCheckout))
@@ -1434,6 +1436,23 @@ namespace CashRegisterApplication.comm
         internal static void CallProductListWindow()
         {
             CenterContral.Window_ProductList.CallShow();
+        }
+        internal static void GetLastSotckOutOrder(ref StockOutDTO oLastStockmsg)
+        {
+            StockOutDTO oJsonList = new StockOutDTO();
+            //取出数据
+            if (!Dao.GetLasStockOutOrder(ref oJsonList))
+            {
+                MessageBox.Show("本地查找失败");
+                return;
+            }
+            if (oJsonList.Base.baseDataJson == "")
+            {
+                MessageBox.Show("未找到订单");
+                return;
+            }
+             oLastStockmsg = JsonConvert.DeserializeObject<StockOutDTO>(oJsonList.Base.baseDataJson);
+
         }
         internal static void PrintLastSotckOutOrder()
         {

@@ -5,6 +5,7 @@ using CashRegisterApplication.window.function;
 using CashRegisterApplication.window.History;
 using CashRegisterApplication.window.Printer;
 using CashRegisterApplication.window.ProductList;
+using CashRegisterApplication.window.Return;
 using CashRegisterApplication.window.Setting;
 using CashRegiterApplication;
 using SuperMarket;
@@ -31,7 +32,10 @@ namespace CashRegiterApplication
             Application.ThreadException += new ThreadExceptionEventHandler(Form1_UIThreadException);
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             AppDomain.CurrentDomain.UnhandledException +=
-    new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+             new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+
+            // Application.Run(new ReturnDetailWindow());
             Application.Run(new LoginWindows());
         }
 

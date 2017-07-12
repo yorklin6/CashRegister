@@ -96,12 +96,6 @@
     <Compile Include="window\function\FunctionMenuWindows.Designer.cs">
       <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
     </Compile>
-    <Compile Include="window\HistoryOrder\Hostory_Printer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="window\HistoryOrder\Hostory_Printer.Designer.cs">
-      <DependentUpon>Hostory_Printer.cs</DependentUpon>
-    </Compile>
     <Compile Include="window\History\HistoryListWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -208,6 +202,12 @@
     <Compile Include="window\function\SettingDefaultMsgWindow.Designer.cs">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="window\Return\ReturnDetailWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Return\ReturnDetailWindow.Designer.cs">
+      <DependentUpon>ReturnDetailWindow.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="window\function\FunctionMenuWindows.resx">
       <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
     </EmbeddedResource>
@@ -266,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="window\function\SettingDefaultMsgWindow.resx">
       <DependentUpon>SettingDefaultMsgWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="window\Return\ReturnDetailWindow.resx">
+      <DependentUpon>ReturnDetailWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

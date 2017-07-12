@@ -64,7 +64,7 @@ namespace CashRegisterApplication.model
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public WalletHistory data;
+        public long data;
     }
     public class WalletHistory
     {

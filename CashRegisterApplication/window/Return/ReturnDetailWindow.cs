@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CashRegisterApplication.window.History
+namespace CashRegisterApplication.window.Return
 {
     public partial class ReturnDetailWindow : Form
     {
@@ -19,7 +19,12 @@ namespace CashRegisterApplication.window.History
 
         private void HitoryDetailWindow_Load(object sender, EventArgs e)
         {
+            CenterContral.Init();
+            StockOutDTO oLastStockmsg = new StockOutDTO();
+            CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
+            ShowDetailStockOut(oLastStockmsg);
         }
+
 
         private void HitoryDetailWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -29,7 +34,7 @@ namespace CashRegisterApplication.window.History
 
         private void escapeToPreWindows()
         {
-            CenterContral.Window_HistoryListWindow.Show();
+            CenterContral.Window_ProductList.CallShow();
             this.Hide();
         }
         StockOutDTO gStockOutDTO;
@@ -62,8 +67,15 @@ namespace CashRegisterApplication.window.History
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], oStockOutDTO.details[i]);
             }
 
-            this.dataGridView_productList.CurrentCell = null;//去掉焦点
-            
+            if (0 > oStockOutDTO.details.Count)
+            {
+                //默认选中第一行
+                this.dataGridView_productList.Focus();
+                this.dataGridView_productList.Select();
+                this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
+                this.dataGridView_productList.BeginEdit(true);
+            }
+
         }
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
@@ -132,6 +144,40 @@ namespace CashRegisterApplication.window.History
                     break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void label_searisenumber_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_productList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button_delete_Click(object sender, EventArgs e)
+        {
+            if (this.dataGridView_productList.CurrentCell == null)
+            {
+                MessageBox.Show("提示", "请选中商品");
+                return;
+            }
+            string showTips = "商品:" + this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value+" 不进行退货吗？";
+            var confirmPayApartResult = MessageBox.Show(showTips,
+                                  "删除退货单商品操作",
+                                  MessageBoxButtons.YesNo);
+            if (confirmPayApartResult != DialogResult.Yes)
+            {
+                return;
+            }
+            int iIndex = this.dataGridView_productList.CurrentRow.Index;
+            CommUiltl.Log("iIndex:" + iIndex);
+           
+            this.dataGridView_productList.Rows.RemoveAt(iIndex);
+            gStockOutDTO.details.RemoveAt(iIndex);
+            //重新计算退货价钱
+
         }
     }
     public static class CELL_INDEX
