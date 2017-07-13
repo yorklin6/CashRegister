@@ -624,6 +624,10 @@ namespace CashRegisterApplication.comm
         public static void Clean()
         {
             CenterContral.oStockOutDTO = new StockOutDTO();//商品列表
+            CenterContral.oStockOutDTO.Base = new StockOutBase();
+            CenterContral.oStockOutDTO.details = new List<StockOutDetail>();
+            CenterContral.oStockOutDTO.checkouts = new List<Checkout>();
+
             CenterContral.oStockOutDToRespond = new StockOutDTORespone();
 
             CenterContral.oStockOutDTO.Base.generateSeariseNumber();
@@ -665,31 +669,30 @@ namespace CashRegisterApplication.comm
             //收款折扣
             CenterContral.oStockOutDTO.Base.discountRate = 100;
             CenterContral.oStockOutDTO.Base.discountAmount =0;
-            
-            //**********收银台界面*****
-            CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
-            CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
+
+           //**********收银台界面*****
+           CenterContral.Window_ProductList.SetSerialNumber(CenterContral.oStockOutDTO.Base.serialNumber);
+           CenterContral.Window_ProductList.SetStoreName(CenterContral.oStoreWhouse.name);
 
             //会员信息清空
             CenterContral.oStockOutDTO.oMember = new Member();
-
 
             CenterContral.Window_ProductList.UpdateTextShow();
         }
 
 
-        public static void updateOrderAmount(long orderPrice)
+        public static void updateOrderAmount(long orderPrice, ref StockOutDTO oStockOutDTO)
         {
             CommUiltl.Log(" updateOrderAmount:" + orderPrice);
-            CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = orderPrice;
-            CenterContral.UpdateDiscountRate(CenterContral.oStockOutDTO.Base.discountRate);
+            oStockOutDTO.Base.allGoodsMoneyAmount = orderPrice;
+            CenterContral.UpdateDiscountRate(oStockOutDTO.Base.discountRate,ref oStockOutDTO);
         }
-        public static void UpdateDiscountRate(long discountRate)
+        public static void UpdateDiscountRate(long discountRate,ref StockOutDTO oStockOutDTO)
         {
-            CenterContral.oStockOutDTO.Base.orderAmount = GetMoneyAmountByDiscountRate(discountRate);
-            CenterContral.oStockOutDTO.CaculateFee();
-            CenterContral.oStockOutDTO.Base.discountRate = discountRate;
-            CenterContral.oStockOutDTO.Base.discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - CenterContral.oStockOutDTO.Base.orderAmount;
+            oStockOutDTO.Base.orderAmount = GetMoneyAmountByDiscountRate(oStockOutDTO, discountRate);
+            oStockOutDTO.CaculateFee();
+            oStockOutDTO.Base.discountRate = discountRate;
+            oStockOutDTO.Base.discountAmount = oStockOutDTO.Base.allGoodsMoneyAmount - oStockOutDTO.Base.orderAmount;
             CenterContral.Window_ProductList.UpdateTextShow();
         }
 
@@ -705,10 +708,10 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.Window_ProductList.EecBySelectGoodWindow();
         }
-        public static long GetMoneyAmountByDiscountRate(long discountRate)
+        public static long GetMoneyAmountByDiscountRate(StockOutDTO oStockOutDTO ,long discountRate)
         {
             //CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount本来是4位长度
-            return (long)( (double)(CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount) /100 * discountRate);
+            return (long)( (double)(oStockOutDTO.Base.allGoodsMoneyAmount) /100 * discountRate);
         }
         public static void ControlWindowsAfterPay()
         {
@@ -985,6 +988,7 @@ namespace CashRegisterApplication.comm
 
         internal static void ProductTostockDetail(ProductPricing productInfo, ref StockOutDetail detail)
         {
+            detail.goodsId = productInfo.goodsId;
             detail.barcode = productInfo.barcode;
             detail.goodsName = productInfo.goodsName;
             detail.unitPrice = (productInfo.retailPrice);

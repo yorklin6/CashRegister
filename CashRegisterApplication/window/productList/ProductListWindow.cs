@@ -373,7 +373,7 @@ namespace CashRegiterApplication
                 subtotalCount += CenterContral.oStockOutDTO.details[index].actualCount;
                 orderPrice += CenterContral.oStockOutDTO.details[index].subtotal;
             }
-            CenterContral.updateOrderAmount(orderPrice);
+            CenterContral.updateOrderAmount(orderPrice,ref CenterContral.oStockOutDTO);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
        
             CenterContral.oStockOutDTO.Base.totalProductCount = subtotalCount;

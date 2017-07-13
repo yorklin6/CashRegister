@@ -46,11 +46,11 @@ namespace CashRegisterApplication.window.Return
             this.dataGridView_productList.Rows.Clear();
 
             this.label_searisenumber.Text = "退货单(流水号:" + oStockOutDTO.Base.serialNumber + ")";
-            this.label_member_account.Text = oStockOutDTO.oMember.memberAccount;
+            this.label_member_account2.Text = oStockOutDTO.oMember.memberAccount;
 
-            //折扣额度
+            //折扣额
             this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
-            //折扣率
+      
             this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
@@ -75,7 +75,7 @@ namespace CashRegisterApplication.window.Return
                 this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
                 this.dataGridView_productList.BeginEdit(true);
             }
-
+           
         }
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
@@ -177,6 +177,29 @@ namespace CashRegisterApplication.window.Return
             this.dataGridView_productList.Rows.RemoveAt(iIndex);
             gStockOutDTO.details.RemoveAt(iIndex);
             //重新计算退货价钱
+            _CaculatePrice();
+        }
+
+        private void _CaculatePrice()
+        {
+            long rowCount = gStockOutDTO.details.Count;
+            long orderPrice = 0, subtotalCount = 0;
+            for (int index = 0; index < rowCount; ++index)
+            {
+                subtotalCount += gStockOutDTO.details[index].actualCount;
+                orderPrice += gStockOutDTO.details[index].subtotal;
+            }
+            CenterContral.updateOrderAmount(orderPrice, ref gStockOutDTO);
+            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gStockOutDTO.Base.orderAmount);
+
+            gStockOutDTO.Base.totalProductCount = subtotalCount;
+            UpdateTextShow();
+            return;
+        }
+
+        private void UpdateTextShow()
+        {
+            //更新总价
 
         }
     }

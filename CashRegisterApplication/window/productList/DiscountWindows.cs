@@ -140,7 +140,7 @@ namespace CashRegisterApplication.window.productList
                 this.foucuseDiscount();
                 return;
             }
-            long afterAmount = CenterContral.GetMoneyAmountByDiscountRate(discountRate);
+            long afterAmount = CenterContral.GetMoneyAmountByDiscountRate(CenterContral.oStockOutDTO ,discountRate);
             long discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - afterAmount;
             this.textBox_discountAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(discountAmount);
         }
