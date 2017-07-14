@@ -38,6 +38,7 @@ namespace CashRegisterApplication.window.Return
             this.Hide();
         }
         StockOutDTO gStockOutDTO;
+        long returnFee = 0;
         public void ShowDetailStockOut(StockOutDTO oStockOutDTO)
         {
             gStockOutDTO = oStockOutDTO;
@@ -54,7 +55,8 @@ namespace CashRegisterApplication.window.Return
             this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
-
+            returnFee = oStockOutDTO.Base.orderAmount;
+            this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
             this.label_stockOutTime.Text= oStockOutDTO.Base.stockOutTime.Substring(0, 19);
             this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO.Base);
             //this.label_total_product_count.Text = oStockOutDTO.Base.totalProductCount.ToString();
@@ -64,6 +66,7 @@ namespace CashRegisterApplication.window.Return
                 CommUiltl.Log("rowIndex " + rowIndex);
                 CommUiltl.Log("i " + i);
                 CommUiltl.Log("oStockOutDTO.details[i] " + oStockOutDTO.details[i]);
+
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], oStockOutDTO.details[i]);
             }
 
@@ -99,9 +102,10 @@ namespace CashRegisterApplication.window.Return
 
         private void button1_Click(object sender, EventArgs e)
         {
+          
             //打印
-            string showTips = "确认打印";
-            var confirmPayApartResult = MessageBox.Show("是否要打印当前小票",
+            string showTips = "确认退货";
+            var confirmPayApartResult = MessageBox.Show("确认退货:"+this.label_returnFee+"元",
                                  showTips,
                                   MessageBoxButtons.YesNo);
 
@@ -109,7 +113,8 @@ namespace CashRegisterApplication.window.Return
             {
                 return;
             }
-            CenterContral.PrintOrder(gStockOutDTO);
+            
+            CenterContral.ReturnOrder();
         }
 
         private void button2_Click(object sender, EventArgs e)

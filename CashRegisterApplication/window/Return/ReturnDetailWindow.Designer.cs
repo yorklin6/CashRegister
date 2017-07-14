@@ -48,6 +48,7 @@
             this.ProductID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label_searisenumber = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label_state = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
@@ -61,10 +62,9 @@
             this.label_discount_rate = new System.Windows.Forms.Label();
             this.label_member_account2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button_delete = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.label_state = new System.Windows.Forms.Label();
+            this.button_delete = new System.Windows.Forms.Button();
+            this.label_returnFee = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_productList)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
@@ -255,8 +255,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 88F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 134F));
             this.tableLayoutPanel2.Controls.Add(this.label_state, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.label2, 0, 1);
@@ -272,8 +272,8 @@
             this.tableLayoutPanel2.Controls.Add(this.label_member_account2, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.button1, 6, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 6, 1);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 6, 2);
-            this.tableLayoutPanel2.Controls.Add(this.button_delete, 3, 2);
+            this.tableLayoutPanel2.Controls.Add(this.button_delete, 6, 2);
+            this.tableLayoutPanel2.Controls.Add(this.label_returnFee, 1, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 32);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -286,6 +286,18 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(682, 99);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
+            // label_state
+            // 
+            this.label_state.AutoSize = true;
+            this.label_state.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_state.Location = new System.Drawing.Point(485, 1);
+            this.label_state.Margin = new System.Windows.Forms.Padding(0);
+            this.label_state.Name = "label_state";
+            this.label_state.Size = new System.Drawing.Size(60, 34);
+            this.label_state.TabIndex = 22;
+            this.label_state.Text = "xxxxxx";
+            this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -293,7 +305,7 @@
             this.label1.Location = new System.Drawing.Point(1, 67);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 31);
+            this.label1.Size = new System.Drawing.Size(77, 31);
             this.label1.TabIndex = 19;
             this.label1.Text = "退货金额";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -305,7 +317,7 @@
             this.label2.Location = new System.Drawing.Point(1, 36);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 30);
+            this.label2.Size = new System.Drawing.Size(77, 30);
             this.label2.TabIndex = 16;
             this.label2.Text = "会员卡";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -317,7 +329,7 @@
             this.label22.Location = new System.Drawing.Point(1, 1);
             this.label22.Margin = new System.Windows.Forms.Padding(0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(78, 34);
+            this.label22.Size = new System.Drawing.Size(77, 34);
             this.label22.TabIndex = 5;
             this.label22.Text = "交易时间";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -326,10 +338,10 @@
             // 
             this.label_stockOutTime.AutoSize = true;
             this.label_stockOutTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_stockOutTime.Location = new System.Drawing.Point(80, 1);
+            this.label_stockOutTime.Location = new System.Drawing.Point(79, 1);
             this.label_stockOutTime.Margin = new System.Windows.Forms.Padding(0);
             this.label_stockOutTime.Name = "label_stockOutTime";
-            this.label_stockOutTime.Size = new System.Drawing.Size(196, 34);
+            this.label_stockOutTime.Size = new System.Drawing.Size(194, 34);
             this.label_stockOutTime.TabIndex = 6;
             this.label_stockOutTime.Text = "xxxxxx";
             this.label_stockOutTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -339,7 +351,7 @@
             this.label26.AutoSize = true;
             this.label26.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label26.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label26.Location = new System.Drawing.Point(277, 1);
+            this.label26.Location = new System.Drawing.Point(274, 1);
             this.label26.Margin = new System.Windows.Forms.Padding(0);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(75, 34);
@@ -352,7 +364,7 @@
             this.label_orderFee.AutoSize = true;
             this.label_orderFee.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label_orderFee.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_orderFee.Location = new System.Drawing.Point(353, 1);
+            this.label_orderFee.Location = new System.Drawing.Point(350, 1);
             this.label_orderFee.Margin = new System.Windows.Forms.Padding(0);
             this.label_orderFee.Name = "label_orderFee";
             this.label_orderFee.Size = new System.Drawing.Size(62, 34);
@@ -364,7 +376,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label8.Location = new System.Drawing.Point(416, 1);
+            this.label8.Location = new System.Drawing.Point(413, 1);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(71, 34);
@@ -376,10 +388,10 @@
             // 
             this.label_discount_amount.AutoSize = true;
             this.label_discount_amount.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_amount.Location = new System.Drawing.Point(488, 36);
+            this.label_discount_amount.Location = new System.Drawing.Point(485, 36);
             this.label_discount_amount.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_amount.Name = "label_discount_amount";
-            this.label_discount_amount.Size = new System.Drawing.Size(103, 30);
+            this.label_discount_amount.Size = new System.Drawing.Size(60, 30);
             this.label_discount_amount.TabIndex = 11;
             this.label_discount_amount.Text = "100";
             this.label_discount_amount.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -388,7 +400,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label16.Location = new System.Drawing.Point(416, 36);
+            this.label16.Location = new System.Drawing.Point(413, 36);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(71, 30);
@@ -400,7 +412,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(277, 36);
+            this.label5.Location = new System.Drawing.Point(274, 36);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 30);
@@ -412,7 +424,7 @@
             // 
             this.label_discount_rate.AutoSize = true;
             this.label_discount_rate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_discount_rate.Location = new System.Drawing.Point(353, 36);
+            this.label_discount_rate.Location = new System.Drawing.Point(350, 36);
             this.label_discount_rate.Margin = new System.Windows.Forms.Padding(0);
             this.label_discount_rate.Name = "label_discount_rate";
             this.label_discount_rate.Size = new System.Drawing.Size(62, 30);
@@ -424,66 +436,52 @@
             // 
             this.label_member_account2.AutoSize = true;
             this.label_member_account2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_member_account2.Location = new System.Drawing.Point(80, 36);
+            this.label_member_account2.Location = new System.Drawing.Point(79, 36);
             this.label_member_account2.Margin = new System.Windows.Forms.Padding(0);
             this.label_member_account2.Name = "label_member_account2";
-            this.label_member_account2.Size = new System.Drawing.Size(196, 30);
+            this.label_member_account2.Size = new System.Drawing.Size(194, 30);
             this.label_member_account2.TabIndex = 15;
             this.label_member_account2.Text = "xxxxxx";
             this.label_member_account2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(595, 4);
+            this.button1.Location = new System.Drawing.Point(549, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(60, 28);
+            this.button1.Size = new System.Drawing.Size(120, 28);
             this.button1.TabIndex = 17;
-            this.button1.Text = "退货";
+            this.button1.Text = "退货[HOME]";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(549, 39);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(120, 24);
+            this.button2.TabIndex = 20;
+            this.button2.Text = "删除[DEL]";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // button_delete
             // 
-            this.button_delete.Location = new System.Drawing.Point(356, 70);
+            this.button_delete.Location = new System.Drawing.Point(549, 70);
             this.button_delete.Name = "button_delete";
-            this.button_delete.Size = new System.Drawing.Size(56, 25);
+            this.button_delete.Size = new System.Drawing.Size(120, 25);
             this.button_delete.TabIndex = 18;
-            this.button_delete.Text = "退货数修改";
+            this.button_delete.Text = "退货数修改[END]";
             this.button_delete.UseVisualStyleBackColor = true;
             this.button_delete.Click += new System.EventHandler(this.button_delete_Click);
             // 
-            // button2
+            // label_returnFee
             // 
-            this.button2.Location = new System.Drawing.Point(595, 39);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(60, 24);
-            this.button2.TabIndex = 20;
-            this.button2.Text = "删除";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(595, 70);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(83, 25);
-            this.tableLayoutPanel3.TabIndex = 21;
-            // 
-            // label_state
-            // 
-            this.label_state.AutoSize = true;
-            this.label_state.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label_state.Location = new System.Drawing.Point(488, 1);
-            this.label_state.Margin = new System.Windows.Forms.Padding(0);
-            this.label_state.Name = "label_state";
-            this.label_state.Size = new System.Drawing.Size(103, 34);
-            this.label_state.TabIndex = 22;
-            this.label_state.Text = "xxxxxx";
-            this.label_state.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_returnFee.AutoSize = true;
+            this.label_returnFee.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_returnFee.Location = new System.Drawing.Point(82, 67);
+            this.label_returnFee.Name = "label_returnFee";
+            this.label_returnFee.Size = new System.Drawing.Size(188, 31);
+            this.label_returnFee.TabIndex = 23;
+            this.label_returnFee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ReturnDetailWindow
             // 
@@ -534,11 +532,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label_discount_rate;
         private System.Windows.Forms.Label label_member_account2;
-        private System.Windows.Forms.Button button_delete;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label_state;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button_delete;
+        private System.Windows.Forms.Label label_returnFee;
     }
 }
