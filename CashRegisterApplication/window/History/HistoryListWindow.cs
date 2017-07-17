@@ -66,10 +66,8 @@ namespace CashRegisterApplication.window.History
 
             for (int i=0 ; i< gListStockOutDTO.Count ; i++)
             {
-              
                 this.dataGridView_HistoryData.Rows.Add();
                 SetRowsByStockOut(this.dataGridView_HistoryData.Rows[i], gListStockOutDTO[i].Base) ;
-            
             }
             label_total_count.Text = "一共有" + gListStockOutDTO.Count + "笔交易";
             //默认选中最后一笔交易
@@ -194,12 +192,12 @@ namespace CashRegisterApplication.window.History
                         ShowDetailWindow(this.dataGridView_HistoryData.CurrentRow.Index);
                         break;
                     }
-
                 case System.Windows.Forms.Keys.Escape:
                     {
                         escapeToPreWindows();
+                        break;
                     }
-                    break;
+              
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

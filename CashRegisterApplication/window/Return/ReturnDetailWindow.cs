@@ -17,12 +17,21 @@ namespace CashRegisterApplication.window.Return
             InitializeComponent();
         }
 
-        private void HitoryDetailWindow_Load(object sender, EventArgs e)
+        public void ShowByContral(StockOutDTO oLastStockmsg)
         {
             CenterContral.Init();
-            StockOutDTO oLastStockmsg = new StockOutDTO();
+             oLastStockmsg = new StockOutDTO();
             CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
+            StockOutDTO oStock = new StockOutDTO();
+            CenterContral.GetStockBySerialNumber(oLastStockmsg.Base.serialNumber,ref oStock);
             ShowDetailStockOut(oLastStockmsg);
+            this.Show();
+        }
+
+        private void HitoryDetailWindow_Load(object sender, EventArgs e)
+        {
+            StockOutDTO oLastStockmsg = new StockOutDTO(); 
+            ShowByContral(oLastStockmsg);
         }
 
 
@@ -37,11 +46,12 @@ namespace CashRegisterApplication.window.Return
             CenterContral.Window_ProductList.CallShow();
             this.Hide();
         }
-        StockOutDTO gStockOutDTO;
+        StockOutDTO gFromDTO;
+        RetailReturnDTO gReturnDTO;
         long returnFee = 0;
         public void ShowDetailStockOut(StockOutDTO oStockOutDTO)
         {
-            gStockOutDTO = oStockOutDTO;
+            gFromDTO = oStockOutDTO;
             this.Show();
             this.ActiveControl = this.button1;
             this.dataGridView_productList.Rows.Clear();
@@ -51,13 +61,13 @@ namespace CashRegisterApplication.window.Return
 
             //折扣额
             this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
-      
+
             this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
             returnFee = oStockOutDTO.Base.orderAmount;
             this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
-            this.label_stockOutTime.Text= oStockOutDTO.Base.stockOutTime.Substring(0, 19);
+           // this.label_stockOutTime.Text = oStockOutDTO.Base.stockOutTime.Substring(0, 19);
             this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO.Base);
             //this.label_total_product_count.Text = oStockOutDTO.Base.totalProductCount.ToString();
             for (int i = 0; i < oStockOutDTO.details.Count; ++i)
@@ -78,17 +88,17 @@ namespace CashRegisterApplication.window.Return
                 this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
                 this.dataGridView_productList.BeginEdit(true);
             }
-           
+
         }
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
-            currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.postKeyWord;
+            currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.barcode;
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = detail.goodsName;
             CommUiltl.Log("detail.goodsShowSpecification:" + detail.goodsShowSpecification);
-            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.goodsShowSpecification;
+            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.unit;
 
             string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(detail.unitPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
@@ -102,10 +112,10 @@ namespace CashRegisterApplication.window.Return
 
         private void button1_Click(object sender, EventArgs e)
         {
-          
+
             //打印
             string showTips = "确认退货";
-            var confirmPayApartResult = MessageBox.Show("确认退货:"+this.label_returnFee+"元",
+            var confirmPayApartResult = MessageBox.Show("确认退货:" + this.label_returnFee.Text + "元",
                                  showTips,
                                   MessageBoxButtons.YesNo);
 
@@ -113,28 +123,97 @@ namespace CashRegisterApplication.window.Return
             {
                 return;
             }
-            
-            CenterContral.ReturnOrder();
+            gReturnDTO = new RetailReturnDTO();
+            SetReturnDtoByStockOutDto(ref gReturnDTO);
+
+            if (gReturnDTO.Base.orderAmount == 0)
+            {
+                MessageBox.Show("退货总金额为0元，不支持退货", "提示");
+                return;
+            }
+
+            if (!CenterContral.ReturnOrder(gReturnDTO))
+            {
+                return;
+            }
+            //成功后返回
+            escapeToPreWindows();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //取消订单
-            string showTips = "是否要删除订单";
-            var confirmPayApartResult = MessageBox.Show(showTips,
-                                  "删除订单确认",
-                                  MessageBoxButtons.YesNo);
+      
 
-            if (confirmPayApartResult != DialogResult.Yes)
+        private void SetReturnDtoByStockOutDto(ref RetailReturnDTO oRetailReturnDTO)
+        {
+            //base
+            oRetailReturnDTO.Base = new RetailReturnBase();
+            oRetailReturnDTO.details = new List<RetailReturnDetail>();
+
+            oRetailReturnDTO.Base.generateSerialNum();
+
+            oRetailReturnDTO.Base.storeId = CenterContral.oStoreWhouse.storeId;
+            oRetailReturnDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
+            oRetailReturnDTO.Base.whouseName = CenterContral.oStoreWhouse.name;
+
+            oRetailReturnDTO.Base.relatedOrder = gFromDTO.Base.relatedOrder;
+            oRetailReturnDTO.Base.clientId = gFromDTO.Base.clientId;
+
+            oRetailReturnDTO.Base.orderAmount = gFromDTO.Base.orderAmount;
+
+            oRetailReturnDTO.Base.posId = CenterContral.iPostId;
+            oRetailReturnDTO.Base.cashierId = CenterContral.DefaultUserId;
+            oRetailReturnDTO.Base.cashierName = CenterContral.DefaultUserName;
+
+            oRetailReturnDTO.Base.remark = gFromDTO.Base.remark;
+            oRetailReturnDTO.Base.createTime = gFromDTO.Base.storeId;
+
+            for (int i=0;i< gFromDTO.details.Count; ++i)
             {
-                return;
+                var stockDetail = gFromDTO.details[i];
+                var dataGridViw = dataGridView_productList.Rows[i];
+                RetailReturnDetail oRetailReturnDetail = new RetailReturnDetail();
+
+
+                oRetailReturnDetail.id = stockDetail.id;
+
+                oRetailReturnDetail.goodsId = stockDetail.goodsId;
+
+                oRetailReturnDetail.goodsName = stockDetail.goodsName;
+
+                oRetailReturnDetail.barcode = stockDetail.barcode;
+
+                oRetailReturnDetail.categoryId = stockDetail.categoryId;
+
+                oRetailReturnDetail.specification = stockDetail.specification;
+
+                oRetailReturnDetail.produceTime = stockDetail.produceTime;
+
+                oRetailReturnDetail.expireTime = stockDetail.expireTime;
+
+                oRetailReturnDetail.unit = stockDetail.expireTime;
+
+                oRetailReturnDetail.unitPrice = stockDetail.unitPrice;
+
+                if (stockDetail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+                {
+                    //计重类,不允许只退几斤，只允许全退
+                    oRetailReturnDetail.subtotal = stockDetail.subtotal  ;
+                    oRetailReturnDetail.returnCount = 1;
+                }
+                else
+                {
+                    long returnCount = 0;
+                    CommUiltl.ConverStrYuanToUnion(dataGridViw.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value
+                   , out returnCount);
+                    oRetailReturnDetail.returnCount = returnCount;
+                    long subtotal = 0;
+                    CommUiltl.ConverStrYuanToUnion(dataGridViw.Cells[CELL_INDEX.PRODUCT_MONEY].Value, out subtotal);
+                    oRetailReturnDetail.subtotal = 0;
+                }
+               
+
+                oRetailReturnDTO.details.Add(oRetailReturnDetail);
             }
-            
-            if (!CenterContral.DeleteOrder(gStockOutDTO))
-            {
-                return;
-            }
-            MessageBox.Show("取消成功", "取消订单操作");
+
         }
 
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
@@ -147,6 +226,22 @@ namespace CashRegisterApplication.window.Return
                         escapeToPreWindows();
                     }
                     break;
+                case System.Windows.Forms.Keys.Home:
+                    {
+                        escapeToPreWindows();
+                    }
+                    break;
+                case System.Windows.Forms.Keys.Multiply:
+                    {
+                        //button_delete_Click(null, null);
+                        break;
+                    }
+                case System.Windows.Forms.Keys.Delete:
+                    {
+                        button_delete_Click(null, null);
+                        break;
+                    }
+
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -163,12 +258,14 @@ namespace CashRegisterApplication.window.Return
 
         private void button_delete_Click(object sender, EventArgs e)
         {
+
             if (this.dataGridView_productList.CurrentCell == null)
             {
-                MessageBox.Show("提示", "请选中商品");
+                MessageBox.Show("请选中商品","提示");
                 return;
             }
-            string showTips = "商品:" + this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value+" 不进行退货吗？";
+
+            string showTips = "商品:" + this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value + " 不进行退货吗？";
             var confirmPayApartResult = MessageBox.Show(showTips,
                                   "删除退货单商品操作",
                                   MessageBoxButtons.YesNo);
@@ -178,26 +275,26 @@ namespace CashRegisterApplication.window.Return
             }
             int iIndex = this.dataGridView_productList.CurrentRow.Index;
             CommUiltl.Log("iIndex:" + iIndex);
-           
+
             this.dataGridView_productList.Rows.RemoveAt(iIndex);
-            gStockOutDTO.details.RemoveAt(iIndex);
+            gFromDTO.details.RemoveAt(iIndex);
             //重新计算退货价钱
             _CaculatePrice();
         }
 
         private void _CaculatePrice()
         {
-            long rowCount = gStockOutDTO.details.Count;
+            long rowCount = gFromDTO.details.Count;
             long orderPrice = 0, subtotalCount = 0;
             for (int index = 0; index < rowCount; ++index)
             {
-                subtotalCount += gStockOutDTO.details[index].actualCount;
-                orderPrice += gStockOutDTO.details[index].subtotal;
+                subtotalCount += gFromDTO.details[index].actualCount;
+                orderPrice += gFromDTO.details[index].subtotal;
             }
-            CenterContral.updateOrderAmount(orderPrice, ref gStockOutDTO);
-            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gStockOutDTO.Base.orderAmount);
+            CenterContral.updateOrderAmount(orderPrice, ref gFromDTO);
+            string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gFromDTO.Base.orderAmount);
 
-            gStockOutDTO.Base.totalProductCount = subtotalCount;
+            gFromDTO.Base.totalProductCount = subtotalCount;
             UpdateTextShow();
             return;
         }
@@ -205,7 +302,20 @@ namespace CashRegisterApplication.window.Return
         private void UpdateTextShow()
         {
             //更新总价
+            returnFee = gFromDTO.Base.orderAmount;
+            this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
+        }
 
+        private void button_modify_Click(object sender, EventArgs e)
+        {
+            if (this.dataGridView_productList.CurrentCell == null)
+            {
+                MessageBox.Show("请选中商品", "提示");
+                return;
+            }
+            CommUiltl.Log("button_modify_Click:");
+            this.dataGridView_productList.CurrentCell = this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount];
+            this.dataGridView_productList.BeginEdit(true);
         }
     }
     public static class CELL_INDEX

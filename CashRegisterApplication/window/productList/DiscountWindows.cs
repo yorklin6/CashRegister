@@ -109,7 +109,7 @@ namespace CashRegisterApplication.window.productList
             }
             //确认支付
             CommUiltl.Log("discountRate:" + discountRate + "%");
-            CenterContral.UpdateDiscountRate(discountRate);
+            CenterContral.UpdateDiscountRate(discountRate,ref CenterContral.oStockOutDTO);
             returnPreventWindows();
             return;
         }

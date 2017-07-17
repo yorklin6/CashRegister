@@ -46,7 +46,8 @@ namespace CashRegiterApplication
         private static readonly string paymentMember = "member/payment/";
         private static readonly string getStoreListBysUserName = "user/store/";
         private static readonly string payTypeFunc = "payType?";
-
+        private static readonly string oReturnOrderFunc = "/retail/return";
+        private static readonly string oFindOrderFunc = "/retail/find/";
 
 
         public const int CLOUD_SATE_HTTP_SUCESS = 0;
@@ -138,6 +139,9 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
+
+
+
         public static int _GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
         {
             string funcUrl = GenerateOrderFunc ;
@@ -557,6 +561,42 @@ namespace CashRegiterApplication
             CommUiltl.Log("list .size ="+ oHttpRespone.data.Count);
             return true;
         }
+        /***************************************退货查询***************************************/
+        internal static bool ReturnOrder(RetailReturnDTO oRetailReturnDTO)
+        {
+            int iResult = CLOUD_SATE_HTTP_FAILD;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _ReturnOrder(oRetailReturnDTO);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        internal static int _ReturnOrder(RetailReturnDTO oReq)
+        {
+            HttpBaseRespone oHttpRespone =new HttpBaseRespone();
+            string funcUrl = oReturnOrderFunc ;
+            String json = JsonConvert.SerializeObject(oReq);
+
+            if (!Post<HttpBaseRespone>(funcUrl, json, ref oHttpRespone))
+            {
+                CommUiltl.Log("ERR:Get GenerateOrder failed");
+                lastErrorMsg = "异常:请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+
+            if (oHttpRespone.errorCode != 0)
+            {
+                Console.WriteLine("ERR:Get failed oHttpRespone:" + JsonConvert.SerializeObject(oHttpRespone));
+                lastErrorMsg = "付款方式查询:oHttpRespone[" + JsonConvert.SerializeObject(oHttpRespone) + "]";
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
         /***************************************付款方式查询***************************************/
         internal static bool GetPayType(ref PayTypeData oData)
         {
@@ -593,6 +633,45 @@ namespace CashRegiterApplication
             CommUiltl.Log("list .size =" + oPayTypeList.list.Count);
             return true;
         }
+        /****************************获取零售单****************/
+        internal static int GetStockBySerialNumber(string serialNumber, ref StockOutDTO oRespond)
+        {
+          
+            int iResult = 0;
+            lastErrorMsg = "";
+            for (int i = 0; i < 3; ++i)
+            {
+                iResult = _GetStockBySerialNumber(serialNumber, ref oRespond);
+                if (CLOUD_SATE_HTTP_SUCESS == iResult)
+                {
+                    return iResult;
+                }
+            }
+            return iResult;
+        }
+
+        public static int _GetStockBySerialNumber(string serialNumber, ref StockOutDTO oStockOutDTO)
+        {
+            StockOutDTORespone oRespond = new StockOutDTORespone();
+            string funcUrl = oFindOrderFunc+ serialNumber;
+            if (!Get<StockOutDTORespone>(funcUrl, ref oRespond))
+            {
+                CommUiltl.Log("ERR:Get GenerateOrder failed");
+                lastErrorMsg = "异常:请检查网络";
+                return CLOUD_SATE_HTTP_FAILD;
+            }
+            if (oRespond.errorCode != 0)
+            {
+                CommUiltl.Log("ERR:Get failed _GetStockBySerialNumber errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] m");
+                lastErrorMsg = "错误:[" + JsonConvert.SerializeObject(oRespond) + "] ";
+                return CLOUD_SATE_BUSSINESS_FAILD;
+            }
+            oStockOutDTO = oRespond.data;
+            CommUiltl.Log("_GetStockBySerialNumber success:[" + JsonConvert.SerializeObject(oRespond) + "]");
+            return CLOUD_SATE_HTTP_SUCESS;
+        }
+
+
         /****************************测试登陆态接口****************/
         internal static bool TestTimeOut()
         {
@@ -994,7 +1073,6 @@ namespace CashRegiterApplication
             return true; //总是接受  
         }
 
-
-
+      
     }
 }

@@ -753,6 +753,12 @@ namespace CashRegiterApplication
                         RePrintThisOrder();
                         return true;
                     }
+                case System.Windows.Forms.Keys.F2:
+                    {
+                        //零售退货
+                        CenterContral.ShowReturanWindowByContral();
+                        return true;
+                    }
                 case System.Windows.Forms.Keys.F3:
                     {
                         //折扣

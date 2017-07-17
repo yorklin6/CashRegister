@@ -7,6 +7,7 @@ using CashRegisterApplication.window.Member;
 using CashRegisterApplication.window.Printer;
 using CashRegisterApplication.window.productList;
 using CashRegisterApplication.window.ProductList;
+using CashRegisterApplication.window.Return;
 using CashRegisterApplication.window.Setting;
 using CashRegiterApplication;
 using Newtonsoft.Json;
@@ -44,6 +45,9 @@ namespace CashRegisterApplication.comm
         public static HistoryListWindow Window_HistoryListWindow;
 
         public static HistoryDetailWindow Window_HistoryDetailWindow;
+        public static ReturnDetailWindow Window_ReturnDetailWindow;
+
+
         public static StockOutDTO oStockOutDTO;//当前单据信息
 
 
@@ -155,6 +159,17 @@ namespace CashRegisterApplication.comm
             }
         }
 
+        internal static bool ReturnOrder(RetailReturnDTO oRetailReturnDTO)
+        {
+            if (!HttpUtility.ReturnOrder(oRetailReturnDTO))
+            {
+                var confirmPayApartResult = MessageBox.Show("退货失败" + HttpUtility.lastErrorMsg,
+                             "提示");
+                return false;
+            }
+            return true;
+        }
+
         internal static void CallSettingDefaultMsgWindow(int flat)
         {
             CenterContral.flagCallSetting = flat;
@@ -184,8 +199,9 @@ namespace CashRegisterApplication.comm
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
             Window_PayTypesForRechargeWindow = new PayTypesForRechargeWindow();
+            Window_ReturnDetailWindow = new ReturnDetailWindow();
 
-           Window_MemberInfoWindows = new MemberInfoWindows();
+            Window_MemberInfoWindows = new MemberInfoWindows();
             Window_DiscountWindows = new DiscountWindows();
 
             Window_FunctionMenuWindow = new FunctionMenuWindow();
@@ -644,6 +660,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId =0;
+
             CenterContral.oStockOutDTO.Base.stockOutTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             CenterContral.oStockOutDTO.Base.orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             //  CenterContral.oStockOutDTO.Base.cashierId = CenterContral.oLoginer.data.id;
@@ -1258,7 +1275,11 @@ namespace CashRegisterApplication.comm
                 return;
             }
         }
-
+        internal static void ShowReturanWindowByContral()
+        {
+            StockOutDTO oLastStockmsg = new StockOutDTO();
+            Window_ReturnDetailWindow.ShowByContral(oLastStockmsg);
+        }
 
         //打印
         internal static void UpdateStoreWhouseDefault(string strStoreWhouseDefult)
@@ -1478,7 +1499,7 @@ namespace CashRegisterApplication.comm
             CenterContral.PrintOrder(oLastStockmsg);
             CommUiltl.Log("PrintLastSotckOutOrder ok 打印结束");
         }
-       
+        
         internal static void PrintOrder(StockOutDTO oStockOutDTO)
         {
             CenterContral.Window_ProductList.PrintOrder(oStockOutDTO);
@@ -1522,6 +1543,28 @@ namespace CashRegisterApplication.comm
                 return "已经删除";
             }
             return "失败";
+        }
+
+        internal static StockOutDTO GetStockBySerialNumber()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static StockOutDTO GetStockBySerialNumber(string serialNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static bool GetStockBySerialNumber(string serialNumber, ref StockOutDTO oStock)
+        {
+            if (HttpUtility.GetStockBySerialNumber(serialNumber, ref oStock) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            {
+                var confirmPayApartResult = MessageBox.Show("查询失败失败" + HttpUtility.lastErrorMsg,
+                        "提示");
+                return false;
+            }
+
+            return true;
         }
     }
 

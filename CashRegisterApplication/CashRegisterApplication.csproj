@@ -82,6 +82,7 @@
     <Compile Include="model\Member.cs" />
     <Compile Include="model\PayOrder.cs" />
     <Compile Include="model\PayType.cs" />
+    <Compile Include="model\Return.cs" />
     <Compile Include="model\PostId.cs" />
     <Compile Include="model\StoreWhouse.cs" />
     <Compile Include="model\UserLogin.cs" />

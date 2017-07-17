@@ -73,7 +73,7 @@ namespace CashRegisterApplication.window.History
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
-            currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.postKeyWord;
+            currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.barcode;
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = detail.goodsName;
             CommUiltl.Log("detail.goodsShowSpecification:" + detail.goodsShowSpecification);
             currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.goodsShowSpecification;

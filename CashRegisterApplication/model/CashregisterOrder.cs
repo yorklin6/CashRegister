@@ -122,7 +122,6 @@ namespace CashRegisterApplication.model
         internal void generatePayOrderNumber()
         {
             serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeWhouseId + "-"
-              
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
@@ -140,8 +139,8 @@ namespace CashRegisterApplication.model
         public long cashierId { get; set; }//收银员id，也就是登陆者
         public long orderAmount { get; set; }
         public String creator { get; set; }
-        public long createTime { get; set; }
-        public long updateTime { get; set; }
+        public String createTime { get; set; }
+        public String updateTime { get; set; }
         public String stockOutTime { get; set; }
         public String orderTime { get; set; }
         public Byte status { get; set; }
@@ -191,8 +190,8 @@ namespace CashRegisterApplication.model
         public String barcode { get; set; }
         public String specification { get; set; }
         public String unit { get; set; }
-        public long produceTime { get; set; }
-        public long expireTime { get; set; }
+        public String produceTime { get; set; }
+        public String expireTime { get; set; }
         public long orderCount { get; set; }
         public long actualCount { get; set; }
         public long actualDifference { get; set; }
