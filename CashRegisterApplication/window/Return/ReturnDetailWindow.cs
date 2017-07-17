@@ -317,6 +317,12 @@ namespace CashRegisterApplication.window.Return
             this.dataGridView_productList.CurrentCell = this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount];
             this.dataGridView_productList.BeginEdit(true);
         }
+
+        private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            //e.RowIndex;
+            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+        }
     }
     public static class CELL_INDEX
     {

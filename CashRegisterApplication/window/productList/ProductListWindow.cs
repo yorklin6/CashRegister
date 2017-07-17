@@ -1292,8 +1292,14 @@ namespace CashRegiterApplication
 
         private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " Column" );
+            //重新定义序号
+            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " RowCount" + this.dataGridView_productList.RowCount);
 
+            for (int i = 0, rowIndex = 0; i < this.dataGridView_productList.RowCount; ++i)
+            {
+                this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
+                ++rowIndex;
+            }
         }
     }
 

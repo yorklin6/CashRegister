@@ -34,9 +34,9 @@ namespace CashRegiterApplication
             AppDomain.CurrentDomain.UnhandledException +=
              new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-
-            Application.Run(new ReturnDetailWindow());
-            // Application.Run(new LoginWindows());
+          
+            // Application.Run(new ReturnDetailWindow());
+            Application.Run(new LoginWindows());
         }
 
 
