@@ -12,6 +12,7 @@ namespace CashRegisterApplication.window.Return
 {
     public partial class ReturnDetailWindow : Form
     {
+        bool gConstructEnd = false;
         public ReturnDetailWindow()
         {
             InitializeComponent();
@@ -26,12 +27,14 @@ namespace CashRegisterApplication.window.Return
             CenterContral.GetStockBySerialNumber(oLastStockmsg.Base.serialNumber,ref oStock);
             ShowDetailStockOut(oLastStockmsg);
             this.Show();
+            gConstructEnd = true;
         }
 
         private void HitoryDetailWindow_Load(object sender, EventArgs e)
         {
             StockOutDTO oLastStockmsg = new StockOutDTO(); 
             ShowByContral(oLastStockmsg);
+
         }
 
 
@@ -53,7 +56,7 @@ namespace CashRegisterApplication.window.Return
         {
             gFromDTO = oStockOutDTO;
             this.Show();
-            this.ActiveControl = this.button1;
+            this.ActiveControl = this.buttonReturn;
             this.dataGridView_productList.Rows.Clear();
 
             this.label_searisenumber.Text = "退货单(流水号:" + oStockOutDTO.Base.serialNumber + ")";
@@ -110,7 +113,7 @@ namespace CashRegisterApplication.window.Return
             currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.GetGoodsCount(detail);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonReturn_Click(object sender, EventArgs e)
         {
 
             //打印
@@ -241,9 +244,36 @@ namespace CashRegisterApplication.window.Return
                         button_delete_Click(null, null);
                         break;
                     }
-
+                case System.Windows.Forms.Keys.Enter:
+                    {
+                        enter_event();
+                        break;
+                    }
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void enter_event()
+        {
+           
+            if (this.dataGridView_productList.IsCurrentCellInEditMode)
+            {
+                var CurrentCell = this.dataGridView_productList.CurrentCell;
+                CommUiltl.Log("enter_event ColumnIndex:" + CurrentCell.ColumnIndex);
+                CommUiltl.Log("enter_event RowIndex:" + CurrentCell.RowIndex);
+                if ( CurrentCell.RowIndex == this.dataGridView_productList.RowCount -1)
+                {
+                    if (CurrentCell.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount)
+                    {
+                        //最后一行，那么就先把焦掉移除掉的数量地方
+                        this.dataGridView_productList.CurrentCell = this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX];
+                    }
+                    //唤起收银界面
+                    CommUiltl.Log(" CELL_INDEX.PRODUCT_CODE empty ");
+                    buttonReturn_Click(null,null);
+                }
+                
+            }
         }
 
         private void label_searisenumber_Click(object sender, EventArgs e)
@@ -277,6 +307,7 @@ namespace CashRegisterApplication.window.Return
             CommUiltl.Log("iIndex:" + iIndex);
 
             this.dataGridView_productList.Rows.RemoveAt(iIndex);
+             gDeleteEventFlag = true;
             gFromDTO.details.RemoveAt(iIndex);
             //重新计算退货价钱
             _CaculatePrice();
@@ -320,8 +351,99 @@ namespace CashRegisterApplication.window.Return
 
         private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            //e.RowIndex;
-            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+            //重新定义序号
+            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " RowCount" + this.dataGridView_productList.RowCount);
+            for (int i = 0, rowIndex = 0; i < this.dataGridView_productList.RowCount; ++i)
+            {
+                this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
+                ++rowIndex;
+            }
+        }
+
+        private bool gDeleteEventFlag = false;
+        private void productListDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            CommUiltl.Log("begin e.RowIndex：" + e.RowIndex + " ColumnIndex" + e.ColumnIndex);
+
+            if (!gConstructEnd)
+            {
+                //未初始化行表的时候，这里是空的
+                return;
+            }
+            if (gDeleteEventFlag)
+            {
+                CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " Column");
+                //删除数据的时候，会走到这里，这里面行数已经删除
+                gDeleteEventFlag = false;
+                return;
+            }
+            CommUiltl.Log("row:" + this.dataGridView_productList.CurrentCell.RowIndex + " Column:" + this.dataGridView_productList.CurrentCell.ColumnIndex);
+            if (this.dataGridView_productList.CurrentCell.ColumnIndex != e.ColumnIndex || this.dataGridView_productList.CurrentCell.RowIndex != e.RowIndex)
+            {
+                CommUiltl.Log("ColumnIndex != e.ColumnIndex");
+                //非当前行
+                return;
+            }
+           
+            
+            if (e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount)
+            {
+             if (!_ResetMoneyByRow(e.RowIndex, e.ColumnIndex))
+                {
+                    return;
+                }
+                return;
+            }
+
+        }
+        private bool _ResetMoneyByRow(int rowIndex, int columnIndex)
+        {
+            //if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            //{
+            //    //价钱为空，就停止
+            //    return false;
+            //}
+            //long actualCount = 0, unitPrice = 0;
+            //CommUiltl.Log("rowIndex:rowIndex" + rowIndex + " GOODS_BARCODE:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_BARCODE].Value.ToString());
+            //CommUiltl.Log("detail count:" + CenterContral.oStockOutDTO.details.Count);
+
+            //string strRetailCount = this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value.ToString();
+            //if (!_CheckRetailAccount(CenterContral.oStockOutDTO.details[rowIndex], strRetailCount, ref actualCount))
+            //{
+            //    _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+            //    //_SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount]);
+            //    MessageBox.Show("错误数量");
+            //    return false;
+            //}
+
+            //if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out unitPrice))
+            //{
+            //    _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
+            //    MessageBox.Show("错误金额");
+            //    return false;
+            //}
+
+            //CommUiltl.Log("unitPrice:" + unitPrice);
+            //_UpdateStockOutDtoDetailMoney(CenterContral.oStockOutDTO.details[rowIndex], strRetailCount, actualCount, unitPrice);
+            //this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.details[rowIndex].subtotal);
+            //_UpdateStockBaseMsg();
+            return true;
+        }
+        private void productListDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            CommUiltl.Log("begin ");
+            if (this.dataGridView_productList.CurrentCell == null)
+            {
+                CommUiltl.Log("this.dataGridView_productList.CurrentCell == null");
+                return;
+            }
+            if (!gConstructEnd)
+            {
+                CommUiltl.Log("gConstructEnd ");
+                //未初始化行表的时候，这里是空的
+                return;
+            }
+            CommUiltl.Log("end ");
         }
     }
     public static class CELL_INDEX
