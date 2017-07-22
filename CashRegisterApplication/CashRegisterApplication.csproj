@@ -91,12 +91,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="window\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="window\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="window\function\FunctionMenuWindows.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,9 +209,6 @@
     <Compile Include="window\Return\ReturnDetailWindow.Designer.cs">
       <DependentUpon>ReturnDetailWindow.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="window\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="window\function\FunctionMenuWindows.resx">
       <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
     </EmbeddedResource>

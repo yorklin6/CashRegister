@@ -67,9 +67,13 @@ namespace CashRegisterApplication.model
 
         public String expireTime { get; set; }
 
-        public String unit { get; set; }
+        public String baseUnit { get; set; }
+
+        public String bigUnit { get; set; }
 
         public long unitPrice { get; set; }
+
+        public long unitConversion { get; set; }
 
         public long returnCount { get; set; }
 

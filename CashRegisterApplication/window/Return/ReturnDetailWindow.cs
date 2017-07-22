@@ -136,6 +136,7 @@ namespace CashRegisterApplication.window.Return
             {
                 return;
             }
+            MessageBox.Show("退货成功", "提示");
             //成功后返回
             escapeToPreWindows();
         }
@@ -189,7 +190,9 @@ namespace CashRegisterApplication.window.Return
 
                 oRetailReturnDetail.expireTime = stockDetail.expireTime;
 
-                oRetailReturnDetail.unit = stockDetail.expireTime;
+                oRetailReturnDetail.baseUnit = stockDetail.baseUnit;
+                oRetailReturnDetail.bigUnit = stockDetail.bigUnit;
+                oRetailReturnDetail.unitConversion = stockDetail.unitConversion;
 
                 oRetailReturnDetail.unitPrice = stockDetail.unitPrice;
 
@@ -321,7 +324,14 @@ namespace CashRegisterApplication.window.Return
         private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             //e.RowIndex;
-          //  this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+            //重新定义序号
+            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " RowCount" + this.dataGridView_productList.RowCount);
+
+            for (int i = 0, rowIndex = 0; i < this.dataGridView_productList.RowCount; ++i)
+            {
+                this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
+                ++rowIndex;
+            }
         }
     }
     public static class CELL_INDEX
