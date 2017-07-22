@@ -91,6 +91,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="window\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="window\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="window\function\FunctionMenuWindows.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     <Compile Include="window\Return\ReturnDetailWindow.Designer.cs">
       <DependentUpon>ReturnDetailWindow.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="window\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="window\function\FunctionMenuWindows.resx">
       <DependentUpon>FunctionMenuWindows.cs</DependentUpon>
     </EmbeddedResource>
@@ -285,14 +294,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="alipay_72px_1186722_easyicon.net.png" />
-    <None Include="alipay.png" />
     <Content Include="Cashier_128px_566886_easyicon.net.ico" />
     <Content Include="cashRegister.csproj" />
     <Content Include="cashRegister.csproj.user" />
     <Content Include="cash_register_24px_1131575_easyicon.net.ico" />
-    <None Include="Wechat_72px_1127960_easyicon.net.png" />
-    <None Include="wechatPay.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

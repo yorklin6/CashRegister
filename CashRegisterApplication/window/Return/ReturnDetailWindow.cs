@@ -321,7 +321,7 @@ namespace CashRegisterApplication.window.Return
         private void dataGridView_productList_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             //e.RowIndex;
-            this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
+          //  this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;
         }
     }
     public static class CELL_INDEX

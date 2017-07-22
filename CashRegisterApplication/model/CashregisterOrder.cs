@@ -128,25 +128,30 @@ namespace CashRegisterApplication.model
 
     public class StockOutBase
     {
-        public long stockOutId { get; set; }
         public String serialNumber { get; set; }
-        public Byte type { get; set; }
         public long storeId { get; set; }
         public long whouseId { get; set; }
-        public long relatedOrder { get; set; }
+        public String whouseName { get; set; }
         public long clientId { get; set; }//会员id
+        public String clientName { get; set; }//会员id
         public long posId { get; set; }
         public long cashierId { get; set; }//收银员id，也就是登陆者
-        public long orderAmount { get; set; }
-        public String creator { get; set; }
-        public String createTime { get; set; }
-        public String updateTime { get; set; }
-        public String stockOutTime { get; set; }
-        public String orderTime { get; set; }
-        public Byte status { get; set; }
+        public String cashierName { get; set; }//收银员，也就是登陆者
+        public String deskNumber { get; set; }
+        public long orderAmount { get; set; }//订单总金额
+        public long walletHistoryId { get; set; }//关联的钱包支付Id
         public String remark { get; set; }
+        public String orderTime { get; set; }
+        public String createTime { get; set; }
 
-        public long walletHistoryId { get; set; }
+
+
+
+
+
+        
+
+
         //************本地缓存数据
         public long TotalPayFee { get; set; }
         public long RealRecieveFee { get; set; }//实收多少钱
@@ -173,39 +178,56 @@ namespace CashRegisterApplication.model
         public long discountRate { get; set; }
         // 全班商品累计价格
         public long allGoodsMoneyAmount { get; set; }
+        public long stockOutId { get; set; }
+        public Byte type { get; set; }
+        public long relatedOrder { get; set; }
+        public String creator { get; set; }
+        public String updateTime { get; set; }
+        public String stockOutTime { get; set; }
+        public Byte status { get; set; }
+
 
         public void generateSeariseNumber()
         {
             CenterContral.oStockOutDTO.Base.serialNumber = "LS-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
+            orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+            createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+
         }
-    }
+}
     public class StockOutDetail
     {
 
         public long id { get; set; }
-        public long stockOutId { get; set; }
-        public long goodsId { get; set; }
-        public String goodsName { get; set; }
-        public String barcode { get; set; }
-        public String specification { get; set; }
-        public String unit { get; set; }
+        public long retailId { get; set; }
+        public long goodsId { get; set; }//商品Id
+        public String goodsName { get; set; }//商品名称
+        public String barcode { get; set; }//商品条码
+        public long categoryId { get; set; }// 商品类别Id
+        public String specification { get; set; }//零售规格
         public String produceTime { get; set; }
         public String expireTime { get; set; }
-        public long orderCount { get; set; }
-        public long actualCount { get; set; }
-        public long actualDifference { get; set; }
+        public String baseUnit { get; set; }
+        public String bigUnit { get; set; }
+        public long unitConversion { get; set; }
         public long unitPrice { get; set; }
+        public long orderCount { get; set; }
         public long subtotal { get; set; }
         public String remark { get; set; }
-      
+        public long spaceId { get; set; }/** 加工位Id，仅用于零售需要现场加工场景 */
+
+
+    public long stockOutId { get; set; }
+        public String unit { get; set; }
+        public long actualCount { get; set; }
+        public long actualDifference { get; set; }
         internal int cloudState { get; set; }
 
-        public long categoryId;
 
-        public long spaceId;
+      
 
-        public string goodsShowSpecification { get; set; }
+    public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
 
         public String postKeyWord { get; set; }//postKeyWord，用户输入的关键词

@@ -657,6 +657,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.type = CenterContral.STOCK_OUT_BASE_TYPE;
             CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeWhouseId;
             CenterContral.oStockOutDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
+            CenterContral.oStockOutDTO.Base.whouseName = CenterContral.oStoreWhouse.name;
             CenterContral.oStockOutDTO.Base.relatedOrder = 0;
             CenterContral.oStockOutDTO.Base.posId = CenterContral.iPostId;
             CenterContral.oStockOutDTO.Base.clientId =0;
@@ -671,6 +672,7 @@ namespace CashRegisterApplication.comm
 
             CenterContral.oStockOutDTO.Base.creator = CenterContral.DefaultUserName;
             CenterContral.oStockOutDTO.Base.cashierId = CenterContral.DefaultUserId;
+            CenterContral.oStockOutDTO.Base.cashierName= CenterContral.DefaultUserName;
             CenterContral.oStockOutDTO.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             CenterContral.oStockOutDTO.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
@@ -1013,7 +1015,9 @@ namespace CashRegisterApplication.comm
             detail.specification = productInfo.specification;
             detail.categoryId = productInfo.categoryId;
             detail.unit = productInfo.baseUnit;
-
+            detail.baseUnit= productInfo.baseUnit;
+            detail.bigUnit = productInfo.bigUnit;
+            detail.unitConversion = productInfo.unitConversion;
             // detail.goodsShowSpecification = productInfo.baseUnit + "/" + productInfo.bigUnit + "/" + productInfo.specification;
             detail.goodsShowSpecification = productInfo.baseUnit;
 
@@ -1146,6 +1150,7 @@ namespace CashRegisterApplication.comm
                 return false;
             }
             CenterContral.oStockOutDTO.Base.clientId = CenterContral.oStockOutDTO.oMember.memberId;//会员支付成功，要记下这笔单未会员id
+            CenterContral.oStockOutDTO.Base.clientName = CenterContral.oStockOutDTO.oMember.name;
             CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateTextShow();
             //重新拉会员信息

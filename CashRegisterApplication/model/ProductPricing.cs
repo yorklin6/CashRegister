@@ -59,7 +59,7 @@ namespace CashRegiterApplication
         public String abbreviation { get; set; }
         public String baseUnit { get; set; }
         public String bigUnit { get; set; }
-        public int unitConversion { get; set; }
+        public long unitConversion { get; set; }
         public String specification { get; set; }
         public String barcode { get; set; }
         public String brand { get; set; }
@@ -83,11 +83,13 @@ namespace CashRegiterApplication
         public long weighType { get; set; }
         public long safetyStock { get; set; }
         public long status { get; set; }
+
         public String remark { get; set; }
-        public String creator { get; set; }
+        public long isDeleted { get; set; }
         public String createTime { get; set; }
         public String updateTime { get; set; }
 
+        public String creator { get; set; }
         public String json { get; set; }
 
         public String postKeyWord { get; set; }//postKeyWord，用户输入的关键词
@@ -97,60 +99,5 @@ namespace CashRegiterApplication
         public long barcodeSubTotalMoney { get; set; }//条码中自带的金额数，当isBarCodeMoneyGoods字段为1时候生效
         public long barcodeCount { get; set; }//条码中自带的金额数,需要重新计算计重数
 
-        //        barcode: "9556247516480",
-        //baseUnit: "盒",
-        //bigUnit: "箱",
-        //brand: "倍乐思",
-        //categoryId: 1,
-        //createTime: "2017-03-28 11:22:48",
-        //goodsId: 64,
-        //goodsName: "倍乐思提拉米苏杏仁白巧克力120g",
-        //marketingType: 1,
-        //memberExclusive: 0,
-        //memberPrice: 220000,
-        //produceAddress: "马来西亚",
-        //purchasePrice: 220000,
-        //remark: "",
-        //retailPrice: 220000,
-        //specification: "120*12",
-        //status: 1,
-        //supplierId: 86,
-        //supplierName: "深圳市江山宏达工贸有限公司",
-        //unitConversion: 12,
-        //validity: 365
-
-        //        public long goodsId;
-        //        public String goodsName;
-        //        public String abbreviation;
-        //        public String baseUnit;
-        //        public String bigUnit;
-        //        public Short unitConversion;
-        //        public String specification;
-        //        public String barcode;
-        //        public String brand;
-        //        public String produceAddress;
-        //        public long supplierId;
-        //        public String supplierName;
-        //        public long validity;
-        //        public long categoryId;
-        //        public String categoryName; //商品类别名称(在通过Id获取商品信息时查询设置)
-        //        public long retailPrice;
-        //        public long memberPrice;
-        //        public long purchasePrice;
-        //        public Double grossMargin;
-        //        public long priceType;
-        //        public Double incomeTaxRate;
-        //        public long stockPrice;
-        //        public long marketingType;
-        //        public Double shoppeRate;
-        //        public long memberExclusive;
-        //        public Double pointCoefficient;
-        //        public long weighType;
-        //        public long safetyStock;
-        //        public long status;
-        //        public String remark;
-        //        public String creator;
-        //        public Timestamp createTime;
-        //        public Timestamp updateTime;
     }
 }
