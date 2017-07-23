@@ -14,24 +14,28 @@ namespace CashRegisterApplication.window.Return
     {
         public ReturnDetailWindow()
         {
+        
             InitializeComponent();
+     
         }
 
         public void ShowByContral(StockOutDTO oLastStockmsg)
         {
+         
+            gResetRow = true;
+            
             CenterContral.Init();
-             oLastStockmsg = new StockOutDTO();
-            CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
-            StockOutDTO oStock = new StockOutDTO();
-            CenterContral.GetStockBySerialNumber(oLastStockmsg.Base.serialNumber,ref oStock);
-            ShowDetailStockOut(oLastStockmsg);
+             ShowDetailStockOut(oLastStockmsg);
             this.Show();
+            gConstructEnd = true;
         }
 
         private void HitoryDetailWindow_Load(object sender, EventArgs e)
         {
+            gConstructEnd = false;
             StockOutDTO oLastStockmsg = new StockOutDTO(); 
-            ShowByContral(oLastStockmsg);
+    
+          
         }
 
 
@@ -53,7 +57,7 @@ namespace CashRegisterApplication.window.Return
         {
             gFromDTO = oStockOutDTO;
             this.Show();
-            this.ActiveControl = this.button1;
+            this.ActiveControl = this.button_return;
             this.dataGridView_productList.Rows.Clear();
 
             this.label_searisenumber.Text = "退货单(流水号:" + oStockOutDTO.Base.serialNumber + ")";
@@ -88,7 +92,7 @@ namespace CashRegisterApplication.window.Return
                 this.dataGridView_productList.CurrentCell = this.dataGridView_productList.Rows[0].Cells[1];
                 this.dataGridView_productList.BeginEdit(true);
             }
-
+         
         }
 
         private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
@@ -98,7 +102,7 @@ namespace CashRegisterApplication.window.Return
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].Value = detail.barcode;
             currentRow.Cells[CELL_INDEX.PRODUCT_NAME].Value = detail.goodsName;
             CommUiltl.Log("detail.goodsShowSpecification:" + detail.goodsShowSpecification);
-            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.unit;
+            currentRow.Cells[CELL_INDEX.PRODUCT_SPECIFICATION].Value = detail.baseUnit;
 
             string RetailPrice = CommUiltl.CoverMoneyUnionToStrYuan(detail.unitPrice);
             currentRow.Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value = RetailPrice;
@@ -110,7 +114,7 @@ namespace CashRegisterApplication.window.Return
             currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.GetGoodsCount(detail);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button_return_Click(object sender, EventArgs e)
         {
 
             //打印
@@ -196,22 +200,8 @@ namespace CashRegisterApplication.window.Return
 
                 oRetailReturnDetail.unitPrice = stockDetail.unitPrice;
 
-                if (stockDetail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
-                {
-                    //计重类,不允许只退几斤，只允许全退
-                    oRetailReturnDetail.subtotal = stockDetail.subtotal  ;
-                    oRetailReturnDetail.returnCount = 1;
-                }
-                else
-                {
-                    long returnCount = 0;
-                    CommUiltl.ConverStrYuanToUnion(dataGridViw.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value
-                   , out returnCount);
-                    oRetailReturnDetail.returnCount = returnCount;
-                    long subtotal = 0;
-                    CommUiltl.ConverStrYuanToUnion(dataGridViw.Cells[CELL_INDEX.PRODUCT_MONEY].Value, out subtotal);
-                    oRetailReturnDetail.subtotal = 0;
-                }
+                oRetailReturnDetail.subtotal = stockDetail.subtotal;
+                oRetailReturnDetail.returnCount= stockDetail.orderCount;
                
 
                 oRetailReturnDTO.details.Add(oRetailReturnDetail);
@@ -236,7 +226,7 @@ namespace CashRegisterApplication.window.Return
                     break;
                 case System.Windows.Forms.Keys.Multiply:
                     {
-                        //button_delete_Click(null, null);
+                        button_modify_Click(null, null);
                         break;
                     }
                 case System.Windows.Forms.Keys.Delete:
@@ -244,7 +234,19 @@ namespace CashRegisterApplication.window.Return
                         button_delete_Click(null, null);
                         break;
                     }
+                case System.Windows.Forms.Keys.Enter:
+                    {
+                        if (this.dataGridView_productList.CurrentRow.Index == ( this.dataGridView_productList.RowCount -1 ))
+                        {
+                            //最后一行
+                            CommUiltl.Log("last row:" + this.dataGridView_productList.CurrentRow.Index);
 
+                            this.ActiveControl = this.button_return;
+                            return true;
+                            //  return base.ProcessCmdKey(ref msg, keyData);
+                        }
+                    }
+                    break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -291,24 +293,22 @@ namespace CashRegisterApplication.window.Return
             long orderPrice = 0, subtotalCount = 0;
             for (int index = 0; index < rowCount; ++index)
             {
-                subtotalCount += gFromDTO.details[index].actualCount;
+                subtotalCount += gFromDTO.details[index].orderCount;
                 orderPrice += gFromDTO.details[index].subtotal;
+                CommUiltl.Log("subtotal:"+ gFromDTO.details[index].subtotal);
             }
+            CommUiltl.Log("orderPrice:" + orderPrice);
             CenterContral.updateOrderAmount(orderPrice, ref gFromDTO);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gFromDTO.Base.orderAmount);
-
+            CommUiltl.Log("gFromDTO.Base.orderAmount:" + gFromDTO.Base.orderAmount);
             gFromDTO.Base.totalProductCount = subtotalCount;
-            UpdateTextShow();
-            return;
-        }
-
-        private void UpdateTextShow()
-        {
             //更新总价
             returnFee = gFromDTO.Base.orderAmount;
             this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
+            return;
         }
 
+       
         private void button_modify_Click(object sender, EventArgs e)
         {
             if (this.dataGridView_productList.CurrentCell == null)
@@ -331,6 +331,160 @@ namespace CashRegisterApplication.window.Return
             {
                 this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
                 ++rowIndex;
+            }
+        }
+
+        
+        private bool gDeleteEventFlag = false;
+        private bool gConstructEnd = false;
+        private DataGridViewCell gCurrentCell = null;
+        private bool gResetRow = false;
+        private void productListDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            CommUiltl.Log("begin e.RowIndex：" + e.RowIndex + " ColumnIndex" + e.ColumnIndex);
+
+            if (!gConstructEnd)
+            {
+                //未初始化行表的时候，这里是空的
+                return;
+            }
+            if (gDeleteEventFlag)
+            {
+                CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " Column");
+                //删除数据的时候，会走到这里，这里面行数已经删除
+                gDeleteEventFlag = false;
+                return;
+            }
+            CommUiltl.Log("row:" + this.dataGridView_productList.CurrentCell.RowIndex + " Column:" + this.dataGridView_productList.CurrentCell.ColumnIndex);
+            if (this.dataGridView_productList.CurrentCell.ColumnIndex != e.ColumnIndex ||
+                this.dataGridView_productList.CurrentCell.RowIndex != e.RowIndex)
+            {
+                CommUiltl.Log("ColumnIndex != e.ColumnIndex");
+                //非当前行
+                return;
+            }
+            if (e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount)
+            {
+                CommUiltl.Log(" e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount and  _ResetMoneyByRow and _SetCurrentPointToRetailDetailCount  ");
+                if (!_ResetMoneyByRow(e.RowIndex, e.ColumnIndex))
+                {
+                    return;
+                }
+                //_SetCurrentPointToRetailDetailCount(e.RowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
+                return;
+            }
+
+        }
+        private bool _ResetMoneyByRow(int rowIndex, int columnIndex)
+        {
+
+            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            {
+                //价钱为空，就停止
+                return false;
+            }
+            var stockOutDetail = gFromDTO.details[rowIndex];
+            CommUiltl.Log("rowIndex:rowIndex" + rowIndex + " GOODS_KEYWORD:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_KEYWORD].Value.ToString());
+            CommUiltl.Log("detail count:" + gFromDTO.details.Count);
+            long actualCount = 0, unitPrice = 0;
+            CommUiltl.Log("PRODUCT_RetailDetailCount:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value);
+            if (!CommUiltl.CoverStrToLong(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value, out actualCount))
+            {
+                MessageBox.Show("数量错误");
+                _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+                return false;
+            }
+
+            if (actualCount > stockOutDetail.orderCount)
+            {
+                 MessageBox.Show("数量错误，退货数不能大于订单数数");
+                this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = stockOutDetail.orderCount;
+                _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+                return false;
+            }
+            stockOutDetail.orderCount = actualCount;
+            stockOutDetail.subtotal = stockOutDetail.orderCount * stockOutDetail.unitPrice;
+
+            this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = CommUiltl.CoverMoneyUnionToStrYuan(stockOutDetail.subtotal);
+            CommUiltl.Log("unitPrice:" + unitPrice);
+
+            //重新计算退货价钱
+            _CaculatePrice();
+            //string strRetailCount = this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value.ToString();
+            //if (!_CheckRetailAccount(gFromDTO.details[rowIndex], strRetailCount, ref actualCount))
+            //{
+            //    _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+            //    //_SetPointToResetCurrentCell(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount]);
+            //    MessageBox.Show("错误数量");
+            //    return false;
+            //}
+
+            //if (!CommUiltl.ConverStrYuanToUnion(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_NORMAL_PRICE].Value, out unitPrice))
+            //{
+            //    _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_NORMAL_PRICE);
+            //    MessageBox.Show("错误金额");
+            //    return false;
+            //}
+
+            //CommUiltl.Log("unitPrice:" + unitPrice);
+            //_UpdateStockOutDtoDetailMoney(gFromDTO.details[rowIndex], strRetailCount, actualCount, unitPrice);
+            //this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value = CommUiltl.CoverMoneyUnionToStrYuan(gFromDTO.details[rowIndex].subtotal);
+            //_UpdateStockBaseMsg();
+            return true;
+        }
+        bool gMoveToRetailDetailCountFlag = false;//用来控制，是否要移动光标到商品数量
+        private void _SetCurrentPointToRetailDetailCount(int rowIndex, int columnIndex)
+        {
+            CommUiltl.Log("_GotoNextBarcode RowIndex:" + rowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
+            if (rowIndex >= 0  && rowIndex < this.dataGridView_productList.RowCount)
+            {
+                CommUiltl.Log("_SetCurrentPointToRetailDetailCount row:" + rowIndex + " Column" + columnIndex);
+                gMoveToRetailDetailCountFlag = true;
+                gCurrentCell = this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex];
+            }
+           
+        }
+
+        private void productListDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            CommUiltl.Log("begin ");
+            if (this.dataGridView_productList.CurrentCell == null)
+            {
+                CommUiltl.Log("this.dataGridView_productList.CurrentCell == null");
+                return;
+            }
+            if (!gConstructEnd)
+            {
+                CommUiltl.Log("gConstructEnd ");
+                //未初始化行表的时候，这里是空的
+                return;
+            }
+            if (gCurrentCell == null)
+            {
+                CommUiltl.Log("gCurrentCell== null ");
+                return;
+            }
+            CommUiltl.Log("gCurrentCell:" + gCurrentCell);
+            if (gCurrentCell.RowIndex < 0)
+            {
+                CommUiltl.Log("gCurrentCell.RowIndex<0");
+                return;
+            }
+            if (gResetRow)
+            {
+                CommUiltl.Log("gResetRow:" + gResetRow);
+                gResetRow = false;
+                this.dataGridView_productList.CurrentCell = gCurrentCell;
+                this.dataGridView_productList.CurrentCell.Selected = true;
+                return;
+            }
+            if (gMoveToRetailDetailCountFlag)
+            {
+                CommUiltl.Log("gMoveToRetailDetailCountFlag:" + gMoveToRetailDetailCountFlag);
+
+                gMoveToRetailDetailCountFlag = false;
+                this.dataGridView_productList.CurrentCell = gCurrentCell;
+                this.dataGridView_productList.CurrentCell.Selected = true;
             }
         }
     }

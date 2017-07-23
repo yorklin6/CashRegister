@@ -71,6 +71,7 @@
             this.tableLayoutPanel_Show.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel_Show.Size = new System.Drawing.Size(584, 462);
             this.tableLayoutPanel_Show.TabIndex = 1;
+            this.tableLayoutPanel_Show.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel_Show_Paint);
             // 
             // RecieveMoneyWindow
             // 

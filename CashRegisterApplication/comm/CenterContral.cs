@@ -46,6 +46,7 @@ namespace CashRegisterApplication.comm
 
         public static HistoryDetailWindow Window_HistoryDetailWindow;
         public static ReturnDetailWindow Window_ReturnDetailWindow;
+        public static ReturnSerialNumberWindow Window_ReturnSerialNumberWindow;
 
 
         public static StockOutDTO oStockOutDTO;//当前单据信息
@@ -199,7 +200,6 @@ namespace CashRegisterApplication.comm
             Window_ReceiveMoneyByMember = new ReceiveMoneyByMember();
             Window_RechargeMoneyForMember = new RechargeMoneyForMember();
             Window_PayTypesForRechargeWindow = new PayTypesForRechargeWindow();
-            Window_ReturnDetailWindow = new ReturnDetailWindow();
 
             Window_MemberInfoWindows = new MemberInfoWindows();
             Window_DiscountWindows = new DiscountWindows();
@@ -210,7 +210,8 @@ namespace CashRegisterApplication.comm
 
             Window_HistoryListWindow = new HistoryListWindow();
             Window_HistoryDetailWindow = new HistoryDetailWindow();
-
+            Window_ReturnDetailWindow = new ReturnDetailWindow();
+            Window_ReturnSerialNumberWindow = new ReturnSerialNumberWindow();
             oStockOutDTO = new StockOutDTO();//商品列表
 
             oStockOutDToRespond = new StockOutDTORespone();
@@ -708,9 +709,12 @@ namespace CashRegisterApplication.comm
         }
         public static void UpdateDiscountRate(long discountRate,ref StockOutDTO oStockOutDTO)
         {
+      
             oStockOutDTO.Base.orderAmount = GetMoneyAmountByDiscountRate(oStockOutDTO, discountRate);
             oStockOutDTO.CaculateFee();
+
             oStockOutDTO.Base.discountRate = discountRate;
+          
             oStockOutDTO.Base.discountAmount = oStockOutDTO.Base.allGoodsMoneyAmount - oStockOutDTO.Base.orderAmount;
             CenterContral.Window_ProductList.UpdateTextShow();
         }
@@ -730,6 +734,10 @@ namespace CashRegisterApplication.comm
         public static long GetMoneyAmountByDiscountRate(StockOutDTO oStockOutDTO ,long discountRate)
         {
             //CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount本来是4位长度
+            if (0 == discountRate)
+            {
+                discountRate = 100;
+            }
             return (long)( (double)(oStockOutDTO.Base.allGoodsMoneyAmount) /100 * discountRate);
         }
         public static void ControlWindowsAfterPay()
@@ -1028,8 +1036,8 @@ namespace CashRegisterApplication.comm
             detail.isBarCodeMoneyGoods = productInfo.isBarCodeMoneyGoods;
             detail.barcodeSubTotalMoney = productInfo.barcodeSubTotalMoney;
 
-            detail.actualCount = 1;
-            detail.subtotal = detail.actualCount * detail.unitPrice;
+            detail.orderCount = 1;
+            detail.subtotal = detail.orderCount * detail.unitPrice;
 
             if (detail.isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
             {
@@ -1048,7 +1056,7 @@ namespace CashRegisterApplication.comm
                 //条码带有金额的商品,数量=总价/单价
                 return CommUiltl.CoverUnionTo3rd(detail.barcodeCount);
             }
-            return detail.actualCount.ToString();
+            return detail.orderCount.ToString();
         }
 
 
@@ -1280,12 +1288,14 @@ namespace CashRegisterApplication.comm
                 return;
             }
         }
-        internal static void ShowReturanWindowByContral()
+        internal static void ShowReturanWindowByContral(StockOutDTO oLastStockmsg)
         {
-            StockOutDTO oLastStockmsg = new StockOutDTO();
             Window_ReturnDetailWindow.ShowByContral(oLastStockmsg);
         }
-
+        internal static void ShowReturnSerialNumberWindow()
+        {
+            CenterContral.Window_ReturnSerialNumberWindow.ShowByCenterContral();
+        }
         //打印
         internal static void UpdateStoreWhouseDefault(string strStoreWhouseDefult)
         {
@@ -1316,10 +1326,10 @@ namespace CashRegisterApplication.comm
             sw.WriteLine("POST机号:" + CenterContral.iPostId);
             sw.WriteLine("单号:" + oStockOutDTO.Base.serialNumber);
             sw.WriteLine("收银员:" + CenterContral.DefaultUserId);
-
             sw.WriteLine("==============销售==============");
             sw.WriteLine("名称/条码            单价   数量  金额");
             
+
             int pricesIndex = 14;
             int numsLength = 7;
             int countStrLength = 6;
@@ -1332,7 +1342,7 @@ namespace CashRegisterApplication.comm
                 string bardCode = list[i].barcode;//条码
 
                 string price = CommUiltl.CoverMoneyUnionToStrYuan(list[i].unitPrice);//单价
-                string num = list[i].actualCount.ToString();//数量
+                string num = list[i].orderCount.ToString();//数量
                 if (list[i].isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
                 {
                     //计重类商品
@@ -1513,8 +1523,9 @@ namespace CashRegisterApplication.comm
         internal static void ShowMoreStockMsg()
         {
             CenterContral.Window_HistoryListWindow.ShowByCenterControl();
-            
         }
+  
+        
         internal static string GetStateDscByStockOutBase(StockOutBase oStockOutBase)
         {
             if (oStockOutBase.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
@@ -1568,7 +1579,6 @@ namespace CashRegisterApplication.comm
                         "提示");
                 return false;
             }
-
             return true;
         }
     }

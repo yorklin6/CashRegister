@@ -163,7 +163,7 @@ namespace CashRegiterApplication
             {
                 var oStockOutDetail= CenterContral.oStockOutDTO.details[index];
                 strProductList += oStockOutDetail.goodsId + ":";
-                strProductList += oStockOutDetail.actualCount + ":";
+                strProductList += oStockOutDetail.orderCount + ":";
                 strProductList += oStockOutDetail.subtotal + "|";
             }
             return true;
@@ -343,13 +343,13 @@ namespace CashRegiterApplication
                 long barcodeCount = 0;
                 CommUiltl.ConverStrYuanToUnion(strRetailCount, out barcodeCount);
                 stockOutDetail.barcodeCount = barcodeCount;
-                stockOutDetail.actualCount = stockOutDetail.actualCount;//实际数量不变
+                stockOutDetail.orderCount = stockOutDetail.orderCount;//实际数量不变
                 stockOutDetail.subtotal = CommUiltl.CaculateBarCodeTotalMoney(stockOutDetail.barcodeCount, stockOutDetail.unitPrice);
                 return;
             }
 
-            stockOutDetail.actualCount = actualCount;
-            stockOutDetail.subtotal = stockOutDetail.actualCount* stockOutDetail.unitPrice;
+            stockOutDetail.orderCount = actualCount;
+            stockOutDetail.subtotal = stockOutDetail.orderCount* stockOutDetail.unitPrice;
         }
 
         private bool _CheckRetailAccount(StockOutDetail oStockOutDetail,string strRetailCount,ref long actualCount )
@@ -370,7 +370,7 @@ namespace CashRegiterApplication
             long orderPrice = 0, subtotalCount = 0;
             for (int index = 0; index < rowCount; ++index)
             {
-                subtotalCount += CenterContral.oStockOutDTO.details[index].actualCount;
+                subtotalCount += CenterContral.oStockOutDTO.details[index].orderCount;
                 orderPrice += CenterContral.oStockOutDTO.details[index].subtotal;
             }
             CenterContral.updateOrderAmount(orderPrice,ref CenterContral.oStockOutDTO);
@@ -756,7 +756,7 @@ namespace CashRegiterApplication
                 case System.Windows.Forms.Keys.F2:
                     {
                         //零售退货
-                        CenterContral.ShowReturanWindowByContral();
+                        CenterContral.ShowReturnSerialNumberWindow();
                         return true;
                     }
                 case System.Windows.Forms.Keys.F3:

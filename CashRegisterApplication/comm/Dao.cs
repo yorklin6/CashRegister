@@ -209,7 +209,7 @@ namespace CashRegisterApplication.comm
                 strSql += " " + item.goodsId + ",";
                 strSql += " '" + item.goodsName + "',";
                 strSql += "'" + item.barcode + "',";
-                strSql += "" + item.actualCount + ",";
+                strSql += "" + item.orderCount + ",";
                 strSql += "" + item.cloudState + ",";
                 strSql += "'" + item.specification + "',";
                 strSql += "'" + item.unit + "',";
@@ -352,7 +352,7 @@ namespace CashRegisterApplication.comm
                 strSql += " " + item.goodsId + ",";
                 strSql += " '" + item.goodsName + "',";
                 strSql += "'" + item.barcode + "',";
-                strSql += "" + item.actualCount + ",";
+                strSql += "" + item.orderCount + ",";
                 strSql += "'" + item.specification + "',";
                 strSql += "'" + item.unit + "',";
                 strSql += "" + item.orderCount + ",";

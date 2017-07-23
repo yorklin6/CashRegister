@@ -463,5 +463,10 @@ namespace CashRegisterApplication.window
         {
             button.BackColor = System.Drawing.SystemColors.ButtonShadow;
         }
+
+        private void tableLayoutPanel_Show_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -220,7 +220,6 @@ namespace CashRegisterApplication.model
 
     public long stockOutId { get; set; }
         public String unit { get; set; }
-        public long actualCount { get; set; }
         public long actualDifference { get; set; }
         internal int cloudState { get; set; }
 
