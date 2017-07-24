@@ -239,7 +239,7 @@ namespace CashRegiterApplication
         }
         internal static int _UpdateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
         {
-            string funcUrl = updateOrderFunc+ oReq.Base.stockOutId;
+            string funcUrl = updateOrderFunc+ oReq.local.stockOutId;
             String json = JsonConvert.SerializeObject(oReq.Base);
             if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
             {

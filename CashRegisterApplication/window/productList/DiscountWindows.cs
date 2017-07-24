@@ -37,9 +37,9 @@ namespace CashRegisterApplication.window.productList
 
         public void ShowWithDiscountMsg()
         {
-            this.textBox_allGoodsMoneyAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount);
-            this.textBox_discountRate.Text = CenterContral.oStockOutDTO.Base.discountRate.ToString();
-            this.textBox_discountAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.discountAmount);
+            this.textBox_allGoodsMoneyAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.allGoodsMoneyAmount);
+            this.textBox_discountRate.Text = CenterContral.oStockOutDTO.local.discountRate.ToString();
+            this.textBox_discountAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.discountAmount);
             this.Show();
             foucuseDiscount();
         }
@@ -80,7 +80,7 @@ namespace CashRegisterApplication.window.productList
         private void button_loggin_Click(object sender, EventArgs e)
         {
             //参数检查
-            if (this.textBox_allGoodsMoneyAmount.Text != CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount))
+            if (this.textBox_allGoodsMoneyAmount.Text != CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.allGoodsMoneyAmount))
             {
                 MessageBox.Show("金额有问题，请重试" );
                 ShowWithDiscountMsg();
@@ -141,7 +141,7 @@ namespace CashRegisterApplication.window.productList
                 return;
             }
             long afterAmount = CenterContral.GetMoneyAmountByDiscountRate(CenterContral.oStockOutDTO ,discountRate);
-            long discountAmount = CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount - afterAmount;
+            long discountAmount = CenterContral.oStockOutDTO.local.allGoodsMoneyAmount - afterAmount;
             this.textBox_discountAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(discountAmount);
         }
     }

@@ -67,7 +67,7 @@ namespace CashRegisterApplication.window.History
             for (int i=0 ; i< gListStockOutDTO.Count ; i++)
             {
                 this.dataGridView_HistoryData.Rows.Add();
-                SetRowsByStockOut(this.dataGridView_HistoryData.Rows[i], gListStockOutDTO[i].Base) ;
+                SetRowsByStockOut(this.dataGridView_HistoryData.Rows[i], gListStockOutDTO[i]) ;
             }
             label_total_count.Text = "一共有" + gListStockOutDTO.Count + "笔交易";
             //默认选中最后一笔交易
@@ -83,14 +83,14 @@ namespace CashRegisterApplication.window.History
         private int CELL_TOTAL_COUNT = 3;
         private int CELL_CREATOR = 4;
         private int CELL_STATE = 5;
-        private void SetRowsByStockOut(DataGridViewRow dataGridViewRow, StockOutBase oStockOutBase)
+        private void SetRowsByStockOut(DataGridViewRow dataGridViewRow, StockOutDTO oStockOut)
         {
-            dataGridViewRow.Cells[CELL_SERIAL_NUMBER].Value = oStockOutBase.serialNumber;
-            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOutBase.stockOutTime.Substring(0,19) ;
-            dataGridViewRow.Cells[CELL_ORDER_AMOUNT].Value = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutBase.orderAmount);
-            dataGridViewRow.Cells[CELL_TOTAL_COUNT].Value = oStockOutBase.totalProductCount;
-            dataGridViewRow.Cells[CELL_CREATOR].Value = oStockOutBase.creator;
-            dataGridViewRow.Cells[CELL_STATE].Value = CenterContral.GetStateDscByStockOutBase(oStockOutBase);
+            dataGridViewRow.Cells[CELL_SERIAL_NUMBER].Value = oStockOut.Base.serialNumber;
+            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOut.local.stockOutTime.Substring(0,19) ;
+            dataGridViewRow.Cells[CELL_ORDER_AMOUNT].Value = CommUiltl.CoverMoneyUnionToStrYuan(oStockOut.Base.orderAmount);
+            dataGridViewRow.Cells[CELL_TOTAL_COUNT].Value = oStockOut.local.totalProductCount;
+            dataGridViewRow.Cells[CELL_CREATOR].Value = oStockOut.local.creator;
+            dataGridViewRow.Cells[CELL_STATE].Value = CenterContral.GetStateDscByStockOutBase(oStockOut);
         }
 
         private void button2_Click(object sender, EventArgs e)

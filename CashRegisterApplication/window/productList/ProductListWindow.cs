@@ -89,9 +89,9 @@ namespace CashRegiterApplication
         public void UpdateDiscount()
         {
             //折扣额度
-            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.discountAmount);
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.discountAmount);
             //折扣率
-            this.label_discount_rate.Text = CenterContral.oStockOutDTO.Base.discountRate.ToString();
+            this.label_discount_rate.Text = CenterContral.oStockOutDTO.local.discountRate.ToString();
         }
 
 
@@ -232,13 +232,13 @@ namespace CashRegiterApplication
         }
         private void _ShowPayTipsInProductListAndSaveOrderMsg()
         {
-            if (CenterContral.oStockOutDTO.Base.ChangeFee == 0)
+            if (CenterContral.oStockOutDTO.local.ChangeFee == 0)
             {
                 System.Windows.Forms.MessageBox.Show("下单成功,无需找零");
             }
-            else if (CenterContral.oStockOutDTO.Base.ChangeFee > 0)
+            else if (CenterContral.oStockOutDTO.local.ChangeFee > 0)
             {
-                System.Windows.Forms.MessageBox.Show("下单成功,请记得找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee) + " 元");
+                System.Windows.Forms.MessageBox.Show("下单成功,请记得找零：" + CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.ChangeFee) + " 元");
             }
             else
             {
@@ -250,9 +250,9 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("_SetDataGridViewOrderFee");
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
-            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.RealRecieveFee);
-            this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.ChangeFee);
-            this.label_total_product_count.Text = CenterContral.oStockOutDTO.Base.totalProductCount.ToString();
+            this.label_receiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.RealRecieveFee);
+            this.label_changeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.local.ChangeFee);
+            this.label_total_product_count.Text = CenterContral.oStockOutDTO.local.totalProductCount.ToString();
         }
 
         private void _SetCheckoutGrid()
@@ -376,7 +376,7 @@ namespace CashRegiterApplication
             CenterContral.updateOrderAmount(orderPrice,ref CenterContral.oStockOutDTO);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.orderAmount);
        
-            CenterContral.oStockOutDTO.Base.totalProductCount = subtotalCount;
+            CenterContral.oStockOutDTO.local.totalProductCount = subtotalCount;
             UpdateTextShow();
             return;
         }

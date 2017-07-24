@@ -26,6 +26,7 @@ namespace CashRegisterApplication.model
     public class StockOutDTO
     {
         public StockOutBase Base;
+        public LocalBase local;
         public List<StockOutDetail> details;
         public List<Checkout> checkouts;
 
@@ -36,14 +37,16 @@ namespace CashRegisterApplication.model
             Base = new StockOutBase();
             details = new List<StockOutDetail>();
             checkouts = new List<Checkout>();
+            //本地存储变量
             oMember = new Member();
+            local = new LocalBase();
         }
 
         public void addChecout(Checkout oPayWay)
         {
-            CommUiltl.Log("RecieveFee before:" + Base.TotalPayFee);
-            Base.TotalPayFee += oPayWay.payAmount;
-            CommUiltl.Log("RecieveFee after:" + Base.TotalPayFee);
+            CommUiltl.Log("RecieveFee before:" + local.TotalPayFee);
+            local.TotalPayFee += oPayWay.payAmount;
+            CommUiltl.Log("RecieveFee after:" + local.TotalPayFee);
             CaculateFee();
             checkouts.Add(oPayWay);
           
@@ -52,11 +55,11 @@ namespace CashRegisterApplication.model
         public void CaculateFee()
         {
             //计算找零价钱和实收价钱
-            Base.ChangeFee = Base.TotalPayFee - Base.orderAmount;
-            Base.RealRecieveFee = Base.TotalPayFee;
-            if (Base.RealRecieveFee> Base.orderAmount)
+            local.ChangeFee = local.TotalPayFee - Base.orderAmount;
+            local.RealRecieveFee = local.TotalPayFee;
+            if (local.RealRecieveFee> Base.orderAmount)
             {
-                Base.RealRecieveFee = Base.orderAmount;
+                local.RealRecieveFee = Base.orderAmount;
             }
         }
     }
@@ -125,7 +128,42 @@ namespace CashRegisterApplication.model
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
+    public class LocalBase
+    {
+        //************本地缓存数据
+        public long TotalPayFee { get; set; }
+        public long RealRecieveFee { get; set; }//实收多少钱
+        public String ProductList { get; set; }//辅助变量，帮助查看商品列表是否有修改
+        public long ChangeFee { get; set; }
 
+        public long totalProductCount { get; set; }//总件数
+
+        public String baseDataJson { get; set; }
+        public int cloudAddFlag { get; set; }
+        public int cloudCloseFlag { get; set; }
+        public int cloudDeleteFlag { get; set; }
+        public int cloudUpdateFlag { get; set; }
+        public String cloudRespJson { get; set; }
+
+
+        public int dbGenerateFlag { get; set; }
+        public int localSaveFlag { get; set; }//挂单字段
+
+        public int cancaelFlag { get; set; }
+
+        // 折扣
+        public long discountAmount { get; set; }
+        public long discountRate { get; set; }
+        // 全班商品累计价格
+        public long allGoodsMoneyAmount { get; set; }
+        public long stockOutId { get; set; }
+        public Byte type { get; set; }
+        public long relatedOrder { get; set; }
+        public String creator { get; set; }
+        public String updateTime { get; set; }
+        public String stockOutTime { get; set; }
+        public Byte status { get; set; }
+    }
     public class StockOutBase
     {
         public String serialNumber { get; set; }
@@ -147,55 +185,15 @@ namespace CashRegisterApplication.model
 
 
 
-
-
-        
-
-
-        //************本地缓存数据
-        public long TotalPayFee { get; set; }
-        public long RealRecieveFee { get; set; }//实收多少钱
-        public String ProductList { get; set; }//辅助变量，帮助查看商品列表是否有修改
-        public long ChangeFee { get; set; }
-
-        public long totalProductCount { get; set; }//总件数
-
-        public String baseDataJson { get; set; }
-        public int cloudAddFlag { get; set; }
-        public int cloudCloseFlag { get; set; }
-        public int cloudDeleteFlag { get; set; }
-        public int cloudUpdateFlag { get; set; }
-        public String cloudRespJson { get; set; }
-
-      
-        public int dbGenerateFlag { get; set; }
-        public int localSaveFlag { get; set; }//挂单字段
-
-        public int cancaelFlag { get; set; }
-
-        // 折扣
-        public long discountAmount { get; set; }
-        public long discountRate { get; set; }
-        // 全班商品累计价格
-        public long allGoodsMoneyAmount { get; set; }
-        public long stockOutId { get; set; }
-        public Byte type { get; set; }
-        public long relatedOrder { get; set; }
-        public String creator { get; set; }
-        public String updateTime { get; set; }
-        public String stockOutTime { get; set; }
-        public Byte status { get; set; }
-
-
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LS-" +CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-" + CommUiltl.GetRandomNumber();
+            CenterContral.oStockOutDTO.Base.serialNumber = "LS-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
             orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
 
         }
-}
+    }
     public class StockOutDetail
     {
 

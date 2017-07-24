@@ -154,30 +154,30 @@ namespace CashRegisterApplication.comm
             strSql += "base_data_json,cloud_add_flag,cloud_update_flag,cloud_close_flag,cloud_delete_flag,";
             strSql += "local_save_flag,cancael_flag,";
             strSql += "remark,status) VALUES (";
-            strSql += "'" + oStockOutDTO.Base.stockOutId + "',";
+            strSql += "'" + oStockOutDTO.local.stockOutId + "',";
             strSql += "'"+ oStockOutDTO.Base.serialNumber+"',";
-            strSql += "'" + oStockOutDTO.Base.type + "',";
+            strSql += "'" + oStockOutDTO.local.type + "',";
             strSql += "" + oStockOutDTO.Base.storeId + ",";
             strSql += "" + oStockOutDTO.Base.whouseId + ",";
-            strSql += "" + oStockOutDTO.Base.relatedOrder + ",";
+            strSql += "" + oStockOutDTO.local.relatedOrder + ",";
             strSql += "'" + oStockOutDTO.Base.clientId + "',";
             strSql += "'" + oStockOutDTO.Base.posId + "',";
             strSql += "'" + oStockOutDTO.Base.cashierId + "',";
             strSql += "" + oStockOutDTO.Base.orderAmount + ",";
-            strSql += "" + oStockOutDTO.Base.TotalPayFee + ",";
-            strSql += "" + oStockOutDTO.Base.ChangeFee + ",";
-            strSql += "'" + oStockOutDTO.Base.stockOutTime + "',";//以同步给后台的时间为主
-            strSql += "'" + oStockOutDTO.Base.baseDataJson + "',";
-            strSql += "" + oStockOutDTO.Base.cloudAddFlag + ",";
-            strSql += "" + oStockOutDTO.Base.cloudUpdateFlag + ",";
-            strSql += "" + oStockOutDTO.Base.cloudCloseFlag + ",";
-            strSql += "" + oStockOutDTO.Base.cloudDeleteFlag + ",";
+            strSql += "" + oStockOutDTO.local.TotalPayFee + ",";
+            strSql += "" + oStockOutDTO.local.ChangeFee + ",";
+            strSql += "'" + oStockOutDTO.local.stockOutTime + "',";//以同步给后台的时间为主
+            strSql += "'" + oStockOutDTO.local.baseDataJson + "',";
+            strSql += "" + oStockOutDTO.local.cloudAddFlag + ",";
+            strSql += "" + oStockOutDTO.local.cloudUpdateFlag + ",";
+            strSql += "" + oStockOutDTO.local.cloudCloseFlag + ",";
+            strSql += "" + oStockOutDTO.local.cloudDeleteFlag + ",";
 
-            strSql += "" + oStockOutDTO.Base.localSaveFlag + ",";
-            strSql += "" + oStockOutDTO.Base.cancaelFlag+ ",";
+            strSql += "" + oStockOutDTO.local.localSaveFlag + ",";
+            strSql += "" + oStockOutDTO.local.cancaelFlag+ ",";
             
             strSql += "'" + oStockOutDTO.Base.remark + "',";
-            strSql += "" + oStockOutDTO.Base.status + " ";
+            strSql += "" + oStockOutDTO.local.status + " ";
             strSql += ")";
             sqlite_cmd = sqlite_conn.CreateCommand();
 
@@ -251,11 +251,11 @@ namespace CashRegisterApplication.comm
             string strSql = "update tb_stock_out_base set   ";
 
 
-            strSql += " base_data_json='" + oStockOutDTO.Base.baseDataJson + "',";
-            strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
-            strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
-            strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
-            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + "";
+            strSql += " base_data_json='" + oStockOutDTO.local.baseDataJson + "',";
+            strSql += " cloud_add_flag=" + oStockOutDTO.local.cloudAddFlag + ",";
+            strSql += " cloud_update_flag=" + oStockOutDTO.local.cloudUpdateFlag + ",";
+            strSql += " cloud_close_flag=" + oStockOutDTO.local.cloudCloseFlag + ",";
+            strSql += " cloud_delete_flag=" + oStockOutDTO.local.cloudDeleteFlag + "";
 
             strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
@@ -290,26 +290,26 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //更新订单
             string strSql = "update tb_stock_out_base set   ";
-            strSql += " stock_out_id='" + oStockOutDTO.Base.stockOutId + "',";
-            strSql += " type='" + oStockOutDTO.Base.type + "',";
+            strSql += " stock_out_id='" + oStockOutDTO.local.stockOutId + "',";
+            strSql += " type='" + oStockOutDTO.local.type + "',";
             strSql += " store_id=" + oStockOutDTO.Base.storeId + ",";
             strSql += " whouse_id=" + oStockOutDTO.Base.whouseId + ",";
-            strSql += " related_order=" + oStockOutDTO.Base.relatedOrder + ",";
+            strSql += " related_order=" + oStockOutDTO.local.relatedOrder + ",";
             strSql += " client_id='" + oStockOutDTO.Base.clientId + "',";
             strSql += " pos_id='" + oStockOutDTO.Base.posId + "',";
             strSql += " cashier_id='" + oStockOutDTO.Base.cashierId + "',";
             strSql += " order_amount=" + oStockOutDTO.Base.orderAmount + ",";
-            strSql += " recieve_fee=" + oStockOutDTO.Base.TotalPayFee + ",";
-            strSql += " change_fee=" + oStockOutDTO.Base.ChangeFee + ",";
+            strSql += " recieve_fee=" + oStockOutDTO.local.TotalPayFee + ",";
+            strSql += " change_fee=" + oStockOutDTO.local.ChangeFee + ",";
             strSql += " remark='" + oStockOutDTO.Base.remark + "',";
-            strSql += " base_data_json='" + oStockOutDTO.Base.baseDataJson + "',";
-            strSql += " cloud_add_flag=" + oStockOutDTO.Base.cloudAddFlag + ",";
-            strSql += " cloud_update_flag=" + oStockOutDTO.Base.cloudUpdateFlag + ",";
-            strSql += " cloud_close_flag=" + oStockOutDTO.Base.cloudCloseFlag + ",";
-            strSql += " cloud_delete_flag=" + oStockOutDTO.Base.cloudDeleteFlag + ",";
-            strSql += " cancael_flag=" + oStockOutDTO.Base.cancaelFlag + ",";
-            strSql += " local_save_flag=" + oStockOutDTO.Base.localSaveFlag + ",";
-            strSql += " status=" + oStockOutDTO.Base.status + " ";
+            strSql += " base_data_json='" + oStockOutDTO.local.baseDataJson + "',";
+            strSql += " cloud_add_flag=" + oStockOutDTO.local.cloudAddFlag + ",";
+            strSql += " cloud_update_flag=" + oStockOutDTO.local.cloudUpdateFlag + ",";
+            strSql += " cloud_close_flag=" + oStockOutDTO.local.cloudCloseFlag + ",";
+            strSql += " cloud_delete_flag=" + oStockOutDTO.local.cloudDeleteFlag + ",";
+            strSql += " cancael_flag=" + oStockOutDTO.local.cancaelFlag + ",";
+            strSql += " local_save_flag=" + oStockOutDTO.local.localSaveFlag + ",";
+            strSql += " status=" + oStockOutDTO.local.status + " ";
             strSql += " where  serial_number='" + oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
@@ -388,7 +388,7 @@ namespace CashRegisterApplication.comm
             int iRow = 0;
             //更新订单
             string strSql = "update  tb_stock_out_base set ";
-            strSql += "local_save_flag=" + CenterContral.oStockOutDTO.Base.localSaveFlag + " ";
+            strSql += "local_save_flag=" + CenterContral.oStockOutDTO.local.localSaveFlag + " ";
             strSql += "where serialNumber='" + CenterContral.oStockOutDTO.Base.serialNumber + "' ";
             sqlite_cmd = sqlite_conn.CreateCommand();
             try
@@ -444,25 +444,25 @@ namespace CashRegisterApplication.comm
             string strSql = "";
             strSql += "select stock_out_id,serial_number,base_data_json from tb_stock_out_base ";
             strSql += "where 1=1 ";
-            if (oState.Base.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            if (oState.local.cloudAddFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_add_flag="+ oState.Base.cloudAddFlag;
+                strSql += " and cloud_add_flag="+ oState.local.cloudAddFlag;
             }
-            else if (oState.Base.cloudUpdateFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.local.cloudUpdateFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_update_flag=" + oState.Base.cloudUpdateFlag;
+                strSql += " and cloud_update_flag=" + oState.local.cloudUpdateFlag;
             }
-            else if (oState.Base.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.local.cloudCloseFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_close_flag=" + oState.Base.cloudCloseFlag;
+                strSql += " and cloud_close_flag=" + oState.local.cloudCloseFlag;
             }
-            else if (oState.Base.cloudDeleteFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+            else if (oState.local.cloudDeleteFlag != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
-                strSql += " and cloud_delete_flag=" + oState.Base.cloudDeleteFlag;
+                strSql += " and cloud_delete_flag=" + oState.local.cloudDeleteFlag;
             }
-            else if (oState.Base.localSaveFlag != Dao.STOCK_BASE_SAVE_FLAG_INIT)
+            else if (oState.local.localSaveFlag != Dao.STOCK_BASE_SAVE_FLAG_INIT)
             {
-                strSql += " and local_save_flag=" + oState.Base.localSaveFlag;
+                strSql += " and local_save_flag=" + oState.local.localSaveFlag;
             }
             else
             {
@@ -486,9 +486,9 @@ namespace CashRegisterApplication.comm
             while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
             {
                 StockOutDTO oStockOutDTO = new StockOutDTO();
-                oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
+                oStockOutDTO.local.stockOutId = sqlite_datareader.GetInt64(0);
                 oStockOutDTO.Base.serialNumber = sqlite_datareader.GetString(1);
-                oStockOutDTO.Base.baseDataJson = sqlite_datareader.GetString(2);
+                oStockOutDTO.local.baseDataJson = sqlite_datareader.GetString(2);
                 oJsonList.Add(oStockOutDTO);
             }
             return true;
@@ -522,9 +522,9 @@ namespace CashRegisterApplication.comm
             {
                 CommUiltl.Log("sqlite_datareader:" );
                 StockOutDTO oStockOutDTO = new StockOutDTO();
-                oStockOutDTO.Base.stockOutId = sqlite_datareader.GetInt64(0);
+                oStockOutDTO.local.stockOutId = sqlite_datareader.GetInt64(0);
                 oStockOutDTO.Base.serialNumber = sqlite_datareader.GetString(1);
-                oStockOutDTO.Base.baseDataJson = sqlite_datareader.GetString(2);
+                oStockOutDTO.local.baseDataJson = sqlite_datareader.GetString(2);
                 oJsonList.Add(oStockOutDTO);
             }
             return true;
@@ -555,9 +555,9 @@ namespace CashRegisterApplication.comm
             // The SQLiteDataReader allows us to run through the result lines:
             while (sqlite_datareader.Read()) // Read() returns true if there is still a result line to read
             {
-                oJson.Base.stockOutId = sqlite_datareader.GetInt64(0);
+                oJson.local.stockOutId = sqlite_datareader.GetInt64(0);
                 oJson.Base.serialNumber = sqlite_datareader.GetString(1);
-                oJson.Base.baseDataJson = sqlite_datareader.GetString(2);
+                oJson.local.baseDataJson = sqlite_datareader.GetString(2);
             }
             return true;
         }

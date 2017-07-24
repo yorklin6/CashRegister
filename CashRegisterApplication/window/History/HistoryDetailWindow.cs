@@ -47,14 +47,14 @@ namespace CashRegisterApplication.window.History
             this.label_member_account.Text = oStockOutDTO.oMember.memberAccount;
 
             //折扣额度
-            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.local.discountAmount);
             //折扣率
-            this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
+            this.label_discount_rate.Text = oStockOutDTO.local.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
 
-            this.label_stockOutTime.Text= oStockOutDTO.Base.stockOutTime.Substring(0, 19);
-            this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO.Base);
+            this.label_stockOutTime.Text= oStockOutDTO.local.stockOutTime.Substring(0, 19);
+            this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO);
             //this.label_total_product_count.Text = oStockOutDTO.Base.totalProductCount.ToString();
             for (int i = 0; i < oStockOutDTO.details.Count; ++i)
             {

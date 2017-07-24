@@ -64,15 +64,15 @@ namespace CashRegisterApplication.window.Return
             this.label_member_account2.Text = oStockOutDTO.oMember.memberAccount;
 
             //折扣额
-            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.local.discountAmount);
 
-            this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
+            this.label_discount_rate.Text = oStockOutDTO.local.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
             returnFee = oStockOutDTO.Base.orderAmount;
             this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
            // this.label_stockOutTime.Text = oStockOutDTO.Base.stockOutTime.Substring(0, 19);
-            this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO.Base);
+            this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO);
             //this.label_total_product_count.Text = oStockOutDTO.Base.totalProductCount.ToString();
             for (int i = 0; i < oStockOutDTO.details.Count; ++i)
             {
@@ -159,7 +159,7 @@ namespace CashRegisterApplication.window.Return
             oRetailReturnDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             oRetailReturnDTO.Base.whouseName = CenterContral.oStoreWhouse.name;
 
-            oRetailReturnDTO.Base.relatedOrder = gFromDTO.Base.relatedOrder;
+            oRetailReturnDTO.Base.relatedOrder = gFromDTO.local.relatedOrder;
             oRetailReturnDTO.Base.clientId = gFromDTO.Base.clientId;
 
             oRetailReturnDTO.Base.orderAmount = gFromDTO.Base.orderAmount;
@@ -301,7 +301,7 @@ namespace CashRegisterApplication.window.Return
             CenterContral.updateOrderAmount(orderPrice, ref gFromDTO);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gFromDTO.Base.orderAmount);
             CommUiltl.Log("gFromDTO.Base.orderAmount:" + gFromDTO.Base.orderAmount);
-            gFromDTO.Base.totalProductCount = subtotalCount;
+            gFromDTO.local.totalProductCount = subtotalCount;
             //更新总价
             returnFee = gFromDTO.Base.orderAmount;
             this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);
