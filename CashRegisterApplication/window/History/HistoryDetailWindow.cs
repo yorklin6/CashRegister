@@ -33,8 +33,8 @@ namespace CashRegisterApplication.window.History
             CenterContral.Window_HistoryListWindow.Show();
             this.Hide();
         }
-        StockOutDTO gStockOutDTO;
-        public void ShowDetailStockOut(StockOutDTO oStockOutDTO)
+        DbStockOutDTO gStockOutDTO;
+        public void ShowDetailStockOut(DbStockOutDTO oStockOutDTO)
         {
             gStockOutDTO = oStockOutDTO;
             this.Show();
@@ -47,13 +47,13 @@ namespace CashRegisterApplication.window.History
             this.label_member_account.Text = oStockOutDTO.oMember.memberAccount;
 
             //折扣额度
-            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.local.discountAmount);
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
             //折扣率
-            this.label_discount_rate.Text = oStockOutDTO.local.discountRate.ToString();
+            this.label_discount_rate.Text = CommUiltl.CoveUnionTo2Pecent(oStockOutDTO.Base.discountRate);
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
 
-            this.label_stockOutTime.Text= oStockOutDTO.local.stockOutTime.Substring(0, 19);
+            this.label_stockOutTime.Text= oStockOutDTO.Base.stockOutTime.Substring(0, 19);
             this.label_state.Text = CenterContral.GetStateDscByStockOutBase(oStockOutDTO);
             //this.label_total_product_count.Text = oStockOutDTO.Base.totalProductCount.ToString();
             for (int i = 0; i < oStockOutDTO.details.Count; ++i)
@@ -69,7 +69,7 @@ namespace CashRegisterApplication.window.History
             
         }
 
-        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
+        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, DbStockOutDetail detail)
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
