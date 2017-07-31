@@ -19,7 +19,7 @@ namespace CashRegisterApplication.window.Return
      
         }
 
-        public void ShowByContral(StockOutDTO oLastStockmsg)
+        public void ShowByContral(DbStockOutDTO oLastStockmsg)
         {
          
             gResetRow = true;
@@ -33,7 +33,7 @@ namespace CashRegisterApplication.window.Return
         private void HitoryDetailWindow_Load(object sender, EventArgs e)
         {
             gConstructEnd = false;
-            StockOutDTO oLastStockmsg = new StockOutDTO(); 
+            DbStockOutDTO oLastStockmsg = new DbStockOutDTO(); 
     
           
         }
@@ -50,10 +50,10 @@ namespace CashRegisterApplication.window.Return
             CenterContral.Window_ProductList.CallShow();
             this.Hide();
         }
-        StockOutDTO gFromDTO;
+        DbStockOutDTO gFromDTO;
         RetailReturnDTO gReturnDTO;
         long returnFee = 0;
-        public void ShowDetailStockOut(StockOutDTO oStockOutDTO)
+        public void ShowDetailStockOut(DbStockOutDTO oStockOutDTO)
         {
             gFromDTO = oStockOutDTO;
             this.Show();
@@ -64,9 +64,9 @@ namespace CashRegisterApplication.window.Return
             this.label_member_account2.Text = oStockOutDTO.oMember.memberAccount;
 
             //折扣额
-            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.local.discountAmount);
+            this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
 
-            this.label_discount_rate.Text = oStockOutDTO.local.discountRate.ToString();
+            this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
             returnFee = oStockOutDTO.Base.orderAmount;
@@ -95,7 +95,7 @@ namespace CashRegisterApplication.window.Return
          
         }
 
-        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
+        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, DbStockOutDetail detail)
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.GOODS_KEYWORD].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作
@@ -159,7 +159,7 @@ namespace CashRegisterApplication.window.Return
             oRetailReturnDTO.Base.whouseId = CenterContral.oStoreWhouse.storeWhouseId;
             oRetailReturnDTO.Base.whouseName = CenterContral.oStoreWhouse.name;
 
-            oRetailReturnDTO.Base.relatedOrder = gFromDTO.local.relatedOrder;
+            oRetailReturnDTO.Base.relatedOrder = gFromDTO.Base.relatedOrder;
             oRetailReturnDTO.Base.clientId = gFromDTO.Base.clientId;
 
             oRetailReturnDTO.Base.orderAmount = gFromDTO.Base.orderAmount;
@@ -301,7 +301,7 @@ namespace CashRegisterApplication.window.Return
             CenterContral.updateOrderAmount(orderPrice, ref gFromDTO);
             string strOrderPrice = CommUiltl.CoverMoneyUnionToStrYuan(gFromDTO.Base.orderAmount);
             CommUiltl.Log("gFromDTO.Base.orderAmount:" + gFromDTO.Base.orderAmount);
-            gFromDTO.local.totalProductCount = subtotalCount;
+            gFromDTO.Base.totalProductCount = subtotalCount;
             //更新总价
             returnFee = gFromDTO.Base.orderAmount;
             this.label_returnFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnFee);

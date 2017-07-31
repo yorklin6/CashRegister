@@ -8,7 +8,7 @@ namespace CashRegisterApplication.model
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public StockOutDTO data;
+        public DbStockOutDTO data;
     }
   
 }

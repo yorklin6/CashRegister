@@ -76,7 +76,7 @@
     <Compile Include="comm\Dao.cs" />
     <Compile Include="comm\MyTimerTask.cs" />
     <Compile Include="model\HttpBaseRespone.cs" />
-    <Compile Include="model\CashregisterOrder.cs" />
+    <Compile Include="model\StockOutDTODbModel.cs" />
     <Compile Include="comm\CenterContral.cs" />
     <Compile Include="model\LocalSystemInfo.cs" />
     <Compile Include="model\Member.cs" />
@@ -84,6 +84,7 @@
     <Compile Include="model\PayType.cs" />
     <Compile Include="model\Return.cs" />
     <Compile Include="model\PostId.cs" />
+    <Compile Include="model\StockOutDTOHttpModel.cs" />
     <Compile Include="model\StoreWhouse.cs" />
     <Compile Include="model\UserLogin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

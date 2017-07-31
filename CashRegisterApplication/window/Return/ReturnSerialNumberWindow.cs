@@ -20,7 +20,7 @@ namespace CashRegisterApplication.window.Return
         public void ShowByCenterContral()
         {
             this.Show();
-            StockOutDTO oLastStockmsg = new StockOutDTO();
+            DbStockOutDTO oLastStockmsg = new DbStockOutDTO();
             CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
 
             this.textBox_type.Text = oLastStockmsg.Base.serialNumber.Substring(0,2); ;
@@ -128,7 +128,7 @@ namespace CashRegisterApplication.window.Return
             strSerialNumber += this.textBox_time.Text + "-";
             strSerialNumber += this.textBox_random.Text + "";
             CommUiltl.Log("strSerialNumber:"+ strSerialNumber);
-            StockOutDTO oStock = new StockOutDTO();
+            DbStockOutDTO oStock = new DbStockOutDTO();
             if ( !CenterContral.GetStockBySerialNumber(strSerialNumber, ref oStock) )
             {
                 return;
@@ -136,9 +136,9 @@ namespace CashRegisterApplication.window.Return
 
             CenterContral.ShowReturanWindowByContral(oStock);
             this.Hide();
-            //oLastStockmsg = new StockOutDTO();
+            //oLastStockmsg = new DbStockOutDTO();
             //CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
-            //StockOutDTO oStock = new StockOutDTO();
+            //DbStockOutDTO oStock = new DbStockOutDTO();
             //CenterContral.GetStockBySerialNumber(oLastStockmsg.Base.serialNumber, ref oStock);
 
             return;

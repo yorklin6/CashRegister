@@ -6,47 +6,60 @@ using CashRegiterApplication;
 
 namespace CashRegisterApplication.model
 {
-    public class StockOutDTORespone
+    //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
+    public class DbStockOutDTORespone
     {
         public int errorCode { get; set; }
         public string msg { get; set; }
-        public StockOutDTO data;
+        public DbStockOutDTO data;
     }
+
     public class LocalSaveStock
     {
-        public  List<StockOutDTO> listStock;
-        public  int index { get; set; }
+        public List<DbStockOutDTO> listStock;
+        public int index { get; set; }
         public LocalSaveStock()
         {
             index = 0;
-            listStock = new List<StockOutDTO>();
+            listStock = new List<DbStockOutDTO>();
         }
     }
 
-    public class StockOutDTO
+    public class DbSaveStock
     {
-        public StockOutBase Base;
-        public LocalBase local;
-        public List<StockOutDetail> details;
-        public List<Checkout> checkouts;
+        public  List<DbStockOutDTO> listStock;
+        public  int index { get; set; }
+        public DbSaveStock()
+        {
+            index = 0;
+            listStock = new List<DbStockOutDTO>();
+        }
+    }
 
+    public class DbStockOutDTO
+    {
+        //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
+        public DbStockOutBase Base;
+
+        public List<DbStockOutDetail> details;
+        public List<DbCheckout> checkouts;
         public Member oMember;
         
-        public StockOutDTO()
+        public DbStockOutDTO()
         {
-            Base = new StockOutBase();
-            details = new List<StockOutDetail>();
-            checkouts = new List<Checkout>();
-            //本地存储变量
+            Base = new DbStockOutBase();
+            details = new List<DbStockOutDetail>();
+            checkouts = new List<DbCheckout>();
+         
             oMember = new Member();
-            local = new LocalBase();
+ 
         }
 
-        public void addChecout(Checkout oPayWay)
+        public void addChecout(DbCheckout oPayWay)
         {
-            CommUiltl.Log("RecieveFee before:" + local.TotalPayFee);
-            local.TotalPayFee += oPayWay.payAmount;
-            CommUiltl.Log("RecieveFee after:" + local.TotalPayFee);
+            CommUiltl.Log("RecieveFee before:" + Base.TotalPayFee);
+            Base.TotalPayFee += oPayWay.payAmount;
+            CommUiltl.Log("RecieveFee after:" + Base.TotalPayFee);
             CaculateFee();
             checkouts.Add(oPayWay);
           
@@ -55,11 +68,11 @@ namespace CashRegisterApplication.model
         public void CaculateFee()
         {
             //计算找零价钱和实收价钱
-            local.ChangeFee = local.TotalPayFee - Base.orderAmount;
-            local.RealRecieveFee = local.TotalPayFee;
-            if (local.RealRecieveFee> Base.orderAmount)
+            Base.ChangeFee = Base.TotalPayFee - Base.orderAmount;
+            Base.RealRecieveFee = Base.TotalPayFee;
+            if (Base.RealRecieveFee> Base.orderAmount)
             {
-                local.RealRecieveFee = Base.orderAmount;
+                Base.RealRecieveFee = Base.orderAmount;
             }
         }
     }
@@ -71,27 +84,18 @@ namespace CashRegisterApplication.model
 
         public int tradeTime { get; set; }
 
-        public List<Checkout> list;
+        public List<DbCheckout> list;
         public PayWayHttpRequet()
         {
             memberId = 0;
             tradeTime = 0;
-            list = new List<Checkout>();
+            list = new List<DbCheckout>();
         }
     }
 
-    public class Checkout
+    public class DbCheckout
     {
-        public const int PAY_TYPE_CASH = 1;
-        public const string PAY_TYPE_CASH_DESC = "现金";
-
-        public const int PAY_TYPE_WEIXIN = 2;
-        public const string PAY_TYPE_WEIXIN_DESC = "微信支付";
-
-        public const int PAY_TYPE_ZHIFUBAO = 3;
-        public const string PAY_TYPE_ZHIFUBAO_DESC = "支付宝支付";
-
-       
+        //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
         public int payType { get; set; }
         public long payAmount { get; set; }
 
@@ -110,7 +114,7 @@ namespace CashRegisterApplication.model
 
         public string  payTypeDesc { get; set; }
 
-        public Checkout()
+        public DbCheckout()
         {
             id = 0;
             payType = 0;
@@ -128,8 +132,30 @@ namespace CashRegisterApplication.model
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
     }
-    public class LocalBase
+  
+    public class DbStockOutBase
     {
+
+        //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
+        public String serialNumber { get; set; }
+        public long storeId { get; set; }
+        public long whouseId { get; set; }
+        public String whouseName { get; set; }
+        public long clientId { get; set; }//会员id
+        public String clientName { get; set; }//会员id
+        public long posId { get; set; }
+        public long cashierId { get; set; }//收银员id，也就是登陆者
+        public String cashierName { get; set; }//收银员，也就是登陆者
+        public String deskNumber { get; set; }
+        public long orderAmount { get; set; }//订单总金额
+        public long walletHistoryId { get; set; }//关联的钱包支付Id
+        public String remark { get; set; }
+        public String orderTime { get; set; }
+        public String createTime { get; set; }
+       
+        public long discountAmount { get; set; } // 折扣额度
+        public long discountRate { get; set; } // 折扣率
+
         //************本地缓存数据
         public long TotalPayFee { get; set; }
         public long RealRecieveFee { get; set; }//实收多少钱
@@ -151,9 +177,7 @@ namespace CashRegisterApplication.model
 
         public int cancaelFlag { get; set; }
 
-        // 折扣
-        public long discountAmount { get; set; }
-        public long discountRate { get; set; }
+
         // 全班商品累计价格
         public long allGoodsMoneyAmount { get; set; }
         public long stockOutId { get; set; }
@@ -163,27 +187,6 @@ namespace CashRegisterApplication.model
         public String updateTime { get; set; }
         public String stockOutTime { get; set; }
         public Byte status { get; set; }
-    }
-    public class StockOutBase
-    {
-        public String serialNumber { get; set; }
-        public long storeId { get; set; }
-        public long whouseId { get; set; }
-        public String whouseName { get; set; }
-        public long clientId { get; set; }//会员id
-        public String clientName { get; set; }//会员id
-        public long posId { get; set; }
-        public long cashierId { get; set; }//收银员id，也就是登陆者
-        public String cashierName { get; set; }//收银员，也就是登陆者
-        public String deskNumber { get; set; }
-        public long orderAmount { get; set; }//订单总金额
-        public long walletHistoryId { get; set; }//关联的钱包支付Id
-        public String remark { get; set; }
-        public String orderTime { get; set; }
-        public String createTime { get; set; }
-
-
-
 
         public void generateSeariseNumber()
         {
@@ -194,9 +197,9 @@ namespace CashRegisterApplication.model
 
         }
     }
-    public class StockOutDetail
+    public class DbStockOutDetail
     {
-
+        //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
         public long id { get; set; }
         public long retailId { get; set; }
         public long goodsId { get; set; }//商品Id
@@ -216,15 +219,13 @@ namespace CashRegisterApplication.model
         public long spaceId { get; set; }/** 加工位Id，仅用于零售需要现场加工场景 */
 
 
-    public long stockOutId { get; set; }
-        public String unit { get; set; }
-        public long actualDifference { get; set; }
+
         internal int cloudState { get; set; }
+        public long stockOutId { get; set; }
 
 
-      
 
-    public string goodsShowSpecification { get; set; }
+        public string goodsShowSpecification { get; set; }
         public ProductPricing cloudProductPricing;
 
         public String postKeyWord { get; set; }//postKeyWord，用户输入的关键词
@@ -233,8 +234,8 @@ namespace CashRegisterApplication.model
         public int isBarCodeMoneyGoods { get; set; }//是否是条码带金额类商品，默认0不是,1是代表是扫码商品
         public long barcodeSubTotalMoney { get; set; }//条码中自带的金额数，当isBarCodeMoneyGoods字段为1时候生效
         public long barcodeCount { get; set; }//条码中自带的金额数,需要重新计算计重数
-    }
 
+    }
 
 
 }

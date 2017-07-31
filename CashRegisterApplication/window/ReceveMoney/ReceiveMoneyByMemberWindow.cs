@@ -59,14 +59,14 @@ namespace CashRegisterApplication.window.member
         public void  UpdateMemberInfor(){
             this.Text = "收银-" + CenterContral.oCheckout.payTypeDesc;
             this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(-(CenterContral.oStockOutDTO.local.ChangeFee) );
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(-(CenterContral.oStockOutDTO.Base.ChangeFee) );
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
         }
         private void _SelectRecieve()
         {
 
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(-(CenterContral.oStockOutDTO.local.ChangeFee ));
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(-(CenterContral.oStockOutDTO.Base.ChangeFee ));
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
             this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
 
@@ -260,7 +260,7 @@ namespace CashRegisterApplication.window.member
                 return;
             }
 
-            long change = recieveFee + CenterContral.oStockOutDTO.local.ChangeFee;
+            long change = recieveFee + CenterContral.oStockOutDTO.Base.ChangeFee;
             string showTips = "确认" + CenterContral.oCheckout.payTypeDesc + "收" + this.textBox_ReceiveFee.Text + " 元";
 
 

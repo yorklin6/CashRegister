@@ -41,7 +41,7 @@ namespace CashRegisterApplication.window.ProductList
                 CommUiltl.Log("rowIndex " + rowIndex);
                 CommUiltl.Log("i " + i);
                 CommUiltl.Log("oStockOutDTO.details[i] " + list[i]);
-                StockOutDetail detail = new StockOutDetail();
+                DbStockOutDetail detail = new DbStockOutDetail();
                 CenterContral.ProductTostockDetail(list[i], ref detail);
                 SetRowsByStockOutDetail(this.dataGridView_productList.Rows[rowIndex], detail);
 
@@ -54,7 +54,7 @@ namespace CashRegisterApplication.window.ProductList
         }
       
 
-        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, StockOutDetail detail)
+        private void SetRowsByStockOutDetail(DataGridViewRow currentRow, DbStockOutDetail detail)
         {
             currentRow.Cells[CELL_INDEX.INDEX].Value = currentRow.Index + 1;
             currentRow.Cells[CELL_INDEX.PRODUCT_CODE].ReadOnly = true;//请求到后台的条码，不允许修改，只能删除，防止误操作

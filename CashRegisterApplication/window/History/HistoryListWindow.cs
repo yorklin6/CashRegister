@@ -24,7 +24,7 @@ namespace CashRegisterApplication.window.History
             RefreshData();
         }
 
-        List<StockOutDTO> gListStockOutDTO = new List<StockOutDTO>();
+        List<DbStockOutDTO> gListStockOutDTO = new List<DbStockOutDTO>();
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
@@ -52,7 +52,7 @@ namespace CashRegisterApplication.window.History
         {
             
             DateTime oDate = this.dateTimePicker1.Value;
-            gListStockOutDTO = new List<StockOutDTO>();
+            gListStockOutDTO = new List<DbStockOutDTO>();
             if (!CenterContral.GetStockOutMsgByDate(oDate, ref gListStockOutDTO))
             {
                 return;
@@ -83,13 +83,13 @@ namespace CashRegisterApplication.window.History
         private int CELL_TOTAL_COUNT = 3;
         private int CELL_CREATOR = 4;
         private int CELL_STATE = 5;
-        private void SetRowsByStockOut(DataGridViewRow dataGridViewRow, StockOutDTO oStockOut)
+        private void SetRowsByStockOut(DataGridViewRow dataGridViewRow, DbStockOutDTO oStockOut)
         {
             dataGridViewRow.Cells[CELL_SERIAL_NUMBER].Value = oStockOut.Base.serialNumber;
-            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOut.local.stockOutTime.Substring(0,19) ;
+            dataGridViewRow.Cells[CELL_CREATETIME].Value = oStockOut.Base.stockOutTime.Substring(0,19) ;
             dataGridViewRow.Cells[CELL_ORDER_AMOUNT].Value = CommUiltl.CoverMoneyUnionToStrYuan(oStockOut.Base.orderAmount);
-            dataGridViewRow.Cells[CELL_TOTAL_COUNT].Value = oStockOut.local.totalProductCount;
-            dataGridViewRow.Cells[CELL_CREATOR].Value = oStockOut.local.creator;
+            dataGridViewRow.Cells[CELL_TOTAL_COUNT].Value = oStockOut.Base.totalProductCount;
+            dataGridViewRow.Cells[CELL_CREATOR].Value = oStockOut.Base.creator;
             dataGridViewRow.Cells[CELL_STATE].Value = CenterContral.GetStateDscByStockOutBase(oStockOut);
         }
 
@@ -153,7 +153,7 @@ namespace CashRegisterApplication.window.History
                 MessageBox.Show("未知行");
                 return;
             }
-            StockOutDTO oStock = gListStockOutDTO[rowIndex];
+            DbStockOutDTO oStock = gListStockOutDTO[rowIndex];
             CenterContral.Window_HistoryDetailWindow.ShowDetailStockOut(oStock);
         }
 

@@ -147,6 +147,11 @@ namespace CashRegisterApplication.comm
             //保留小数点后两位位
             return Convert.ToDecimal((double)money / 10000).ToString("0.00");
         }
+        public static string CoveUnionTo2Pecent(long money)
+        {
+            //保留小数点后两位位
+            return Convert.ToDecimal((double)money / 100).ToString("0.00");
+        }
         //**********计重类
         internal static long CaculateBarCodeCount(long barcodeSubTotalMoney, long unitPrice)
         {

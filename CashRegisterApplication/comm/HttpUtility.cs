@@ -125,7 +125,7 @@ namespace CashRegiterApplication
        
         // MessageBox.Show();
         /***************************************生成订单***************************************/
-        public static   int GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        public static   int GenerateOrder(DbStockOutDTO oReq, ref DbStockOutDTORespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -142,12 +142,15 @@ namespace CashRegiterApplication
 
 
 
-        public static int _GenerateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        public static int _GenerateOrder(DbStockOutDTO oReq, ref DbStockOutDTORespone oRespond)
         {
             string funcUrl = GenerateOrderFunc ;
+       
             String json = JsonConvert.SerializeObject(oReq);
 
-            if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
+            DbStockOutDTO oDb = JsonConvert.DeserializeObject<DbStockOutDTO>(json);
+
+            if (!Post<DbStockOutDTORespone>(funcUrl, json, ref oRespond))
             {
                 CommUiltl.Log("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "异常:请检查网络";
@@ -167,7 +170,7 @@ namespace CashRegiterApplication
 
 
         //关闭订单
-        internal static int RetailSettlement(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        internal static int RetailSettlement(DbStockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -181,7 +184,7 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int RetailSettlementByTask(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        internal static int RetailSettlementByTask(DbStockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -196,21 +199,18 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _RetailSettlement(StockOutDTO oReq, ref HttpBaseRespone oRespond)
+        internal static int _RetailSettlement(DbStockOutDTO oReq, ref HttpBaseRespone oRespond)
         {
-            StockOutDTO oReqoTmp = new StockOutDTO();
-            oReqoTmp.Base = oReq.Base;
-            oReqoTmp.checkouts = oReq.checkouts;
-            oReqoTmp.details = oReq.details;
-
             string funcUrl = RetailSettlementFunc;
-            String json = JsonConvert.SerializeObject(oReqoTmp);
+            String json = JsonConvert.SerializeObject(oReq);
+            StockOutDTO oSettle = JsonConvert.DeserializeObject<StockOutDTO>(json);
+            json = JsonConvert.SerializeObject(oSettle);
             CommUiltl.Log("**********:" + json);
             if (!Post<HttpBaseRespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 CommUiltl.Log("ERR:Get failed oCashregisterOrderResp errorCode:[" + JsonConvert.SerializeObject(oRespond) + "] req:\n"+ json);
-                lastErrorMsg = "http生成订单异常:请检查网络";
+                lastErrorMsg = "生成订单异常:请检查网络";
                 return CLOUD_SATE_HTTP_FAILD;
             }
             if (oRespond.errorCode != 0)
@@ -223,7 +223,7 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //更新订单
-        public static int updateRetailStock(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        public static int updateRetailStock(DbStockOutDTO oReq, ref DbStockOutDTORespone oRespond)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -237,11 +237,11 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _UpdateOrder(StockOutDTO oReq, ref StockOutDTORespone oRespond)
+        internal static int _UpdateOrder(DbStockOutDTO oReq, ref DbStockOutDTORespone oRespond)
         {
-            string funcUrl = updateOrderFunc+ oReq.local.stockOutId;
+            string funcUrl = updateOrderFunc+ oReq.Base.stockOutId;
             String json = JsonConvert.SerializeObject(oReq.Base);
-            if (!Post<StockOutDTORespone>(funcUrl, json, ref oRespond))
+            if (!Post<DbStockOutDTORespone>(funcUrl, json, ref oRespond))
             {
                 Console.WriteLine("ERR:http Get GenerateOrder failed");
                 lastErrorMsg = "http更新订单异常:请检查网络";
@@ -634,7 +634,7 @@ namespace CashRegiterApplication
             return true;
         }
         /****************************获取零售单****************/
-        internal static int GetStockBySerialNumber(string serialNumber, ref StockOutDTO oRespond)
+        internal static int GetStockBySerialNumber(string serialNumber, ref DbStockOutDTO oRespond)
         {
           
             int iResult = 0;
@@ -650,11 +650,11 @@ namespace CashRegiterApplication
             return iResult;
         }
 
-        public static int _GetStockBySerialNumber(string serialNumber, ref StockOutDTO oStockOutDTO)
+        public static int _GetStockBySerialNumber(string serialNumber, ref DbStockOutDTO oStockOutDTO)
         {
-            StockOutDTORespone oRespond = new StockOutDTORespone();
+            DbStockOutDTORespone oRespond = new DbStockOutDTORespone();
             string funcUrl = oFindOrderFunc+ serialNumber;
-            if (!Get<StockOutDTORespone>(funcUrl, ref oRespond))
+            if (!Get<DbStockOutDTORespone>(funcUrl, ref oRespond))
             {
                 CommUiltl.Log("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "异常:请检查网络";

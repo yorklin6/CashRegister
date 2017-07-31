@@ -126,22 +126,21 @@ namespace CashRegisterApplication.comm
         //关闭单(结算订单)
         public static void CloseStaockOut()
         {
-            List<StockOutDTO> oStockList = new List<StockOutDTO>();
-            StockOutDTO oState = new StockOutDTO();
-            oState.local = new LocalBase();
-            oState.local.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            List<DbStockOutDTO> oStockList = new List<DbStockOutDTO>();
+            DbStockOutDTO oState = new DbStockOutDTO();
+            oState.Base.cloudCloseFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             GetStockOutPutByDbWithCloudeState(oState, ref oStockList);
             //http redo
             foreach (var oStock in oStockList)
             {
                 CommUiltl.Log("CloseStaockOut serialNumber:" + oStock.Base.serialNumber);
                 HttpBaseRespone oRespond = new HttpBaseRespone();
-                string strDataJson = oStock.local.baseDataJson;
-                oStock.local.baseDataJson = "";
-                oStock.local.cloudCloseFlag = HttpUtility.RetailSettlementByTask(oStock, ref oRespond);
-                if (oStock.local.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                string strDataJson = oStock.Base.baseDataJson;
+                oStock.Base.baseDataJson = "";
+                oStock.Base.cloudCloseFlag = HttpUtility.RetailSettlementByTask(oStock, ref oRespond);
+                if (oStock.Base.cloudCloseFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
-                    oStock.local.baseDataJson = JsonConvert.SerializeObject(oStock);
+                    oStock.Base.baseDataJson = JsonConvert.SerializeObject(oStock);
                     Dao.UpdateOrderCloudState(oStock);
                 }
                 else
@@ -153,22 +152,22 @@ namespace CashRegisterApplication.comm
 
         public static void AddStaockOut()
         {
-            List<StockOutDTO> oStockList = new List<StockOutDTO>();
-            StockOutDTO oState = new StockOutDTO();
-            oState.local.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            List<DbStockOutDTO> oStockList = new List<DbStockOutDTO>();
+            DbStockOutDTO oState = new DbStockOutDTO();
+            oState.Base.cloudAddFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
             GetStockOutPutByDbWithCloudeState(oState, ref oStockList);
 
             //http redo
             foreach (var oStock in oStockList)
             {
-                StockOutDTORespone oResp =new StockOutDTORespone();
-               oStock.local.cloudAddFlag = HttpUtility.GenerateOrder(oStock, ref oResp);
+                DbStockOutDTORespone oResp =new DbStockOutDTORespone();
+               oStock.Base.cloudAddFlag = HttpUtility.GenerateOrder(oStock, ref oResp);
 
-                if (oStock.local.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                if (oStock.Base.cloudAddFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
                     //重试成功
-                    oStock.local.stockOutId = oResp.data.local.stockOutId;
+                    oStock.Base.stockOutId = oResp.data.Base.stockOutId;
                     if (oResp.data.details.Count != oStock.details.Count)
                     {
                         //说明是有问题的
@@ -181,7 +180,7 @@ namespace CashRegisterApplication.comm
                         //更新数据库，这个流水单下面的id全部变成云端返回的id，以云端的为主。
                         oStock.details[i].id = oResp.data.details[i].id;
                     }
-                    oStock.local.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_SUCESS;//新增成功，相当于无需更新
+                    oStock.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_SUCESS;//新增成功，相当于无需更新
                     Dao.updateRetailStock(oStock);
                 }
                 else
@@ -196,19 +195,19 @@ namespace CashRegisterApplication.comm
         //修改零售单
         public static void UpdateStaockOut()
         {
-            List<StockOutDTO> oStockList = new List<StockOutDTO>();
+            List<DbStockOutDTO> oStockList = new List<DbStockOutDTO>();
 
-            StockOutDTO oState = new StockOutDTO();
-            oState.local.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
+            DbStockOutDTO oState = new DbStockOutDTO();
+            oState.Base.cloudUpdateFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
 
             GetStockOutPutByDbWithCloudeState(oState, ref oStockList);
             //http redo
             foreach (var oStock in oStockList)
             {
-                StockOutDTORespone oResp = new StockOutDTORespone();
-                oStock.local.cloudUpdateFlag = HttpUtility.updateRetailStock(oStock, ref oResp);
+                DbStockOutDTORespone oResp = new DbStockOutDTORespone();
+                oStock.Base.cloudUpdateFlag = HttpUtility.updateRetailStock(oStock, ref oResp);
 
-                if (oStock.local.cloudUpdateFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
+                if (oStock.Base.cloudUpdateFlag == HttpUtility.CLOUD_SATE_HTTP_SUCESS)
                 {
                     for (int i = 0; i < oStock.details.Count; ++i)
                     {
@@ -228,7 +227,7 @@ namespace CashRegisterApplication.comm
         //删除零售单
         public static void DeleteStaockOut()
         {
-            //List<StockOutDTO> oStockList = new List<StockOutDTO>();
+            //List<DbStockOutDTO> oStockList = new List<DbStockOutDTO>();
             //StockOutBase Base = new StockOutBase();
             //Base.cloudDeleteFlag = HttpUtility.CLOUD_SATE_HTTP_FAILD;
             //GetStockOutPutByDbWithCloudeState(Base, ref oStockList);
@@ -257,9 +256,9 @@ namespace CashRegisterApplication.comm
 
      
 
-        public static void GetStockOutPutByDbWithCloudeState(StockOutDTO oState, ref List<StockOutDTO> oStockList)
+        public static void GetStockOutPutByDbWithCloudeState(DbStockOutDTO oState, ref List<DbStockOutDTO> oStockList)
         {
-            List<StockOutDTO> oJsonList = new List<StockOutDTO>();
+            List<DbStockOutDTO> oJsonList = new List<DbStockOutDTO>();
             //取出数据
             if (!Dao.GetCloudStateFailedStockOutList(oState, ref oJsonList))
             {
@@ -275,12 +274,12 @@ namespace CashRegisterApplication.comm
             {
                 try
                 {
-                    StockOutDTO oTmp = JsonConvert.DeserializeObject<StockOutDTO>(item.local.baseDataJson);
+                    DbStockOutDTO oTmp = JsonConvert.DeserializeObject<DbStockOutDTO>(item.Base.baseDataJson);
                     oStockList.Add(oTmp);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.local.baseDataJson);
+                    Console.WriteLine("DeserializeObject content error ,and coanot parse:" + e + " conten:" + item.Base.baseDataJson);
                     continue;
                 }
             }
