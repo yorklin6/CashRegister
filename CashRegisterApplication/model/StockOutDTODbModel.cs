@@ -42,26 +42,26 @@ namespace CashRegisterApplication.model
         public DbStockOutBase Base;
 
         public List<DbStockOutDetail> details;
-        public List<DbCheckout> checkouts;
+        public List<DbPayment> payments;
         public Member oMember;
         
         public DbStockOutDTO()
         {
             Base = new DbStockOutBase();
             details = new List<DbStockOutDetail>();
-            checkouts = new List<DbCheckout>();
+            payments = new List<DbPayment>();
          
             oMember = new Member();
  
         }
 
-        public void addChecout(DbCheckout oPayWay)
+        public void addChecout(DbPayment oPayWay)
         {
             CommUiltl.Log("RecieveFee before:" + Base.TotalPayFee);
             Base.TotalPayFee += oPayWay.payAmount;
             CommUiltl.Log("RecieveFee after:" + Base.TotalPayFee);
             CaculateFee();
-            checkouts.Add(oPayWay);
+            payments.Add(oPayWay);
           
         }
 
@@ -84,43 +84,73 @@ namespace CashRegisterApplication.model
 
         public int tradeTime { get; set; }
 
-        public List<DbCheckout> list;
+        public List<DbPayment> list;
         public PayWayHttpRequet()
         {
             memberId = 0;
             tradeTime = 0;
-            list = new List<DbCheckout>();
+            list = new List<DbPayment>();
         }
     }
 
-    public class DbCheckout
+    public class DbPayment
     {
         //这个文件是保存db里面的结构，如果添加字段，有必要修改修改StockOutDTOHttpModel
-        public int payType { get; set; }
-        public long payAmount { get; set; }
-
+        public int id { get; set; }
         public string stockOutSerialNumber { get; set; }
 
-        public string serialNumber { get;  set; }
-        public int cloudState { get; set; }
-        public int id { get; set; }
-        public int posId { get; set; }
-        public int payStatus { get; set; }
-        public long relatedOrder { get; set; }
+        public string serialNumber { get; set; }
         public long storeId { get; set; }
+        public int posId { get; set; }
+        public int orderType { get; set; } //新增
+        public long relatedOrder { get; set; }
+        public int payType { get; set; }
+        public long memberId { get; set; } //新增
+        public long originalBalance { get; set; } //新增
+        public long payAmount { get; set; } //新增 支付金额必须大于0
+        public long newBalance { get; set; } //新增 
+        public string tradeTime { get; set; } //新增 
+
+
+        public int cloudState { get; set; }
+        public int payStatus { get; set; }
         public int isDeleted { get; set; }
-
         public string reqMemberZfJson { get; set; }
+        public string payTypeDesc { get; set; }
 
-        public string  payTypeDesc { get; set; }
+        /** 支付单流水格式：JZ/TH/CZ-storeId-yyyyMMddHHmmssSSS-randomNum(3位) */
+        //    @NotBlank(message = "支付流水号不能为空！", groups = { InsertCheck.class})
+        //    @Pattern(regexp = "^((JZ)|(TH)|(CZ))-(\\d+-)\\d{17}-\\d{3}$", message = "支付流水号格式不合法！", groups = { InsertCheck.class})
+        //    private String serialNumber;
+        //private Integer storeId;
+        //private Integer posId;
+        //private Byte orderType;
+        //private Integer relatedOrder;
 
-        public DbCheckout()
+        //    @NotNull(message = "支付方式不能为空！", groups = { InsertCheck.class})
+        //    @Min(value = 0, message = "支付方式参数非法！", groups = { InsertCheck.class})
+        //    private Byte payType;
+        //private Integer memberId;
+        //private Long originalBalance;
+
+        //    @NotNull(message = "支付金额不能为空！", groups = { InsertCheck.class})
+        //    @Min(value = 1, message = "支付金额必须大于0！", groups = { InsertCheck.class})
+        //    private Long payAmount;
+        //private Long newBalance;
+
+        //    @NotNull(message = "支付时间不能为空！", groups = { InsertCheck.class})
+        //    private Timestamp tradeTime;
+        //private Timestamp createTime;
+        //private Timestamp updateTime;
+
+        public DbPayment()
         {
             id = 0;
             payType = 0;
             payAmount = 0;
             payStatus = 0;
             cloudState = 0;
+            orderType = 0;
             serialNumber = "";
             stockOutSerialNumber = "";
             posId = CenterContral.iPostId;

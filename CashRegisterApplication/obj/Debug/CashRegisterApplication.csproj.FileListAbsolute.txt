@@ -155,3 +155,7 @@ D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.PayTypesForRechargeWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Return.ReturnDetailWindow.resources
 D:\用户目录\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Return.ReturnSerialNumberWindow.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.PayTypesForRechargeWindow.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Return.ReturnDetailWindow.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.Return.ReturnSerialNumberWindow.resources
+C:\Users\yorklin\Documents\GitHub\CashRegisterApplication\CashRegisterApplication\obj\Debug\CashRegisterApplication.window.ReturnMoneyConfirmWindow.resources

@@ -562,7 +562,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
         /*********************支付单*********************/
-        internal static bool GeneratePay(DbCheckout oPayWay)
+        internal static bool GeneratePay(DbPayment oPayWay)
         {
             CommUiltl.Log("Dao GenerateOrder");
            
@@ -612,7 +612,7 @@ namespace CashRegisterApplication.comm
 
 
         //UpdatePayCloudStae
-        internal static bool UpdatePayCloudStae(DbCheckout oPayWay)
+        internal static bool UpdatePayCloudStae(DbPayment oPayWay)
         {
             CommUiltl.Log("Dao UpdatePayCloudStae");
             int iRow = 0;

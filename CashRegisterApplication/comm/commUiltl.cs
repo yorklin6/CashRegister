@@ -147,10 +147,24 @@ namespace CashRegisterApplication.comm
             //保留小数点后两位位
             return Convert.ToDecimal((double)money / 10000).ToString("0.00");
         }
-        public static string CoveUnionTo2Pecent(long money)
+        public static bool Cover2PercentToUnion(object value, out long number)
         {
-            //保留小数点后两位位
-            return Convert.ToDecimal((double)money / 100).ToString("0.00");
+            number = 0;
+            if (CommUiltl.IsObjEmpty(value))
+            {
+                return false;
+            }
+            decimal decimalNumber = 0;
+            bool isNumber = decimal.TryParse(value.ToString(), out decimalNumber);
+            if (!isNumber) return false;
+            if (decimalNumber > 100000) return false;
+            number = Convert.ToInt32(decimalNumber * 100);
+            return true;
+        }
+        public static string CoveDiscountDiv100(long discount)
+        {
+            //return Convert.ToDecimal((double)money / 100).ToString("0.00");//保留小数点后两位位
+            return (discount / 100).ToString();
         }
         //**********计重类
         internal static long CaculateBarCodeCount(long barcodeSubTotalMoney, long unitPrice)

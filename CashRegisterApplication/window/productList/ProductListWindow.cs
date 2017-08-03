@@ -258,7 +258,7 @@ namespace CashRegiterApplication
         private void _SetCheckoutGrid()
         {
             this.dataGridView_checkout.Rows.Clear();
-            foreach (var item in CenterContral.oStockOutDTO.checkouts)
+            foreach (var item in CenterContral.oStockOutDTO.payments)
             {
                 int i = this.dataGridView_checkout.Rows.Add();
                 this.dataGridView_checkout.Rows[i].Cells[0].Value = item.payTypeDesc;

@@ -49,7 +49,7 @@ namespace CashRegisterApplication.window.History
             //折扣额度
             this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
             //折扣率
-            this.label_discount_rate.Text = CommUiltl.CoveUnionTo2Pecent(oStockOutDTO.Base.discountRate);
+            this.label_discount_rate.Text = CommUiltl.CoveDiscountDiv100(oStockOutDTO.Base.discountRate);
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
 

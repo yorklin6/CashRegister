@@ -48,7 +48,7 @@ namespace CashRegisterApplication.comm
         public static ReturnDetailWindow Window_ReturnDetailWindow;
         public static ReturnSerialNumberWindow Window_ReturnSerialNumberWindow;
 
-
+        public static ReturnMoneyConfirmWindow Window_ReturnMoneyConfirmWindow;
         public static DbStockOutDTO oStockOutDTO;//当前单据信息
 
 
@@ -69,9 +69,9 @@ namespace CashRegisterApplication.comm
 
 
 
-        public static DbCheckout oCheckout;//支付信息
+        public static DbPayment oCheckout;//支付信息
 
-        public static DbCheckout oRechargePayType;//充值方式
+        public static DbPayment oRechargePayType;//充值方式
         //public static PayType oCurrentPayType;// 支付类型全局
 
         public static UserLogin oLoginer;//登录用户
@@ -212,11 +212,12 @@ namespace CashRegisterApplication.comm
             Window_HistoryDetailWindow = new HistoryDetailWindow();
             Window_ReturnDetailWindow = new ReturnDetailWindow();
             Window_ReturnSerialNumberWindow = new ReturnSerialNumberWindow();
+            Window_ReturnMoneyConfirmWindow = new ReturnMoneyConfirmWindow();
             oStockOutDTO = new DbStockOutDTO();//商品列表
 
             oStockOutDToRespond = new DbStockOutDTORespone();
             oHttpRespone = new HttpBaseRespone();
-            oCheckout = new DbCheckout();
+            oCheckout = new DbPayment();
             oStoreWhouse = new StoreWhouse();
             store_house_selete_flag = STORE_HOUSE_UNSET_SELETED;
             oStoreListWithUser = new StoreListWithUser();
@@ -521,7 +522,7 @@ namespace CashRegisterApplication.comm
                 {
                     var oPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
-                    CenterContral.oCheckout = new DbCheckout();
+                    CenterContral.oCheckout = new DbPayment();
                     CenterContral.oCheckout.payType = oPayType.payTypeId;
                     CenterContral.oCheckout.payTypeDesc = oPayType.description;
                     CenterContral.oCheckout.generatePayOrderNumber();
@@ -543,7 +544,7 @@ namespace CashRegisterApplication.comm
                 {
                     var oPayType = CenterContral.oPayTypeList.list[index];
                     //支付信息预设
-                    CenterContral.oRechargePayType = new DbCheckout();
+                    CenterContral.oRechargePayType = new DbPayment();
                     CenterContral.oRechargePayType.payType = oPayType.payTypeId;
                     CenterContral.oRechargePayType.payTypeDesc = oPayType.description;
                     CenterContral.oRechargePayType.generatePayOrderNumber();
@@ -643,7 +644,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO = new DbStockOutDTO();//商品列表
             CenterContral.oStockOutDTO.Base = new DbStockOutBase();
             CenterContral.oStockOutDTO.details = new List<DbStockOutDetail>();
-            CenterContral.oStockOutDTO.checkouts = new List<DbCheckout>();
+            CenterContral.oStockOutDTO.payments = new List<DbPayment>();
 
             CenterContral.oStockOutDToRespond = new DbStockOutDTORespone();
 

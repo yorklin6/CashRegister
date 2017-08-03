@@ -38,12 +38,13 @@ namespace CashRegisterApplication.window.productList
         public void ShowWithDiscountMsg()
         {
             this.textBox_allGoodsMoneyAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount);
-            this.textBox_discountRate.Text = CommUiltl.CoveUnionTo2Pecent(CenterContral.oStockOutDTO.Base.discountRate);
+            this.textBox_discountRate.Text = CommUiltl.CoveDiscountDiv100(CenterContral.oStockOutDTO.Base.discountRate);
             this.textBox_discountAmount.Text = CommUiltl.CoverMoneyUnionToStrYuan(CenterContral.oStockOutDTO.Base.discountAmount);
             this.Show();
-            foucuseDiscount();
+            focuseDiscount();
         }
-        private void foucuseDiscount()
+
+        private void focuseDiscount()
         {
             this.textBox_discountRate.Focus();
             this.textBox_discountRate.SelectionStart = 0;
@@ -89,7 +90,7 @@ namespace CashRegisterApplication.window.productList
 
 
             long discountRate = 0;
-            if (!CommUiltl.CoverStrToLong(this.textBox_discountRate.Text, out discountRate))
+            if (!CommUiltl.Cover2PercentToUnion(this.textBox_discountRate.Text, out discountRate))
             {
                 MessageBox.Show("折扣率错误:" + this.textBox_discountRate.Text);
                 return;
@@ -122,7 +123,7 @@ namespace CashRegisterApplication.window.productList
             if (wordArr.Length > 1)
             {
                 string afterDot = wordArr[1];
-                if (afterDot.Length > 0)//折扣率没小数，例如：只有88折，没有88.88折
+                if (afterDot.Length > 2)
                 {
                     this.textBox_discountRate.Text = wordArr[0] + "." + afterDot.Substring(0, 2);
                     this.textBox_discountRate.SelectionStart = this.textBox_discountRate.Text.Length;
@@ -134,10 +135,10 @@ namespace CashRegisterApplication.window.productList
                 return;
             }
             long discountRate = 0;
-            if (!CommUiltl.CoverStrToLong(this.textBox_discountRate.Text, out discountRate))
+            if (!CommUiltl.Cover2PercentToUnion(this.textBox_discountRate.Text, out discountRate))
             {
                 MessageBox.Show("折扣率错误:" + this.textBox_discountRate.Text);
-                this.foucuseDiscount();
+                this.focuseDiscount();
                 return;
             }
             long afterAmount = CenterContral.GetMoneyAmountByDiscountRate(CenterContral.oStockOutDTO ,discountRate);
