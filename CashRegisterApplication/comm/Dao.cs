@@ -639,7 +639,7 @@ namespace CashRegisterApplication.comm
             return true;
         }
         //会员充值流水
-        internal static bool memberRecharge(WalletHistory oRechargeMember, long beforeMberBalance, long afterMemberAccount, long recieveFee, Member oMermber)
+        internal static bool memberRecharge(DbPayment oRechargeMember, long beforeMberBalance, long afterMemberAccount, long recieveFee, Member oMermber)
         {
             CommUiltl.Log("Dao memberRecharge");
             int iRow = 0;

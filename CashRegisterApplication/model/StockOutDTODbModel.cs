@@ -118,6 +118,7 @@ namespace CashRegisterApplication.model
         public string reqMemberZfJson { get; set; }
         public string payTypeDesc { get; set; }
         public string reqRechargeJson { get; set; }
+
         /** 支付单流水格式：JZ/TH/CZ-storeId-yyyyMMddHHmmssSSS-randomNum(3位) */
         //    @NotBlank(message = "支付流水号不能为空！", groups = { InsertCheck.class})
         //    @Pattern(regexp = "^((JZ)|(TH)|(CZ))-(\\d+-)\\d{17}-\\d{3}$", message = "支付流水号格式不合法！", groups = { InsertCheck.class})
@@ -154,6 +155,7 @@ namespace CashRegisterApplication.model
             serialNumber = "";
             stockOutSerialNumber = "";
             posId = CenterContral.iPostId;
+            tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
         }
 
         internal void generateSettleNumber()

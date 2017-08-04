@@ -43,7 +43,7 @@ namespace CashRegiterApplication
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "retail/checkout?";
         private static readonly string rechargeMember = "retail/balance_recharge/";
-        private static readonly string paymentMember = "member/payment/";
+        private static readonly string paymentMember = "retail/payment/";
         private static readonly string getStoreListBysUserName = "user/store/";
         private static readonly string payTypeFunc = "payType?";
         private static readonly string oReturnOrderFunc = "/retail/return";
@@ -455,7 +455,7 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //会员充值
-        internal static int memberRecharge(WalletHistory oReq)
+        internal static int memberRecharge(DbPayment oReq)
         {
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
@@ -469,7 +469,7 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _memberRecharge(WalletHistory oReq)
+        internal static int _memberRecharge(DbPayment oReq)
         {
             string funcUrl = rechargeMember+ oReq.memberId.ToString();
             HttpBaseRespone oHttpRespone = new HttpBaseRespone();
@@ -491,9 +491,8 @@ namespace CashRegiterApplication
             return CLOUD_SATE_HTTP_SUCESS;
         }
         //会员扣款
-        internal static int MemberPay(WalletHistory oReq,ref HttpBaseResponeWalletHistory oHttpRespone)
+        internal static int MemberPay(DbPayment oReq,ref HttpBaseResponeDbPayment oHttpRespone)
         {
-           
             int iResult = CLOUD_SATE_HTTP_FAILD;
             lastErrorMsg = "";
             for (int i = 0; i < 2; ++i)
@@ -506,13 +505,13 @@ namespace CashRegiterApplication
             }
             return iResult;
         }
-        internal static int _MemberPay(WalletHistory oReq, ref HttpBaseResponeWalletHistory oHttpRespone)
+        internal static int _MemberPay(DbPayment oReq, ref HttpBaseResponeDbPayment oHttpRespone)
         {
             string funcUrl = paymentMember + oReq.memberId.ToString();
           
             String json = JsonConvert.SerializeObject(oReq);
 
-            if (!Put<HttpBaseResponeWalletHistory>(funcUrl, json, ref oHttpRespone))
+            if (!Put<HttpBaseResponeDbPayment>(funcUrl, json, ref oHttpRespone))
             {
                 Console.WriteLine("ERR:Get GenerateOrder failed");
                 lastErrorMsg = "支付异常：请检查网络";

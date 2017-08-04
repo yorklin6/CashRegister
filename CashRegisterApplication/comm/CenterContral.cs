@@ -1144,7 +1144,8 @@ namespace CashRegisterApplication.comm
             DbPayment oRecharge = new DbPayment();
             
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
-            oRecharge.changeValue = recieveFee;
+            oRecharge.payAmount = recieveFee;
+            oRecharge.payType = CenterContral.oCheckout.payType;
             oRecharge.generatePaySerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             HttpBaseResponeDbPayment oHttpRespone = new HttpBaseResponeDbPayment();
@@ -1178,8 +1179,8 @@ namespace CashRegisterApplication.comm
             oRecharge.payAmount = recieveFee;
             oRecharge.payType = CenterContral.PAY_TYPE_CASH;
             oRecharge.generateRechargeSerialNamber();
-            oRecharge.posId = CenterContral.iPostId;
-            oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
+
+
             //请求后台充值
             oRecharge.cloudState = HttpUtility.memberRecharge(oRecharge);
             if (HttpUtility.CLOUD_SATE_HTTP_SUCESS != oRecharge.cloudState)
