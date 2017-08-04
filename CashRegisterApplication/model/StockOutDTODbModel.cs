@@ -117,7 +117,7 @@ namespace CashRegisterApplication.model
         public int isDeleted { get; set; }
         public string reqMemberZfJson { get; set; }
         public string payTypeDesc { get; set; }
-
+        public string reqRechargeJson { get; set; }
         /** 支付单流水格式：JZ/TH/CZ-storeId-yyyyMMddHHmmssSSS-randomNum(3位) */
         //    @NotBlank(message = "支付流水号不能为空！", groups = { InsertCheck.class})
         //    @Pattern(regexp = "^((JZ)|(TH)|(CZ))-(\\d+-)\\d{17}-\\d{3}$", message = "支付流水号格式不合法！", groups = { InsertCheck.class})
@@ -156,13 +156,74 @@ namespace CashRegisterApplication.model
             posId = CenterContral.iPostId;
         }
 
-        internal void generatePayOrderNumber()
+        internal void generateSettleNumber()
         {
             serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeWhouseId + "-"
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
         }
+
+        internal void generateRechargeSerialNamber()
+        {
+            serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + 0 + "-" //会员充值支付，未做支付类型
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+        }
+        internal void generatePaySerialNamber()
+        {
+            serialNumber = "ZF-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + CenterContral.iPostId + "-" //会员充值支付，未做支付类型
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+        }
+
     }
-  
+
+    //public class DbPayment
+    //{
+    //    public long id { get; set; }
+    //    public long memberId { get; set; }
+
+    //    public String relatedOrder { get; set; }
+
+    //    public String serialNumber { get; set; }
+
+    //    public int type { get; set; }
+
+    //    public long originalBalance { get; set; }
+
+    //    public long changeValue { get; set; }
+
+    //    public long newBalance { get; set; }
+
+    //    public String tradeTime { get; set; }
+
+    //    public long isDeleted { get; set; }
+
+    //    public String createTime { get; set; }
+    //    public String updateTime { get; set; }
+
+    //    public Byte status { get; set; }
+
+    //    public String goodsStringWithoutMemberPrice { get; set; }
+
+    //    public int cloudState { get; set; }
+
+    //    public String reqRechargeJson { get; set; }
+    //    public String relatePayWaySerialNumber { get; set; }
+
+    //    internal void generateRechargeSerialNamber()
+    //    {
+    //        serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+    //            + 0 + "-" //会员充值支付，未做支付类型
+    //            + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+    //    }
+    //    internal void generatePaySerialNamber()
+    //    {
+    //        serialNumber = "ZF-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+    //            + CenterContral.iPostId + "-" //会员充值支付，未做支付类型
+    //            + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+    //    }
+    //}
+
     public class DbStockOutBase
     {
 
@@ -178,7 +239,7 @@ namespace CashRegisterApplication.model
         public String cashierName { get; set; }//收银员，也就是登陆者
         public String deskNumber { get; set; }
         public long orderAmount { get; set; }//订单总金额
-        public long walletHistoryId { get; set; }//关联的钱包支付Id
+        public long paymentId { get; set; }//关联的钱包支付Id
         public String remark { get; set; }
         public String orderTime { get; set; }
         public String createTime { get; set; }

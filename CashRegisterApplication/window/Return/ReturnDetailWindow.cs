@@ -66,7 +66,7 @@ namespace CashRegisterApplication.window.Return
             //折扣额
             this.label_discount_amount.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.discountAmount);
 
-            this.label_discount_rate.Text = oStockOutDTO.Base.discountRate.ToString();
+            this.label_discount_rate.Text = CommUiltl.CoveDiscountDiv100( oStockOutDTO.Base.discountRate);
 
             this.label_orderFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(oStockOutDTO.Base.orderAmount);
             returnFee = oStockOutDTO.Base.orderAmount;

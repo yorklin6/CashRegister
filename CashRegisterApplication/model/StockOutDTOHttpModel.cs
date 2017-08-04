@@ -26,7 +26,7 @@ namespace CashRegisterApplication.model
         public String cashierName { get; set; }//收银员，也就是登陆者
         public String deskNumber { get; set; }
         public long orderAmount { get; set; }//订单总金额
-        public long walletHistoryId { get; set; }//关联的钱包支付Id
+        public long paymentId { get; set; }//关联的钱包支付Id
         public String remark { get; set; }
         public String orderTime { get; set; }
         public String createTime { get; set; }

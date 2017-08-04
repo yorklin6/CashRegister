@@ -42,7 +42,7 @@ namespace CashRegiterApplication
         private static readonly string RetailSettlementFunc = "retail/settlement";
         private static readonly string updateOrderFunc = "stockOut/retail/";
         private static readonly string userPayFunc = "retail/checkout?";
-        private static readonly string rechargeMember = "member/balance_recharge/";
+        private static readonly string rechargeMember = "retail/balance_recharge/";
         private static readonly string paymentMember = "member/payment/";
         private static readonly string getStoreListBysUserName = "user/store/";
         private static readonly string payTypeFunc = "payType?";

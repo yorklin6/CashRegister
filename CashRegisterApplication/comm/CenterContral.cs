@@ -81,7 +81,9 @@ namespace CashRegisterApplication.comm
 
         public const int PAY_STATE_INIT = 0;
         public const int PAY_STATE_SUCCESS = 1;
-        public const int PAY_TYPE_CASH = 1;
+
+        public const int PAY_TYPE_CASH = 1;//現金支付
+
         public const int MEMBER_PAY_TYPE = 0;
 
 
@@ -525,7 +527,7 @@ namespace CashRegisterApplication.comm
                     CenterContral.oCheckout = new DbPayment();
                     CenterContral.oCheckout.payType = oPayType.payTypeId;
                     CenterContral.oCheckout.payTypeDesc = oPayType.description;
-                    CenterContral.oCheckout.generatePayOrderNumber();
+                    CenterContral.oCheckout.generateSettleNumber();
                     CenterContral.oCheckout.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
                     CenterContral.oCheckout.payStatus = CenterContral.PAY_STATE_SUCCESS;
                     CenterContral.oCheckout.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
@@ -547,7 +549,7 @@ namespace CashRegisterApplication.comm
                     CenterContral.oRechargePayType = new DbPayment();
                     CenterContral.oRechargePayType.payType = oPayType.payTypeId;
                     CenterContral.oRechargePayType.payTypeDesc = oPayType.description;
-                    CenterContral.oRechargePayType.generatePayOrderNumber();
+                    CenterContral.oRechargePayType.generateSettleNumber();
                     CenterContral.oRechargePayType.stockOutSerialNumber = CenterContral.oStockOutDTO.Base.serialNumber;
                     CenterContral.oRechargePayType.payStatus = CenterContral.PAY_STATE_SUCCESS;
                     CenterContral.oRechargePayType.cloudState = CenterContral.CLOUD_SATE_PAY_SUCESS;
@@ -654,7 +656,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base.ChangeFee = 0;
             CenterContral.oStockOutDTO.Base.RealRecieveFee = 0;
             CenterContral.oStockOutDTO.Base.allGoodsMoneyAmount = 0;
-            CenterContral.oStockOutDTO.Base.walletHistoryId = 0;
+            CenterContral.oStockOutDTO.Base.paymentId = 0;
 
             CenterContral.oStockOutDTO.Base.type = CenterContral.STOCK_OUT_BASE_TYPE;
             CenterContral.oStockOutDTO.Base.storeId = CenterContral.oStoreWhouse.storeWhouseId;
@@ -1139,19 +1141,19 @@ namespace CashRegisterApplication.comm
         {
             oCheckout.payAmount = recieveFee;
 
-            WalletHistory oRecharge = new WalletHistory();
+            DbPayment oRecharge = new DbPayment();
             
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.changeValue = recieveFee;
             oRecharge.generatePaySerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
-            HttpBaseResponeWalletHistory oHttpRespone = new HttpBaseResponeWalletHistory();
+            HttpBaseResponeDbPayment oHttpRespone = new HttpBaseResponeDbPayment();
             if ( HttpUtility.MemberPay(oRecharge,ref oHttpRespone) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
             {
                 MessageBox.Show("云扣款 失败:" + HttpUtility.lastErrorMsg);
                 return false;
             }
-            CenterContral.oStockOutDTO.Base.walletHistoryId = oHttpRespone.data;
+            CenterContral.oStockOutDTO.Base.paymentId = oHttpRespone.data;
             //本地记录支付信息
             oCheckout.reqMemberZfJson = JsonConvert.SerializeObject(oRecharge);
             if (!Dao.GeneratePay(oCheckout))
@@ -1171,10 +1173,12 @@ namespace CashRegisterApplication.comm
         internal static bool RechargeMoneyByMember(long recieveFee)
         {
             //充值金
-            WalletHistory oRecharge = new WalletHistory();
+            DbPayment oRecharge = new DbPayment();
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
-            oRecharge.changeValue = recieveFee;
+            oRecharge.payAmount = recieveFee;
+            oRecharge.payType = CenterContral.PAY_TYPE_CASH;
             oRecharge.generateRechargeSerialNamber();
+            oRecharge.posId = CenterContral.iPostId;
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             //请求后台充值
             oRecharge.cloudState = HttpUtility.memberRecharge(oRecharge);
