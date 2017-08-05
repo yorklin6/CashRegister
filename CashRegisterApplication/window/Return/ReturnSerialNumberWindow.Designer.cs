@@ -124,7 +124,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ReturnSerialNumberWindow";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "请输入退货单号";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReturnSerialNumberWindow_FormClosing);
             this.Load += new System.EventHandler(this.ReturnSerialNumber_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

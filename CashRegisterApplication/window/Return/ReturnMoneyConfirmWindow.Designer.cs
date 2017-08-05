@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReturnMoneyConfirmWindow));
-            this.textBox_ChangeFee = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.textBox_SupportFee = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonConfirm = new System.Windows.Forms.Button();
@@ -39,26 +36,6 @@
             this.textBox_payType = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // textBox_ChangeFee
-            // 
-            this.textBox_ChangeFee.BackColor = System.Drawing.SystemColors.WindowText;
-            this.textBox_ChangeFee.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBox_ChangeFee.Location = new System.Drawing.Point(186, 204);
-            this.textBox_ChangeFee.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
-            this.textBox_ChangeFee.Name = "textBox_ChangeFee";
-            this.textBox_ChangeFee.ReadOnly = true;
-            this.textBox_ChangeFee.Size = new System.Drawing.Size(146, 23);
-            this.textBox_ChangeFee.TabIndex = 13;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(136, 207);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 17);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "找零：";
             // 
             // textBox_SupportFee
             // 
@@ -84,7 +61,7 @@
             // 
             this.buttonConfirm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonConfirm.ImageKey = "(无)";
-            this.buttonConfirm.Location = new System.Drawing.Point(196, 262);
+            this.buttonConfirm.Location = new System.Drawing.Point(195, 216);
             this.buttonConfirm.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.buttonConfirm.Name = "buttonConfirm";
             this.buttonConfirm.Size = new System.Drawing.Size(125, 50);
@@ -124,6 +101,7 @@
             this.textBox_payType.ReadOnly = true;
             this.textBox_payType.Size = new System.Drawing.Size(146, 23);
             this.textBox_payType.TabIndex = 18;
+            this.textBox_payType.Text = "现金退款";
             // 
             // label4
             // 
@@ -132,7 +110,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 17);
             this.label4.TabIndex = 19;
-            this.label4.Text = "付款方式：";
+            this.label4.Text = "退款方式：";
             // 
             // ReturnMoneyConfirmWindow
             // 
@@ -143,19 +121,16 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.textBox_payType);
             this.Controls.Add(this.buttonConfirm);
-            this.Controls.Add(this.textBox_ChangeFee);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox_SupportFee);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_ReceiveFee);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ForeColor = System.Drawing.SystemColors.Window;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ReturnMoneyConfirmWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "收银-";
+            this.Text = "退货-";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceiveMoneyByCashWindow_FormClosing);
             this.Load += new System.EventHandler(this.ReceiveMoneyByCash_Load);
             this.Shown += new System.EventHandler(this.ReceiveMoneyByCash_Shown);
@@ -165,9 +140,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox_ChangeFee;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox_SupportFee;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonConfirm;

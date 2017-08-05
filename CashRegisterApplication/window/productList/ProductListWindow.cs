@@ -43,6 +43,12 @@ namespace CashRegiterApplication
             //System.Windows.Forms.Clipboard.SetText("倍乐");
             this.label_defaultUser.Text = CenterContral.DefaultUserName;
             this.label_postId.Text = CenterContral.iPostId.ToString();
+            SetLableTime();
+        }
+
+        internal void SetLableTime()
+        {
+            this.label_time.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         internal static void Form1_UIThreadException(object sender, ThreadExceptionEventArgs e)
@@ -197,7 +203,7 @@ namespace CashRegiterApplication
             return;
         }
 
-        internal void CallShowBySettingWindows()
+        internal void ShowWindows()
         {
             this.Show();
             this.dataGridView_productList.CurrentRow.Cells[CELL_INDEX.INDEX].Value = this.dataGridView_productList.RowCount;

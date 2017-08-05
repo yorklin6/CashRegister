@@ -144,5 +144,12 @@ namespace CashRegisterApplication.window.Return
             return;
 
         }
+
+        private void ReturnSerialNumberWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            CenterContral.Window_ProductList.CallShow();
+            this.Hide();
+        }
     }
 }

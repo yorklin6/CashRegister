@@ -160,20 +160,18 @@ namespace CashRegisterApplication.model
 
         internal void generateSettleNumber()
         {
-            serialNumber = "JZ-"+CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") +"-"+ CommUiltl.GetRandomNumber();
+            serialNumber = "JZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
+                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
         }
 
         internal void generateRechargeSerialNamber()
         {
             serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + 0 + "-" //会员充值支付，未做支付类型
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+               + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
         }
         internal void generatePaySerialNamber()
         {
-            serialNumber = "ZF-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + CenterContral.iPostId + "-" //会员充值支付，未做支付类型
+            serialNumber = "JZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-" 
                 + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
         }
 

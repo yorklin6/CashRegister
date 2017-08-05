@@ -26,15 +26,18 @@ namespace CashRegisterApplication.window
         private void ReceiveMoneyByCash_Shown(object sender, EventArgs e)
         {
         }
-
-        public void ShowByReceiveMoneyWindow()
+        internal void CallByReturnDetailWindow(long orderAmount)
+        {
+            ShowByReturnMoneyWindow(orderAmount);
+        }
+        public void ShowByReturnMoneyWindow(long returnMoney)
         {
             this.Show();
-            this.Text= "收银-"+CenterContral.oCheckout.payTypeDesc;
-            this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
-            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan( -CenterContral.oStockOutDTO.Base.ChangeFee);
+            this.Text= "退货-"+CenterContral.oCheckout.payTypeDesc;
+            //this.textBox_payType.Text = CenterContral.oCheckout.payTypeDesc;
+            this.textBox_ReceiveFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(returnMoney);
             this.textBox_SupportFee.Text = this.textBox_ReceiveFee.Text;
-            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
+            //this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(0);
             _SelectRecieve();
         }
 
@@ -88,19 +91,6 @@ namespace CashRegisterApplication.window
             {
                 return;
             }
-
-            //金额发生变化就改变下找零多少
-            long recieveFee = 0;
-            if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
-            {
-                MessageBox.Show("总价错误:" + this.textBox_ReceiveFee.Text);
-                return;
-            }
-            long change = recieveFee - CenterContral.oStockOutDTO.Base.orderAmount;
-
-            this.textBox_ChangeFee.Text = CommUiltl.CoverMoneyUnionToStrYuan(change);
-
-
         }
 
         private void textBox_ReceiveFee_KeyPress(object sender, KeyPressEventArgs e)
@@ -130,23 +120,14 @@ namespace CashRegisterApplication.window
             long recieveFee = 0;
             if (!CommUiltl.ConverStrYuanToUnion(this.textBox_ReceiveFee.Text, out recieveFee))
             {
-                MessageBox.Show("收款错误:" + this.textBox_ReceiveFee.Text);
+                MessageBox.Show("退货金额错误:" + this.textBox_ReceiveFee.Text);
                 return;
             }
             long change = recieveFee + CenterContral.oStockOutDTO.Base.ChangeFee ;
-            string showTips = "确认已收" + CenterContral.oCheckout.payTypeDesc + "" + this.textBox_ReceiveFee.Text + "元";
-            if (change < 0)
-            {
-                long leftFee = 0 - change;
-                showTips +="\n还剩：" + CommUiltl.CoverMoneyUnionToStrYuan(leftFee) + " 元未收";
-
-            }else if (change >0 )
-            {
-                showTips += "\n应找零：" + CommUiltl.CoverMoneyUnionToStrYuan(change) + " 元";
-            }
+            string showTips = "确认退货金额："  + this.textBox_ReceiveFee.Text + "元";
 
             var confirmPayApartResult = MessageBox.Show(showTips,
-                                  CenterContral.oCheckout.payTypeDesc + "确认",
+                                "确认退货金额",
                                   MessageBoxButtons.YesNo);
 
             if (confirmPayApartResult != DialogResult.Yes)
@@ -156,21 +137,14 @@ namespace CashRegisterApplication.window
                 _SelectRecieve();
                 return;
             }
-            //下单支付
-            CommUiltl.Log("DialogResult.Yes recieveFee:" + recieveFee);
-          
-            if (! CenterContral.PayOrder(recieveFee))
-            {
-                return;
-            }
-            CenterContral.Window_ProductList.CallShow();
+         
+            CenterContral.Window_ReturnDetailWindow.ShowByComfirWindow(recieveFee);
             this.Hide();
-            CenterContral.ControlWindowsAfterPay();
             return;
         }
         private void returnPreventWindows()
         {
-            CenterContral.Window_RecieveMoney.Show();
+            CenterContral.Window_ReturnDetailWindow.ShowByContral();
             this.Hide();
         }
 
@@ -185,5 +159,7 @@ namespace CashRegisterApplication.window
         {
 
         }
+
+       
     }
 }

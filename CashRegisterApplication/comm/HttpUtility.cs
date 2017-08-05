@@ -507,7 +507,7 @@ namespace CashRegiterApplication
         }
         internal static int _MemberPay(DbPayment oReq, ref HttpBaseResponeDbPayment oHttpRespone)
         {
-            string funcUrl = paymentMember + oReq.memberId.ToString();
+            string funcUrl = paymentMember;
           
             String json = JsonConvert.SerializeObject(oReq);
 

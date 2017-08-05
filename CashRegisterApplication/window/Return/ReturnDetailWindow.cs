@@ -18,7 +18,10 @@ namespace CashRegisterApplication.window.Return
             InitializeComponent();
      
         }
-
+        public void ShowByContral()
+        {
+            this.Show();
+        }
         public void ShowByContral(DbStockOutDTO oLastStockmsg)
         {
          
@@ -34,8 +37,6 @@ namespace CashRegisterApplication.window.Return
         {
             gConstructEnd = false;
             DbStockOutDTO oLastStockmsg = new DbStockOutDTO(); 
-    
-          
         }
 
 
@@ -114,27 +115,9 @@ namespace CashRegisterApplication.window.Return
             currentRow.Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.GetGoodsCount(detail);
         }
 
-        private void button_return_Click(object sender, EventArgs e)
+        internal void ShowByComfirWindow(long returnMoney)
         {
-
-            //打印
-            string showTips = "确认退货";
-            var confirmPayApartResult = MessageBox.Show("确认退货:" + this.label_returnFee.Text + "元",
-                                 showTips,
-                                  MessageBoxButtons.YesNo);
-
-            if (confirmPayApartResult != DialogResult.Yes)
-            {
-                return;
-            }
-            gReturnDTO = new RetailReturnDTO();
-            SetReturnDtoByStockOutDto(ref gReturnDTO);
-
-            if (gReturnDTO.Base.orderAmount == 0)
-            {
-                MessageBox.Show("退货总金额为0元，不支持退货", "提示");
-                return;
-            }
+            gReturnDTO.Base.orderAmount = returnMoney;
 
             if (!CenterContral.ReturnOrder(gReturnDTO))
             {
@@ -142,7 +125,28 @@ namespace CashRegisterApplication.window.Return
             }
             MessageBox.Show("退货成功", "提示");
             //成功后返回
-            escapeToPreWindows();
+            CenterContral.Window_ProductList.ShowWindows();
+            this.Hide();
+        }
+
+        internal static void ShowByReturnMoneyWindow(long orderAmount)
+        {
+            CenterContral.Window_ReturnMoneyConfirmWindow.ShowByReturnMoneyWindow(orderAmount);
+
+        }
+
+
+        private void button_return_Click(object sender, EventArgs e)
+        {
+            gReturnDTO = new RetailReturnDTO();
+            SetReturnDtoByStockOutDto(ref gReturnDTO);
+            CenterContral.Window_ReturnMoneyConfirmWindow.CallByReturnDetailWindow(gReturnDTO.Base.orderAmount);
+        }
+
+        private void CallByCenterContral(long returnMoney)
+        {
+            
+            
         }
 
       

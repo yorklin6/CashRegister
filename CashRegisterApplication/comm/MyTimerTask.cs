@@ -24,10 +24,12 @@ namespace CashRegisterApplication.comm
         }
         public static void Run()
         {
+            CenterContral.Window_ProductList.SetLableTime();
             CommUiltl.Log("UpdateLocalGoodsMsg ");
             //_UpdateAllGoodsdate();无需每天更新商品
             _UpdateLastGoodMsg();
             CloseStaockOut();
+
         }
         public static void _UpdateLastGoodMsg()
         {
