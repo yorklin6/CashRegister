@@ -699,10 +699,69 @@ namespace CashRegiterApplication
             this.dataGridView_productList.Rows[e.RowIndex].Cells[CELL_INDEX.INDEX].Value = e.RowIndex+1;
         }
 
+        private bool checkCharIfIsNum(Keys keyData)
+        {
+            return true;
+            if (!this.dataGridView_productList.IsCurrentCellInEditMode)
+            {
+                return true;
+            }
+            //不允许出现字母
+            if (
+                 (System.Windows.Forms.Keys.A <= keyData && keyData <= System.Windows.Forms.Keys.Z)
+                )
+            {
+                return false;
+            }
+            return true;
+        }
+        Control gDataGriviewTextChangedContral;//因为datagrivew 没有text change事件，所以就用这个变量来控制
+        private void dataGridView_productList_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            CommUiltl.Log("dataGridView_productList_EditingControlShowing:dataGridViewTextBox_KeyPress");
+            gDataGriviewTextChangedContral = e.Control;
+            gDataGriviewTextChangedContral.TextChanged -= tb_TextChanged;
+            gDataGriviewTextChangedContral.TextChanged += tb_TextChanged;
+            //DataGridViewTextBoxEditingControl tb = (DataGridViewTextBoxEditingControl)e.Control;
+            //tb.KeyPress -= new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+            //tb.KeyPress += new KeyPressEventHandler(dataGridViewTextBox_KeyPress);
+        }
 
+        private void tb_TextChanged(object sender, EventArgs e)
+        {
+            if (this.dataGridView_productList.IsCurrentCellInEditMode
+                   && this.dataGridView_productList.CurrentCell !=null
+                   && (this.dataGridView_productList.CurrentCell.ColumnIndex ==CELL_INDEX.PRODUCT_RetailDetailCount||
+                   this.dataGridView_productList.CurrentCell.ColumnIndex == CELL_INDEX.PRODUCT_NORMAL_PRICE
+                   )
+                )
+            {
+                CommUiltl.Log("tb_TextChanged:" + gDataGriviewTextChangedContral.Text + " current value:" + this.dataGridView_productList.CurrentCell.Value);
+                this.dataGridView_productList.CurrentCell.Value = gDataGriviewTextChangedContral.Text;
+                CommUiltl.Log("after tb_TextChanged:" + gDataGriviewTextChangedContral.Text + " current value:" + this.dataGridView_productList.CurrentCell.Value);
+                //when i press enter,bellow code never run?
+
+            }
+        }
+
+        private void dataGridViewTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (this.dataGridView_productList.IsCurrentCellInEditMode)
+            {
+                CommUiltl.Log("dataGridViewTextBox_KeyPress:" + e.KeyChar + " current value:" + this.dataGridView_productList.CurrentCell.Value);
+                //when i press enter,bellow code never run?
+            }
+
+
+        }
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
         {
-            CommUiltl.Log("keyData:"+ keyData);
+            CommUiltl.Log("keyData:" + keyData);
+            //因为datagridview无法捕获表格里面输入的字符，所以要捕获
+            if (!checkCharIfIsNum(keyData))
+            {
+                return true;
+            }
             switch (keyData)
             {
                 case System.Windows.Forms.Keys.Enter:
@@ -1306,6 +1365,13 @@ namespace CashRegiterApplication
                 this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
                 ++rowIndex;
             }
+        }
+
+
+
+        private void dataGridView_productList_KeyDown(object sender, KeyEventArgs e)
+        {
+            CommUiltl.Log("dataGridView_productList_KeyDown:" + e.KeyCode);
         }
     }
 

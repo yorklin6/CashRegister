@@ -604,16 +604,7 @@ namespace CashRegisterApplication.comm
         //充值后返回
         internal static void ControlWindowsAfterRecharge()
         {
-           
-            if (flagCallShowRecharge == FLAG_PRODUCTlIST_WINDOW)
-            {
-                CenterContral.Window_FunctionMenuWindow.HideByCenter();
-                CenterContral.Window_ProductList.CallShow();
-            }
-            if (flagCallShowRecharge == FLAG_MEMBER_RECIEVE_MONEY_WINDOWS)
-            {
-                CenterContral.Window_ProductList.CallShow();
-            }
+          CenterContral.Window_ProductList.CallShow();
         }
         
         //当会员取消界面
@@ -773,7 +764,7 @@ namespace CashRegisterApplication.comm
         {
             CenterContral.oStockOutDTO.Base.status = STOCK_BASE_STATUS_OUT;
             SetSaveFlag();//挂单->关单
-            CenterContral.oStockOutDTO.Base.baseDataJson = "";//请求之前先把这个字段清空，减少请求空间
+            CenterContral.oStockOutDTO.Base.orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff"); //请求之前先把这个字段清空，减少请求空间
             //关单请求                                                  
             CenterContral.oStockOutDTO.Base.cloudCloseFlag
                            = HttpUtility.RetailSettlement(CenterContral.oStockOutDTO, ref CenterContral.oHttpRespone);

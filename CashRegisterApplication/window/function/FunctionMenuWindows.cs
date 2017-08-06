@@ -54,18 +54,20 @@ namespace CashRegisterApplication.window.function
         {
             //唤起会员充值页面
             CenterContral.ShowWindows_RechargeMoneyForMember();
+            this.Hide();
         }
 
         private void buttonCloudSystem_Click(object sender, EventArgs e)
         {
             CommUiltl.Log("CenterContral.oSystem.ClouWebAddress):"+ CenterContral.oSystem.ClouWebAddress);
             Process.Start(CenterContral.oSystem.ClouWebAddress);
+            this.Hide();
         }
 
         private void buttonSettingSystem_Click(object sender, EventArgs e)
         {
             CenterContral.CallSettingDefaultMsgWindow(CenterContral.FLAG_FUNCTION_MENU_WINDOW);
-          
+            this.Hide();
         }
 
         internal void HideByCenter()

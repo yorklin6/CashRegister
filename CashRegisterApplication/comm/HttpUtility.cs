@@ -471,7 +471,7 @@ namespace CashRegiterApplication
         }
         internal static int _memberRecharge(DbPayment oReq)
         {
-            string funcUrl = rechargeMember+ oReq.memberId.ToString();
+            string funcUrl = rechargeMember;
             HttpBaseRespone oHttpRespone = new HttpBaseRespone();
             String json = JsonConvert.SerializeObject(oReq);
           

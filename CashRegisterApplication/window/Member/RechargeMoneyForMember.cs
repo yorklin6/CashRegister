@@ -130,7 +130,6 @@ namespace CashRegisterApplication.window.Member
                 + "\n充值后:" + CommUiltl.CoverMoneyUnionToStrYuan((CenterContral.oStockOutDTO.oMember.balance)), "充值结果");
 
             _SetMemberInfo();
-
             CenterContral.ControlWindowsAfterRecharge();
             this.Hide();
            

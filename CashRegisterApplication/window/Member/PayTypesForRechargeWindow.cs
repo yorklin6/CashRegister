@@ -111,7 +111,7 @@ namespace CashRegisterApplication.window
         {
             //模仿页面，动态生成平铺
             this.tableLayoutPanel_Show.ColumnCount = iRowCount;
-           this.tableLayoutPanel_Show.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Show.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel_Show.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel_Show.Name = "tableLayoutPanel_Show";
             this.tableLayoutPanel_Show.RowCount = 6;
@@ -335,7 +335,7 @@ namespace CashRegisterApplication.window
                 return;
             }
             CenterContral.CallRechargeWindowByRechargePayTypesWindow();
-            CenterContral.Window_ReceiveMoneyByPayType.ShowByReceiveMoneyWindow();
+          
             this.Hide();
             return;
         }
