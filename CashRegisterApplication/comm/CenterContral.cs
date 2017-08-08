@@ -83,8 +83,7 @@ namespace CashRegisterApplication.comm
         public const int PAY_STATE_SUCCESS = 1;
 
         public const int PAY_TYPE_CASH = 1;//現金支付
-
-        public const int MEMBER_PAY_TYPE = 0;
+        public const int MEMBER_PAY_TYPE = 0;//会员支付
 
 
         public const int STOCK_BASE_STATUS_INIT = 0;
@@ -160,6 +159,13 @@ namespace CashRegisterApplication.comm
                 CenterContral.Window_FunctionMenuWindow.HideByCenter();
                 return;
             }
+        }
+
+        internal static string GetSerialNumber(string strPre)
+        {
+             string strSerialNumber = strPre + CenterContral.iPostId.ToString("000") +
+                         DateTime.Now.ToString("yyMMddHHmm");
+            return strSerialNumber;
         }
 
         internal static bool ReturnOrder(RetailReturnDTO oRetailReturnDTO)
@@ -302,7 +308,7 @@ namespace CashRegisterApplication.comm
            oMyTime.MyTimer_Tick(null,null);
             //再执行异步数据
             Timer MyTimer = new Timer();
-            MyTimer.Interval = (5 * 60 * 1000); // 1 mins
+            MyTimer.Interval = (1 * 60 * 1000); // 1 mins
             
             MyTimer.Tick += new EventHandler(oMyTime.MyTimer_Tick);
             MyTimer.Start();
@@ -638,7 +644,7 @@ namespace CashRegisterApplication.comm
             CenterContral.oStockOutDTO.Base = new DbStockOutBase();
             CenterContral.oStockOutDTO.details = new List<DbStockOutDetail>();
             CenterContral.oStockOutDTO.payments = new List<DbPayment>();
-
+            CenterContral.oStockOutDTO.locaMemberPay = new List<DbPayment>();
             CenterContral.oStockOutDToRespond = new DbStockOutDTORespone();
 
             CenterContral.oStockOutDTO.Base.generateSeariseNumber();
@@ -1137,7 +1143,7 @@ namespace CashRegisterApplication.comm
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.payAmount = recieveFee;
             oRecharge.payType = CenterContral.oCheckout.payType;
-            oRecharge.generatePaySerialNamber();
+            oRecharge.generateMemberPaySerialNamber();
             oRecharge.tradeTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             HttpBaseResponeDbPayment oHttpRespone = new HttpBaseResponeDbPayment();
             if ( HttpUtility.MemberPay(oRecharge,ref oHttpRespone) != HttpUtility.CLOUD_SATE_HTTP_SUCESS)
@@ -1154,7 +1160,7 @@ namespace CashRegisterApplication.comm
             }
             CenterContral.oStockOutDTO.Base.clientId = CenterContral.oStockOutDTO.oMember.memberId;//会员支付成功，要记下这笔单未会员id
             CenterContral.oStockOutDTO.Base.clientName = CenterContral.oStockOutDTO.oMember.name;
-            CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
+           CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateTextShow();
             //重新拉会员信息
             CenterContral.GetMemberByMemberAccount(CenterContral.stMemberrAccount,CenterContral.strMemberPassword);
@@ -1168,9 +1174,8 @@ namespace CashRegisterApplication.comm
             DbPayment oRecharge = new DbPayment();
             oRecharge.memberId = CenterContral.oStockOutDTO.oMember.memberId;
             oRecharge.payAmount = recieveFee;
-            oRecharge.payType = CenterContral.PAY_TYPE_CASH;
+            oRecharge.payType = CenterContral.oRechargePayType.payType;
             oRecharge.generateRechargeSerialNamber();
-
 
             //请求后台充值
             oRecharge.cloudState = HttpUtility.memberRecharge(oRecharge);

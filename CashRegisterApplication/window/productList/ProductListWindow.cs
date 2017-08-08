@@ -1297,14 +1297,13 @@ namespace CashRegiterApplication
         }
         public void DoPrint()
         {
-            //关闭钱箱
-            CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
-
             if (!CenterContral.oSystem.bPrinterOpen)
             {
                 //打印机关闭状态
                 return;
             }
+            //关闭钱箱
+            CenterContral.CloseMoneyBox(CenterContral.CloseMoneyBoxComm);
             this.printDocument.PrintController = new StandardPrintController();//使用这个，将会隐藏打印的对话框
             this.printDocument.Print();
         }

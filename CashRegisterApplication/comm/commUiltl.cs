@@ -166,6 +166,9 @@ namespace CashRegisterApplication.comm
             //return Convert.ToDecimal((double)money / 100).ToString("0.00");//保留小数点后两位位
             return (discount / 100).ToString();
         }
+
+
+
         //**********计重类
         internal static long CaculateBarCodeCount(long barcodeSubTotalMoney, long unitPrice)
         {

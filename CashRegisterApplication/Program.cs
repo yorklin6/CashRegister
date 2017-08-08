@@ -60,6 +60,7 @@ namespace CashRegiterApplication
             myLog.WriteEntry("Writing to event log.");
 
             CommUiltl.Log("Application.Run");
+           
             // Application.Run(new ReturnSerialNumberWindow());
             Application.Run(new LoginWindows());
         }

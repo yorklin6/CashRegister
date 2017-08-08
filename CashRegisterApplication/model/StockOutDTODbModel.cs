@@ -43,6 +43,7 @@ namespace CashRegisterApplication.model
 
         public List<DbStockOutDetail> details;
         public List<DbPayment> payments;
+        public List<DbPayment> locaMemberPay; //
         public Member oMember;
         
         public DbStockOutDTO()
@@ -50,19 +51,21 @@ namespace CashRegisterApplication.model
             Base = new DbStockOutBase();
             details = new List<DbStockOutDetail>();
             payments = new List<DbPayment>();
-         
+            locaMemberPay=new List<DbPayment>();
             oMember = new Member();
- 
         }
 
         public void addChecout(DbPayment oPayWay)
         {
-            CommUiltl.Log("RecieveFee before:" + Base.TotalPayFee);
             Base.TotalPayFee += oPayWay.payAmount;
-            CommUiltl.Log("RecieveFee after:" + Base.TotalPayFee);
             CaculateFee();
             payments.Add(oPayWay);
-          
+        }
+        public void addMemmberPay(DbPayment oPayWay)
+        {
+            Base.TotalPayFee += oPayWay.payAmount;
+            CaculateFee();
+            locaMemberPay.Add(oPayWay);
         }
 
         public void CaculateFee()
@@ -160,19 +163,18 @@ namespace CashRegisterApplication.model
 
         internal void generateSettleNumber()
         {
-            serialNumber = "JZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+            serialNumber =CenterContral.GetSerialNumber("JZ");
         }
 
         internal void generateRechargeSerialNamber()
         {
-            serialNumber = "CZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-               + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+            serialNumber = "CZ" + CenterContral.iPostId.ToString("000") +
+                 DateTime.Now.ToString("yyMMddHHmm");
         }
-        internal void generatePaySerialNamber()
+        internal void generateMemberPaySerialNamber()
         {
-            serialNumber = "JZ-" + CenterContral.oStoreWhouse.storeWhouseId + "-" 
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+            serialNumber = "JZ" + CenterContral.iPostId.ToString("000") +
+                 DateTime.Now.ToString("yyMMddHHmm");
         }
 
     }
@@ -281,8 +283,8 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LS-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+            CenterContral.oStockOutDTO.Base.serialNumber = "LS"+ CenterContral.iPostId.ToString("000") +
+                DateTime.Now.ToString("yyMMddHHmm");
             orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
 
