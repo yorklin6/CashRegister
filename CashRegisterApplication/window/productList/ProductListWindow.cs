@@ -217,6 +217,7 @@ namespace CashRegiterApplication
         }
         internal void CloseOrderAndPrintOrderByCenter()
         {
+
             this.Show();
             
  
@@ -562,6 +563,11 @@ namespace CashRegiterApplication
                 {
                     return;
                 }
+                //如果是扫码，那么就移动到下一行
+                if ( !_isBarcode(e.RowIndex, e.ColumnIndex))
+                {
+                    return;
+                }
                 //将光标移动到价钱
                 CommUiltl.Log(" e.ColumnIndex == CELL_INDEX.PRODUCT_RetailDetailCount and  _ResetMoneyByRow and _SetCurrentPointToRetailDetailCount  ");
                 if (!_ResetMoneyByRow(e.RowIndex, e.ColumnIndex))
@@ -589,6 +595,47 @@ namespace CashRegiterApplication
             }
 
         }
+
+        private bool _isBarcode(int rowIndex, int columnIndex)
+        {
+            CommUiltl.Log("_isBarcode");
+            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_MONEY].Value))
+            {
+                //价钱为空，就停止
+                return false;
+            }
+            if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value))
+            {
+                _SetCurrentPointToRetailDetailCount(rowIndex, CELL_INDEX.PRODUCT_RetailDetailCount);
+                MessageBox.Show("数量错误,不能为空");
+                return false;
+            }
+            //判断是否是条码
+            string strBarcode = this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value.ToString();
+            if (strBarcode.Length  < 5)//说明是数字
+            {
+                return true;
+            }
+            //处理条码
+            //恢复数量
+            if (CenterContral.oStockOutDTO.details[rowIndex].isBarCodeMoneyGoods == CenterContral.IS_BARCODE_MOENY_GOODS)
+            {
+                //条码带有金额的商品,数量=总价/单价
+                this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value= CommUiltl.CoverUnionTo3rd(CenterContral.oStockOutDTO.details[rowIndex].barcodeCount);
+            }else
+            {
+                this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.PRODUCT_RetailDetailCount].Value = CenterContral.oStockOutDTO.details[rowIndex].orderCount;
+            }
+            //添加一行
+            this.dataGridView_productList.Rows.Add();
+            //光标移动到下一行的条码
+            this.dataGridView_productList.Rows[rowIndex + 1].Cells[CELL_INDEX.GOODS_BARCODE].Value = strBarcode;
+            _GotoNextBarcode(rowIndex);
+            GetProductInfoByBarcode(rowIndex + 1, CELL_INDEX.GOODS_BARCODE);
+            CommUiltl.Log("_isBarcode");
+            return false;
+        }
+
         private bool _CheckIsKeyword(int rowIndex, int columnIndex)
         {
             if (CommUiltl.IsObjEmpty(this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_BARCODE].Value))
@@ -604,12 +651,11 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("_GotoNextBarcode RowIndex:" + rowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
            
-            if (rowIndex == this.dataGridView_productList.RowCount - 2)
+            if (this.dataGridView_productList.Rows[rowIndex + 1].IsNewRow)
             {
                 CommUiltl.Log("_SetCurrentPointToRetailDetailCount row:" + rowIndex + " Column" + columnIndex);
                 gMoveToRetailDetailCountFlag = true;
                 gCurrentCell = this.dataGridView_productList.Rows[rowIndex].Cells[columnIndex];
-              
                 return;
             }
         }
@@ -624,7 +670,7 @@ namespace CashRegiterApplication
         {
             CommUiltl.Log("_GotoNextBarcode RowIndex:"+ rowIndex + " this.dataGridView_productList.RowCount:" + this.dataGridView_productList.RowCount);
             CommUiltl.Log("_GotoNextBarcode PRODUCT_CODE:" + this.dataGridView_productList.Rows[rowIndex].Cells[CELL_INDEX.GOODS_BARCODE].Value);
-            if (rowIndex == this.dataGridView_productList.RowCount -2 )
+            if (this.dataGridView_productList.Rows[rowIndex+1 ].IsNewRow)
             {
                 CommUiltl.Log("RowIndex == this.dataGridView_productList.RowCount -2");
                 gMoveToNextBarcodeFlag = true;
@@ -695,8 +741,12 @@ namespace CashRegiterApplication
 
         private void productListDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            CommUiltl.Log("row:" + e.RowIndex );
-            this.dataGridView_productList.Rows[e.RowIndex].Cells[CELL_INDEX.INDEX].Value = e.RowIndex+1;
+            CommUiltl.Log("dataGridView_productList_RowsRemoved row:" + e.RowIndex + " RowCount" + this.dataGridView_productList.RowCount);
+            for (int i = 0, rowIndex = 0; i < this.dataGridView_productList.RowCount; ++i)
+            {
+                this.dataGridView_productList.Rows[i].Cells[CELL_INDEX.INDEX].Value = rowIndex + 1;
+                ++rowIndex;
+            }
         }
 
         private bool checkCharIfIsNum(Keys keyData)
@@ -1006,6 +1056,12 @@ namespace CashRegiterApplication
         /**********************************挂单**********************************************/
         private void SaveStock()
         {
+            if (CenterContral.oStockOutDTO.details.Count == 0 )
+            {
+                MessageBox.Show("当前没有商品，无法挂单",
+                                 "挂单操作");
+                return;
+            }
             string showTips = "是否要挂单";
             var confirmPayApartResult = MessageBox.Show(showTips,
                                   "挂单操作",

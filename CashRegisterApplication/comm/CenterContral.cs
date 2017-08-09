@@ -164,7 +164,7 @@ namespace CashRegisterApplication.comm
         internal static string GetSerialNumber(string strPre)
         {
              string strSerialNumber = strPre + CenterContral.iPostId.ToString("000") +
-                         DateTime.Now.ToString("yyMMddHHmm");
+                         DateTime.Now.ToString("yyMMddHHmmss");
             return strSerialNumber;
         }
 
@@ -323,7 +323,7 @@ namespace CashRegisterApplication.comm
         public static void GetDbMsgToCenterConalMsg()
         {
             //_InitDbLocalMsg();
-            GetSaveStock();//挂单数据
+            //GetSaveStock();//挂单数据
             //门店信息
             GetStoreMsgFromDb();
             //Post机Id设置
@@ -341,6 +341,7 @@ namespace CashRegisterApplication.comm
 
         public static void GetSaveStock()
         {
+            //挂单不存储,此段代码作废
             //查出挂单的单据
             DbStockOutDTO oState = new DbStockOutDTO();
             oState.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
@@ -1066,10 +1067,11 @@ namespace CashRegisterApplication.comm
             //生成订单，状态为挂单
             CenterContral.oStockOutDTO.Base.ProductList = strProductList;
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
-            if (!CenterContral.GenerateOrder(strProductList))
-            {
-                return false;
-            }
+            //挂单不存储
+            ////if (!CenterContral.GenerateOrder(strProductList))
+            ////{
+            ////    return false;
+            ////}
             addStockToLocal(CenterContral.oStockOutDTO);
             
             return true;

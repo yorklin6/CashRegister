@@ -168,13 +168,11 @@ namespace CashRegisterApplication.model
 
         internal void generateRechargeSerialNamber()
         {
-            serialNumber = "CZ" + CenterContral.iPostId.ToString("000") +
-                 DateTime.Now.ToString("yyMMddHHmm");
+            serialNumber = CenterContral.GetSerialNumber("CZ");
         }
         internal void generateMemberPaySerialNamber()
         {
-            serialNumber = "JZ" + CenterContral.iPostId.ToString("000") +
-                 DateTime.Now.ToString("yyMMddHHmm");
+            serialNumber = CenterContral.GetSerialNumber("JZ");
         }
 
     }
@@ -283,8 +281,7 @@ namespace CashRegisterApplication.model
 
         public void generateSeariseNumber()
         {
-            CenterContral.oStockOutDTO.Base.serialNumber = "LS"+ CenterContral.iPostId.ToString("000") +
-                DateTime.Now.ToString("yyMMddHHmm");
+            serialNumber = CenterContral.GetSerialNumber("LS");
             orderTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
             createTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff");
 
