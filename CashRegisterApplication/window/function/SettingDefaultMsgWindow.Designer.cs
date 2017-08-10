@@ -283,6 +283,7 @@
             this.Name = "SettingDefaultMsgWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SettingDefaultMsg";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SettingDefaultMsgWindow_FormClosing);
             this.Load += new System.EventHandler(this.SettingDefaultMsg_Load);
             this.Shown += new System.EventHandler(this.SettingDefaultMsgWindow_Shown);

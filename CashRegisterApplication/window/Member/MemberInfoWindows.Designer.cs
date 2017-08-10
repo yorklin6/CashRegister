@@ -110,6 +110,7 @@
             this.Name = "MemberInfoWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "会员信息";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MemberInfoWindows_FormClosing);
             this.Load += new System.EventHandler(this.memberRechargeWindows_Load);
             this.Shown += new System.EventHandler(this.memberRechargeWindows_Shown);

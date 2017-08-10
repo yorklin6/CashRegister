@@ -76,6 +76,7 @@
             this.Name = "Printer_Hostory_Select_Windows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "重打选择";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Printer_Hostory_Select_Windows_FormClosing);
             this.Load += new System.EventHandler(this.Printer_Hostory_Select_Windows_Load);
             this.ResumeLayout(false);

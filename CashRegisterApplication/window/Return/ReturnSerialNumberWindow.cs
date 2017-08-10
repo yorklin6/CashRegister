@@ -23,10 +23,12 @@ namespace CashRegisterApplication.window.Return
             DbStockOutDTO oLastStockmsg = new DbStockOutDTO();
             CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
 
-            this.textBox_type.Text = oLastStockmsg.Base.serialNumber.Substring(0,2); ;
-            this.textBox_store_id.Text = oLastStockmsg.Base.serialNumber.Substring(3, 1);
-            this.textBox_time.Text = oLastStockmsg.Base.serialNumber.Substring(5, 17);
-            this.textBox_random.Text = oLastStockmsg.Base.serialNumber.Substring(23, 3) ;
+            // this.textBox_type.Text = oLastStockmsg.Base.serialNumber.Substring(0,2); ;
+            //this.textBox_store_id.Text = oLastStockmsg.Base.serialNumber.Substring(3, 1);
+            //this.textBox_time.Text = oLastStockmsg.Base.serialNumber.Substring(5, 17);
+            this.textBox_time.Text = oLastStockmsg.Base.serialNumber;
+            this.textBox_time.SelectionStart = 0;
+            textBox_time.SelectionLength = this.textBox_time.Text.Length;
             _BeginShow();
         }
         private void ReturnSerialNumber_Load(object sender, EventArgs e)
@@ -37,45 +39,19 @@ namespace CashRegisterApplication.window.Return
 
         private void _BeginShow()
         {
-            this.ActiveControl = textBox_store_id;
-            this.textBox_store_id.SelectionStart = 0;
-            textBox_store_id.SelectionLength = this.textBox_store_id.Text.Length;
-        }
-
-        //1
-        private void textBox_store_id_TextChanged(object sender, EventArgs e)
-        {
-
             this.ActiveControl = textBox_time;
-            return;
+            this.textBox_time.SelectionStart = 0;
+            textBox_time.SelectionLength = this.textBox_time.Text.Length;
         }
+
+
 
         private void textBox_time_TextChanged(object sender, EventArgs e)
         {
             CommUiltl.Log("textBox_time.Text.Length:" + textBox_time.Text.Length);
-            if (textBox_time.Text.Length == 17 )
-            {
-                this.ActiveControl = textBox_random;
-                return;
-            }
-            if (textBox_time.Text.Length > 17)
-            {
-                this.textBox_time.Text = textBox_time.Text.Substring(0,17);
-                return;
-            }
-        }
-
-        private void textBox_random_TextChanged(object sender, EventArgs e)
-        {
             
-            if (textBox_random.Text.Length > 3)
-            {
-                textBox_random.Text = textBox_random.Text.Substring(0, 3);
-                this.ActiveControl = button_enter;
-                return;
-            }
         }
-        //2
+ 
 
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, System.Windows.Forms.Keys keyData)
         {
@@ -95,22 +71,7 @@ namespace CashRegisterApplication.window.Return
 
         private void EnterEvent()
         {
-            if (this.ActiveControl == textBox_type)
-            {
-                this.ActiveControl = textBox_store_id;
-                return;
-            }
-            if (this.ActiveControl == textBox_store_id)
-            {
-                this.ActiveControl = textBox_time;
-                return;
-            }
             if (this.ActiveControl == textBox_time)
-            {
-                this.ActiveControl = textBox_random;
-                return;
-            }
-            if (this.ActiveControl == textBox_random)
             {
                 this.ActiveControl = button_enter;
                button1_Click(null, null);
@@ -123,10 +84,7 @@ namespace CashRegisterApplication.window.Return
         {
             CommUiltl.Log("button1_Click:" );
             string strSerialNumber = "";
-            strSerialNumber += this.textBox_type.Text + "-";
-            strSerialNumber += this.textBox_store_id.Text + "-";
-            strSerialNumber += this.textBox_time.Text + "-";
-            strSerialNumber += this.textBox_random.Text + "";
+            strSerialNumber += this.textBox_time.Text + "";
             CommUiltl.Log("strSerialNumber:"+ strSerialNumber);
             DbStockOutDTO oStock = new DbStockOutDTO();
             if ( !CenterContral.GetStockBySerialNumber(strSerialNumber, ref oStock) )
@@ -136,11 +94,7 @@ namespace CashRegisterApplication.window.Return
 
             CenterContral.ShowReturanWindowByContral(oStock);
             this.Hide();
-            //oLastStockmsg = new DbStockOutDTO();
-            //CenterContral.GetLastSotckOutOrder(ref oLastStockmsg);
-            //DbStockOutDTO oStock = new DbStockOutDTO();
-            //CenterContral.GetStockBySerialNumber(oLastStockmsg.Base.serialNumber, ref oStock);
-
+          
             return;
 
         }

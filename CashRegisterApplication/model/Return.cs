@@ -44,8 +44,7 @@ namespace CashRegisterApplication.model
 
         internal void generateSerialNum()
         {
-             serialNumber = "LSTH-" + CenterContral.oStoreWhouse.storeWhouseId + "-"
-                + DateTime.Now.ToString("yyyyMMddHHmmssfff") + "-" + CommUiltl.GetRandomNumber();
+            serialNumber =   CenterContral.GetSerialNumber("LSTH");
         }
     }
     public class RetailReturnDetail

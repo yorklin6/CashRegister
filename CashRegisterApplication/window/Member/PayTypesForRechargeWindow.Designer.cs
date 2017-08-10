@@ -72,7 +72,7 @@
             this.tableLayoutPanel_Show.Size = new System.Drawing.Size(584, 462);
             this.tableLayoutPanel_Show.TabIndex = 1;
             // 
-            // PayTypesForRecharge
+            // PayTypesForRechargeWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -85,9 +85,10 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "PayTypesForRecharge";
+            this.Name = "PayTypesForRechargeWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "充值支付方式";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PayTypesForRecharge_FormClosing);
             this.Load += new System.EventHandler(this.PayTypesForRecharges_Load);
             this.Shown += new System.EventHandler(this.PayTypesForRecharges_Shown);

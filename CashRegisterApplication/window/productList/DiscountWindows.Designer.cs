@@ -141,6 +141,7 @@
             this.Name = "DiscountWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "折扣";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DiscountWindows_FormClosing);
             this.Load += new System.EventHandler(this.DiscountWindows_Load);
             this.ResumeLayout(false);

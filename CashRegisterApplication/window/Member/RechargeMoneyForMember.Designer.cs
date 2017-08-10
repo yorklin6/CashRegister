@@ -218,6 +218,7 @@
             this.Name = "RechargeMoneyForMember";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "充值";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RechargeMoneyForMember_FormClosing);
             this.Load += new System.EventHandler(this.RechargeMoneyForMember_Load);
             this.Shown += new System.EventHandler(this.RechargeMoneyForMember_Shown);

@@ -176,6 +176,7 @@
             this.Name = "ReceiveMoneyByMember";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "收银-储值卡支付";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceiveMoneyByMember_FormClosing);
             this.Load += new System.EventHandler(this.MemberBuy_Load);
             this.Shown += new System.EventHandler(this.ReceiveMoneyByMember_Shown);

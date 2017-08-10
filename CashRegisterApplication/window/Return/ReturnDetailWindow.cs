@@ -31,12 +31,14 @@ namespace CashRegisterApplication.window.Return
              ShowDetailStockOut(oLastStockmsg);
             this.Show();
             gConstructEnd = true;
+           
         }
 
         private void HitoryDetailWindow_Load(object sender, EventArgs e)
         {
             gConstructEnd = false;
-            DbStockOutDTO oLastStockmsg = new DbStockOutDTO(); 
+            DbStockOutDTO oLastStockmsg = new DbStockOutDTO();
+         
         }
 
 

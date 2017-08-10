@@ -209,6 +209,7 @@
             this.Name = "SelectGoodWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "选择商品";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SelectGoodWindows_FormClosing);
             this.Load += new System.EventHandler(this.SelectGoods_Load);
             this.tableLayoutPanel1.ResumeLayout(false);

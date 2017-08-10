@@ -139,6 +139,11 @@ namespace CashRegisterApplication.window.Setting
                         button1_Click(null,null);
                         return true;
                     }
+                case System.Windows.Forms.Keys.Escape:
+                    {
+                       returnPreventWindows();
+                        return true;
+                    }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -178,7 +183,7 @@ namespace CashRegisterApplication.window.Setting
         }
         private void returnPreventWindows()
         {
-            //CenterContral.Window_ProductList.CallShowBySettingWindows();
+            CenterContral.Window_ProductList.CallShow();
             this.Hide();
         }
 

@@ -70,7 +70,7 @@
             this.tableLayoutPanel_Show.Name = "tableLayoutPanel_Show";
             this.tableLayoutPanel_Show.RowCount = 1;
             this.tableLayoutPanel_Show.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 93F));
-            this.tableLayoutPanel_Show.Size = new System.Drawing.Size(301, 91);
+            this.tableLayoutPanel_Show.Size = new System.Drawing.Size(302, 91);
             this.tableLayoutPanel_Show.TabIndex = 2;
             // 
             // buttonSettingSystem
@@ -83,7 +83,7 @@
             this.buttonSettingSystem.Location = new System.Drawing.Point(210, 10);
             this.buttonSettingSystem.Margin = new System.Windows.Forms.Padding(10);
             this.buttonSettingSystem.Name = "buttonSettingSystem";
-            this.buttonSettingSystem.Size = new System.Drawing.Size(81, 73);
+            this.buttonSettingSystem.Size = new System.Drawing.Size(82, 73);
             this.buttonSettingSystem.TabIndex = 7;
             this.buttonSettingSystem.Tag = "2";
             this.buttonSettingSystem.Text = "系统设置(2)";
@@ -125,6 +125,7 @@
             this.Name = "FunctionMenuWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "功能菜单";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FunctionMenuWindow_FormClosing);
             this.Load += new System.EventHandler(this.FuncitonMenu_Load);
             this.tableLayoutPanel_Show.ResumeLayout(false);
