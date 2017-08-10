@@ -1061,17 +1061,17 @@ namespace CashRegisterApplication.comm
         }
 
 
-        //************************挂单***********************
+        //*****************x*******挂单***********************
         internal static bool SaveStock(string strProductList)
         {
             //生成订单，状态为挂单
             CenterContral.oStockOutDTO.Base.ProductList = strProductList;
             CenterContral.oStockOutDTO.Base.localSaveFlag = Dao.STOCK_BASE_SAVE_FLAG_SAVING;
             //挂单不存储
-            ////if (!CenterContral.GenerateOrder(strProductList))
-            ////{
-            ////    return false;
-            ////}
+           if (!CenterContral.GenerateOrder(strProductList))
+           {
+               return false;
+           }
             addStockToLocal(CenterContral.oStockOutDTO);
             
             return true;
@@ -1162,7 +1162,7 @@ namespace CashRegisterApplication.comm
             }
             CenterContral.oStockOutDTO.Base.clientId = CenterContral.oStockOutDTO.oMember.memberId;//会员支付成功，要记下这笔单未会员id
             CenterContral.oStockOutDTO.Base.clientName = CenterContral.oStockOutDTO.oMember.name;
-           CenterContral.oStockOutDTO.addChecout(CenterContral.oCheckout);
+            CenterContral.oStockOutDTO.addMemmberPay(CenterContral.oCheckout);
             CenterContral.Window_ProductList.UpdateTextShow();
             //重新拉会员信息
             CenterContral.GetMemberByMemberAccount(CenterContral.stMemberrAccount,CenterContral.strMemberPassword);
